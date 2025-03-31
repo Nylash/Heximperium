@@ -13,6 +13,8 @@ public class GameManager : Singleton<GameManager>
         {
             _currentPhase = Phase.Explore;
         }
+
+        _turnCounter = 1;
     }
 
     public void ConfirmPhase()
@@ -25,8 +27,11 @@ public class GameManager : Singleton<GameManager>
         {
             _currentPhase = Phase.Explore;
             _turnCounter++;
+            UIManager.Instance.UpdateTurnCounterText();
         }
-        
+
+        UIManager.Instance.UpdatePhaseButtonText();
+        UIManager.Instance.UpdatePhaseText();
     }
 }
 
