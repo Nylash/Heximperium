@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9990022dae7882f489cdaf785d5dbad0, type: 3}
   m_Name: DragonGraveyard
   m_EditorClassIdentifier: 
-  _name: 
+  _name: Dragon graveyard
   _visual: {fileID: 0}
-  _claimCost: 0
+  _claimCost: 1
   _goldIncome: 0
-  _resource: 0
+  _resource: 5
   _resourceIncome: 0

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3684f81d6cb7cc44903001afced376c, type: 3}
   m_Name: Water
   m_EditorClassIdentifier: 
-  _name: 
+  _name: Water
   _visual: {fileID: 0}
-  _claimCost: 0
+  _claimCost: 3
   _goldIncome: 0
