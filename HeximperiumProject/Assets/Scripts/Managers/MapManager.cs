@@ -11,7 +11,12 @@ public class MapManager : Singleton<MapManager>
     void Start()
     {
         _grid = GameObject.FindGameObjectWithTag("Grid").transform;
-        GenerateHexagonalGrid();
+        
+        //Check if a predefined grid isn't used
+        if(_grid.childCount == 0)
+        {
+            GenerateHexagonalGrid();
+        }
     }
 
     void GenerateHexagonalGrid()
