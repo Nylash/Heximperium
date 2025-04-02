@@ -35,6 +35,7 @@ public class MapManager : Singleton<MapManager>
                 Vector3 position = new Vector3(x, 0, z);
                 GameObject tile = Instantiate(_tilePrefab, position, Quaternion.identity, _grid);
                 tile.GetComponent<Tile>().Coordinate = new Vector2(col, row);
+                tile.name = col + ";" + row;
             }
         }
     }
