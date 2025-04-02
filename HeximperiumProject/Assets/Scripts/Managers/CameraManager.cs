@@ -6,6 +6,8 @@ public class CameraManager : Singleton<CameraManager>
     [SerializeField] private float _cameraMovementSpeed = 3;
     [SerializeField] private float _cameraDragSpeed = 1;
     [SerializeField] private float _cameraZoomSpeed = 7;
+    [SerializeField] private float _edgePanMargin = 20;
+    [SerializeField] private float _edgePanSpeed = 5;
 
     private InputSystem_Actions _inputActions;
 
@@ -15,6 +17,9 @@ public class CameraManager : Singleton<CameraManager>
     //Drag
     private bool _isMouseDragging;
     private Vector2 _lastMousePosition;
+    //Edge pan
+    private Vector2 _mousePosition;
+    private Vector2 _direction;
 
     private void OnEnable() => _inputActions.Player.Enable();
     private void OnDisable() => _inputActions.Player.Disable();
@@ -38,6 +43,7 @@ public class CameraManager : Singleton<CameraManager>
         if (!_isMouseDragging)
         {
             KeyMovement();
+            EdgePan();
         }
         Zoom();
     }
@@ -74,5 +80,49 @@ public class CameraManager : Singleton<CameraManager>
                 0.5f);
             _lastMousePosition = Mouse.current.position.ReadValue();
         }
+    }
+
+    private void EdgePan()
+    {
+        _mousePosition = Mouse.current.position.ReadValue();
+        _direction = Vector2.zero;
+
+        if (_mousePosition.x < _edgePanMargin)
+        {
+            _direction.x = -1;
+        }
+        else if (_mousePosition.x > Screen.width - _edgePanMargin)
+        {
+            _direction.x = 1;
+        }
+
+        if (_mousePosition.y < _edgePanMargin)
+        {
+            _direction.y = -1;
+        }
+        else if (_mousePosition.y > Screen.height - _edgePanMargin)
+        {
+            _direction.y = 1;
+        }
+
+        if (_direction != Vector2.zero)
+        {
+            transform.position += new Vector3(_direction.x, 0, _direction.y) * _edgePanSpeed * Time.deltaTime;
+        }
+    }
+
+    private void OnGUI()
+    {
+        // Draw the edge pan margins
+        GUI.color = new Color(1, 0, 0, 0.5f); // Semi-transparent red
+
+        // Top margin
+        GUI.DrawTexture(new Rect(0, 0, Screen.width, _edgePanMargin), Texture2D.whiteTexture);
+        // Bottom margin
+        GUI.DrawTexture(new Rect(0, Screen.height - _edgePanMargin, Screen.width, _edgePanMargin), Texture2D.whiteTexture);
+        // Left margin
+        GUI.DrawTexture(new Rect(0, 0, _edgePanMargin, Screen.height), Texture2D.whiteTexture);
+        // Right margin
+        GUI.DrawTexture(new Rect(Screen.width - _edgePanMargin, 0, _edgePanMargin, Screen.height), Texture2D.whiteTexture);
     }
 }

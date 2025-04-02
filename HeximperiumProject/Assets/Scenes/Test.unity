@@ -578,9 +578,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
-  _cameraMovementSpeed: 3
-  _cameraDragSpeed: 1
-  _cameraZoomSpeed: 7
+  _cameraMovementSpeed: 5
+  _cameraDragSpeed: 2
+  _cameraZoomSpeed: 10
+  _edgePanMargin: 2
+  _edgePanSpeed: 3
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
