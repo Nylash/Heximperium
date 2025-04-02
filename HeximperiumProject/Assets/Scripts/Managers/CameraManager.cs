@@ -6,8 +6,10 @@ public class CameraManager : Singleton<CameraManager>
     [SerializeField] private float _cameraMovementSpeed = 3;
     [SerializeField] private float _cameraDragSpeed = 1;
     [SerializeField] private float _cameraZoomSpeed = 7;
+#pragma warning disable CS0414
     [SerializeField] private float _edgePanMargin = 20;
     [SerializeField] private float _edgePanSpeed = 5;
+#pragma warning restore CS0414
 
     private InputSystem_Actions _inputActions;
 
@@ -88,7 +90,10 @@ public class CameraManager : Singleton<CameraManager>
 
     private void EdgePan()
     {
-        _mousePosition = Mouse.current.position.ReadValue();
+#if UNITY_EDITOR
+
+#else
+_mousePosition = Mouse.current.position.ReadValue();
         _direction = Vector2.zero;
 
         if (_mousePosition.x < _edgePanMargin)
@@ -113,6 +118,7 @@ public class CameraManager : Singleton<CameraManager>
         {
             transform.position += new Vector3(_direction.x, 0, _direction.y) * _edgePanSpeed * Time.deltaTime;
         }
+#endif
     }
 
     //Draw Edge pan margin
