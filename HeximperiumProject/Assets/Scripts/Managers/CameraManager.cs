@@ -28,11 +28,15 @@ public class CameraManager : Singleton<CameraManager>
     {
         _inputActions = new InputSystem_Actions();
 
+        //Key input
         _inputActions.Player.CameraMovement.performed += ctx => _cameraMovement = ctx.ReadValue<Vector2>().normalized;
         _inputActions.Player.CameraMovement.canceled += ctx => _cameraMovement = Vector2.zero;
+
+        //Zoom input
         _inputActions.Player.CameraZoom.performed += ctx => _cameraZoom = -ctx.ReadValue<Vector2>().y;
         _inputActions.Player.CameraZoom.canceled += ctx => _cameraZoom = 0.0f;
 
+        //Drag input
         _inputActions.Player.RightClick.started += ctx => StartDragging();
         _inputActions.Player.RightClick.canceled += ctx => _isMouseDragging = false;
         _inputActions.Player.MouseMovement.performed += ctx => DragCamera();
@@ -111,7 +115,8 @@ public class CameraManager : Singleton<CameraManager>
         }
     }
 
-    private void OnGUI()
+    //Draw Edge pan margin
+    /*private void OnGUI()
     {
         // Draw the edge pan margins
         GUI.color = new Color(1, 0, 0, 0.5f); // Semi-transparent red
@@ -124,5 +129,5 @@ public class CameraManager : Singleton<CameraManager>
         GUI.DrawTexture(new Rect(0, 0, _edgePanMargin, Screen.height), Texture2D.whiteTexture);
         // Right margin
         GUI.DrawTexture(new Rect(Screen.width - _edgePanMargin, 0, _edgePanMargin, Screen.height), Texture2D.whiteTexture);
-    }
+    }*/
 }
