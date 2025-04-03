@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1481917373780202815}
   - component: {fileID: 1374311604036627735}
   - component: {fileID: 5463362133273360706}
+  - component: {fileID: 1320174606270032190}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -99,3 +100,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68deda5187a4d3640824e252c2f7277f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _biome: 0
+  _tileData: {fileID: 0}
+--- !u!64 &1320174606270032190
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5751803865783233614}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2190622540023885545, guid: 5ea0ae15161d36a469e1eaa2602929e9, type: 3}

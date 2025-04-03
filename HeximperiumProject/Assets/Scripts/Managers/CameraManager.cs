@@ -1,14 +1,15 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class CameraManager : Singleton<CameraManager>
 {
-    [SerializeField] private float _cameraMovementSpeed = 3;
-    [SerializeField] private float _cameraDragSpeed = 1;
-    [SerializeField] private float _cameraZoomSpeed = 7;
+    [SerializeField] private float _cameraMovementSpeed = 5;
+    [SerializeField] private float _cameraDragSpeed = 2;
+    [SerializeField] private float _cameraZoomSpeed = 10;
 #pragma warning disable CS0414
-    [SerializeField] private float _edgePanMargin = 20;
-    [SerializeField] private float _edgePanSpeed = 5;
+    [SerializeField] private float _edgePanMargin = 2;
+    [SerializeField] private float _edgePanSpeed = 3;
 #pragma warning restore CS0414
 
     private InputSystem_Actions _inputActions;
@@ -22,6 +23,9 @@ public class CameraManager : Singleton<CameraManager>
     //Edge pan
     private Vector2 _mousePosition;
     private Vector2 _direction;
+    //Mouse over
+    private Ray _mouseRay;
+    private RaycastHit _mouseRayHit;
 
     private void OnEnable() => _inputActions.Player.Enable();
     private void OnDisable() => _inputActions.Player.Disable();
@@ -52,6 +56,20 @@ public class CameraManager : Singleton<CameraManager>
             EdgePan();
         }
         Zoom();
+
+        ObjectUnderMouseDetection();
+    }
+
+    private void ObjectUnderMouseDetection()
+    {
+        if (!EventSystem.current.IsPointerOverGameObject())
+        {
+            _mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(_mouseRay, out _mouseRayHit))
+            {
+                UIManager.Instance.HoverUIPopupCheck(_mouseRayHit.collider.gameObject);
+            }
+        }
     }
 
     private void KeyMovement()

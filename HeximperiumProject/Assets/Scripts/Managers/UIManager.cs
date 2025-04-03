@@ -6,6 +6,27 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] TextMeshProUGUI _currentPhaseText;
     [SerializeField] TextMeshProUGUI _confirmPhaseButtonText;
     [SerializeField] TextMeshProUGUI _turnCounterText;
+    [SerializeField] float _durationHoverForUI = 2.0f;
+
+    private GameObject _objectUnderMouse;
+    private float _hoverTimer;
+
+    public void HoverUIPopupCheck(GameObject obj)
+    {
+        if (obj == _objectUnderMouse) 
+        {
+            _hoverTimer += Time.deltaTime;
+            if (_hoverTimer >= _durationHoverForUI) 
+            {
+                print(obj.name);
+            }
+        }
+        else
+        {
+            _objectUnderMouse = obj;
+            _hoverTimer = 0.0f;
+        }
+    }
 
     public void UpdatePhaseText()
     {
