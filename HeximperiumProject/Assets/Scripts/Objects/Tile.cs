@@ -14,17 +14,18 @@ public class Tile : MonoBehaviour
 
     private void Start()
     {
-        if (_tileData != null)
+
+    }
+
+    private void ApplyMaterial()
+    {
+        
+        if (_tileData.name == "Water")
         {
-            if(_biome == Biome.Grassland)
-            {
-                if(_tileData.name == "Water")
-                {
-                    GetComponent<Renderer>().material = Resources.Load(_tileData.name) as Material;
-                    return;
-                }
-                GetComponent<Renderer>().material = Resources.Load(_biome + "/" + _tileData.name + "_" + _biome) as Material;
-            }
+            //Material not linked to biome
+            GetComponent<Renderer>().material = Resources.Load(_tileData.name) as Material;
+            return;
         }
+        GetComponent<Renderer>().material = Resources.Load(_biome + "/" + _tileData.name + "_" + _biome) as Material;
     }
 }
