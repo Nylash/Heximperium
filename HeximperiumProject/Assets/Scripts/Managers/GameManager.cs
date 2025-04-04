@@ -1,10 +1,30 @@
+using UnityEngine.Events;
+using UnityEngine;
+
 public class GameManager : Singleton<GameManager>
 {
+    #region VARIABLES
     private Phase _currentPhase;
     private int _turnCounter;
+    #endregion
 
+    #region EVENTS
+    [HideInInspector] public UnityEvent<int> event_newTurn;
+    [HideInInspector] public UnityEvent<Phase> event_newPhase;
+    #endregion
+
+    #region ACCESSORS
     public Phase CurrentPhase { get => _currentPhase; set => _currentPhase = value; }
     public int TurnCounter { get => _turnCounter; set => _turnCounter = value; }
+    #endregion
+
+    private void OnEnable()
+    {
+        if (event_newTurn == null)
+            event_newTurn = new UnityEvent<int>();
+        if (event_newPhase == null)
+            event_newPhase = new UnityEvent<Phase>();
+    }
 
     private void Start()
     {
@@ -27,29 +47,11 @@ public class GameManager : Singleton<GameManager>
         {
             _currentPhase = Phase.Explore;
             _turnCounter++;
-            UIManager.Instance.UpdateTurnCounterText();
+
+            event_newTurn.Invoke(_turnCounter);
         }
 
-        switch (_currentPhase)
-        {
-            case Phase.Explore:
-                ExplorationManager.Instance.StartPhase();
-                break;
-            case Phase.Expand:
-                ExpansionManager.Instance.StartPhase();
-                break;
-            case Phase.Exploit:
-                ExploitationManager.Instance.StartPhase();
-                break;
-            case Phase.Entertain:
-                EntertainementManager.Instance.StartPhase();
-                break;
-            default:
-                break;
-        }
-
-        UIManager.Instance.UpdatePhaseButtonText();
-        UIManager.Instance.UpdatePhaseText();
+        event_newPhase.Invoke(_currentPhase);
     }
 }
 

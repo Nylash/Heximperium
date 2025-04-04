@@ -1,7 +1,14 @@
 public class ExplorationManager : Singleton<ExplorationManager>
 {
-    public void StartPhase()
+    protected override void OnAwake()
     {
+        GameManager.Instance.event_newPhase.AddListener(StartPhase);
+    }
+
+    private void StartPhase(Phase phase)
+    {
+        if (phase != Phase.Explore)
+            return;
         print("Start Exploration");
     }
 }

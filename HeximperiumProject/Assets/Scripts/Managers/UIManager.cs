@@ -20,6 +20,12 @@ public class UIManager : Singleton<UIManager>
     private float _screenHeight;
     private GameObject _popup;
 
+    protected override void OnAwake()
+    {
+        GameManager.Instance.event_newTurn.AddListener(UpdateTurnCounterText);
+        GameManager.Instance.event_newPhase.AddListener(UpdatePhaseUI);
+    }
+
     private void Start()
     {
         _screenWidth = Screen.width;
@@ -126,43 +132,32 @@ public class UIManager : Singleton<UIManager>
 #endregion
 
     #region Phase UI
-    public void UpdatePhaseText()
+    private void UpdatePhaseUI(Phase phase)
     {
-        switch (GameManager.Instance.CurrentPhase)
+        switch (phase)
         {
             case Phase.Explore:
                 _currentPhaseText.text = "Explore";
+                _confirmPhaseButtonText.text = "End Phase";
                 break;
             case Phase.Expand:
                 _currentPhaseText.text = "Expand";
+                _confirmPhaseButtonText.text = "End Phase";
                 break;
             case Phase.Exploit:
                 _currentPhaseText.text = "Exploit";
+                _confirmPhaseButtonText.text = "End Phase";
                 break;
             case Phase.Entertain:
                 _currentPhaseText.text = "Entertain";
-                break;
-            default:
-                Debug.LogError("No matching phase.");
+                _confirmPhaseButtonText.text = "End Turn";
                 break;
         }
     }
 
-    public void UpdatePhaseButtonText() 
+    private void UpdateTurnCounterText(int turnCounter)
     {
-        if (GameManager.Instance.CurrentPhase == Phase.Entertain)
-        {
-            _confirmPhaseButtonText.text = "End Turn";
-        }
-        else
-        {
-            _confirmPhaseButtonText.text = "End Phase";
-        }
-    }
-
-    public void UpdateTurnCounterText()
-    {
-        _turnCounterText.text = "Turn : " + GameManager.Instance.TurnCounter;
+        _turnCounterText.text = "Turn : " + turnCounter;
     }
     #endregion
 }
