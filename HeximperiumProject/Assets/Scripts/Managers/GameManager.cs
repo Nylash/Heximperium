@@ -30,6 +30,24 @@ public class GameManager : Singleton<GameManager>
             UIManager.Instance.UpdateTurnCounterText();
         }
 
+        switch (_currentPhase)
+        {
+            case Phase.Explore:
+                ExplorationManager.Instance.StartPhase();
+                break;
+            case Phase.Expand:
+                ExpansionManager.Instance.StartPhase();
+                break;
+            case Phase.Exploit:
+                ExploitationManager.Instance.StartPhase();
+                break;
+            case Phase.Entertain:
+                EntertainementManager.Instance.StartPhase();
+                break;
+            default:
+                break;
+        }
+
         UIManager.Instance.UpdatePhaseButtonText();
         UIManager.Instance.UpdatePhaseText();
     }

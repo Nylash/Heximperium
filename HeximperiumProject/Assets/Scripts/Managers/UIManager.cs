@@ -4,6 +4,8 @@ using UnityEngine;
 public class UIManager : Singleton<UIManager>
 {
     [SerializeField] Transform _mainCanvas;
+    [Header("Resources")]
+    [SerializeField] TextMeshProUGUI _claimText;
     [Header("Phase UI")]
     [SerializeField] TextMeshProUGUI _currentPhaseText;
     [SerializeField] TextMeshProUGUI _confirmPhaseButtonText;
@@ -24,6 +26,31 @@ public class UIManager : Singleton<UIManager>
         _screenHeight = Screen.height;
 }
 
+    public void UpdateResourceUI(Resource resource, int value)
+    {
+        switch (resource)
+        {
+            case Resource.Stone:
+                break;
+            case Resource.Essence:
+                break;
+            case Resource.Horse:
+                break;
+            case Resource.Pigment:
+                break;
+            case Resource.Crystal:
+                break;
+            case Resource.Emberbone:
+                break;
+            case Resource.Claim:
+                _claimText.text = value.ToString();
+                break;
+            case Resource.Point:
+                break;
+        }
+    }
+
+    #region PopUp UI
     public void HoverUIPopupCheck(GameObject obj)
     {
         if (obj == _objectUnderMouse) 
@@ -96,7 +123,9 @@ public class UIManager : Singleton<UIManager>
     {
         return new Vector2(rectTransform.rect.width, rectTransform.rect.height);
     }
+#endregion
 
+    #region Phase UI
     public void UpdatePhaseText()
     {
         switch (GameManager.Instance.CurrentPhase)
@@ -135,4 +164,5 @@ public class UIManager : Singleton<UIManager>
     {
         _turnCounterText.text = "Turn : " + GameManager.Instance.TurnCounter;
     }
+    #endregion
 }
