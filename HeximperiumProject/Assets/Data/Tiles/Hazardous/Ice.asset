@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Ice
   m_EditorClassIdentifier: 
   _name: Ice
-  _visual: {fileID: 0}
   _claimCost: 3
   _goldIncome: 0
+  _textEffect: Slow down scouts.

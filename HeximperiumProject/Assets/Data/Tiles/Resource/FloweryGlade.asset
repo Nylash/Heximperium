@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: FloweryGlade
   m_EditorClassIdentifier: 
   _name: Flowery glade
-  _visual: {fileID: 0}
   _claimCost: 1
   _goldIncome: 0
+  _textEffect: Can be upgraded to produce essence.
   _resource: 1
   _resourceIncome: 0

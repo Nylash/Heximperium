@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Hill
   m_EditorClassIdentifier: 
   _name: Hill
-  _visual: {fileID: 0}
   _claimCost: 1
   _goldIncome: 1
+  _textEffect: Can be upgraded with various infrastructures.

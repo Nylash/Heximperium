@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: MineralsVein
   m_EditorClassIdentifier: 
   _name: Minerals vein
-  _visual: {fileID: 0}
   _claimCost: 1
   _goldIncome: 0
+  _textEffect: Can be upgraded to produce pigment.
   _resource: 3
   _resourceIncome: 0

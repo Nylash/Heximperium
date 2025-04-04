@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: StoneDeposit
   m_EditorClassIdentifier: 
   _name: Stone deposit
-  _visual: {fileID: 0}
   _claimCost: 1
   _goldIncome: 0
+  _textEffect: Can be upgraded to produce stone.
   _resource: 0
   _resourceIncome: 0

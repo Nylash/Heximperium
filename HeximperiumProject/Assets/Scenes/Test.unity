@@ -2650,9 +2650,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
+  _mainCanvas: {fileID: 1439934028}
   _currentPhaseText: {fileID: 16817296}
   _confirmPhaseButtonText: {fileID: 1265699938}
   _turnCounterText: {fileID: 1310941322}
+  _unclaimedTilePopup: {fileID: 4604967413891682696, guid: 8a2a6ee03e8ce0142be608694ce4402e, type: 3}
+  _durationHoverForUI: 2
 --- !u!114 &1153636971
 MonoBehaviour:
   m_ObjectHideFlags: 0

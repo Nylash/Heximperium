@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: DragonGraveyard
   m_EditorClassIdentifier: 
   _name: Dragon graveyard
-  _visual: {fileID: 0}
   _claimCost: 1
   _goldIncome: 0
+  _textEffect: Can be upgraded to produce emberbone.
   _resource: 5
   _resourceIncome: 0

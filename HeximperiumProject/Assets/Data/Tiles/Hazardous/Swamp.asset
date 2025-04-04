@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Swamp
   m_EditorClassIdentifier: 
   _name: Swamp
-  _visual: {fileID: 0}
   _claimCost: 3
   _goldIncome: 0
+  _textEffect: Slow down scouts.
