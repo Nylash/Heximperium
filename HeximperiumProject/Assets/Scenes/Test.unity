@@ -2384,6 +2384,10 @@ PrefabInstance:
       propertyPath: _tileData
       value: 
       objectReference: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
+    - target: {fileID: 6730891978087682359, guid: 98bbf9a61cf74374f8f4971ba9968849, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6746028349016657370, guid: 98bbf9a61cf74374f8f4971ba9968849, type: 3}
       propertyPath: _tileData
       value: 
@@ -2975,10 +2979,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
   _highlighPrefab: {fileID: 5751803865783233614, guid: e580acc5ac7c8134c89770f42897a51d, type: 3}
+  _interactionPrefab: {fileID: 4147331800932434178, guid: 2d0a51e95c38cdf408da2ba934e55be2, type: 3}
   event_newTurn:
     m_PersistentCalls:
       m_Calls: []
   event_newPhase:
+    m_PersistentCalls:
+      m_Calls: []
+  event_newTileSelected:
+    m_PersistentCalls:
+      m_Calls: []
+  event_tileUnselected:
     m_PersistentCalls:
       m_Calls: []
 --- !u!4 &1153636969
@@ -3547,10 +3558,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1439934028}
+  - component: {fileID: 1439934032}
   - component: {fileID: 1439934031}
   - component: {fileID: 1439934030}
   - component: {fileID: 1439934029}
-  - component: {fileID: 1439934032}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -3662,6 +3673,7 @@ MonoBehaviour:
   _turnCounterText: {fileID: 1310941322}
   _unclaimedTilePopup: {fileID: 4604967413891682696, guid: 8a2a6ee03e8ce0142be608694ce4402e, type: 3}
   _durationHoverForUI: 2
+  _colorCantAfford: {r: 0.9056604, g: 0.23495908, b: 0.23495908, a: 1}
 --- !u!1 &1885567052
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,9 +11,9 @@ public class Tile : MonoBehaviour
     private bool _claimed;
 
     public Vector2 Coordinate { get => _coordinate; set => _coordinate = value; }
-    public TileData TileData { get => _tileData; set => _tileData = value; }
-    public bool Claimed { get => _claimed; set => _claimed = value; }
-    public bool Revealed { get => _revealed; set => _revealed = value; }
+    public TileData TileData { get => _tileData;}
+    public bool Claimed { get => _claimed;}
+    public bool Revealed { get => _revealed;}
     public Biome Biome { get => _biome; set => _biome = value; }
 
     private void Start()

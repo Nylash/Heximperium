@@ -3,22 +3,26 @@ using UnityEngine;
 
 public class UIManager : Singleton<UIManager>
 {
-    [SerializeField] Transform _mainCanvas;
+    [SerializeField] private Transform _mainCanvas;
     [Header("Resources")]
-    [SerializeField] TextMeshProUGUI _claimText;
+    [SerializeField] private TextMeshProUGUI _claimText;
     [Header("Phase UI")]
-    [SerializeField] TextMeshProUGUI _currentPhaseText;
-    [SerializeField] TextMeshProUGUI _confirmPhaseButtonText;
-    [SerializeField] TextMeshProUGUI _turnCounterText;
+    [SerializeField] private TextMeshProUGUI _currentPhaseText;
+    [SerializeField] private TextMeshProUGUI _confirmPhaseButtonText;
+    [SerializeField] private TextMeshProUGUI _turnCounterText;
     [Header("PopUp UI")]
-    [SerializeField] GameObject _unclaimedTilePopup;
-    [SerializeField] float _durationHoverForUI = 2.0f;
+    [SerializeField] private GameObject _unclaimedTilePopup;
+    [SerializeField] private float _durationHoverForUI = 2.0f;
+    [Header("Radial menu")]
+    [SerializeField] private Color _colorCantAfford;
 
     private GameObject _objectUnderMouse;
     private float _hoverTimer;
     private float _screenWidth;
     private float _screenHeight;
     private GameObject _popup;
+
+    public Color ColorCantAfford { get => _colorCantAfford;}
 
     protected override void OnAwake()
     {
@@ -73,7 +77,8 @@ public class UIManager : Singleton<UIManager>
             //Object under cursor changed, so we reset everything
             _objectUnderMouse = obj;
             _hoverTimer = 0.0f;
-            Destroy(_popup);
+            if(_popup)
+                Destroy(_popup);
         }
     }
 

@@ -13,7 +13,8 @@ public class GameManager : Singleton<GameManager>
     private Tile _previousSelectedTile;
     private bool _isPointerOverUI;
     private GameObject _highlightObject;
-    [SerializeField] GameObject _highlighPrefab;
+    [SerializeField] private GameObject _highlighPrefab;
+    [SerializeField] private GameObject _interactionPrefab;
 
     #region VARIABLES
     private Phase _currentPhase;
@@ -23,11 +24,14 @@ public class GameManager : Singleton<GameManager>
     #region EVENTS
     [HideInInspector] public UnityEvent<int> event_newTurn;
     [HideInInspector] public UnityEvent<Phase> event_newPhase;
+    [HideInInspector] public UnityEvent<Tile> event_newTileSelected;
+    [HideInInspector] public UnityEvent event_tileUnselected;
     #endregion
 
     #region ACCESSORS
-    public Phase CurrentPhase { get => _currentPhase; set => _currentPhase = value; }
-    public int TurnCounter { get => _turnCounter; set => _turnCounter = value; }
+    public Phase CurrentPhase { get => _currentPhase;}
+    public int TurnCounter { get => _turnCounter;}
+    public GameObject InteractionPrefab { get => _interactionPrefab;}
     #endregion
 
     private void OnEnable()
@@ -38,6 +42,10 @@ public class GameManager : Singleton<GameManager>
             event_newTurn = new UnityEvent<int>();
         if (event_newPhase == null)
             event_newPhase = new UnityEvent<Phase>();
+        if (event_newTileSelected == null)
+            event_newTileSelected = new UnityEvent<Tile>();
+        if (event_tileUnselected == null)
+            event_tileUnselected = new UnityEvent();
     }
 
     private void OnDisable() => _inputActions.Player.Disable();
@@ -70,7 +78,10 @@ public class GameManager : Singleton<GameManager>
         _previousSelectedTile = _selectedTile;
         _selectedTile = null;
         if (_highlightObject)
+        {
             Destroy(_highlightObject);
+            event_tileUnselected.Invoke();
+        }
 
         if (!_isPointerOverUI)
         {
@@ -79,17 +90,37 @@ public class GameManager : Singleton<GameManager>
             {
                 if (_mouseRayHit.collider.gameObject.GetComponent<Tile>())
                 {
-                    _selectedTile = _mouseRayHit.collider.gameObject.GetComponent<Tile>();
-                    if (_selectedTile == _previousSelectedTile)
-                    {
-                        _previousSelectedTile = null;
-                        _selectedTile = null;
-                        return;
-                    }
-                        
-                    _highlightObject = Instantiate(_highlighPrefab, _selectedTile.transform.position + new Vector3(0, 0.01f, 0), Quaternion.identity);
+                    SelectTile(_mouseRayHit.collider.gameObject.GetComponent<Tile>());
+                }
+                if (_mouseRayHit.collider.gameObject.GetComponent<UI_InteractionButton>())
+                {
+                    InteractWithButton(_mouseRayHit.collider.gameObject.GetComponent<UI_InteractionButton>());
                 }
             }
+        }
+    }
+
+    private void SelectTile(Tile tile)
+    {
+        _selectedTile = tile;
+        if (_selectedTile == _previousSelectedTile)
+        {
+            _previousSelectedTile = null;
+            _selectedTile = null;
+            return;
+        }
+
+        _highlightObject = Instantiate(_highlighPrefab, _selectedTile.transform.position + new Vector3(0, 0.01f, 0), Quaternion.identity);
+        event_newTileSelected.Invoke(_selectedTile);
+    }
+
+    private void InteractWithButton(UI_InteractionButton button)
+    {
+        switch (button.Interaction)
+        {
+            case Interaction.Claim:
+                ExpansionManager.Instance.ClaimTile(button.AssociatedTile);
+                break;
         }
     }
 
