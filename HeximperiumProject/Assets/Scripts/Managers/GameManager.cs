@@ -1,8 +1,20 @@
 using UnityEngine.Events;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class GameManager : Singleton<GameManager>
 {
+    private InputSystem_Actions _inputActions;
+
+    //Interaction with tiles
+    private Ray _mouseRay;
+    private RaycastHit _mouseRayHit;
+    private Tile _selectedTile;
+    private Tile _previousSelectedTile;
+    private bool _isPointerOverUI;
+    private GameObject _highlightObject;
+    [SerializeField] GameObject _highlighPrefab;
+
     #region VARIABLES
     private Phase _currentPhase;
     private int _turnCounter;
@@ -20,10 +32,21 @@ public class GameManager : Singleton<GameManager>
 
     private void OnEnable()
     {
+        _inputActions.Player.Enable();
+
         if (event_newTurn == null)
             event_newTurn = new UnityEvent<int>();
         if (event_newPhase == null)
             event_newPhase = new UnityEvent<Phase>();
+    }
+
+    private void OnDisable() => _inputActions.Player.Disable();
+
+    protected override void OnAwake()
+    {
+        _inputActions = new InputSystem_Actions();
+
+        _inputActions.Player.LeftClick.performed += ctx => LeftClickAction();
     }
 
     private void Start()
@@ -35,6 +58,39 @@ public class GameManager : Singleton<GameManager>
         }
 
         _turnCounter = 1;
+    }
+
+    private void Update()
+    {
+        _isPointerOverUI = EventSystem.current.IsPointerOverGameObject();
+    }
+
+    private void LeftClickAction()
+    {
+        _previousSelectedTile = _selectedTile;
+        _selectedTile = null;
+        if (_highlightObject)
+            Destroy(_highlightObject);
+
+        if (!_isPointerOverUI)
+        {
+            _mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(_mouseRay, out _mouseRayHit))
+            {
+                if (_mouseRayHit.collider.gameObject.GetComponent<Tile>())
+                {
+                    _selectedTile = _mouseRayHit.collider.gameObject.GetComponent<Tile>();
+                    if (_selectedTile == _previousSelectedTile)
+                    {
+                        _previousSelectedTile = null;
+                        _selectedTile = null;
+                        return;
+                    }
+                        
+                    _highlightObject = Instantiate(_highlighPrefab, _selectedTile.transform.position + new Vector3(0, 0.01f, 0), Quaternion.identity);
+                }
+            }
+        }
     }
 
     public void ConfirmPhase()

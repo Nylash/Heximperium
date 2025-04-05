@@ -2974,6 +2974,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
+  _highlighPrefab: {fileID: 5751803865783233614, guid: e580acc5ac7c8134c89770f42897a51d, type: 3}
+  event_newTurn:
+    m_PersistentCalls:
+      m_Calls: []
+  event_newPhase:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1153636969
 Transform:
   m_ObjectHideFlags: 0
@@ -3545,7 +3552,7 @@ GameObject:
   - component: {fileID: 1439934029}
   - component: {fileID: 1439934032}
   m_Layer: 5
-  m_Name: UI_Game
+  m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

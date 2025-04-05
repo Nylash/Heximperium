@@ -21,6 +21,11 @@ public class Tile : MonoBehaviour
 
     }
 
+    public void ClaimTile()
+    {
+        _claimed = true;
+    }
+
     private void ApplyMaterial()
     {
         
