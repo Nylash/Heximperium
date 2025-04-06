@@ -3,8 +3,15 @@ using UnityEngine;
 
 public class ExpansionManager : Singleton<ExpansionManager>
 {
+    [SerializeField] private Transform _borderParent;
+
     private List<GameObject> _buttons = new List<GameObject>();
     private List<Tile> _claimedTiles = new List<Tile>();
+    private List<Vector3> _interactionPositions = new List<Vector3>();
+    private int _availableTown;
+
+    public int AvailableTown { get => _availableTown; set => _availableTown = value; }
+    public Transform BorderParent { get => _borderParent;}
 
     protected override void OnAwake()
     {
@@ -18,7 +25,8 @@ public class ExpansionManager : Singleton<ExpansionManager>
         if (phase != Phase.Expand)
             return;
         print("Start Expansion");
-        ResourcesManager.Instance.Claim += 500;
+        ResourcesManager.Instance.UpdateResource(Resource.Claim, 5, false);
+        ResourcesManager.Instance.UpdateResource(Resource.Gold, 150, false);
     }
 
     private void NewTileSelected(Tile tile)
@@ -28,14 +36,22 @@ public class ExpansionManager : Singleton<ExpansionManager>
 
         if (tile.Claimed)
         {
-            //if not town or infra or resource or special
-            TownInteraction(tile);
+            if(tile.TileData as BasicTileData)
+            {
+                _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
+                TownInteraction(tile, 0);
+            }
             return;
         }
-            
-        if(tile.IsOneNeighborClaimed())
-            ClaimInteraction(tile);
-        TownInteraction(tile);
+
+
+        _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 2);
+        if (tile.TileData as BasicTileData)
+            TownInteraction(tile, 0);
+        if (tile.IsOneNeighborClaimed())
+            ClaimInteraction(tile, 1);
+
+        _interactionPositions.Clear();
     }
 
     public void ClaimTile(Tile tile)
@@ -44,7 +60,7 @@ public class ExpansionManager : Singleton<ExpansionManager>
         {
             if(ResourcesManager.Instance.CanAfford(Resource.Claim, tile.TileData.ClaimCost))
             {
-                ResourcesManager.Instance.Claim -= tile.TileData.ClaimCost;
+                ResourcesManager.Instance.UpdateResource(Resource.Claim, tile.TileData.ClaimCost, true);
                 tile.ClaimTile();
                 _claimedTiles.Add(tile);
                 foreach (Tile t in _claimedTiles)
@@ -57,6 +73,24 @@ public class ExpansionManager : Singleton<ExpansionManager>
         }
     }
 
+    public void BuildTown(Tile tile)
+    {
+        if (_availableTown != 0)
+        {
+            //Start by claiming the tile if needed
+            if (!tile.Claimed)
+            {
+                tile.ClaimTile();
+                _claimedTiles.Add(tile);
+                foreach (Tile t in _claimedTiles)
+                    t.CheckBorder();
+            }
+            _availableTown -= 1;
+            ExploitationManager.Instance.BuildInfrastructure(tile, Resources.Load<InfrastructureData>("Data/Infrastructures/Town"));
+        }
+        
+    }
+
     private void TileUnselected()
     {
         foreach (GameObject button in _buttons)
@@ -66,20 +100,20 @@ public class ExpansionManager : Singleton<ExpansionManager>
         _buttons.Clear();
     }
 
-    private void ClaimInteraction(Tile tile)
+
+    private void ClaimInteraction(Tile tile, int positionIndex)
     {
-        //Get positions for buttons
-        List<Vector3> _positions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
+        GameObject buttonClaim = Instantiate(GameManager.Instance.InteractionPrefab, _interactionPositions[positionIndex], Quaternion.identity);
+        buttonClaim.GetComponent<UI_InteractionButton>().Initialize(tile, Interaction.Claim);
 
-        GameObject button = Instantiate(GameManager.Instance.InteractionPrefab, _positions[0], Quaternion.identity);
-        button.GetComponent<UI_InteractionButton>().
-            Initialize(tile, Interaction.Claim, ResourcesManager.Instance.CanAfford(Resource.Claim, tile.TileData.ClaimCost));
-
-        _buttons.Add(button);
+        _buttons.Add(buttonClaim);
     }
 
-    private void TownInteraction(Tile tile)
+    private void TownInteraction(Tile tile, int positionIndex)
     {
+        GameObject buttonTown = Instantiate(GameManager.Instance.InteractionPrefab, _interactionPositions[positionIndex], Quaternion.identity);
+        buttonTown.GetComponent<UI_InteractionButton>().Initialize(tile, Interaction.Town);
 
+        _buttons.Add(buttonTown);
     }
 }

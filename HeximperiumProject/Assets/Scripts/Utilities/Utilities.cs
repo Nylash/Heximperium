@@ -12,6 +12,10 @@ public static class Utilities
             case 1:
                 _positions.Add(new Vector3(tilePosition.x, 0.5f, tilePosition.z + 1));
                 return _positions;
+            case 2:
+                _positions.Add(new Vector3(tilePosition.x, 0.5f, tilePosition.z + 1));
+                _positions.Add(new Vector3(tilePosition.x, 0.5f, tilePosition.z - 1));
+                return _positions;
             default:
                 Debug.LogError("Interaction are not written for this many buttons : " + buttonsNumber);
                 return _positions;

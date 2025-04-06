@@ -6,6 +6,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Transform _mainCanvas;
     [Header("Resources")]
     [SerializeField] private TextMeshProUGUI _claimText;
+    [SerializeField] private TextMeshProUGUI _goldText;
     [Header("Phase UI")]
     [SerializeField] private TextMeshProUGUI _currentPhaseText;
     [SerializeField] private TextMeshProUGUI _confirmPhaseButtonText;
@@ -55,7 +56,8 @@ public class UIManager : Singleton<UIManager>
             case Resource.Claim:
                 _claimText.text = value.ToString();
                 break;
-            case Resource.Point:
+            case Resource.Gold:
+                _goldText.text = value.ToString();
                 break;
         }
     }
@@ -84,6 +86,11 @@ public class UIManager : Singleton<UIManager>
 
     private void DisplayPopUp(Tile tile)
     {
+        if (tile == null)
+        {
+            Debug.LogError("Popup for no tile.");
+            return;
+        }
         //if (!tile.Revealed)
           //  return;
         if (!tile.Claimed)

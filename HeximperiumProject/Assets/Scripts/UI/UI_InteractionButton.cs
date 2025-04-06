@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using UnityEngine;
 
 public class UI_InteractionButton : MonoBehaviour
@@ -8,18 +7,25 @@ public class UI_InteractionButton : MonoBehaviour
     private Interaction _interaction;
     private Tile _associatedTile;
 
-    public SpriteRenderer Renderer { get => _renderer;}
     public Interaction Interaction { get => _interaction;}
     public Tile AssociatedTile { get => _associatedTile;}
 
-    public void Initialize(Tile associatedTile, Interaction action, bool canAfford)
+    public void Initialize(Tile associatedTile, Interaction action)
     {
         switch (action)
         {
             case Interaction.Claim:
                 _associatedTile = associatedTile;
                 _interaction = Interaction.Claim;
-                if (!canAfford)
+                if (!ResourcesManager.Instance.CanAfford(Resource.Claim ,associatedTile.TileData.ClaimCost))
+                    _renderer.color = UIManager.Instance.ColorCantAfford;
+                _renderer.sprite = Resources.Load<Sprite>("InteractionButtons/" + action.ToString());
+                break;
+            case Interaction.Town:
+                _associatedTile = associatedTile;
+                _interaction = Interaction.Town;
+                if (!ResourcesManager.Instance.CanAfford(Resources.Load<InfrastructureData>("Data/Infrastructures/" + action.ToString()).Costs) 
+                    || ExpansionManager.Instance.AvailableTown == 0)
                     _renderer.color = UIManager.Instance.ColorCantAfford;
                 _renderer.sprite = Resources.Load<Sprite>("InteractionButtons/" + action.ToString());
                 break;
@@ -29,5 +35,5 @@ public class UI_InteractionButton : MonoBehaviour
 
 public enum Interaction
 {
-    Claim, 
+    Claim, Town,
 }

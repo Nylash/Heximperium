@@ -1,17 +1,43 @@
-using UnityEngine;
-using UnityEngine.Events;
+using System.Linq;
 
 public class ResourcesManager : Singleton<ResourcesManager>
 {
     private int _claim;
+    private int _gold;
+    private int _stone;
+    private int _essence;
+    private int _horse;
+    private int _pigment;
+    private int _crystal;
+    private int _emberbone;
 
-    public int Claim { 
-        get => _claim; 
-        set 
+    public void UpdateResource(Resource resource, int value, bool spend)
+    {
+        if (spend)
+            value = -value;
+        switch (resource)
         {
-            _claim = value;
-            UIManager.Instance.UpdateResourceUI(Resource.Claim, _claim);
-        } 
+            case Resource.Stone:
+                break;
+            case Resource.Essence:
+                break;
+            case Resource.Horse:
+                break;
+            case Resource.Pigment:
+                break;
+            case Resource.Crystal:
+                break;
+            case Resource.Emberbone:
+                break;
+            case Resource.Claim:
+                _claim += value;
+                UIManager.Instance.UpdateResourceUI(Resource.Claim, _claim);
+                break;
+            case Resource.Gold:
+                _gold += value;
+                UIManager.Instance.UpdateResourceUI(Resource.Gold, _gold);
+                break;
+        }
     }
 
     public bool CanAfford(Resource resource, int cost)
@@ -19,30 +45,42 @@ public class ResourcesManager : Singleton<ResourcesManager>
         switch (resource)
         {
             case Resource.Stone:
-                return false;
+                return CanAffordUnspecified(_stone, cost);
             case Resource.Essence:
-                return false;
+                return CanAffordUnspecified(_essence, cost);
             case Resource.Horse:
-                return false;
+                return CanAffordUnspecified(_horse, cost);
             case Resource.Pigment:
-                return false;
+                return CanAffordUnspecified(_pigment, cost);
             case Resource.Crystal:
-                return false;
+                return CanAffordUnspecified(_crystal, cost);
             case Resource.Emberbone:
-                return false;
+                return CanAffordUnspecified(_emberbone, cost);
             case Resource.Claim:
-                if(_claim - cost >= 0)
-                    return true;
-                else
-                    return false;
-            case Resource.Point:
-                return false;
+                return CanAffordUnspecified(_claim, cost);
+            case Resource.Gold:
+                return CanAffordUnspecified(_gold, cost);
         }
         return false;
     }
+
+    public bool CanAfford(ResourceCost[] costs) 
+    {
+        if(costs.Length == 0) return false;
+        return costs.All(cost => CanAfford(cost.resource, cost.cost));
+    }
+
+    private bool CanAffordUnspecified(int stock, int cost)
+    {
+        if (stock - cost >= 0)
+            return true;
+        else
+            return false;
+    }
 }
+
 
 public enum Resource
 {
-    Stone, Essence, Horse, Pigment, Crystal, Emberbone, Claim, Point
+    Stone, Essence, Horse, Pigment, Crystal, Emberbone, Claim, Gold
 }

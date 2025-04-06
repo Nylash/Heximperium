@@ -5,12 +5,12 @@ using UnityEngine.Events;
 
 public class MapManager : Singleton<MapManager>
 {
-    [SerializeField] private GameObject _tilePrefab; // The prefab to instantiate at each hexagon position
-    [SerializeField] private int _mapRadius = 1; // The radius of the hexagonal grid
+    [SerializeField] private GameObject _tilePrefab;
+    [SerializeField] private int _mapRadius;
     [SerializeField] private GameObject _predefinedMap;
     [SerializeField] private GameObject _emptyMap;
-    private float _deltaX = 1f; // Delta in X direction
-    private float _deltaZ = 0.91f; // Delta in Z direction
+    private float _deltaX = 1f;
+    private float _deltaZ = 0.91f;
     private Transform _grid;
     private Dictionary<Vector2, Tile> _tiles = new Dictionary<Vector2, Tile>();
 
@@ -43,6 +43,13 @@ public class MapManager : Singleton<MapManager>
             _grid = Instantiate(_emptyMap).transform;
             GenerateHexagonalGrid();
         }
+        
+        //Search neighbors for each tiles
+        foreach (Tile tile in _tiles.Values)
+        {
+            tile.SearchNeighbors();
+        }
+
         event_mapGenerated.Invoke();
     }
 
@@ -67,7 +74,7 @@ public class MapManager : Singleton<MapManager>
                 Vector3 position = new Vector3(x, 0, z);
                 GameObject tile = Instantiate(_tilePrefab, position, Quaternion.identity, _grid);
                 tile.GetComponent<Tile>().Coordinate = new Vector2(col, row);
-                tile.name = col + ";" + row;
+                tile.name = tile.GetComponent<Tile>().TileData.TileName + " " + col + ";" + row;
 
                 //Add tile to dictionnary
                 _tiles[new Vector2(col, row)] = tile.GetComponent<Tile>();

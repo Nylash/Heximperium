@@ -15,22 +15,17 @@ public class Tile : MonoBehaviour
     private Border _border;
 
     public Vector2 Coordinate { get => _coordinate; set => _coordinate = value; }
-    public TileData TileData { get => _tileData;}
+    public TileData TileData { get => _tileData; set => _tileData = value; }
     public bool Claimed { get => _claimed;}
     public bool Revealed { get => _revealed;}
     public Biome Biome { get => _biome; set => _biome = value; }
     public Tile[] Neighbors { get => _neighbors;}
 
-    private void Awake()
-    {
-        MapManager.Instance.event_mapGenerated.AddListener(SearchNeighbors);
-    }
-
-
     public void ClaimTile()
     {
         _claimed = true;
         _border = Instantiate(Resources.Load<GameObject>("Border"), transform.position, Quaternion.identity).GetComponent<Border>();
+        _border.transform.parent = ExpansionManager.Instance.BorderParent;
     }
 
     public void CheckBorder()
@@ -38,19 +33,25 @@ public class Tile : MonoBehaviour
         _border.CheckBorderVisibility(_neighbors);
     }
 
-    private void ApplyMaterial()
+    public void UpdateTile(TileData data)
     {
-        
+        _tileData = data;
+        name = _tileData.TileName + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
+        UpdateVisual();
+    }
+
+    private void UpdateVisual()
+    {
         if (_tileData.name == "Water")
         {
             //Material not linked to biome
             GetComponent<Renderer>().material = Resources.Load(_tileData.name) as Material;
             return;
         }
-        GetComponent<Renderer>().material = Resources.Load(_biome + "/" + _tileData.name + "_" + _biome) as Material;
+        GetComponent<Renderer>().material = Resources.Load("TilesMaterial/" + _biome + "/" + _tileData.name + "_" + _biome) as Material;
     }
 
-    private void SearchNeighbors()
+    public void SearchNeighbors()
     {
         // Determine the offset based on the row
         int rowOffset = Mathf.Abs((int)Coordinate.y % 2);

@@ -55,6 +55,8 @@ public class GameManager : Singleton<GameManager>
         _inputActions = new InputSystem_Actions();
 
         _inputActions.Player.LeftClick.performed += ctx => LeftClickAction();
+
+        MapManager.Instance.event_mapGenerated.AddListener(InitializeGame);
     }
 
     private void Start()
@@ -71,6 +73,31 @@ public class GameManager : Singleton<GameManager>
     private void Update()
     {
         _isPointerOverUI = EventSystem.current.IsPointerOverGameObject();
+    }
+
+    private void InitializeGame()
+    {
+        if (_turnCounter == 1)
+        {
+            Tile centralTile;
+            MapManager.Instance.Tiles.TryGetValue(Vector2.zero, out centralTile);
+            //Give the player resources for the initial town 
+            ExpansionManager.Instance.AvailableTown += 1;
+            InfrastructureData townData = Resources.Load<InfrastructureData>("Data/Infrastructures/Town");
+            foreach (ResourceCost cost in townData.Costs)
+            {
+                ResourcesManager.Instance.UpdateResource(cost.resource, cost.cost, false);
+            }
+            ExpansionManager.Instance.BuildTown(centralTile);
+
+            //Claim 1 hex radius around central tile
+            foreach (Tile tile in centralTile.Neighbors)
+            {
+                //Give the player claim for the tile
+                ResourcesManager.Instance.UpdateResource(Resource.Claim ,tile.TileData.ClaimCost, false);
+                ExpansionManager.Instance.ClaimTile(tile);
+            }
+        }
     }
 
     private void LeftClickAction()
@@ -120,6 +147,12 @@ public class GameManager : Singleton<GameManager>
         {
             case Interaction.Claim:
                 ExpansionManager.Instance.ClaimTile(button.AssociatedTile);
+                break;
+            case Interaction.Town:
+                ExpansionManager.Instance.BuildTown(button.AssociatedTile);
+                break;
+            default: 
+                Debug.LogError("This interaction is not handle : " +  button.Interaction);
                 break;
         }
     }
