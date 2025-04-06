@@ -4,6 +4,7 @@ using UnityEngine;
 public class ExpansionManager : Singleton<ExpansionManager>
 {
     private List<GameObject> _buttons = new List<GameObject>();
+    private List<Tile> _claimedTiles = new List<Tile>();
 
     protected override void OnAwake()
     {
@@ -17,7 +18,7 @@ public class ExpansionManager : Singleton<ExpansionManager>
         if (phase != Phase.Expand)
             return;
         print("Start Expansion");
-        ResourcesManager.Instance.Claim += 5;
+        ResourcesManager.Instance.Claim += 500;
     }
 
     private void NewTileSelected(Tile tile)
@@ -39,6 +40,9 @@ public class ExpansionManager : Singleton<ExpansionManager>
             {
                 ResourcesManager.Instance.Claim -= tile.TileData.ClaimCost;
                 tile.ClaimTile();
+                _claimedTiles.Add(tile);
+                foreach (Tile t in _claimedTiles)
+                    t.CheckBorder();
             }
         }
         else
@@ -53,6 +57,7 @@ public class ExpansionManager : Singleton<ExpansionManager>
         {
             Destroy(button);
         }
+        _buttons.Clear();
     }
 
     private void UnclaimedInteractions(Tile tile)
