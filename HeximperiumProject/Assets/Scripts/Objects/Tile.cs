@@ -77,4 +77,17 @@ public class Tile : MonoBehaviour
             }
         }
     }
+
+    public bool IsOneNeighborClaimed()
+    {
+        foreach (Tile tile in _neighbors)
+        {
+            if(tile != null)
+            {
+                if (tile.Claimed)
+                    return true;
+            }
+        }
+        return false;
+    }
 }

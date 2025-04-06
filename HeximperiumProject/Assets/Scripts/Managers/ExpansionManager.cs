@@ -27,9 +27,15 @@ public class ExpansionManager : Singleton<ExpansionManager>
             return;
 
         if (tile.Claimed)
+        {
+            //if not town or infra or resource or special
+            TownInteraction(tile);
             return;
-
-        UnclaimedInteractions(tile);
+        }
+            
+        if(tile.IsOneNeighborClaimed())
+            ClaimInteraction(tile);
+        TownInteraction(tile);
     }
 
     public void ClaimTile(Tile tile)
@@ -60,7 +66,7 @@ public class ExpansionManager : Singleton<ExpansionManager>
         _buttons.Clear();
     }
 
-    private void UnclaimedInteractions(Tile tile)
+    private void ClaimInteraction(Tile tile)
     {
         //Get positions for buttons
         List<Vector3> _positions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
@@ -70,5 +76,10 @@ public class ExpansionManager : Singleton<ExpansionManager>
             Initialize(tile, Interaction.Claim, ResourcesManager.Instance.CanAfford(Resource.Claim, tile.TileData.ClaimCost));
 
         _buttons.Add(button);
+    }
+
+    private void TownInteraction(Tile tile)
+    {
+
     }
 }
