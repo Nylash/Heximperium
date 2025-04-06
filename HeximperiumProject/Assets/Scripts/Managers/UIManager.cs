@@ -3,14 +3,19 @@ using UnityEngine;
 
 public class UIManager : Singleton<UIManager>
 {
-    [SerializeField] Transform _mainCanvas;
+    [SerializeField] private Transform _mainCanvas;
+    [Header("Resources")]
+    [SerializeField] private TextMeshProUGUI _claimText;
+    [SerializeField] private TextMeshProUGUI _goldText;
     [Header("Phase UI")]
-    [SerializeField] TextMeshProUGUI _currentPhaseText;
-    [SerializeField] TextMeshProUGUI _confirmPhaseButtonText;
-    [SerializeField] TextMeshProUGUI _turnCounterText;
+    [SerializeField] private TextMeshProUGUI _currentPhaseText;
+    [SerializeField] private TextMeshProUGUI _confirmPhaseButtonText;
+    [SerializeField] private TextMeshProUGUI _turnCounterText;
     [Header("PopUp UI")]
-    [SerializeField] GameObject _unclaimedTilePopup;
-    [SerializeField] float _durationHoverForUI = 2.0f;
+    [SerializeField] private GameObject _unclaimedTilePopup;
+    [SerializeField] private float _durationHoverForUI = 2.0f;
+    [Header("Radial menu")]
+    [SerializeField] private Color _colorCantAfford;
 
     private GameObject _objectUnderMouse;
     private float _hoverTimer;
@@ -18,12 +23,46 @@ public class UIManager : Singleton<UIManager>
     private float _screenHeight;
     private GameObject _popup;
 
+    public Color ColorCantAfford { get => _colorCantAfford;}
+
+    protected override void OnAwake()
+    {
+        GameManager.Instance.event_newTurn.AddListener(UpdateTurnCounterText);
+        GameManager.Instance.event_newPhase.AddListener(UpdatePhaseUI);
+    }
+
     private void Start()
     {
         _screenWidth = Screen.width;
         _screenHeight = Screen.height;
 }
 
+    public void UpdateResourceUI(Resource resource, int value)
+    {
+        switch (resource)
+        {
+            case Resource.Stone:
+                break;
+            case Resource.Essence:
+                break;
+            case Resource.Horse:
+                break;
+            case Resource.Pigment:
+                break;
+            case Resource.Crystal:
+                break;
+            case Resource.Emberbone:
+                break;
+            case Resource.Claim:
+                _claimText.text = value.ToString();
+                break;
+            case Resource.Gold:
+                _goldText.text = value.ToString();
+                break;
+        }
+    }
+
+    #region PopUp UI
     public void HoverUIPopupCheck(GameObject obj)
     {
         if (obj == _objectUnderMouse) 
@@ -40,12 +79,18 @@ public class UIManager : Singleton<UIManager>
             //Object under cursor changed, so we reset everything
             _objectUnderMouse = obj;
             _hoverTimer = 0.0f;
-            Destroy(_popup);
+            if(_popup)
+                Destroy(_popup);
         }
     }
 
     private void DisplayPopUp(Tile tile)
     {
+        if (tile == null)
+        {
+            Debug.LogError("Popup for no tile.");
+            return;
+        }
         //if (!tile.Revealed)
           //  return;
         if (!tile.Claimed)
@@ -96,43 +141,35 @@ public class UIManager : Singleton<UIManager>
     {
         return new Vector2(rectTransform.rect.width, rectTransform.rect.height);
     }
+#endregion
 
-    public void UpdatePhaseText()
+    #region Phase UI
+    private void UpdatePhaseUI(Phase phase)
     {
-        switch (GameManager.Instance.CurrentPhase)
+        switch (phase)
         {
             case Phase.Explore:
                 _currentPhaseText.text = "Explore";
+                _confirmPhaseButtonText.text = "End Phase";
                 break;
             case Phase.Expand:
                 _currentPhaseText.text = "Expand";
+                _confirmPhaseButtonText.text = "End Phase";
                 break;
             case Phase.Exploit:
                 _currentPhaseText.text = "Exploit";
+                _confirmPhaseButtonText.text = "End Phase";
                 break;
             case Phase.Entertain:
                 _currentPhaseText.text = "Entertain";
-                break;
-            default:
-                Debug.LogError("No matching phase.");
+                _confirmPhaseButtonText.text = "End Turn";
                 break;
         }
     }
 
-    public void UpdatePhaseButtonText() 
+    private void UpdateTurnCounterText(int turnCounter)
     {
-        if (GameManager.Instance.CurrentPhase == Phase.Entertain)
-        {
-            _confirmPhaseButtonText.text = "End Turn";
-        }
-        else
-        {
-            _confirmPhaseButtonText.text = "End Phase";
-        }
+        _turnCounterText.text = "Turn : " + turnCounter;
     }
-
-    public void UpdateTurnCounterText()
-    {
-        _turnCounterText.text = "Turn : " + GameManager.Instance.TurnCounter;
-    }
+    #endregion
 }

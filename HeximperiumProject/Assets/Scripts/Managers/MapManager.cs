@@ -1,22 +1,56 @@
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MapManager : Singleton<MapManager>
 {
-    [SerializeField] private GameObject _tilePrefab; // The prefab to instantiate at each hexagon position
-    [SerializeField] private int _mapRadius = 1; // The radius of the hexagonal grid
-    private float _deltaX = 1f; // Delta in X direction
-    private float _deltaZ = 0.91f; // Delta in Z direction
+    [SerializeField] private GameObject _tilePrefab;
+    [SerializeField] private int _mapRadius;
+    [SerializeField] private GameObject _predefinedMap;
+    [SerializeField] private GameObject _emptyMap;
+    private float _deltaX = 1f;
+    private float _deltaZ = 0.91f;
     private Transform _grid;
+    private Dictionary<Vector2, Tile> _tiles = new Dictionary<Vector2, Tile>();
+
+    [HideInInspector] public UnityEvent event_mapGenerated;
+
+    public Dictionary<Vector2, Tile> Tiles { get => _tiles;}
+
+    private void OnEnable()
+    {
+        if (event_mapGenerated == null)
+            event_mapGenerated = new UnityEvent();
+    }
 
     void Start()
     {
-        _grid = GameObject.FindGameObjectWithTag("Grid").transform;
-        
-        //Check if a predefined grid isn't used
-        if(_grid.childCount == 0)
+        if(_predefinedMap != null)
         {
+            GameObject bite = Instantiate(_predefinedMap);
+            _grid = bite.transform;
+
+            //Manually get all tiles in dictionnary
+            for (int i = 0; i < _grid.childCount; i++)
+            {
+                Tile tile = _grid.GetChild(i).GetComponent<Tile>();
+                _tiles[tile.Coordinate] = tile;
+            }
+        }
+        else
+        {
+            _grid = Instantiate(_emptyMap).transform;
             GenerateHexagonalGrid();
         }
+        
+        //Search neighbors for each tiles
+        foreach (Tile tile in _tiles.Values)
+        {
+            tile.SearchNeighbors();
+        }
+
+        event_mapGenerated.Invoke();
     }
 
     void GenerateHexagonalGrid()
@@ -40,7 +74,10 @@ public class MapManager : Singleton<MapManager>
                 Vector3 position = new Vector3(x, 0, z);
                 GameObject tile = Instantiate(_tilePrefab, position, Quaternion.identity, _grid);
                 tile.GetComponent<Tile>().Coordinate = new Vector2(col, row);
-                tile.name = col + ";" + row;
+                tile.name = tile.GetComponent<Tile>().TileData.TileName + " " + col + ";" + row;
+
+                //Add tile to dictionnary
+                _tiles[new Vector2(col, row)] = tile.GetComponent<Tile>();
             }
         }
     }
