@@ -13,6 +13,7 @@ public class Tile : MonoBehaviour
     private bool _revealed;
     private bool _claimed;
     private Border _border;
+    private Animator _animator;
 
     public Vector2 Coordinate { get => _coordinate; set => _coordinate = value; }
     public TileData TileData { get => _tileData; set => _tileData = value; }
@@ -21,11 +22,30 @@ public class Tile : MonoBehaviour
     public Biome Biome { get => _biome; set => _biome = value; }
     public Tile[] Neighbors { get => _neighbors;}
 
+    private void Awake()
+    {
+        _animator = GetComponent<Animator>();
+    }
+
     public void ClaimTile()
     {
         _claimed = true;
         _border = Instantiate(Resources.Load<GameObject>("Border"), transform.position, Quaternion.identity).GetComponent<Border>();
         _border.transform.parent = ExpansionManager.Instance.BorderParent;
+        foreach (Tile neighbor in _neighbors) 
+        {
+            if (!neighbor.Revealed)
+                neighbor.RevealTile(false);
+        }
+    }
+
+    public void RevealTile(bool skipAnim)
+    {
+        _revealed = true;
+        if (skipAnim)
+            _animator.SetTrigger("InstantReveal");
+        else
+            _animator.SetTrigger("Reveal");
     }
 
     public void CheckBorder()

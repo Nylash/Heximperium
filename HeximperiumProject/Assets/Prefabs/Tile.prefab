@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1374311604036627735}
   - component: {fileID: 5463362133273360706}
   - component: {fileID: 1320174606270032190}
+  - component: {fileID: 4310208732380691757}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -28,13 +29,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5751803865783233614}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
 --- !u!33 &1481917373780202815
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -102,6 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _biome: 0
   _tileData: {fileID: 0}
+  _coordinate: {x: 0, y: 0}
 --- !u!64 &1320174606270032190
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -124,3 +126,25 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 2190622540023885545, guid: 5ea0ae15161d36a469e1eaa2602929e9, type: 3}
+--- !u!95 &4310208732380691757
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5751803865783233614}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 68ffe1cc7c8060f4187951b47948223a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

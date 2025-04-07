@@ -71,7 +71,14 @@ public class UIManager : Singleton<UIManager>
             _hoverTimer += Time.deltaTime;
             if (_hoverTimer >= _durationHoverForUI && _popup == null) 
             {
-                DisplayPopUp(obj.GetComponent<Tile>());
+                Tile tmp = obj.GetComponent<Tile>();
+                if(tmp != null)
+                {
+                    if (tmp.Revealed)
+                    {
+                        DisplayPopUp(tmp);
+                    }
+                }
             }
         }
         else

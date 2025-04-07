@@ -81,20 +81,24 @@ public class GameManager : Singleton<GameManager>
         {
             Tile centralTile;
             MapManager.Instance.Tiles.TryGetValue(Vector2.zero, out centralTile);
+
+            //Reveal the central tile and its neighbors
+            centralTile.RevealTile(true);
+            foreach (Tile tile in centralTile.Neighbors)
+                tile.RevealTile(true);
+
             //Give the player resources for the initial town 
             ExpansionManager.Instance.AvailableTown += 1;
             InfrastructureData townData = Resources.Load<InfrastructureData>("Data/Infrastructures/Town");
             foreach (ResourceCost cost in townData.Costs)
-            {
                 ResourcesManager.Instance.UpdateResource(cost.resource, cost.cost, false);
-            }
             ExpansionManager.Instance.BuildTown(centralTile);
-
+            
             //Claim 1 hex radius around central tile
             foreach (Tile tile in centralTile.Neighbors)
             {
                 //Give the player claim for the tile
-                ResourcesManager.Instance.UpdateResource(Resource.Claim ,tile.TileData.ClaimCost, false);
+                ResourcesManager.Instance.UpdateResource(Resource.Claim, tile.TileData.ClaimCost, false);
                 ExpansionManager.Instance.ClaimTile(tile);
             }
         }
@@ -129,16 +133,19 @@ public class GameManager : Singleton<GameManager>
 
     private void SelectTile(Tile tile)
     {
-        _selectedTile = tile;
-        if (_selectedTile == _previousSelectedTile)
+        if (tile.Revealed)
         {
-            _previousSelectedTile = null;
-            _selectedTile = null;
-            return;
-        }
+            _selectedTile = tile;
+            if (_selectedTile == _previousSelectedTile)
+            {
+                _previousSelectedTile = null;
+                _selectedTile = null;
+                return;
+            }
 
-        _highlightObject = Instantiate(_highlighPrefab, _selectedTile.transform.position + new Vector3(0, 0.01f, 0), Quaternion.identity);
-        event_newTileSelected.Invoke(_selectedTile);
+            _highlightObject = Instantiate(_highlighPrefab, _selectedTile.transform.position + new Vector3(0, 0.01f, 0), Quaternion.identity);
+            event_newTileSelected.Invoke(_selectedTile);
+        }
     }
 
     private void InteractWithButton(UI_InteractionButton button)

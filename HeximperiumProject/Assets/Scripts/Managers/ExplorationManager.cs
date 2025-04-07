@@ -10,7 +10,6 @@ public class ExplorationManager : Singleton<ExplorationManager>
     {
         if (phase != Phase.Explore)
             return;
-        print("Start Exploration");
     }
 
     private void NewTileSelected(Tile tile)

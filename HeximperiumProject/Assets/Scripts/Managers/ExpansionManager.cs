@@ -24,7 +24,6 @@ public class ExpansionManager : Singleton<ExpansionManager>
     {
         if (phase != Phase.Expand)
             return;
-        print("Start Expansion");
         ResourcesManager.Instance.UpdateResource(Resource.Claim, 5, false);
         ResourcesManager.Instance.UpdateResource(Resource.Gold, 150, false);
     }
