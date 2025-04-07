@@ -97,14 +97,19 @@ public class GameManager : Singleton<GameManager>
         //Give the player resources for the initial town 
         ExpansionManager.Instance.AvailableTown += 1;
         InfrastructureData townData = Resources.Load<InfrastructureData>("Data/Infrastructures/Town");
-        foreach (ResourceCost cost in townData.Costs)
-            ResourcesManager.Instance.UpdateResource(cost.resource, cost.cost, false);
+        foreach (ResourceValue cost in townData.Costs)
+            ResourcesManager.Instance.UpdateResource(cost.resource, cost.value, Transaction.Gain);
         ExpansionManager.Instance.BuildTown(centralTile);
 
         if (depth == 0)
-            return;
+        {
+            ExplorationManager.Instance.FreeScouts = 1;
+            ExpansionManager.Instance.BaseClaimPerTurn = 2;
+        }
         if(depth == 1)
         {
+            ExplorationManager.Instance.FreeScouts = 3;
+            ExpansionManager.Instance.BaseClaimPerTurn = 4;
             foreach (Tile tile in centralTile.Neighbors)
             {
                 foreach (Tile t in tile.Neighbors)
@@ -113,12 +118,14 @@ public class GameManager : Singleton<GameManager>
             foreach (Tile tile in centralTile.Neighbors)
             {
                 //Give the player claim for the tile
-                ResourcesManager.Instance.UpdateResource(Resource.Claim, tile.TileData.ClaimCost, false);
+                ResourcesManager.Instance.UpdateResource(Resource.Claim, tile.TileData.ClaimCost, Transaction.Gain);
                 ExpansionManager.Instance.ClaimTile(tile);
             }
         }
         if (depth == 2) 
         {
+            ExplorationManager.Instance.FreeScouts = 5;
+            ExpansionManager.Instance.BaseClaimPerTurn = 6;
             foreach (Tile tile in centralTile.Neighbors)
             {
                 foreach (Tile t in tile.Neighbors)
@@ -133,7 +140,7 @@ public class GameManager : Singleton<GameManager>
                 if (!firstRingTile.Claimed)
                 {
                     //Give the player claim for the tile
-                    ResourcesManager.Instance.UpdateResource(Resource.Claim, firstRingTile.TileData.ClaimCost, false);
+                    ResourcesManager.Instance.UpdateResource(Resource.Claim, firstRingTile.TileData.ClaimCost, Transaction.Gain);
                     ExpansionManager.Instance.ClaimTile(firstRingTile);
                 }
                 foreach (Tile secondRingTile in firstRingTile.Neighbors)
@@ -141,7 +148,7 @@ public class GameManager : Singleton<GameManager>
                     if (!secondRingTile.Claimed)
                     {
                         //Give the player claim for the tile
-                        ResourcesManager.Instance.UpdateResource(Resource.Claim, secondRingTile.TileData.ClaimCost, false);
+                        ResourcesManager.Instance.UpdateResource(Resource.Claim, secondRingTile.TileData.ClaimCost, Transaction.Gain);
                         ExpansionManager.Instance.ClaimTile(secondRingTile);
                     }
                 }
@@ -202,6 +209,9 @@ public class GameManager : Singleton<GameManager>
                 break;
             case Interaction.Town:
                 ExpansionManager.Instance.BuildTown(button.AssociatedTile);
+                break;
+            case Interaction.Scout:
+                ExplorationManager.Instance.SpawnScout(button.AssociatedTile, (ScoutData)button.UnitData);
                 break;
             default: 
                 Debug.LogError("This interaction is not handle : " +  button.Interaction);

@@ -1,9 +1,11 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/Infrastructure")]
 public class InfrastructureData : TileData
 {
-    [SerializeField] private ResourceCost[] _costs;
+    [SerializeField] private List<ResourceValue> _costs = new List<ResourceValue>(); 
 
-    public ResourceCost[] Costs { get => _costs; set => _costs = value; }
+    public List<ResourceValue> Costs { get => _costs; set => _costs = value; }
 }
