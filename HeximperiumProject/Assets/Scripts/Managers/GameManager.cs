@@ -158,7 +158,12 @@ public class GameManager : Singleton<GameManager>
 
     private void LeftClickAction()
     {
-        _previousSelectedTile = _selectedTile;
+        if (ExplorationManager.Instance.ChoosingScoutDirection)
+        {
+            ExplorationManager.Instance.ConfirmDirection();
+            return;
+        }
+            _previousSelectedTile = _selectedTile;
         _selectedTile = null;
         if (_highlightObject)
         {
@@ -221,6 +226,8 @@ public class GameManager : Singleton<GameManager>
 
     public void ConfirmPhase()
     {
+        if (ExplorationManager.Instance.ChoosingScoutDirection)
+            return;
         if (_currentPhase != Phase.Entertain) 
         {
             _currentPhase++;

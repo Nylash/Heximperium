@@ -14,8 +14,9 @@ public class Tile : MonoBehaviour
     private bool _claimed;
     private Border _border;
     private Animator _animator;
-    private Scout _scout;
+    private List<Scout> _scouts = new List<Scout>();
     private List<ResourceValue> _incomes = new List<ResourceValue>();
+    private TextMeshPro _scoutCounter;
 
     public Vector2 Coordinate { get => _coordinate; set => _coordinate = value; }
     public TileData TileData { get => _tileData; set => _tileData = value; }
@@ -23,7 +24,8 @@ public class Tile : MonoBehaviour
     public bool Revealed { get => _revealed;}
     public Biome Biome { get => _biome; set => _biome = value; }
     public Tile[] Neighbors { get => _neighbors;}
-    public Scout Scout { get => _scout; set => _scout = value; }
+    public List<Scout> Scouts { get => _scouts; set => _scouts = value; }
+    public TextMeshPro ScoutCounter { get => _scoutCounter; set => _scoutCounter = value; }
 
     private void Awake()
     {

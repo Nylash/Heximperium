@@ -1542,6 +1542,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
   _scoutPrefab: {fileID: 5066032661868510455, guid: 6df47c3f9f6c2a247be0ff0800c84d61, type: 3}
+  _scoutCounterPrefab: {fileID: 1835970567070459480, guid: 53d981b0fda10094ca17866fb80ecf99, type: 3}
 --- !u!1 &1235843458
 GameObject:
   m_ObjectHideFlags: 0
