@@ -25,7 +25,6 @@ public class Tile : MonoBehaviour
     public Biome Biome { get => _biome; set => _biome = value; }
     public Tile[] Neighbors { get => _neighbors;}
     public List<Scout> Scouts { get => _scouts; set => _scouts = value; }
-    public TextMeshPro ScoutCounter { get => _scoutCounter; set => _scoutCounter = value; }
 
     private void Awake()
     {
@@ -115,5 +114,20 @@ public class Tile : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void UpdateScoutCounter()
+    {
+        if(_scouts.Count >= 2)
+        {
+            if(_scoutCounter == null)
+                _scoutCounter = Instantiate(ExplorationManager.Instance.ScoutCounterPrefab, transform).GetComponent<TextMeshPro>();
+            _scoutCounter.text = _scouts.Count.ToString();
+        }
+        else
+        {
+            if (_scoutCounter != null)
+                Destroy(_scoutCounter.gameObject);
+        }
     }
 }

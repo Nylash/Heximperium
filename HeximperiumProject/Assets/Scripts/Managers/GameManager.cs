@@ -15,6 +15,7 @@ public class GameManager : Singleton<GameManager>
     private GameObject _highlightObject;
     [SerializeField] private GameObject _highlighPrefab;
     [SerializeField] private GameObject _interactionPrefab;
+    private bool _waitingPhaseFinalization;
 
     #region VARIABLES
     private Phase _currentPhase;
@@ -57,6 +58,7 @@ public class GameManager : Singleton<GameManager>
         _inputActions.Player.LeftClick.performed += ctx => LeftClickAction();
 
         MapManager.Instance.event_mapGenerated.AddListener(InitializeGame);
+        ExplorationManager.Instance.event_phaseFinalized.AddListener(PhaseFinalized);
     }
 
     private void Start()
@@ -226,10 +228,18 @@ public class GameManager : Singleton<GameManager>
 
     public void ConfirmPhase()
     {
+        if (_waitingPhaseFinalization)
+            return;
         if (ExplorationManager.Instance.ChoosingScoutDirection)
             return;
-        if (_currentPhase != Phase.Entertain) 
+        if (_currentPhase != Phase.Entertain)
         {
+            if (_currentPhase == Phase.Explore)
+            {
+                ExplorationManager.Instance.ConfirmingPhase();
+                _waitingPhaseFinalization = true;
+                return;
+            }                
             _currentPhase++;
         }
         else
@@ -240,6 +250,13 @@ public class GameManager : Singleton<GameManager>
             event_newTurn.Invoke(_turnCounter);
         }
 
+        event_newPhase.Invoke(_currentPhase);
+    }
+
+    private void PhaseFinalized()
+    {
+        _waitingPhaseFinalization = false;
+        _currentPhase++;
         event_newPhase.Invoke(_currentPhase);
     }
 }

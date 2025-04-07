@@ -1,23 +1,38 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ExplorationManager : Singleton<ExplorationManager>
 {
+    [SerializeField] private Transform _scoutsParent;
     [SerializeField] private GameObject _scoutPrefab;
     [SerializeField] private GameObject _scoutCounterPrefab;
+    [SerializeField] private float _awaitTimeScoutMovement = 0.25f;
 
     private List<Scout> _scouts = new List<Scout>();
     private List<GameObject> _buttons = new List<GameObject>();
     private List<Vector3> _interactionPositions = new List<Vector3>();
     private int _freeScouts;
+    private bool _finalizingPhase;
 
     private Scout _currentScout;
     private bool _choosingScoutDirection;
     private Tile _tileRefForScoutDirection;
 
+    [HideInInspector] public UnityEvent event_phaseFinalized;
+
     public int FreeScouts { get => _freeScouts; set => _freeScouts = value; }
     public bool ChoosingScoutDirection { get => _choosingScoutDirection;}
+    public GameObject ScoutCounterPrefab { get => _scoutCounterPrefab;}
+    public float AwaitTimeScoutMovement { get => _awaitTimeScoutMovement;}
+    public List<Scout> Scouts { get => _scouts;}
+
+    private void OnEnable()
+    {
+        if (event_phaseFinalized == null)
+            event_phaseFinalized = new UnityEvent();
+    }
 
     protected override void OnAwake()
     {
@@ -32,6 +47,17 @@ public class ExplorationManager : Singleton<ExplorationManager>
             return;
         if(ChoosingScoutDirection)
             _currentScout.Direction = GetAngleForScout();
+        if (_finalizingPhase)
+        {
+            foreach (Scout scout in _scouts)
+            {
+                if (!scout.HasDoneMoving)
+                    return;
+            }
+            _finalizingPhase = false;
+            event_phaseFinalized.Invoke();
+        }
+        
     }
 
     private void StartPhase(Phase phase)
@@ -61,6 +87,15 @@ public class ExplorationManager : Singleton<ExplorationManager>
         _buttons.Clear();
     }
 
+    public void ConfirmingPhase()
+    {
+        _finalizingPhase = true;
+        foreach (Scout scout in _scouts)
+        {
+            StartCoroutine(scout.Move());
+        }
+    }
+
     public void SpawnScout(Tile tile, ScoutData data)
     {
         if(ResourcesManager.Instance.CanAfford(data.Costs) || _freeScouts != 0)
@@ -70,14 +105,14 @@ public class ExplorationManager : Singleton<ExplorationManager>
             else
                 ResourcesManager.Instance.UpdateResource(data.Costs, Transaction.Spent);
 
-            _currentScout = Instantiate(_scoutPrefab, tile.transform).GetComponent<Scout>();
+            _currentScout = Instantiate(_scoutPrefab, 
+                tile.transform.position + _scoutPrefab.transform.localPosition,
+                _scoutPrefab.transform.rotation, _scoutsParent).GetComponent<Scout>();
+            _currentScout.CurrentTile = tile;
+            _scouts.Add(_currentScout);
             tile.Scouts.Add(_currentScout);
             _tileRefForScoutDirection = tile;
-
-            //Add the scout counter to visualize if the tile has several scouts
-            if (tile.ScoutCounter == null)
-                tile.ScoutCounter = Instantiate(_scoutCounterPrefab, tile.transform).GetComponent<TextMeshPro>();
-            tile.ScoutCounter.text = tile.Scouts.Count.ToString();
+            tile.UpdateScoutCounter();
 
             _choosingScoutDirection = true;
         }
@@ -146,6 +181,7 @@ public class ExplorationManager : Singleton<ExplorationManager>
     }
 }
 
+//The int respect the neighbors order, so simply cast it to int match the good neighbor
 public enum Direction
 {
     TopRight, Right, BottomRight, BottomLeft, Left, TopLeft
