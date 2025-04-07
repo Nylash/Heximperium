@@ -9,15 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e0e460f401a6ce44ad84d3534c37a05, type: 3}
-  m_Name: Town
+  m_Script: {fileID: 11500000, guid: d564c43d686d64e4a94b9be4ac0f00ff, type: 3}
+  m_Name: Scout
   m_EditorClassIdentifier: 
-  _name: Town
-  _claimCost: 0
-  _goldIncome: 0
-  _textEffect: 
-  _scoutStartingPoint: 1
-  _incomes: []
   _costs:
   - resource: 7
-    value: 100
+    value: 30
+  _speed: 3
+  _lifespan: 4
+  _revealRadius: 1

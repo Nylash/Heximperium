@@ -13,6 +13,10 @@ public class Tile : MonoBehaviour
     private bool _revealed;
     private bool _claimed;
     private Border _border;
+    private Animator _animator;
+    private List<Scout> _scouts = new List<Scout>();
+    private List<ResourceValue> _incomes = new List<ResourceValue>();
+    private TextMeshPro _scoutCounter;
 
     public Vector2 Coordinate { get => _coordinate; set => _coordinate = value; }
     public TileData TileData { get => _tileData; set => _tileData = value; }
@@ -20,12 +24,32 @@ public class Tile : MonoBehaviour
     public bool Revealed { get => _revealed;}
     public Biome Biome { get => _biome; set => _biome = value; }
     public Tile[] Neighbors { get => _neighbors;}
+    public List<Scout> Scouts { get => _scouts; set => _scouts = value; }
+
+    private void Awake()
+    {
+        _animator = GetComponent<Animator>();
+    }
 
     public void ClaimTile()
     {
         _claimed = true;
         _border = Instantiate(Resources.Load<GameObject>("Border"), transform.position, Quaternion.identity).GetComponent<Border>();
         _border.transform.parent = ExpansionManager.Instance.BorderParent;
+        foreach (Tile neighbor in _neighbors) 
+        {
+            if (!neighbor.Revealed)
+                neighbor.RevealTile(false);
+        }
+    }
+
+    public void RevealTile(bool skipAnim)
+    {
+        _revealed = true;
+        if (skipAnim)
+            _animator.SetTrigger("InstantReveal");
+        else
+            _animator.SetTrigger("Reveal");
     }
 
     public void CheckBorder()
@@ -90,5 +114,20 @@ public class Tile : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void UpdateScoutCounter()
+    {
+        if(_scouts.Count >= 2)
+        {
+            if(_scoutCounter == null)
+                _scoutCounter = Instantiate(ExplorationManager.Instance.ScoutCounterPrefab, transform).GetComponent<TextMeshPro>();
+            _scoutCounter.text = _scouts.Count.ToString();
+        }
+        else
+        {
+            if (_scoutCounter != null)
+                Destroy(_scoutCounter.gameObject);
+        }
     }
 }

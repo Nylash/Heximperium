@@ -15,6 +15,7 @@ public class GameManager : Singleton<GameManager>
     private GameObject _highlightObject;
     [SerializeField] private GameObject _highlighPrefab;
     [SerializeField] private GameObject _interactionPrefab;
+    private bool _waitingPhaseFinalization;
 
     #region VARIABLES
     private Phase _currentPhase;
@@ -57,6 +58,7 @@ public class GameManager : Singleton<GameManager>
         _inputActions.Player.LeftClick.performed += ctx => LeftClickAction();
 
         MapManager.Instance.event_mapGenerated.AddListener(InitializeGame);
+        ExplorationManager.Instance.event_phaseFinalized.AddListener(PhaseFinalized);
     }
 
     private void Start()
@@ -79,30 +81,91 @@ public class GameManager : Singleton<GameManager>
     {
         if (_turnCounter == 1)
         {
-            Tile centralTile;
-            MapManager.Instance.Tiles.TryGetValue(Vector2.zero, out centralTile);
-            //Give the player resources for the initial town 
-            ExpansionManager.Instance.AvailableTown += 1;
-            InfrastructureData townData = Resources.Load<InfrastructureData>("Data/Infrastructures/Town");
-            foreach (ResourceCost cost in townData.Costs)
-            {
-                ResourcesManager.Instance.UpdateResource(cost.resource, cost.cost, false);
-            }
-            ExpansionManager.Instance.BuildTown(centralTile);
+            Initializer(1);
+        }
+    }
 
-            //Claim 1 hex radius around central tile
+    //Depth will be replace by game settings
+    private void Initializer(int depth)
+    {
+        Tile centralTile;
+        MapManager.Instance.Tiles.TryGetValue(Vector2.zero, out centralTile);
+
+        //Reveal the central tile and its neighbors
+        centralTile.RevealTile(true);
+        foreach (Tile tile in centralTile.Neighbors)
+            tile.RevealTile(true);
+
+        //Give the player resources for the initial town 
+        ExpansionManager.Instance.AvailableTown += 1;
+        InfrastructureData townData = Resources.Load<InfrastructureData>("Data/Infrastructures/Town");
+        foreach (ResourceValue cost in townData.Costs)
+            ResourcesManager.Instance.UpdateResource(cost.resource, cost.value, Transaction.Gain);
+        ExpansionManager.Instance.BuildTown(centralTile);
+
+        if (depth == 0)
+        {
+            ExplorationManager.Instance.FreeScouts = 1;
+            ExpansionManager.Instance.BaseClaimPerTurn = 2;
+        }
+        if(depth == 1)
+        {
+            ExplorationManager.Instance.FreeScouts = 3;
+            ExpansionManager.Instance.BaseClaimPerTurn = 4;
+            foreach (Tile tile in centralTile.Neighbors)
+            {
+                foreach (Tile t in tile.Neighbors)
+                    t.RevealTile(true);
+            }
             foreach (Tile tile in centralTile.Neighbors)
             {
                 //Give the player claim for the tile
-                ResourcesManager.Instance.UpdateResource(Resource.Claim ,tile.TileData.ClaimCost, false);
+                ResourcesManager.Instance.UpdateResource(Resource.Claim, tile.TileData.ClaimCost, Transaction.Gain);
                 ExpansionManager.Instance.ClaimTile(tile);
+            }
+        }
+        if (depth == 2) 
+        {
+            ExplorationManager.Instance.FreeScouts = 5;
+            ExpansionManager.Instance.BaseClaimPerTurn = 6;
+            foreach (Tile tile in centralTile.Neighbors)
+            {
+                foreach (Tile t in tile.Neighbors)
+                {
+                    t.RevealTile(true);
+                    foreach (Tile item in t.Neighbors)
+                        item.RevealTile(true);
+                }
+            }
+            foreach (Tile firstRingTile in centralTile.Neighbors)
+            {
+                if (!firstRingTile.Claimed)
+                {
+                    //Give the player claim for the tile
+                    ResourcesManager.Instance.UpdateResource(Resource.Claim, firstRingTile.TileData.ClaimCost, Transaction.Gain);
+                    ExpansionManager.Instance.ClaimTile(firstRingTile);
+                }
+                foreach (Tile secondRingTile in firstRingTile.Neighbors)
+                {
+                    if (!secondRingTile.Claimed)
+                    {
+                        //Give the player claim for the tile
+                        ResourcesManager.Instance.UpdateResource(Resource.Claim, secondRingTile.TileData.ClaimCost, Transaction.Gain);
+                        ExpansionManager.Instance.ClaimTile(secondRingTile);
+                    }
+                }
             }
         }
     }
 
     private void LeftClickAction()
     {
-        _previousSelectedTile = _selectedTile;
+        if (ExplorationManager.Instance.ChoosingScoutDirection)
+        {
+            ExplorationManager.Instance.ConfirmDirection();
+            return;
+        }
+            _previousSelectedTile = _selectedTile;
         _selectedTile = null;
         if (_highlightObject)
         {
@@ -129,16 +192,19 @@ public class GameManager : Singleton<GameManager>
 
     private void SelectTile(Tile tile)
     {
-        _selectedTile = tile;
-        if (_selectedTile == _previousSelectedTile)
+        if (tile.Revealed)
         {
-            _previousSelectedTile = null;
-            _selectedTile = null;
-            return;
-        }
+            _selectedTile = tile;
+            if (_selectedTile == _previousSelectedTile)
+            {
+                _previousSelectedTile = null;
+                _selectedTile = null;
+                return;
+            }
 
-        _highlightObject = Instantiate(_highlighPrefab, _selectedTile.transform.position + new Vector3(0, 0.01f, 0), Quaternion.identity);
-        event_newTileSelected.Invoke(_selectedTile);
+            _highlightObject = Instantiate(_highlighPrefab, _selectedTile.transform.position + new Vector3(0, 0.01f, 0), Quaternion.identity);
+            event_newTileSelected.Invoke(_selectedTile);
+        }
     }
 
     private void InteractWithButton(UI_InteractionButton button)
@@ -151,6 +217,9 @@ public class GameManager : Singleton<GameManager>
             case Interaction.Town:
                 ExpansionManager.Instance.BuildTown(button.AssociatedTile);
                 break;
+            case Interaction.Scout:
+                ExplorationManager.Instance.SpawnScout(button.AssociatedTile, (ScoutData)button.UnitData);
+                break;
             default: 
                 Debug.LogError("This interaction is not handle : " +  button.Interaction);
                 break;
@@ -159,8 +228,18 @@ public class GameManager : Singleton<GameManager>
 
     public void ConfirmPhase()
     {
-        if (_currentPhase != Phase.Entertain) 
+        if (_waitingPhaseFinalization)
+            return;
+        if (ExplorationManager.Instance.ChoosingScoutDirection)
+            return;
+        if (_currentPhase != Phase.Entertain)
         {
+            if (_currentPhase == Phase.Explore)
+            {
+                ExplorationManager.Instance.ConfirmingPhase();
+                _waitingPhaseFinalization = true;
+                return;
+            }                
             _currentPhase++;
         }
         else
@@ -171,6 +250,13 @@ public class GameManager : Singleton<GameManager>
             event_newTurn.Invoke(_turnCounter);
         }
 
+        event_newPhase.Invoke(_currentPhase);
+    }
+
+    private void PhaseFinalized()
+    {
+        _waitingPhaseFinalization = false;
+        _currentPhase++;
         event_newPhase.Invoke(_currentPhase);
     }
 }

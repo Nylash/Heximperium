@@ -10,7 +10,6 @@ public class EntertainementManager : Singleton<EntertainementManager>
     {
         if (phase != Phase.Entertain)
             return;
-        print("Start Entertainement");
     }
 
     private void NewTileSelected(Tile tile)

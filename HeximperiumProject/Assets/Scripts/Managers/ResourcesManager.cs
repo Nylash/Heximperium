@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 
 public class ResourcesManager : Singleton<ResourcesManager>
@@ -11,9 +12,9 @@ public class ResourcesManager : Singleton<ResourcesManager>
     private int _crystal;
     private int _emberbone;
 
-    public void UpdateResource(Resource resource, int value, bool spend)
+    public void UpdateResource(Resource resource, int value, Transaction transaction)
     {
-        if (spend)
+        if (transaction == Transaction.Spent)
             value = -value;
         switch (resource)
         {
@@ -37,6 +38,15 @@ public class ResourcesManager : Singleton<ResourcesManager>
                 _gold += value;
                 UIManager.Instance.UpdateResourceUI(Resource.Gold, _gold);
                 break;
+        }
+    }
+
+    public void UpdateResource(List<ResourceValue> resources, Transaction transaction)
+    {
+        if (resources.Count == 0) return;
+        foreach (ResourceValue item in resources)
+        {
+            UpdateResource(item.resource, item.value, transaction);
         }
     }
 
@@ -64,10 +74,10 @@ public class ResourcesManager : Singleton<ResourcesManager>
         return false;
     }
 
-    public bool CanAfford(ResourceCost[] costs) 
+    public bool CanAfford(List<ResourceValue> costs) 
     {
-        if(costs.Length == 0) return false;
-        return costs.All(cost => CanAfford(cost.resource, cost.cost));
+        if(costs.Count == 0) return false;
+        return costs.All(cost => CanAfford(cost.resource, cost.value));
     }
 
     private bool CanAffordUnspecified(int stock, int cost)
@@ -83,4 +93,9 @@ public class ResourcesManager : Singleton<ResourcesManager>
 public enum Resource
 {
     Stone, Essence, Horse, Pigment, Crystal, Emberbone, Claim, Gold
+}
+
+public enum Transaction
+{
+    Gain, Spent
 }
