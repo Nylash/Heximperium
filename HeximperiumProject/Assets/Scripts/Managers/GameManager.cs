@@ -79,27 +79,72 @@ public class GameManager : Singleton<GameManager>
     {
         if (_turnCounter == 1)
         {
-            Tile centralTile;
-            MapManager.Instance.Tiles.TryGetValue(Vector2.zero, out centralTile);
+            Initializer(1);
+        }
+    }
 
-            //Reveal the central tile and its neighbors
-            centralTile.RevealTile(true);
+    //Depth will be replace by game settings
+    private void Initializer(int depth)
+    {
+        Tile centralTile;
+        MapManager.Instance.Tiles.TryGetValue(Vector2.zero, out centralTile);
+
+        //Reveal the central tile and its neighbors
+        centralTile.RevealTile(true);
+        foreach (Tile tile in centralTile.Neighbors)
+            tile.RevealTile(true);
+
+        //Give the player resources for the initial town 
+        ExpansionManager.Instance.AvailableTown += 1;
+        InfrastructureData townData = Resources.Load<InfrastructureData>("Data/Infrastructures/Town");
+        foreach (ResourceCost cost in townData.Costs)
+            ResourcesManager.Instance.UpdateResource(cost.resource, cost.cost, false);
+        ExpansionManager.Instance.BuildTown(centralTile);
+
+        if (depth == 0)
+            return;
+        if(depth == 1)
+        {
             foreach (Tile tile in centralTile.Neighbors)
-                tile.RevealTile(true);
-
-            //Give the player resources for the initial town 
-            ExpansionManager.Instance.AvailableTown += 1;
-            InfrastructureData townData = Resources.Load<InfrastructureData>("Data/Infrastructures/Town");
-            foreach (ResourceCost cost in townData.Costs)
-                ResourcesManager.Instance.UpdateResource(cost.resource, cost.cost, false);
-            ExpansionManager.Instance.BuildTown(centralTile);
-            
-            //Claim 1 hex radius around central tile
+            {
+                foreach (Tile t in tile.Neighbors)
+                    t.RevealTile(true);
+            }
             foreach (Tile tile in centralTile.Neighbors)
             {
                 //Give the player claim for the tile
                 ResourcesManager.Instance.UpdateResource(Resource.Claim, tile.TileData.ClaimCost, false);
                 ExpansionManager.Instance.ClaimTile(tile);
+            }
+        }
+        if (depth == 2) 
+        {
+            foreach (Tile tile in centralTile.Neighbors)
+            {
+                foreach (Tile t in tile.Neighbors)
+                {
+                    t.RevealTile(true);
+                    foreach (Tile item in t.Neighbors)
+                        item.RevealTile(true);
+                }
+            }
+            foreach (Tile firstRingTile in centralTile.Neighbors)
+            {
+                if (!firstRingTile.Claimed)
+                {
+                    //Give the player claim for the tile
+                    ResourcesManager.Instance.UpdateResource(Resource.Claim, firstRingTile.TileData.ClaimCost, false);
+                    ExpansionManager.Instance.ClaimTile(firstRingTile);
+                }
+                foreach (Tile secondRingTile in firstRingTile.Neighbors)
+                {
+                    if (!secondRingTile.Claimed)
+                    {
+                        //Give the player claim for the tile
+                        ResourcesManager.Instance.UpdateResource(Resource.Claim, secondRingTile.TileData.ClaimCost, false);
+                        ExpansionManager.Instance.ClaimTile(secondRingTile);
+                    }
+                }
             }
         }
     }
