@@ -78,7 +78,7 @@ public class Tile : MonoBehaviour
         if (_tileData.name == "Water")
         {
             //Material not linked to biome
-            GetComponent<Renderer>().material = Resources.Load(_tileData.name) as Material;
+            GetComponent<Renderer>().material = Resources.Load("TilesMaterial/UnspecifiedMaterial/" + _tileData.name) as Material;
             return;
         }
         GetComponent<Renderer>().material = Resources.Load("TilesMaterial/" + _biome + "/" + _tileData.name + "_" + _biome) as Material;
