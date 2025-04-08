@@ -367,7 +367,7 @@ GameObject:
   - component: {fileID: 7308458838993297178}
   - component: {fileID: 4204494969795326403}
   m_Layer: 5
-  m_Name: PopUp-UnclaimedTile
+  m_Name: UI_PopUp-UnclaimedTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
