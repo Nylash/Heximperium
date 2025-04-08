@@ -17,6 +17,51 @@ public static class Utilities
                 _positions.Add(new Vector3(tilePosition.x, 0.5f, tilePosition.z + 1));
                 _positions.Add(new Vector3(tilePosition.x, 0.5f, tilePosition.z - 1));
                 return _positions;
+            case 3:
+                _positions.Add(new Vector3(tilePosition.x, 0.5f, tilePosition.z + 1));
+                _positions.Add(new Vector3(tilePosition.x + 0.8f, 0.5f, tilePosition.z - 0.8f));
+                _positions.Add(new Vector3(tilePosition.x - 0.8f, 0.5f, tilePosition.z - 0.8f));
+                return _positions;
+            case 4:
+                _positions.Add(new Vector3(tilePosition.x + 0.8f, 0.5f, tilePosition.z + 0.8f));
+                _positions.Add(new Vector3(tilePosition.x + 0.8f, 0.5f, tilePosition.z - 0.8f));
+                _positions.Add(new Vector3(tilePosition.x - 0.8f, 0.5f, tilePosition.z - 0.8f));
+                _positions.Add(new Vector3(tilePosition.x - 0.8f, 0.5f, tilePosition.z + 0.8f));
+                return _positions;
+            case 5:
+                _positions.Add(new Vector3(tilePosition.x + 0.55f, 0.5f, tilePosition.z + 1));
+                _positions.Add(new Vector3(tilePosition.x + 1, 0.5f, tilePosition.z - 0.2f));
+                _positions.Add(new Vector3(tilePosition.x, 0.5f, tilePosition.z - 1));
+                _positions.Add(new Vector3(tilePosition.x - 1, 0.5f, tilePosition.z - 0.2f));
+                _positions.Add(new Vector3(tilePosition.x - 0.55f, 0.5f, tilePosition.z + 1));
+                return _positions;
+            case 6:
+                _positions.Add(new Vector3(tilePosition.x + 0.55f, 0.5f, tilePosition.z + 1));
+                _positions.Add(new Vector3(tilePosition.x + 1, 0.5f, tilePosition.z));
+                _positions.Add(new Vector3(tilePosition.x + 0.55f, 0.5f, tilePosition.z - 1));
+                _positions.Add(new Vector3(tilePosition.x - 0.55f, 0.5f, tilePosition.z - 1));
+                _positions.Add(new Vector3(tilePosition.x - 1, 0.5f, tilePosition.z));
+                _positions.Add(new Vector3(tilePosition.x - 0.55f, 0.5f, tilePosition.z + 1));
+                return _positions;
+            case 7:
+                _positions.Add(new Vector3(tilePosition.x, 0.5f, tilePosition.z + 1));
+                _positions.Add(new Vector3(tilePosition.x + 0.85f, 0.5f, tilePosition.z + 0.65f));
+                _positions.Add(new Vector3(tilePosition.x + 1.15f, 0.5f, tilePosition.z - 0.3f));
+                _positions.Add(new Vector3(tilePosition.x + 0.5f, 0.5f, tilePosition.z - 1));
+                _positions.Add(new Vector3(tilePosition.x - 0.5f, 0.5f, tilePosition.z - 1));
+                _positions.Add(new Vector3(tilePosition.x - 1.15f, 0.5f, tilePosition.z - 0.3f));
+                _positions.Add(new Vector3(tilePosition.x - 0.85f, 0.5f, tilePosition.z + 0.65f));
+                return _positions;
+            case 8:
+                _positions.Add(new Vector3(tilePosition.x, 0.5f, tilePosition.z + 1));
+                _positions.Add(new Vector3(tilePosition.x + 0.85f, 0.5f, tilePosition.z + 0.85f));
+                _positions.Add(new Vector3(tilePosition.x + 1.15f, 0.5f, tilePosition.z));
+                _positions.Add(new Vector3(tilePosition.x + 0.85f, 0.5f, tilePosition.z - 0.85f));
+                _positions.Add(new Vector3(tilePosition.x, 0.5f, tilePosition.z - 1));
+                _positions.Add(new Vector3(tilePosition.x - 0.85f, 0.5f, tilePosition.z - 0.85f));
+                _positions.Add(new Vector3(tilePosition.x - 1.15f, 0.5f, tilePosition.z));
+                _positions.Add(new Vector3(tilePosition.x - 0.85f, 0.5f, tilePosition.z + 0.85f));
+                return _positions;
             default:
                 Debug.LogError("Interaction are not written for this many buttons : " + buttonsNumber);
                 return _positions;
