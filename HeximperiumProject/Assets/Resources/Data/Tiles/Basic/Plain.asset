@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Plain
   _claimCost: 1
-  _goldIncome: 1
   _textEffect: Can be upgraded with various infrastructures.
+  _scoutStartingPoint: 0
+  _incomes:
+  - resource: 6
+    value: 1

@@ -14,10 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Town
   _claimCost: 0
-  _goldIncome: 0
   _textEffect: 
   _scoutStartingPoint: 1
   _incomes: []
   _costs:
-  - resource: 7
+  - resource: 6
     value: 100
