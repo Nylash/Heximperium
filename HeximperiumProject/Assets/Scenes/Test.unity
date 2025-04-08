@@ -641,7 +641,7 @@ MonoBehaviour:
   _persistentSingleton: 0
   _tilePrefab: {fileID: 5751803865783233614, guid: 8438ded482f00494aa769242da2958cd, type: 3}
   _mapRadius: 12
-  _predefinedMap: {fileID: 8104166239845412188, guid: d79d7cc6bd99769419fd1cdd9efc1b75, type: 3}
+  _predefinedMap: {fileID: 2164588132861682141, guid: 6ca359bb0c3115247913e06bd5746322, type: 3}
   _emptyMap: {fileID: 3026037459454811544, guid: 8e788ee934d5849459ad1a6b7658af73, type: 3}
   event_mapGenerated:
     m_PersistentCalls:

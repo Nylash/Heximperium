@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Scout
   m_EditorClassIdentifier: 
   _costs:
-  - resource: 7
+  - resource: 6
     value: 30
   _speed: 3
   _lifespan: 4

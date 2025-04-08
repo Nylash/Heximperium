@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 02c008b3c4c3a7041807076b3594d034, type: 3}
-  m_Name: Plain
+  m_Name: Meadow
   m_EditorClassIdentifier: 
-  _name: Plain
+  _name: Meadown
   _claimCost: 1
   _textEffect: Can be upgraded with various infrastructures.
   _typeIncomeUpgrade: 1
