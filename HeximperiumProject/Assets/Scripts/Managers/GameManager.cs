@@ -120,7 +120,7 @@ public class GameManager : Singleton<GameManager>
             foreach (Tile tile in centralTile.Neighbors)
             {
                 //Give the player claim for the tile
-                ResourcesManager.Instance.UpdateResource(Resource.Claim, tile.TileData.ClaimCost, Transaction.Gain);
+                ResourcesManager.Instance.UpdateClaim(tile.TileData.ClaimCost, Transaction.Gain);
                 ExpansionManager.Instance.ClaimTile(tile);
             }
         }
@@ -142,7 +142,7 @@ public class GameManager : Singleton<GameManager>
                 if (!firstRingTile.Claimed)
                 {
                     //Give the player claim for the tile
-                    ResourcesManager.Instance.UpdateResource(Resource.Claim, firstRingTile.TileData.ClaimCost, Transaction.Gain);
+                    ResourcesManager.Instance.UpdateClaim(firstRingTile.TileData.ClaimCost, Transaction.Gain);
                     ExpansionManager.Instance.ClaimTile(firstRingTile);
                 }
                 foreach (Tile secondRingTile in firstRingTile.Neighbors)
@@ -150,7 +150,7 @@ public class GameManager : Singleton<GameManager>
                     if (!secondRingTile.Claimed)
                     {
                         //Give the player claim for the tile
-                        ResourcesManager.Instance.UpdateResource(Resource.Claim, secondRingTile.TileData.ClaimCost, Transaction.Gain);
+                        ResourcesManager.Instance.UpdateClaim(secondRingTile.TileData.ClaimCost, Transaction.Gain);
                         ExpansionManager.Instance.ClaimTile(secondRingTile);
                     }
                 }

@@ -21,7 +21,7 @@ public class UI_InteractionButton : MonoBehaviour
             case Interaction.Claim:
                 _associatedTile = associatedTile;
                 _interaction = Interaction.Claim;
-                if (!ResourcesManager.Instance.CanAfford(Resource.Claim ,associatedTile.TileData.ClaimCost))
+                if (!ResourcesManager.Instance.CanAffordClaim(associatedTile.TileData.ClaimCost))
                     _renderer.color = UIManager.Instance.ColorCantAfford;
                 _renderer.sprite = Resources.Load<Sprite>("InteractionButtons/" + action.ToString());
                 break;

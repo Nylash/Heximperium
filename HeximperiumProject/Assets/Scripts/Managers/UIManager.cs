@@ -44,6 +44,11 @@ public class UIManager : Singleton<UIManager>
         _screenHeight = Screen.height;
 }
 
+    public void UpdateClaimUI(int value)
+    {
+        _claimText.text = value.ToString();
+    }
+
     public void UpdateResourceUI(Resource resource, int value)
     {
         switch (resource)
@@ -65,9 +70,6 @@ public class UIManager : Singleton<UIManager>
                 break;
             case Resource.Emberbone:
                 _emberboneText.text = value.ToString();
-                break;
-            case Resource.Claim:
-                _claimText.text = value.ToString();
                 break;
             case Resource.Gold:
                 _goldText.text = value.ToString();
@@ -117,7 +119,7 @@ public class UIManager : Singleton<UIManager>
         {
             TileData data = tile.TileData;
             _popup = Instantiate(_unclaimedTilePopup, _mainCanvas);
-            _popup.GetComponent<UI_UnclaimedTile>().Initialize(data.TileName, tile.Biome.ToString(), data.TextEffect, data.GoldIncome.ToString(), data.ClaimCost.ToString());
+            _popup.GetComponent<UI_UnclaimedTile>().Initialize(data.TileName, tile.Biome.ToString(), data.TextEffect, data.GetSpecificIncome(Resource.Gold).ToString(), data.ClaimCost.ToString());
 
             PositionPopup(_popup.transform, GetPopUpSize(_popup.GetComponent<RectTransform>()));
 
