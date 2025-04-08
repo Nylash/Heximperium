@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Ice
   _claimCost: 3
-  _goldIncome: 0
   _textEffect: Slow down scouts.
+  _typeIncomeUpgrade: 1
+  _incomes: []

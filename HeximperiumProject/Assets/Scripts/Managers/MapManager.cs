@@ -71,12 +71,15 @@ public class MapManager : Singleton<MapManager>
                 float z = row * _deltaZ; // Adjust for vertical spacing
 
                 Vector3 position = new Vector3(x, 0, z);
-                GameObject tile = Instantiate(_tilePrefab, position, Quaternion.identity, _grid);
-                tile.GetComponent<Tile>().Coordinate = new Vector2(col, row);
-                tile.name = tile.GetComponent<Tile>().TileData.TileName + " " + col + ";" + row;
+                Tile tile = Instantiate(_tilePrefab, position, Quaternion.identity, _grid).GetComponent<Tile>();
+                tile.Coordinate = new Vector2(col, row);
+
+                //LOGIC to do place tile types (Basic, Hazard...) by setting TileData (name & income) are set in the setter
+                tile.name = tile.TileData.TileName + " " + col + ";" + row;
+                tile.Incomes = tile.TileData.Incomes;
 
                 //Add tile to dictionnary
-                _tiles[new Vector2(col, row)] = tile.GetComponent<Tile>();
+                _tiles[new Vector2(col, row)] = tile;
             }
         }
     }

@@ -15,8 +15,9 @@ MonoBehaviour:
   _name: Town
   _claimCost: 0
   _textEffect: 
-  _scoutStartingPoint: 1
+  _typeIncomeUpgrade: 1
   _incomes: []
+  _scoutStartingPoint: 1
   _costs:
   - resource: 6
     value: 100

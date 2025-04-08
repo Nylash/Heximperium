@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Crystal cave
   _claimCost: 1
-  _goldIncome: 0
   _textEffect: Can be upgraded to produce crystal.
-  _resource: 4
-  _resourceIncome: 0
+  _typeIncomeUpgrade: 1
+  _incomes: []

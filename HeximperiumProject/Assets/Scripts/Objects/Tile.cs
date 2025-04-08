@@ -1,13 +1,15 @@
 using UnityEngine;
 using TMPro;
-using NUnit.Framework;
 using System.Collections.Generic;
 
 public class Tile : MonoBehaviour
 {
     [SerializeField] private Biome _biome;
     [SerializeField] private TileData _tileData;
+
+    //Remove the serializedField when the map creation is fixed
     [SerializeField] private Vector2 _coordinate;
+    [SerializeField] private List<ResourceValue> _incomes = new List<ResourceValue>();
 
     private Tile[] _neighbors = new Tile[6];
     private bool _revealed;
@@ -15,16 +17,30 @@ public class Tile : MonoBehaviour
     private Border _border;
     private Animator _animator;
     private List<Scout> _scouts = new List<Scout>();
-    private List<ResourceValue> _incomes = new List<ResourceValue>();
+    
     private TextMeshPro _scoutCounter;
 
     public Vector2 Coordinate { get => _coordinate; set => _coordinate = value; }
-    public TileData TileData { get => _tileData; set => _tileData = value; }
+    public TileData TileData
+    {
+        get => _tileData;
+        set
+        {
+            if (value.TypeIncomeUpgrade == TypeIncomeUpgrade.Merge)
+                _incomes = Utilities.MergeResourceValues(_incomes, value.Incomes);
+            else
+                _incomes = value.Incomes;
+            name = value.TileName + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
+            _tileData = value;
+            UpdateVisual();
+        }
+    }
     public bool Claimed { get => _claimed;}
     public bool Revealed { get => _revealed;}
     public Biome Biome { get => _biome; set => _biome = value; }
     public Tile[] Neighbors { get => _neighbors;}
     public List<Scout> Scouts { get => _scouts; set => _scouts = value; }
+    public List<ResourceValue> Incomes { get => _incomes; set => _incomes = value; }
 
     private void Awake()
     {
@@ -55,13 +71,6 @@ public class Tile : MonoBehaviour
     public void CheckBorder()
     {
         _border.CheckBorderVisibility(_neighbors);
-    }
-
-    public void UpdateTile(TileData data)
-    {
-        _tileData = data;
-        name = _tileData.TileName + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
-        UpdateVisual();
     }
 
     private void UpdateVisual()

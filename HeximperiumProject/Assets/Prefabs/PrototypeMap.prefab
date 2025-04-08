@@ -104,6 +104,9 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -12, y: 0}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &4668958988595852241
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -252,6 +255,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -10, y: -2}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &3455908486739530577
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -400,6 +406,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: 5, y: 1}
+  _incomes: []
 --- !u!64 &1946859591756605721
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -548,6 +555,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -3, y: 6}
+  _incomes: []
 --- !u!64 &1869996913511851381
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -696,6 +704,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 2, y: 2}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &6524081254357868094
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -844,6 +855,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 5, y: -12}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &3425500406269512256
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -992,6 +1006,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 797ecded2fc68aa4b9845172a7bfb3a5, type: 2}
   _coordinate: {x: 7, y: 8}
+  _incomes: []
 --- !u!64 &2157925572850612001
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1140,6 +1155,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: a2960fb208e02554499370eafbd65266, type: 2}
   _coordinate: {x: 7, y: -8}
+  _incomes: []
 --- !u!64 &2829862091675182960
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1288,6 +1304,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 3, y: 12}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &1724901883943332373
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1436,6 +1455,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: -7, y: 6}
+  _incomes: []
 --- !u!64 &3388974112541701321
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1584,6 +1604,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -1, y: 2}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &7154135641704248309
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1732,6 +1755,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: -5, y: 1}
+  _incomes: []
 --- !u!64 &7707515128970863364
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1880,6 +1904,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 5, y: -9}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &537727030995654932
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2028,6 +2055,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 1, y: -4}
+  _incomes: []
 --- !u!64 &7087155219942727134
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2176,6 +2204,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 6, y: -8}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &5438640525769601370
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2324,6 +2355,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -2, y: 2}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &7926123974589604323
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2472,6 +2506,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: -5, y: 11}
+  _incomes: []
 --- !u!64 &4982279514231736367
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2620,6 +2655,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: 6, y: -5}
+  _incomes: []
 --- !u!64 &392275816834637073
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2768,6 +2804,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: -8, y: -6}
+  _incomes: []
 --- !u!64 &5873380524120282452
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2916,6 +2953,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -3, y: 7}
+  _incomes: []
 --- !u!64 &5789517618790663608
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3064,6 +3102,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 56e643cf6c4dfd04baa52a1dc640d8d3, type: 2}
   _coordinate: {x: 10, y: -4}
+  _incomes: []
 --- !u!64 &1427299388194301725
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3212,6 +3251,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: -2, y: 11}
+  _incomes: []
 --- !u!64 &4370417514317350916
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3360,6 +3400,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -6, y: 9}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &2303341076133913848
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3508,6 +3551,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: a2960fb208e02554499370eafbd65266, type: 2}
   _coordinate: {x: -2, y: -3}
+  _incomes: []
 --- !u!64 &2872220064615571755
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3656,6 +3700,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 11, y: 2}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &2570855577287548779
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3804,6 +3851,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: -8, y: 1}
+  _incomes: []
 --- !u!64 &2250068907460506616
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3952,6 +4000,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: -7, y: -11}
+  _incomes: []
 --- !u!64 &8812554882923843919
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4100,6 +4149,9 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -8, y: 5}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &7717965672887654248
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4248,6 +4300,9 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -2, y: 5}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &5035368178763597601
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4396,6 +4451,9 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 7, y: 9}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &2242142551271742674
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4544,6 +4602,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 8, y: 5}
+  _incomes: []
 --- !u!64 &2088171748098278808
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4692,6 +4751,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 4, y: 8}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &4751694269422620263
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4840,6 +4902,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 797ecded2fc68aa4b9845172a7bfb3a5, type: 2}
   _coordinate: {x: -4, y: 12}
+  _incomes: []
 --- !u!64 &8416303545889315870
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4988,6 +5051,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: ebf4e60d3edd7ca42a57e5a20842798b, type: 2}
   _coordinate: {x: -4, y: 0}
+  _incomes: []
 --- !u!64 &821008000941824279
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5136,6 +5200,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 1, y: 4}
+  _incomes: []
 --- !u!64 &56489967622146955
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5284,6 +5349,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: 8, y: -8}
+  _incomes: []
 --- !u!64 &6322758647446346222
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5432,6 +5498,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -6, y: -1}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &8932723741959787537
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5580,6 +5649,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 797ecded2fc68aa4b9845172a7bfb3a5, type: 2}
   _coordinate: {x: 9, y: 3}
+  _incomes: []
 --- !u!64 &1475768711071701998
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5728,6 +5798,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -6, y: -8}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &7089661083781057360
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5876,6 +5949,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 797ecded2fc68aa4b9845172a7bfb3a5, type: 2}
   _coordinate: {x: 9, y: -5}
+  _incomes: []
 --- !u!64 &6712963965240972220
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6024,6 +6098,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 3, y: -7}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &6299986197512035964
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6172,6 +6249,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: ebf4e60d3edd7ca42a57e5a20842798b, type: 2}
   _coordinate: {x: 3, y: -9}
+  _incomes: []
 --- !u!64 &6360000071909496790
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6320,6 +6398,9 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 5, y: -4}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &2798963500798759355
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6468,6 +6549,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 2, y: -6}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &5594699778803302768
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6616,6 +6700,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 797ecded2fc68aa4b9845172a7bfb3a5, type: 2}
   _coordinate: {x: -8, y: -4}
+  _incomes: []
 --- !u!64 &4976094661355922447
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6764,6 +6849,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: ebf4e60d3edd7ca42a57e5a20842798b, type: 2}
   _coordinate: {x: 3, y: -5}
+  _incomes: []
 --- !u!64 &535638902989564472
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6912,6 +6998,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: a2960fb208e02554499370eafbd65266, type: 2}
   _coordinate: {x: -1, y: 6}
+  _incomes: []
 --- !u!64 &2168086685804374148
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -7060,6 +7147,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 7, y: 1}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &4302939782635009333
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -7208,6 +7298,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: a2960fb208e02554499370eafbd65266, type: 2}
   _coordinate: {x: 7, y: 5}
+  _incomes: []
 --- !u!64 &1468137073529810009
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -7356,6 +7447,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: a2960fb208e02554499370eafbd65266, type: 2}
   _coordinate: {x: -11, y: 0}
+  _incomes: []
 --- !u!64 &4735614005327003980
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -7504,6 +7596,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: a2960fb208e02554499370eafbd65266, type: 2}
   _coordinate: {x: -7, y: 4}
+  _incomes: []
 --- !u!64 &6023891344633348290
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -7652,6 +7745,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: 7, y: 10}
+  _incomes: []
 --- !u!64 &6763672356399199737
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -7800,6 +7894,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: -9, y: -5}
+  _incomes: []
 --- !u!64 &6559873864140795605
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -7948,6 +8043,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 0, y: -1}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &6256995409092034947
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -8096,6 +8194,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 4, y: -8}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &6394122562438314393
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -8244,6 +8345,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: -12, y: 1}
+  _incomes: []
 --- !u!64 &7089808738107276933
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -8392,6 +8494,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -7, y: -10}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &3445348742549198687
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -8540,6 +8645,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 2, y: -12}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &7650192772665963026
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -8688,6 +8796,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: ebf4e60d3edd7ca42a57e5a20842798b, type: 2}
   _coordinate: {x: 7, y: 0}
+  _incomes: []
 --- !u!64 &871244976968431953
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -8836,6 +8945,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: 4, y: 6}
+  _incomes: []
 --- !u!64 &7738327162816040315
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -8984,6 +9094,9 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -3, y: -6}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &7996325301138578647
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -9132,6 +9245,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 1, y: -11}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &7818165960492004059
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -9280,6 +9396,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 8, y: 2}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &5428457957150233276
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -9428,6 +9547,9 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -2, y: -6}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &1613280469535442977
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -9576,6 +9698,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: a2960fb208e02554499370eafbd65266, type: 2}
   _coordinate: {x: -8, y: -7}
+  _incomes: []
 --- !u!64 &628938654834552244
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -9724,6 +9847,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 797ecded2fc68aa4b9845172a7bfb3a5, type: 2}
   _coordinate: {x: -1, y: -4}
+  _incomes: []
 --- !u!64 &710527100723897568
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -9872,6 +9996,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: 6, y: 12}
+  _incomes: []
 --- !u!64 &977402978952110299
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -10020,6 +10145,9 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -6, y: 0}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &6896652920583910755
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -10168,6 +10296,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: -8, y: -5}
+  _incomes: []
 --- !u!64 &719096059897589229
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -10316,6 +10445,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: -3, y: -1}
+  _incomes: []
 --- !u!64 &6622751604297758156
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -10464,6 +10594,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -1, y: 9}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &4784566644559382030
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -10612,6 +10745,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -6, y: -2}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &8166350115879279316
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -10760,6 +10896,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: ebf4e60d3edd7ca42a57e5a20842798b, type: 2}
   _coordinate: {x: 3, y: 10}
+  _incomes: []
 --- !u!64 &2461583406579247618
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -10908,6 +11045,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -3, y: -7}
+  _incomes: []
 --- !u!64 &8600664978407670840
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -11056,6 +11194,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: -2, y: -11}
+  _incomes: []
 --- !u!64 &6649131015281516937
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -11204,6 +11343,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: ebf4e60d3edd7ca42a57e5a20842798b, type: 2}
   _coordinate: {x: 0, y: -9}
+  _incomes: []
 --- !u!64 &7493606419124924756
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -11352,6 +11492,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 1, y: 7}
+  _incomes: []
 --- !u!64 &2881877851720664343
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -11500,6 +11641,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 56e643cf6c4dfd04baa52a1dc640d8d3, type: 2}
   _coordinate: {x: 9, y: -4}
+  _incomes: []
 --- !u!64 &4193028270380979860
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -11648,6 +11790,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: -7, y: 7}
+  _incomes: []
 --- !u!64 &738760221323452613
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -11796,6 +11939,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 2, y: 9}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &7246172336673228368
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -11944,6 +12090,9 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -7, y: 1}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &9032775783787292852
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -12092,6 +12241,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 0, y: -3}
+  _incomes: []
 --- !u!64 &2800922693352579386
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -12240,6 +12390,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: ebf4e60d3edd7ca42a57e5a20842798b, type: 2}
   _coordinate: {x: 0, y: 11}
+  _incomes: []
 --- !u!64 &2258688300216264456
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -12388,6 +12539,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -5, y: -12}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &7403665215472019511
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -12536,6 +12690,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: a2960fb208e02554499370eafbd65266, type: 2}
   _coordinate: {x: -3, y: 11}
+  _incomes: []
 --- !u!64 &7768782059735696623
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -12684,6 +12839,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: 5, y: 0}
+  _incomes: []
 --- !u!64 &1819707076769719609
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -12832,6 +12988,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -7, y: -1}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &1938947038652758074
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -12980,6 +13139,9 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 0, y: -10}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &6084539741730247030
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -13128,6 +13290,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 7, y: 2}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &9210447225781104303
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -13276,6 +13441,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 1, y: 8}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &31952950662913826
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -13424,6 +13592,9 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -9, y: 6}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &4655240128922549948
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -13572,6 +13743,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -2, y: 1}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &3687201409125818796
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -13720,6 +13894,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -6, y: -6}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &5963276267716985404
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -13868,6 +14045,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -6, y: -3}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &2502217012379441719
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -14016,6 +14196,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -3, y: 0}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &6026591651213582560
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -14164,6 +14347,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -5, y: -6}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &1337767147099848895
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -14312,6 +14498,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 2, y: 0}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &6451610098570639240
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -14460,6 +14649,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: -5, y: 5}
+  _incomes: []
 --- !u!64 &722893121416099973
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -14608,6 +14798,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: 3, y: 3}
+  _incomes: []
 --- !u!64 &5198303867006978554
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -14756,6 +14947,9 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 8, y: 6}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &5990176747020556359
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -14904,6 +15098,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: 5, y: 11}
+  _incomes: []
 --- !u!64 &2167430544107393028
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -15052,6 +15247,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 10, y: 2}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &5338067158752984584
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -15200,6 +15398,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 7ba9c15777ff2d74da77b9d79bc62ecf, type: 2}
   _coordinate: {x: 4, y: -5}
+  _incomes: []
 --- !u!64 &8250190885576303833
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -15348,6 +15547,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -1, y: 3}
+  _incomes: []
 --- !u!64 &5141894280312554979
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -15496,6 +15696,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 797ecded2fc68aa4b9845172a7bfb3a5, type: 2}
   _coordinate: {x: -11, y: 1}
+  _incomes: []
 --- !u!64 &3294737156390918397
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -15644,6 +15845,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 2, y: 10}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &7157875819215577946
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -15792,6 +15996,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: 0, y: 8}
+  _incomes: []
 --- !u!64 &6918005546416345301
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -15940,6 +16145,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -6, y: -5}
+  _incomes: []
 --- !u!64 &7790832490631956195
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -16088,6 +16294,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -1, y: 12}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &8832252568019977277
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -16236,6 +16445,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: 5, y: 10}
+  _incomes: []
 --- !u!64 &1873770100666408731
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -16384,6 +16594,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -2, y: -7}
+  _incomes: []
 --- !u!64 &5333096338554213500
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -16532,6 +16743,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 5, y: -3}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &6959945970271018314
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -16680,6 +16894,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 11, y: -2}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &6623374022907988671
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -16828,6 +17045,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 6, y: -1}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &1161992311508404478
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -16976,6 +17196,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 7ba9c15777ff2d74da77b9d79bc62ecf, type: 2}
   _coordinate: {x: 9, y: 6}
+  _incomes: []
 --- !u!64 &3860036734143399811
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -17124,6 +17345,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -2, y: 12}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &5948732646583423803
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -17272,6 +17496,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 797ecded2fc68aa4b9845172a7bfb3a5, type: 2}
   _coordinate: {x: -7, y: 5}
+  _incomes: []
 --- !u!64 &5978328919361717937
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -17420,6 +17645,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: -4, y: -5}
+  _incomes: []
 --- !u!64 &1262311309905704598
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -17568,6 +17794,9 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 8, y: 3}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &8412691067017325705
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -17716,6 +17945,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: ebf4e60d3edd7ca42a57e5a20842798b, type: 2}
   _coordinate: {x: -5, y: 10}
+  _incomes: []
 --- !u!64 &8313962421759672556
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -17864,6 +18094,9 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -6, y: 5}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &2366867144039475340
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -18012,6 +18245,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 56e643cf6c4dfd04baa52a1dc640d8d3, type: 2}
   _coordinate: {x: 9, y: -6}
+  _incomes: []
 --- !u!64 &3409335210904477202
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -18160,6 +18394,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: 5, y: 5}
+  _incomes: []
 --- !u!64 &5132870923343307737
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -18308,6 +18543,9 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 5, y: 2}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &8659863595074564219
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -18456,6 +18694,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 2, y: 5}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &7265934285284114032
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -18604,6 +18845,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 56e643cf6c4dfd04baa52a1dc640d8d3, type: 2}
   _coordinate: {x: -10, y: 1}
+  _incomes: []
 --- !u!64 &8121982906256896660
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -18752,6 +18994,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 7ba9c15777ff2d74da77b9d79bc62ecf, type: 2}
   _coordinate: {x: -4, y: 10}
+  _incomes: []
 --- !u!64 &2956261678628649552
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -18900,6 +19143,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -4, y: 6}
+  _incomes: []
 --- !u!64 &7396353270281680420
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -19048,6 +19292,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 0, y: 1}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &5500605474705923867
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -19196,6 +19443,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 1, y: 6}
+  _incomes: []
 --- !u!64 &8929353639652235118
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -19344,6 +19592,9 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -10, y: 3}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &154220672404498222
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -19492,6 +19743,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 1, y: 3}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &4875185556649016982
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -19640,6 +19894,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -3, y: 5}
+  _incomes: []
 --- !u!64 &8590140283759458444
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -19788,6 +20043,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: 7, y: 4}
+  _incomes: []
 --- !u!64 &8916572027036214919
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -19936,6 +20192,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -8, y: 4}
+  _incomes: []
 --- !u!64 &3091481380740785040
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -20084,6 +20341,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 7ba9c15777ff2d74da77b9d79bc62ecf, type: 2}
   _coordinate: {x: -4, y: 5}
+  _incomes: []
 --- !u!64 &5898291427998498099
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -20232,6 +20490,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: -4, y: 2}
+  _incomes: []
 --- !u!64 &1002840315917229148
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -20380,6 +20639,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -3, y: -4}
+  _incomes: []
 --- !u!64 &7545409420764653998
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -20528,6 +20788,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -5, y: -10}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &6951549837999932468
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -20676,6 +20939,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: a2960fb208e02554499370eafbd65266, type: 2}
   _coordinate: {x: 2, y: -4}
+  _incomes: []
 --- !u!64 &7009231826841580873
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -20824,6 +21088,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: -1, y: -11}
+  _incomes: []
 --- !u!64 &7233978393703480097
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -20972,6 +21237,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: c81ae4899e5770740944c34ce98060ae, type: 2}
   _coordinate: {x: -4, y: 1}
+  _incomes: []
 --- !u!64 &1526468527323165282
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -21120,6 +21386,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -4, y: -7}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &828211840271893476
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -21268,6 +21537,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: 7, y: -6}
+  _incomes: []
 --- !u!64 &9031347510955017386
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -21416,6 +21686,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -5, y: 12}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &5845660933728381557
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -21564,6 +21837,9 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 1, y: -3}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &8089140674968090014
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -21712,6 +21988,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: -5, y: -5}
+  _incomes: []
 --- !u!64 &699344591037066648
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -21860,6 +22137,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: -5, y: 2}
+  _incomes: []
 --- !u!64 &1184010969442347564
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -22008,6 +22286,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 3, y: 7}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &5565772659739200436
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -22156,6 +22437,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: 0, y: -2}
+  _incomes: []
 --- !u!64 &7922182401182627379
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -22304,6 +22586,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -11, y: -3}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &2010805576707325277
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -22452,6 +22737,9 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 8, y: -7}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &5583244772316537211
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -22600,6 +22888,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -9, y: 5}
+  _incomes: []
 --- !u!64 &7617829634467602046
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -22748,6 +23037,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: ebf4e60d3edd7ca42a57e5a20842798b, type: 2}
   _coordinate: {x: -2, y: -8}
+  _incomes: []
 --- !u!64 &1193277929819673745
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -22896,6 +23186,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -4, y: -12}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &8441687094567111001
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -23044,6 +23337,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 2, y: -5}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &6638061586676501467
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -23192,6 +23488,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: -3, y: -10}
+  _incomes: []
 --- !u!64 &1739487131690368341
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -23340,6 +23637,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 0, y: -7}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &3172413729616828479
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -23488,6 +23788,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 3, y: -4}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &7232428135195594411
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -23636,6 +23939,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: ebf4e60d3edd7ca42a57e5a20842798b, type: 2}
   _coordinate: {x: 4, y: 3}
+  _incomes: []
 --- !u!64 &5526736191935145818
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -23784,6 +24088,9 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -5, y: 3}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &1462964212763788937
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -23932,6 +24239,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 9, y: -1}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &2887841002790091028
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -24080,6 +24390,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 0, y: 7}
+  _incomes: []
 --- !u!64 &1980702566917266061
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -24228,6 +24539,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 797ecded2fc68aa4b9845172a7bfb3a5, type: 2}
   _coordinate: {x: 7, y: -7}
+  _incomes: []
 --- !u!64 &2761352913715935889
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -24376,6 +24688,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 7ba9c15777ff2d74da77b9d79bc62ecf, type: 2}
   _coordinate: {x: -6, y: 7}
+  _incomes: []
 --- !u!64 &5398748716033003082
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -24524,6 +24837,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 5, y: -11}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &5724969015572609594
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -24672,6 +24988,9 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -4, y: -11}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &8738238175089227790
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -24820,6 +25139,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 9, y: 5}
+  _incomes: []
 --- !u!64 &1160391695004658831
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -24968,6 +25288,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 4, y: -4}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &8598572486457135116
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -25116,6 +25439,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -6, y: -4}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &742534066572170477
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -25264,6 +25590,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -9, y: 1}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &47423619350710820
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -25412,6 +25741,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: -2, y: -12}
+  _incomes: []
 --- !u!64 &69324579213555714
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -25560,6 +25890,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: 5, y: 12}
+  _incomes: []
 --- !u!64 &1041276129701554326
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -25708,6 +26039,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 2, y: -3}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &7606646835311775288
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -25856,6 +26190,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: ebf4e60d3edd7ca42a57e5a20842798b, type: 2}
   _coordinate: {x: 0, y: -11}
+  _incomes: []
 --- !u!64 &1295216929140885625
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -26004,6 +26339,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -5, y: 9}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &1283612847599497793
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -26152,6 +26490,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: 6, y: 10}
+  _incomes: []
 --- !u!64 &811340960993648880
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -26300,6 +26639,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 11, y: -1}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &260208259536142374
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -26448,6 +26790,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -2, y: 9}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &9117841212690293351
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -26596,6 +26941,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: ebf4e60d3edd7ca42a57e5a20842798b, type: 2}
   _coordinate: {x: -8, y: -2}
+  _incomes: []
 --- !u!64 &9209659064097374289
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -26744,6 +27090,9 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -3, y: 8}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &8972679219061288514
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -26892,6 +27241,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 7ba9c15777ff2d74da77b9d79bc62ecf, type: 2}
   _coordinate: {x: 1, y: 5}
+  _incomes: []
 --- !u!64 &2996586078413178458
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -27040,6 +27390,9 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -3, y: -9}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &2599369176692500057
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -27188,6 +27541,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -4, y: -10}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &5689959535528741586
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -27336,6 +27692,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: 5, y: -8}
+  _incomes: []
 --- !u!64 &8635963984397585920
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -27484,6 +27841,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: a2960fb208e02554499370eafbd65266, type: 2}
   _coordinate: {x: 10, y: -2}
+  _incomes: []
 --- !u!64 &6799419786938158971
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -27632,6 +27990,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 0, y: 10}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &4517732324599501818
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -27780,6 +28141,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: c81ae4899e5770740944c34ce98060ae, type: 2}
   _coordinate: {x: -5, y: -1}
+  _incomes: []
 --- !u!64 &4913947009047108784
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -27928,6 +28290,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -4, y: -6}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &2453636827598554988
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -28076,6 +28441,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: 6, y: 11}
+  _incomes: []
 --- !u!64 &9088143173697703682
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -28224,6 +28590,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -1, y: -2}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &602355214225785240
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -28372,6 +28741,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 6, y: 2}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &9067893999500058720
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -28520,6 +28892,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 7ba9c15777ff2d74da77b9d79bc62ecf, type: 2}
   _coordinate: {x: -2, y: -5}
+  _incomes: []
 --- !u!64 &5239420483330959228
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -28668,6 +29041,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -10, y: 5}
+  _incomes: []
 --- !u!64 &6021560565294886539
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -28816,6 +29190,9 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 5, y: 4}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &1159180919459177525
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -28964,6 +29341,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 56e643cf6c4dfd04baa52a1dc640d8d3, type: 2}
   _coordinate: {x: -4, y: 9}
+  _incomes: []
 --- !u!64 &3215706720213962817
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -29112,6 +29490,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 0, y: -4}
+  _incomes: []
 --- !u!64 &4027094766358815926
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -29260,6 +29639,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -5, y: -4}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &7841466863120563505
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -29408,6 +29790,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -1, y: -7}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &8990029036620653534
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -29556,6 +29941,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 5, y: 3}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &1336049394953999611
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -29704,6 +30092,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: -9, y: -6}
+  _incomes: []
 --- !u!64 &1478880377164969566
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -29852,6 +30241,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -5, y: 8}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &1536298082624041144
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -30000,6 +30392,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 1, y: -5}
+  _incomes: []
 --- !u!64 &4156338163384878709
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -30148,6 +30541,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: -7, y: 0}
+  _incomes: []
 --- !u!64 &9012522960463094327
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -30296,6 +30690,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 4, y: -11}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &3774999737420316870
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -30444,6 +30841,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 2, y: 11}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &63161792691155518
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -30592,6 +30992,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: -1, y: -10}
+  _incomes: []
 --- !u!64 &1613901178149519859
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -30740,6 +31141,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 4, y: -7}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &2098783831379922608
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -30888,6 +31292,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: -6, y: 3}
+  _incomes: []
 --- !u!64 &3014309461972780237
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -31036,6 +31441,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 7ba9c15777ff2d74da77b9d79bc62ecf, type: 2}
   _coordinate: {x: 6, y: 5}
+  _incomes: []
 --- !u!64 &5334326739573000801
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -31184,6 +31590,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -3, y: -5}
+  _incomes: []
 --- !u!64 &3587482858649586668
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -31332,6 +31739,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: 5, y: 7}
+  _incomes: []
 --- !u!64 &5002544805150643310
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -31480,6 +31888,9 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -3, y: -2}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &1342166772101610496
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -31628,6 +32039,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 3, y: 0}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &6129036194943938800
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -31776,6 +32190,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -6, y: -12}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &429724523565486718
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -31924,6 +32341,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 56e643cf6c4dfd04baa52a1dc640d8d3, type: 2}
   _coordinate: {x: 8, y: -3}
+  _incomes: []
 --- !u!64 &1538101280165428481
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -32072,6 +32490,9 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -8, y: -8}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &4150736689262601733
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -32220,6 +32641,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 4, y: -9}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &5294429420079873957
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -32368,6 +32792,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -4, y: 7}
+  _incomes: []
 --- !u!64 &3874711360708796801
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -32516,6 +32941,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: 4, y: 0}
+  _incomes: []
 --- !u!64 &2187725185971848663
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -32664,6 +33090,9 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -1, y: 7}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &7966314635007253433
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -32812,6 +33241,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: 6, y: 7}
+  _incomes: []
 --- !u!64 &3687165134606485970
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -32960,6 +33390,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 8, y: -1}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &6476880010868437970
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -33108,6 +33541,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 56e643cf6c4dfd04baa52a1dc640d8d3, type: 2}
   _coordinate: {x: -4, y: 11}
+  _incomes: []
 --- !u!64 &4132521965500161018
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -33256,6 +33690,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 6, y: 4}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &5913039421139027265
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -33404,6 +33841,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 56e643cf6c4dfd04baa52a1dc640d8d3, type: 2}
   _coordinate: {x: 5, y: 8}
+  _incomes: []
 --- !u!64 &7383002352313546991
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -33552,6 +33990,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -2, y: 6}
+  _incomes: []
 --- !u!64 &6952171108773727141
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -33700,6 +34139,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: -1, y: -3}
+  _incomes: []
 --- !u!64 &2849584481736290913
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -33848,6 +34288,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 2, y: 4}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &2542800395234314960
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -33996,6 +34439,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: ebf4e60d3edd7ca42a57e5a20842798b, type: 2}
   _coordinate: {x: -7, y: 9}
+  _incomes: []
 --- !u!64 &7129225929829128296
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -34144,6 +34588,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: 3, y: -3}
+  _incomes: []
 --- !u!64 &3296175494231705642
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -34292,6 +34737,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -6, y: -11}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &3354275956018270396
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -34440,6 +34888,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 3, y: -12}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &7514429159082265554
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -34588,6 +35039,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 1, y: -8}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &6476584235880146354
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -34736,6 +35190,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: -1, y: -12}
+  _incomes: []
 --- !u!64 &3092955068145449082
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -34884,6 +35339,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: -2, y: -9}
+  _incomes: []
 --- !u!64 &2385007475338384997
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -35032,6 +35488,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: c81ae4899e5770740944c34ce98060ae, type: 2}
   _coordinate: {x: 0, y: 2}
+  _incomes: []
 --- !u!64 &2368853686529747665
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -35180,6 +35637,9 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 4, y: 12}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &3796067492684312587
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -35328,6 +35788,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: 6, y: -2}
+  _incomes: []
 --- !u!64 &3339039909490864829
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -35476,6 +35937,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -2, y: 10}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &5075336834809111165
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -35624,6 +36088,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 7, y: 3}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &3051153970801691562
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -35772,6 +36239,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -1, y: 4}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &7004739782096796258
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -35920,6 +36390,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -4, y: -4}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &8875175398481270146
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -36068,6 +36541,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -5, y: -7}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &9171859193594997937
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -36216,6 +36692,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 56e643cf6c4dfd04baa52a1dc640d8d3, type: 2}
   _coordinate: {x: -3, y: 12}
+  _incomes: []
 --- !u!64 &1365770417682728576
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -36364,6 +36841,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: 7, y: 6}
+  _incomes: []
 --- !u!64 &3031781534560202769
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -36512,6 +36990,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 9, y: 1}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &4208574200887070339
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -36660,6 +37141,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: c81ae4899e5770740944c34ce98060ae, type: 2}
   _coordinate: {x: 2, y: 1}
+  _incomes: []
 --- !u!64 &3968188793306047717
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -36808,6 +37290,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: 0, y: -12}
+  _incomes: []
 --- !u!64 &4459698416104571328
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -36956,6 +37439,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 8, y: 0}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &3432241255981425547
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -37104,6 +37590,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: -6, y: 6}
+  _incomes: []
 --- !u!64 &4344196122278691331
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -37252,6 +37739,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: ebf4e60d3edd7ca42a57e5a20842798b, type: 2}
   _coordinate: {x: -6, y: 4}
+  _incomes: []
 --- !u!64 &7795119436693708645
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -37400,6 +37888,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 7, y: -2}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &275113759243160376
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -37548,6 +38039,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: -8, y: 7}
+  _incomes: []
 --- !u!64 &3787854587363730436
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -37696,6 +38188,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: c81ae4899e5770740944c34ce98060ae, type: 2}
   _coordinate: {x: 4, y: 9}
+  _incomes: []
 --- !u!64 &1755171611194199810
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -37844,6 +38337,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: -5, y: 6}
+  _incomes: []
 --- !u!64 &5087910725919517019
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -37992,6 +38486,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: -1, y: -8}
+  _incomes: []
 --- !u!64 &342035029753263308
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -38140,6 +38635,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -3, y: 9}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &4749748138648380794
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -38288,6 +38786,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: -6, y: 8}
+  _incomes: []
 --- !u!64 &7459103521379372139
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -38436,6 +38935,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -9, y: -1}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &8687928474587751741
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -38584,6 +39086,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 10, y: -1}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &4008544243777857904
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -38732,6 +39237,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: a2960fb208e02554499370eafbd65266, type: 2}
   _coordinate: {x: 2, y: 7}
+  _incomes: []
 --- !u!64 &6255953906628727682
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -38880,6 +39386,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: c81ae4899e5770740944c34ce98060ae, type: 2}
   _coordinate: {x: -8, y: -9}
+  _incomes: []
 --- !u!64 &8295847562112601133
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -39028,6 +39535,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 0, y: 0}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &5250534417183358608
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -39176,6 +39686,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 0, y: -8}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &2923681032839497727
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -39324,6 +39837,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: -7, y: 3}
+  _incomes: []
 --- !u!64 &7728457943001826371
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -39472,6 +39986,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 1, y: 1}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &3459018363250733889
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -39620,6 +40137,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -1, y: 10}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &7033049298510914663
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -39768,6 +40288,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 56e643cf6c4dfd04baa52a1dc640d8d3, type: 2}
   _coordinate: {x: -3, y: 10}
+  _incomes: []
 --- !u!64 &1204603327436861523
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -39916,6 +40437,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: -2, y: -10}
+  _incomes: []
 --- !u!64 &1195691782095355074
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -40064,6 +40586,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 2, y: -2}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &5652412333391802699
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -40212,6 +40737,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 7ba9c15777ff2d74da77b9d79bc62ecf, type: 2}
   _coordinate: {x: 1, y: -6}
+  _incomes: []
 --- !u!64 &1211254067578253188
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -40360,6 +40886,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 3, y: 4}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &1683660306781674342
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -40508,6 +41037,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: -1, y: -1}
+  _incomes: []
 --- !u!64 &7525913161910835536
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -40656,6 +41186,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: 4, y: 5}
+  _incomes: []
 --- !u!64 &3872133620796477276
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -40804,6 +41335,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: c81ae4899e5770740944c34ce98060ae, type: 2}
   _coordinate: {x: 3, y: 8}
+  _incomes: []
 --- !u!64 &3138227170065433386
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -40952,6 +41484,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -8, y: 6}
+  _incomes: []
 --- !u!64 &6404346138576043576
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -41100,6 +41633,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 1, y: -1}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &8903572709196132176
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -41248,6 +41784,9 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -2, y: -2}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &7255706328034626425
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -41396,6 +41935,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 4, y: -10}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &4561308967791595562
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -41544,6 +42086,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -1, y: 1}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &8055483880719355297
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -41692,6 +42237,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -6, y: -7}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &8045743201350225957
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -41840,6 +42388,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: 8, y: -4}
+  _incomes: []
 --- !u!64 &1984764236735180853
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -41988,6 +42537,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -2, y: 3}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &1206701965874750241
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -42136,6 +42688,9 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -9, y: 3}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &984289525104325503
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -42284,6 +42839,9 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 0, y: -6}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &8673765805074320898
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -42432,6 +42990,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -11, y: -1}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &5263902194749086135
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -42580,6 +43141,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: -1, y: -9}
+  _incomes: []
 --- !u!64 &6738889006424212116
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -42728,6 +43290,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: a2960fb208e02554499370eafbd65266, type: 2}
   _coordinate: {x: 5, y: 6}
+  _incomes: []
 --- !u!64 &4102704815026256967
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -42876,6 +43439,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: -1, y: 5}
+  _incomes: []
 --- !u!64 &7724305992695135687
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -43024,6 +43588,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -7, y: -7}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &9213128279420282708
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -43172,6 +43739,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 797ecded2fc68aa4b9845172a7bfb3a5, type: 2}
   _coordinate: {x: 0, y: 6}
+  _incomes: []
 --- !u!64 &100828501151098069
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -43320,6 +43888,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 3, y: 9}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &7848304759715480448
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -43468,6 +44039,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: -4, y: 4}
+  _incomes: []
 --- !u!64 &1262733393250926652
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -43616,6 +44188,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 11, y: 0}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &2690031596523503804
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -43764,6 +44339,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: 5, y: -7}
+  _incomes: []
 --- !u!64 &4191806683546472850
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -43912,6 +44488,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: -3, y: -12}
+  _incomes: []
 --- !u!64 &3105061716768495844
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -44060,6 +44637,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 797ecded2fc68aa4b9845172a7bfb3a5, type: 2}
   _coordinate: {x: -8, y: 2}
+  _incomes: []
 --- !u!64 &6326413806286326833
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -44208,6 +44786,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -9, y: 4}
+  _incomes: []
 --- !u!64 &1854355980418392637
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -44356,6 +44935,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: -5, y: 0}
+  _incomes: []
 --- !u!64 &3081640612985307938
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -44504,6 +45084,9 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -4, y: 3}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &4144228159346465695
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -44652,6 +45235,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: -1, y: -5}
+  _incomes: []
 --- !u!64 &7115609906848852349
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -44800,6 +45384,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -1, y: 0}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &2292890676666545537
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -44948,6 +45535,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: 2, y: 3}
+  _incomes: []
 --- !u!64 &4872787997734535529
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -45096,6 +45684,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 1, y: 2}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &2378643586067469432
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -45244,6 +45835,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 3, y: 2}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &8812961913363948315
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -45392,6 +45986,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: 4, y: -1}
+  _incomes: []
 --- !u!64 &8505089160239242827
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -45540,6 +46135,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 797ecded2fc68aa4b9845172a7bfb3a5, type: 2}
   _coordinate: {x: -2, y: 8}
+  _incomes: []
 --- !u!64 &3748039848898833819
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -45688,6 +46284,9 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -3, y: 4}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &8768476093333963713
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -45836,6 +46435,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -4, y: 8}
+  _incomes: []
 --- !u!64 &2291037546638634659
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -45984,6 +46584,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 3, y: -11}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &5664592937517983388
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -46132,6 +46735,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: c81ae4899e5770740944c34ce98060ae, type: 2}
   _coordinate: {x: 2, y: 8}
+  _incomes: []
 --- !u!64 &5393319234052419400
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -46280,6 +46884,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 2, y: 6}
+  _incomes: []
 --- !u!64 &7020734193724264366
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -46428,6 +47033,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 7ba9c15777ff2d74da77b9d79bc62ecf, type: 2}
   _coordinate: {x: -7, y: 2}
+  _incomes: []
 --- !u!64 &4153734426193624593
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -46576,6 +47182,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 7ba9c15777ff2d74da77b9d79bc62ecf, type: 2}
   _coordinate: {x: -10, y: -5}
+  _incomes: []
 --- !u!64 &6610269906190966311
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -46724,6 +47331,9 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 6, y: -7}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &4522203633288824410
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -46872,6 +47482,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 1, y: -12}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &2407145439822939238
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -47020,6 +47633,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 2, y: -8}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &7747288201954940672
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -47168,6 +47784,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -2, y: 0}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &3234103141902942158
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -47316,6 +47935,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: 4, y: 1}
+  _incomes: []
 --- !u!64 &2126967051230061240
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -47464,6 +48084,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -7, y: -6}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &1092925932083470545
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -47612,6 +48235,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: 6, y: 9}
+  _incomes: []
 --- !u!64 &8218314340607501892
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -47760,6 +48384,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: c81ae4899e5770740944c34ce98060ae, type: 2}
   _coordinate: {x: 6, y: -12}
+  _incomes: []
 --- !u!64 &4180882163620132646
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -47908,6 +48533,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 56e643cf6c4dfd04baa52a1dc640d8d3, type: 2}
   _coordinate: {x: 9, y: -2}
+  _incomes: []
 --- !u!64 &209713511921409581
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -48056,6 +48682,9 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 7, y: -3}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &9040378817122060441
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -48204,6 +48833,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: -5, y: -8}
+  _incomes: []
 --- !u!64 &5255826863583722112
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -48352,6 +48982,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: -5, y: 4}
+  _incomes: []
 --- !u!64 &7391925174351449689
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -48500,6 +49131,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 4, y: -6}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &2478556423050741550
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -48648,6 +49282,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 1, y: -9}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &3344951428538836973
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -48796,6 +49433,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -7, y: -2}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &4614067774805888390
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -48944,6 +49584,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: 5, y: -6}
+  _incomes: []
 --- !u!64 &4115632970773275701
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -49092,6 +49733,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 4, y: -12}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &5742510530837326415
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -49240,6 +49884,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: ebf4e60d3edd7ca42a57e5a20842798b, type: 2}
   _coordinate: {x: 11, y: 1}
+  _incomes: []
 --- !u!64 &4163723868630160653
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -49388,6 +50033,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -8, y: 0}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &3898183695332710899
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -49536,6 +50184,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 1, y: 11}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &7005105892866991245
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -49684,6 +50335,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: a2960fb208e02554499370eafbd65266, type: 2}
   _coordinate: {x: -7, y: 8}
+  _incomes: []
 --- !u!64 &8685651543922352843
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -49832,6 +50484,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -7, y: 10}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &467941013617309743
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -49980,6 +50635,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: c81ae4899e5770740944c34ce98060ae, type: 2}
   _coordinate: {x: 3, y: -1}
+  _incomes: []
 --- !u!64 &1910670673154455732
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -50128,6 +50784,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 7ba9c15777ff2d74da77b9d79bc62ecf, type: 2}
   _coordinate: {x: 7, y: -5}
+  _incomes: []
 --- !u!64 &6753688237251235685
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -50276,6 +50933,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -6, y: -10}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &1237673458179502655
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -50424,6 +51084,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -8, y: 3}
+  _incomes: []
 --- !u!64 &216697660401362229
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -50572,6 +51233,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 2, y: 12}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &2719823359576524703
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -50720,6 +51384,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 9, y: 2}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &2040560667753620037
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -50868,6 +51535,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 12, y: 0}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &6346592571832747929
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -51016,6 +51686,9 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 7, y: 7}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &448036598296292686
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -51164,6 +51837,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -9, y: 0}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &1526112625706805161
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -51312,6 +51988,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 0, y: 4}
+  _incomes: []
 --- !u!64 &4747279638188736709
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -51460,6 +52137,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 6, y: 1}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &1038278537124883486
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -51608,6 +52288,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: -9, y: -7}
+  _incomes: []
 --- !u!64 &8262076575823828919
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -51756,6 +52437,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: -1, y: -6}
+  _incomes: []
 --- !u!64 &3485234568955563008
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -51904,6 +52586,9 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -2, y: 7}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &7924167992561695930
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -52052,6 +52737,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: c81ae4899e5770740944c34ce98060ae, type: 2}
   _coordinate: {x: -10, y: -3}
+  _incomes: []
 --- !u!64 &3379843984558503943
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -52200,6 +52886,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: 1, y: -10}
+  _incomes: []
 --- !u!64 &6061132156291553284
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -52348,6 +53035,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: 6, y: -6}
+  _incomes: []
 --- !u!64 &7414836166413625464
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -52496,6 +53184,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 2, y: -11}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &3172551078515362311
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -52644,6 +53335,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: 1, y: 10}
+  _incomes: []
 --- !u!64 &1808772953514942371
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -52792,6 +53484,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 8, y: 7}
+  _incomes: []
 --- !u!64 &5665881465529139620
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -52940,6 +53633,9 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 3, y: 5}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &7626438176284738897
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -53088,6 +53784,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: c81ae4899e5770740944c34ce98060ae, type: 2}
   _coordinate: {x: 2, y: -7}
+  _incomes: []
 --- !u!64 &7984191026567430
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -53236,6 +53933,9 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -9, y: 7}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &3817577467867471037
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -53384,6 +54084,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: -9, y: -4}
+  _incomes: []
 --- !u!64 &7121586491317011670
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -53532,6 +54233,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -2, y: -4}
+  _incomes: []
 --- !u!64 &7343354460690818434
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -53680,6 +54382,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 56e643cf6c4dfd04baa52a1dc640d8d3, type: 2}
   _coordinate: {x: 9, y: -3}
+  _incomes: []
 --- !u!64 &7121222557474935431
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -53828,6 +54531,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: -8, y: 8}
+  _incomes: []
 --- !u!64 &7817854116496262612
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -53976,6 +54680,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: 7, y: -10}
+  _incomes: []
 --- !u!64 &8111401392020341730
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -54124,6 +54829,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: -5, y: -3}
+  _incomes: []
 --- !u!64 &1108045335601972930
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -54272,6 +54978,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: 4, y: 2}
+  _incomes: []
 --- !u!64 &8110558304104259532
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -54420,6 +55127,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: c81ae4899e5770740944c34ce98060ae, type: 2}
   _coordinate: {x: 8, y: 1}
+  _incomes: []
 --- !u!64 &8916450317353531573
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -54568,6 +55276,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 3, y: 11}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &4192754447762639756
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -54716,6 +55427,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -1, y: 11}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &4529611975563715241
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -54864,6 +55578,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 1, y: -2}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &4567411213251721324
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -55012,6 +55729,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -10, y: 4}
+  _incomes: []
 --- !u!64 &8099258944715866276
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -55160,6 +55878,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -6, y: 12}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &8772178138605343496
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -55308,6 +56029,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -7, y: -5}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &1236405019036788697
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -55456,6 +56180,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -11, y: -2}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &1681971933568907688
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -55604,6 +56331,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 5, y: -2}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &1976665110428376047
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -55752,6 +56482,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 10, y: 1}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &8358231954443200504
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -55900,6 +56633,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 9, y: 4}
+  _incomes: []
 --- !u!64 &3160161518910720949
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -56048,6 +56782,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 10, y: 3}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &4209030411503672069
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -56196,6 +56933,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -7, y: 11}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &1704449401772265980
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -56344,6 +57084,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -9, y: -2}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &5581205383015100473
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -56492,6 +57235,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: ebf4e60d3edd7ca42a57e5a20842798b, type: 2}
   _coordinate: {x: 8, y: 8}
+  _incomes: []
 --- !u!64 &7725314260682056398
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -56640,6 +57384,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 1, y: 9}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &5822302996031523246
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -56788,6 +57535,9 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 0, y: 3}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &8577002889687457620
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -56936,6 +57686,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: ebf4e60d3edd7ca42a57e5a20842798b, type: 2}
   _coordinate: {x: -6, y: -9}
+  _incomes: []
 --- !u!64 &7361802770253837400
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -57084,6 +57835,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: 7, y: -4}
+  _incomes: []
 --- !u!64 &714804168613829402
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -57232,6 +57984,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: 6, y: 0}
+  _incomes: []
 --- !u!64 &8013614067866285538
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -57380,6 +58133,9 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 5, y: 9}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &3281384685068827151
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -57528,6 +58284,9 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 7, y: -9}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &222087108813691398
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -57676,6 +58435,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: 10, y: 0}
+  _incomes: []
 --- !u!64 &9158967614867862373
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -57824,6 +58584,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: c81ae4899e5770740944c34ce98060ae, type: 2}
   _coordinate: {x: 3, y: -2}
+  _incomes: []
 --- !u!64 &6047051690912846955
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -57972,6 +58733,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -7, y: -8}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &797584680532573681
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -58120,6 +58884,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -3, y: -8}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &2607075888432001541
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -58268,6 +59035,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: 5, y: -1}
+  _incomes: []
 --- !u!64 &3466685447241397691
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -58416,6 +59184,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -9, y: -3}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &154014654912986181
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -58564,6 +59335,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 6, y: -11}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &1370621540333935868
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -58712,6 +59486,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -4, y: -8}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &227454095452801953
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -58860,6 +59637,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 2, y: -10}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &8983147965435190880
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -59008,6 +59788,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: c81ae4899e5770740944c34ce98060ae, type: 2}
   _coordinate: {x: 3, y: -10}
+  _incomes: []
 --- !u!64 &2646930245130087299
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -59156,6 +59937,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 5, y: -10}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &2974062067524139394
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -59804,6 +60588,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -4, y: -1}
+  _incomes: []
 --- !u!64 &6492073724394475560
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -59952,6 +60737,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -5, y: -9}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &5806000249601428767
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -60100,6 +60888,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -3, y: 1}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &8470595737517176710
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -60248,6 +61039,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: ebf4e60d3edd7ca42a57e5a20842798b, type: 2}
   _coordinate: {x: 1, y: 0}
+  _incomes: []
 --- !u!64 &7247806201989839643
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -60396,6 +61188,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -6, y: 10}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &9143781081629404923
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -60544,6 +61339,9 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 0, y: 5}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &4410179207933683878
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -60692,6 +61490,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: -10, y: -1}
+  _incomes: []
 --- !u!64 &2783947773692986711
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -60840,6 +61639,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: -6, y: 1}
+  _incomes: []
 --- !u!64 &9006128828799214151
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -60988,6 +61788,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -2, y: -1}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &919500729029410220
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -61136,6 +61939,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: 9, y: 0}
+  _incomes: []
 --- !u!64 &5282091266968172149
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -61284,6 +62088,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -6, y: 11}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &1491729253846618978
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -61432,6 +62239,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 0, y: 9}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &5028265037642179114
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -61580,6 +62390,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -7, y: -9}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &5074176696667125871
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -61728,6 +62541,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -3, y: 2}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &1010668235086151452
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -61876,6 +62692,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 3, y: -6}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &3320676311616840419
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -62024,6 +62843,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: 5, y: -5}
+  _incomes: []
 --- !u!64 &524565113531628629
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -62172,6 +62992,9 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 4, y: 10}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &829121879659887009
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -62320,6 +63143,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 0, y: 12}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &714685861458161711
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -62468,6 +63294,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: c81ae4899e5770740944c34ce98060ae, type: 2}
   _coordinate: {x: -3, y: -11}
+  _incomes: []
 --- !u!64 &4718291112925365937
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -62616,6 +63443,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -1, y: 8}
+  _incomes: []
 --- !u!64 &3743155599953016357
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -62764,6 +63592,9 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 10, y: -3}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &8249013290498514974
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -62912,6 +63743,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 1, y: 12}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &5875401989779443200
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -63060,6 +63894,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -7, y: -3}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &5076148493908625096
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -63208,6 +64045,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: ebf4e60d3edd7ca42a57e5a20842798b, type: 2}
   _coordinate: {x: -5, y: -11}
+  _incomes: []
 --- !u!64 &3965056902715707108
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -63356,6 +64194,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -5, y: -2}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &4649803186462296664
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -63504,6 +64345,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -8, y: -1}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &647992955544266782
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -63652,6 +64496,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -8, y: 9}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &5053103317227552836
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -63800,6 +64647,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: c81ae4899e5770740944c34ce98060ae, type: 2}
   _coordinate: {x: -7, y: -4}
+  _incomes: []
 --- !u!64 &8719963974688335238
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -63948,6 +64796,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 10, y: 4}
+  _incomes: []
 --- !u!64 &6761520251087229882
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -64096,6 +64945,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 797ecded2fc68aa4b9845172a7bfb3a5, type: 2}
   _coordinate: {x: -4, y: -3}
+  _incomes: []
 --- !u!64 &491841788724899638
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -64244,6 +65094,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: ebf4e60d3edd7ca42a57e5a20842798b, type: 2}
   _coordinate: {x: 3, y: 6}
+  _incomes: []
 --- !u!64 &6288058001035989877
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -64392,6 +65243,9 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 3, y: 1}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &8729433027727872954
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -64540,6 +65394,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 1, y: -7}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &443071940161574671
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -64688,6 +65545,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: 6, y: 3}
+  _incomes: []
 --- !u!64 &1776185675723971160
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -64836,6 +65694,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -8, y: -3}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &551343425997934246
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -64984,6 +65845,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 56e643cf6c4dfd04baa52a1dc640d8d3, type: 2}
   _coordinate: {x: 8, y: -2}
+  _incomes: []
 --- !u!64 &4627407390954958209
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -65132,6 +65994,9 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -10, y: -4}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &489537061454326956
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -65280,6 +66145,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 2, y: -1}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &3221292267442592913
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -65428,6 +66296,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 2, y: -9}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &6825467688687507256
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -65576,6 +66447,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: c81ae4899e5770740944c34ce98060ae, type: 2}
   _coordinate: {x: 7, y: -1}
+  _incomes: []
 --- !u!64 &6548204646530176978
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -65724,6 +66596,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: 4, y: 7}
+  _incomes: []
 --- !u!64 &2966210756908289474
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -65872,6 +66745,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: -6, y: 2}
+  _incomes: []
 --- !u!64 &5058700744045694784
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -66020,6 +66894,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 8, y: 4}
+  _incomes: []
 --- !u!64 &7781435691691659061
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -66168,6 +67043,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: 4, y: -2}
+  _incomes: []
 --- !u!64 &1656103741077384779
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -66316,6 +67192,7 @@ MonoBehaviour:
   _biome: 4
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: 4, y: 11}
+  _incomes: []
 --- !u!64 &3983946824010368125
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -66464,6 +67341,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 3, y: -8}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &7721535647083819871
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -66612,6 +67492,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 56e643cf6c4dfd04baa52a1dc640d8d3, type: 2}
   _coordinate: {x: -11, y: 2}
+  _incomes: []
 --- !u!64 &6442775444827346428
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -66760,6 +67641,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -4, y: -2}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &111908155380181627
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -66908,6 +67792,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 6, y: -10}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &4638036063724522894
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -67056,6 +67943,9 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 4, y: 4}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &7213028287278832880
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -67204,6 +68094,7 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: 6, y: -3}
+  _incomes: []
 --- !u!64 &2161253419269997812
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -67352,6 +68243,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 7ba9c15777ff2d74da77b9d79bc62ecf, type: 2}
   _coordinate: {x: -10, y: 0}
+  _incomes: []
 --- !u!64 &4111868346365657932
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -67500,6 +68392,9 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -9, y: 2}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &4384286358499276552
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -67648,6 +68543,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 56e643cf6c4dfd04baa52a1dc640d8d3, type: 2}
   _coordinate: {x: 8, y: -6}
+  _incomes: []
 --- !u!64 &2590759349176728675
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -67796,6 +68692,9 @@ MonoBehaviour:
   _biome: 1
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 4, y: -3}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &639031972893016596
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -67944,6 +68843,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -3, y: -3}
+  _incomes: []
 --- !u!64 &6465504432167293046
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -68092,6 +68992,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -2, y: 4}
+  _incomes: []
 --- !u!64 &4524828186614331514
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -68240,6 +69141,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: -3, y: 3}
+  _incomes: []
 --- !u!64 &3880422368097443664
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -68388,6 +69290,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 56e643cf6c4dfd04baa52a1dc640d8d3, type: 2}
   _coordinate: {x: -11, y: 3}
+  _incomes: []
 --- !u!64 &6582139330313057382
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -68536,6 +69439,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -12, y: -1}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &2665711326685098277
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -68684,6 +69590,9 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 6, y: 8}
+  _incomes:
+  - resource: 6
+    value: 2
 --- !u!64 &7204432882009732318
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -68832,6 +69741,9 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -4, y: -9}
+  _incomes:
+  - resource: 6
+    value: 1
 --- !u!64 &4890549739693943355
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -68980,6 +69892,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: 8, y: -5}
+  _incomes: []
 --- !u!64 &964226945865879718
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -69128,6 +70041,7 @@ MonoBehaviour:
   _biome: 5
   _tileData: {fileID: 11400000, guid: 56e643cf6c4dfd04baa52a1dc640d8d3, type: 2}
   _coordinate: {x: -10, y: 2}
+  _incomes: []
 --- !u!64 &1770876966942135477
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -69276,6 +70190,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: -5, y: 7}
+  _incomes: []
 --- !u!64 &106874447702750934
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -69424,6 +70339,7 @@ MonoBehaviour:
   _biome: 3
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 0, y: -5}
+  _incomes: []
 --- !u!64 &2733680672934067892
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -69572,6 +70488,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: 6, y: -4}
+  _incomes: []
 --- !u!64 &1183789715109080203
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -69720,6 +70637,7 @@ MonoBehaviour:
   _biome: 0
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: 6, y: -9}
+  _incomes: []
 --- !u!64 &8206071508726902088
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -69868,6 +70786,7 @@ MonoBehaviour:
   _biome: 2
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: 6, y: 6}
+  _incomes: []
 --- !u!64 &7732607189467769415
 MeshCollider:
   m_ObjectHideFlags: 0

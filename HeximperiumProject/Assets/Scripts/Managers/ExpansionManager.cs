@@ -12,8 +12,9 @@ public class ExpansionManager : Singleton<ExpansionManager>
     private int _baseClaimPerTurn;
 
     public int AvailableTown { get => _availableTown; set => _availableTown = value; }
-    public Transform BorderParent { get => _borderParent;}
+    public Transform BorderParent { get => _borderParent; }
     public int BaseClaimPerTurn { get => _baseClaimPerTurn; set => _baseClaimPerTurn = value; }
+    public List<Tile> ClaimedTiles { get => _claimedTiles; }
 
     protected override void OnAwake()
     {
@@ -27,6 +28,11 @@ public class ExpansionManager : Singleton<ExpansionManager>
         if (phase != Phase.Expand)
             return;
         ResourcesManager.Instance.UpdateClaim(_baseClaimPerTurn, Transaction.Gain);
+    }
+
+    public void ConfirmingPhase()
+    {
+        ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim, Transaction.Spent);
     }
 
     private void NewTileSelected(Tile tile)

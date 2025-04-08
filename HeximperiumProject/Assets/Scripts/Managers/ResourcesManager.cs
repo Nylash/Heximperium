@@ -12,6 +12,8 @@ public class ResourcesManager : Singleton<ResourcesManager>
     private int _crystal;
     private int _emberbone;
 
+    public int Claim { get => _claim; }
+
     public void UpdateResource(Resource resource, int value, Transaction transaction)
     {
         if (transaction == Transaction.Spent)
@@ -19,16 +21,28 @@ public class ResourcesManager : Singleton<ResourcesManager>
         switch (resource)
         {
             case Resource.Stone:
+                _stone += value;
+                UIManager.Instance.UpdateResourceUI(Resource.Stone, _stone);
                 break;
             case Resource.Essence:
+                _essence += value;
+                UIManager.Instance.UpdateResourceUI(Resource.Essence, _essence);
                 break;
             case Resource.Horse:
+                _horse += value;
+                UIManager.Instance.UpdateResourceUI(Resource.Horse, _horse);
                 break;
             case Resource.Pigment:
+                _pigment += value;
+                UIManager.Instance.UpdateResourceUI(Resource.Pigment, _pigment);
                 break;
             case Resource.Crystal:
+                _crystal += value;
+                UIManager.Instance.UpdateResourceUI(Resource.Crystal, _crystal);
                 break;
             case Resource.Emberbone:
+                _emberbone += value;
+                UIManager.Instance.UpdateResourceUI(Resource.Emberbone, _emberbone);
                 break;
             case Resource.Gold:
                 _gold += value;

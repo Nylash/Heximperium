@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public static class Utilities
 {
@@ -20,5 +21,40 @@ public static class Utilities
                 Debug.LogError("Interaction are not written for this many buttons : " + buttonsNumber);
                 return _positions;
         }
+    }
+
+    //Merge two List<ResourceValue>
+    public static List<ResourceValue> MergeResourceValues(List<ResourceValue> list1, List<ResourceValue> list2)
+    {
+        var mergedDictionary = new Dictionary<Resource, int>();
+
+        // Add values from the first list
+        foreach (var rv in list1)
+        {
+            if (mergedDictionary.ContainsKey(rv.resource))
+            {
+                mergedDictionary[rv.resource] += rv.value;
+            }
+            else
+            {
+                mergedDictionary[rv.resource] = rv.value;
+            }
+        }
+
+        // Add values from the second list
+        foreach (var rv in list2)
+        {
+            if (mergedDictionary.ContainsKey(rv.resource))
+            {
+                mergedDictionary[rv.resource] += rv.value;
+            }
+            else
+            {
+                mergedDictionary[rv.resource] = rv.value;
+            }
+        }
+
+        // Convert the dictionary back to a list
+        return mergedDictionary.Select(kvp => new ResourceValue(kvp.Key, kvp.Value)).ToList();
     }
 }

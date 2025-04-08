@@ -237,9 +237,12 @@ public class GameManager : Singleton<GameManager>
             if (_currentPhase == Phase.Explore)
             {
                 ExplorationManager.Instance.ConfirmingPhase();
+                //Waiting scouts movement
                 _waitingPhaseFinalization = true;
                 return;
-            }                
+            }
+            if (_currentPhase == Phase.Expand)
+                ExpansionManager.Instance.ConfirmingPhase();
             _currentPhase++;
         }
         else
