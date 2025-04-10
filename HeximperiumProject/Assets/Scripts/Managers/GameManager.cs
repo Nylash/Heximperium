@@ -230,30 +230,31 @@ public class GameManager : Singleton<GameManager>
     {
         if (_waitingPhaseFinalization)
             return;
+        //Avoid confirming phase when scout aren't properly initialized
         if (ExplorationManager.Instance.ChoosingScoutDirection)
             return;
-        if (_currentPhase != Phase.Entertain)
+
+        switch (_currentPhase)
         {
-            if (_currentPhase == Phase.Explore)
-            {
+            case Phase.Explore:
                 ExplorationManager.Instance.ConfirmingPhase();
                 //Waiting scouts movement
                 _waitingPhaseFinalization = true;
                 return;
-            }
-            if (_currentPhase == Phase.Expand)
+            case Phase.Expand:
                 ExpansionManager.Instance.ConfirmingPhase();
-            _currentPhase++;
-        }
-        else
-        {
-            _currentPhase = Phase.Explore;
-            _turnCounter++;
-
-            event_newTurn.Invoke(_turnCounter);
-        }
-
-        event_newPhase.Invoke(_currentPhase);
+                PhaseFinalized();
+                break;
+            case Phase.Exploit:
+                PhaseFinalized();
+                break;
+            case Phase.Entertain:
+                _currentPhase = Phase.Explore;
+                _turnCounter++;
+                event_newTurn.Invoke(_turnCounter);
+                event_newPhase.Invoke(_currentPhase);
+                break;
+        } 
     }
 
     private void PhaseFinalized()
