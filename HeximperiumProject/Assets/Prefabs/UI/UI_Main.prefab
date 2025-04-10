@@ -2888,6 +2888,13 @@ MonoBehaviour:
   _mainCanvas: {fileID: 2806631156848996531}
   _claimText: {fileID: 8735741183201602680}
   _goldText: {fileID: 3081298897090699328}
+  _stoneText: {fileID: 1541695655722554134}
+  _essenceText: {fileID: 6687428997265309872}
+  _horseText: {fileID: 710380627979874675}
+  _pigmentText: {fileID: 3840261857272314674}
+  _crystalText: {fileID: 7004588516580792371}
+  _emberboneText: {fileID: 5870308936638522521}
+  _scoreText: {fileID: 1451127965528549099}
   _currentPhaseText: {fileID: 3399592720716487006}
   _confirmPhaseButtonText: {fileID: 1588121271402870833}
   _turnCounterText: {fileID: 5418171433837782113}

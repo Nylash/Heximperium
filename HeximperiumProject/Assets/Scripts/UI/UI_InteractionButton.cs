@@ -6,15 +6,15 @@ public class UI_InteractionButton : MonoBehaviour
 
     private Interaction _interaction;
     private Tile _associatedTile;
-    private TileData _tileData;
+    private InfrastructureData _infraData;
     private UnitData _unitData;
 
     public Interaction Interaction { get => _interaction;}
     public Tile AssociatedTile { get => _associatedTile;}
-    public TileData TileData { get => _tileData;}
+    public InfrastructureData InfrastructureData { get => _infraData;}
     public UnitData UnitData { get => _unitData;}
 
-    public void Initialize(Tile associatedTile, Interaction action)
+    public void Initialize(Tile associatedTile, Interaction action, InfrastructureData infraData = null)
     {
         switch (action)
         {
@@ -37,11 +37,18 @@ public class UI_InteractionButton : MonoBehaviour
                 _associatedTile = associatedTile;
                 _interaction = Interaction.Scout;
                 _unitData = Resources.Load<ScoutData>("Data/Units/" + action.ToString());
-                ScoutData scoutData = (ScoutData)_unitData;
-                if (!ResourcesManager.Instance.CanAfford(scoutData.Costs)
+                if (!ResourcesManager.Instance.CanAfford(_unitData.Costs)
                     && ExplorationManager.Instance.FreeScouts == 0)
                     _renderer.color = UIManager.Instance.ColorCantAfford;
                 _renderer.sprite = Resources.Load<Sprite>("InteractionButtons/" + action.ToString());
+                break;
+            case Interaction.Infrastructure:
+                _associatedTile = associatedTile;
+                _interaction = Interaction.Infrastructure;
+                _infraData = infraData;
+                if(!ResourcesManager.Instance.CanAfford(_infraData.Costs))
+                    _renderer.color = UIManager.Instance.ColorCantAfford;
+                _renderer.sprite = Resources.Load<Sprite>("InteractionButtons/" + infraData.name);
                 break;
         }
     }
@@ -49,5 +56,5 @@ public class UI_InteractionButton : MonoBehaviour
 
 public enum Interaction
 {
-    Claim, Town, Scout
+    Claim, Town, Scout, Infrastructure
 }

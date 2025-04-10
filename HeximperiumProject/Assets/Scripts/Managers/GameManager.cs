@@ -218,7 +218,10 @@ public class GameManager : Singleton<GameManager>
                 ExpansionManager.Instance.BuildTown(button.AssociatedTile);
                 break;
             case Interaction.Scout:
-                ExplorationManager.Instance.SpawnScout(button.AssociatedTile, (ScoutData)button.UnitData);
+                ExplorationManager.Instance.SpawnScout(button.AssociatedTile, button.UnitData);
+                break;
+            case Interaction.Infrastructure:
+                ExploitationManager.Instance.BuildInfrastructure(button.AssociatedTile, button.InfrastructureData);
                 break;
             default: 
                 Debug.LogError("This interaction is not handle : " +  button.Interaction);

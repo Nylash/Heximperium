@@ -96,7 +96,7 @@ public class ExplorationManager : Singleton<ExplorationManager>
         }
     }
 
-    public void SpawnScout(Tile tile, ScoutData data)
+    public void SpawnScout(Tile tile, UnitData data)
     {
         if(ResourcesManager.Instance.CanAfford(data.Costs) || _freeScouts != 0)
         {
