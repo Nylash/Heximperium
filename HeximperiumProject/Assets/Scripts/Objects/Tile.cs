@@ -4,22 +4,24 @@ using System.Collections.Generic;
 
 public class Tile : MonoBehaviour
 {
+    #region VARIABLES
+    //Remove the serializedField when the map creation is fixed
     [SerializeField] private Biome _biome;
     [SerializeField] private TileData _tileData;
-
-    //Remove the serializedField when the map creation is fixed
     [SerializeField] private Vector2 _coordinate;
     [SerializeField] private List<ResourceValue> _incomes = new List<ResourceValue>();
 
     private Tile[] _neighbors = new Tile[6];
+    private TileData _initialData;
     private bool _revealed;
     private bool _claimed;
     private Border _border;
     private Animator _animator;
     private List<Scout> _scouts = new List<Scout>();
-    
     private TextMeshPro _scoutCounter;
+    #endregion
 
+    #region ACCESSORS
     public Vector2 Coordinate { get => _coordinate; set => _coordinate = value; }
     public TileData TileData
     {
@@ -41,10 +43,13 @@ public class Tile : MonoBehaviour
     public Tile[] Neighbors { get => _neighbors;}
     public List<Scout> Scouts { get => _scouts; set => _scouts = value; }
     public List<ResourceValue> Incomes { get => _incomes; set => _incomes = value; }
+    public TileData InitialData { get => _initialData; set => _initialData = value; }
+    #endregion
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
+        _initialData = _tileData;
     }
 
     public void ClaimTile()

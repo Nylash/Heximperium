@@ -75,6 +75,7 @@ public class MapManager : Singleton<MapManager>
                 tile.Coordinate = new Vector2(col, row);
 
                 //LOGIC to do place tile types (Basic, Hazard...) by setting TileData (name & income) are set in the setter
+                //Think to set tile.InitialData and remove it from Tile.Awake()
                 tile.name = tile.TileData.TileName + " " + col + ";" + row;
                 tile.Incomes = tile.TileData.Incomes;
 

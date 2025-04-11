@@ -50,11 +50,16 @@ public class UI_InteractionButton : MonoBehaviour
                     _renderer.color = UIManager.Instance.ColorCantAfford;
                 _renderer.sprite = Resources.Load<Sprite>("InteractionButtons/" + infraData.name);
                 break;
+            case Interaction.Destroy:
+                _associatedTile = associatedTile;
+                _interaction = Interaction.Destroy;
+                _renderer.sprite = Resources.Load<Sprite>("InteractionButtons/" + action.ToString());
+                break;
         }
     }
 }
 
 public enum Interaction
 {
-    Claim, Town, Scout, Infrastructure
+    Claim, Town, Scout, Infrastructure, Destroy
 }

@@ -223,6 +223,9 @@ public class GameManager : Singleton<GameManager>
             case Interaction.Infrastructure:
                 ExploitationManager.Instance.BuildInfrastructure(button.AssociatedTile, button.InfrastructureData);
                 break;
+            case Interaction.Destroy:
+                ExploitationManager.Instance.DestroyInfrastructure(button.AssociatedTile);
+                break;
             default: 
                 Debug.LogError("This interaction is not handle : " +  button.Interaction);
                 break;
