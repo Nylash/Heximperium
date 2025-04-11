@@ -17,3 +17,5 @@ MonoBehaviour:
   _textEffect: Can be upgraded to produce pigment.
   _typeIncomeUpgrade: 1
   _incomes: []
+  _availableInfrastructures:
+  - {fileID: 11400000, guid: cf1ab9c803f94fb4c825de85fccc7ba9, type: 2}

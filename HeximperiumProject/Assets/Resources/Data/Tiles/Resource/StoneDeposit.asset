@@ -17,3 +17,5 @@ MonoBehaviour:
   _textEffect: Can be upgraded to produce stone.
   _typeIncomeUpgrade: 1
   _incomes: []
+  _availableInfrastructures:
+  - {fileID: 11400000, guid: babbdf6331d91034888b073e6c34d892, type: 2}
