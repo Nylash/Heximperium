@@ -641,7 +641,7 @@ MonoBehaviour:
   _persistentSingleton: 0
   _tilePrefab: {fileID: 5751803865783233614, guid: 8438ded482f00494aa769242da2958cd, type: 3}
   _mapRadius: 12
-  _predefinedMap: {fileID: 8104166239845412188, guid: d79d7cc6bd99769419fd1cdd9efc1b75, type: 3}
+  _predefinedMap: {fileID: 2164588132861682141, guid: 6ca359bb0c3115247913e06bd5746322, type: 3}
   _emptyMap: {fileID: 3026037459454811544, guid: 8e788ee934d5849459ad1a6b7658af73, type: 3}
   event_mapGenerated:
     m_PersistentCalls:
@@ -685,6 +685,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
+  _infraAvailableCopies:
+  - infrastructure: {fileID: 11400000, guid: b5e79191f4522cc4a81b4bb777d213c6, type: 2}
+    availableCopy: 2
+  - infrastructure: {fileID: 11400000, guid: 758e0bfcbc1c85b4f8d4064dfc028b50, type: 2}
+    availableCopy: 3
 --- !u!114 &1153636975
 MonoBehaviour:
   m_ObjectHideFlags: 0

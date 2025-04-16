@@ -71,7 +71,7 @@ public class ExplorationManager : Singleton<ExplorationManager>
         if (GameManager.Instance.CurrentPhase != Phase.Explore)
             return;
 
-        if(tile.TileData.ScoutStartingPoint)
+        if(tile.TileData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
         {
             _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
             ScoutInteraction(tile, 0);
@@ -96,7 +96,7 @@ public class ExplorationManager : Singleton<ExplorationManager>
         }
     }
 
-    public void SpawnScout(Tile tile, ScoutData data)
+    public void SpawnScout(Tile tile, UnitData data)
     {
         if(ResourcesManager.Instance.CanAfford(data.Costs) || _freeScouts != 0)
         {

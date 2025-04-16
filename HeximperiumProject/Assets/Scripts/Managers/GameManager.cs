@@ -120,7 +120,7 @@ public class GameManager : Singleton<GameManager>
             foreach (Tile tile in centralTile.Neighbors)
             {
                 //Give the player claim for the tile
-                ResourcesManager.Instance.UpdateResource(Resource.Claim, tile.TileData.ClaimCost, Transaction.Gain);
+                ResourcesManager.Instance.UpdateClaim(tile.TileData.ClaimCost, Transaction.Gain);
                 ExpansionManager.Instance.ClaimTile(tile);
             }
         }
@@ -142,7 +142,7 @@ public class GameManager : Singleton<GameManager>
                 if (!firstRingTile.Claimed)
                 {
                     //Give the player claim for the tile
-                    ResourcesManager.Instance.UpdateResource(Resource.Claim, firstRingTile.TileData.ClaimCost, Transaction.Gain);
+                    ResourcesManager.Instance.UpdateClaim(firstRingTile.TileData.ClaimCost, Transaction.Gain);
                     ExpansionManager.Instance.ClaimTile(firstRingTile);
                 }
                 foreach (Tile secondRingTile in firstRingTile.Neighbors)
@@ -150,7 +150,7 @@ public class GameManager : Singleton<GameManager>
                     if (!secondRingTile.Claimed)
                     {
                         //Give the player claim for the tile
-                        ResourcesManager.Instance.UpdateResource(Resource.Claim, secondRingTile.TileData.ClaimCost, Transaction.Gain);
+                        ResourcesManager.Instance.UpdateClaim(secondRingTile.TileData.ClaimCost, Transaction.Gain);
                         ExpansionManager.Instance.ClaimTile(secondRingTile);
                     }
                 }
@@ -218,7 +218,13 @@ public class GameManager : Singleton<GameManager>
                 ExpansionManager.Instance.BuildTown(button.AssociatedTile);
                 break;
             case Interaction.Scout:
-                ExplorationManager.Instance.SpawnScout(button.AssociatedTile, (ScoutData)button.UnitData);
+                ExplorationManager.Instance.SpawnScout(button.AssociatedTile, button.UnitData);
+                break;
+            case Interaction.Infrastructure:
+                ExploitationManager.Instance.BuildInfrastructure(button.AssociatedTile, button.InfrastructureData);
+                break;
+            case Interaction.Destroy:
+                ExploitationManager.Instance.DestroyInfrastructure(button.AssociatedTile);
                 break;
             default: 
                 Debug.LogError("This interaction is not handle : " +  button.Interaction);
@@ -230,27 +236,31 @@ public class GameManager : Singleton<GameManager>
     {
         if (_waitingPhaseFinalization)
             return;
+        //Avoid confirming phase when scout aren't properly initialized
         if (ExplorationManager.Instance.ChoosingScoutDirection)
             return;
-        if (_currentPhase != Phase.Entertain)
+
+        switch (_currentPhase)
         {
-            if (_currentPhase == Phase.Explore)
-            {
+            case Phase.Explore:
                 ExplorationManager.Instance.ConfirmingPhase();
+                //Waiting scouts movement
                 _waitingPhaseFinalization = true;
                 return;
-            }                
-            _currentPhase++;
-        }
-        else
-        {
-            _currentPhase = Phase.Explore;
-            _turnCounter++;
-
-            event_newTurn.Invoke(_turnCounter);
-        }
-
-        event_newPhase.Invoke(_currentPhase);
+            case Phase.Expand:
+                ExpansionManager.Instance.ConfirmingPhase();
+                PhaseFinalized();
+                break;
+            case Phase.Exploit:
+                PhaseFinalized();
+                break;
+            case Phase.Entertain:
+                _currentPhase = Phase.Explore;
+                _turnCounter++;
+                event_newTurn.Invoke(_turnCounter);
+                event_newPhase.Invoke(_currentPhase);
+                break;
+        } 
     }
 
     private void PhaseFinalized()

@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Stone deposit
   _claimCost: 1
-  _goldIncome: 0
   _textEffect: Can be upgraded to produce stone.
-  _resource: 0
-  _resourceIncome: 0
+  _typeIncomeUpgrade: 1
+  _incomes: []
+  _availableInfrastructures:
+  - {fileID: 11400000, guid: babbdf6331d91034888b073e6c34d892, type: 2}

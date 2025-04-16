@@ -14,5 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Hill
   _claimCost: 1
-  _goldIncome: 1
   _textEffect: Can be upgraded with various infrastructures.
+  _typeIncomeUpgrade: 1
+  _incomes:
+  - resource: 6
+    value: 1
+  _availableInfrastructures:
+  - {fileID: 11400000, guid: 2343a704b58abda4dbeead80ff882353, type: 2}
+  - {fileID: 11400000, guid: d605880768b6f2d4b8e1f144917d1503, type: 2}
+  - {fileID: 11400000, guid: b5e79191f4522cc4a81b4bb777d213c6, type: 2}
+  - {fileID: 11400000, guid: ab6dee53a8e596b40ae96f77c15d9d33, type: 2}
+  - {fileID: 11400000, guid: 87df111a95844d84c8c0d1ddece93ce9, type: 2}
+  - {fileID: 11400000, guid: 758e0bfcbc1c85b4f8d4064dfc028b50, type: 2}
+  - {fileID: 11400000, guid: bdca8022095e9c64bb08848a6143d808, type: 2}
+  - {fileID: 11400000, guid: e779e3985649cf447850ff0b982df028, type: 2}

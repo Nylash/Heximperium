@@ -12,8 +12,9 @@ public class ExpansionManager : Singleton<ExpansionManager>
     private int _baseClaimPerTurn;
 
     public int AvailableTown { get => _availableTown; set => _availableTown = value; }
-    public Transform BorderParent { get => _borderParent;}
+    public Transform BorderParent { get => _borderParent; }
     public int BaseClaimPerTurn { get => _baseClaimPerTurn; set => _baseClaimPerTurn = value; }
+    public List<Tile> ClaimedTiles { get => _claimedTiles; }
 
     protected override void OnAwake()
     {
@@ -26,7 +27,12 @@ public class ExpansionManager : Singleton<ExpansionManager>
     {
         if (phase != Phase.Expand)
             return;
-        ResourcesManager.Instance.UpdateResource(Resource.Claim, _baseClaimPerTurn, Transaction.Gain);
+        ResourcesManager.Instance.UpdateClaim(_baseClaimPerTurn, Transaction.Gain);
+    }
+
+    public void ConfirmingPhase()
+    {
+        ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim, Transaction.Spent);
     }
 
     private void NewTileSelected(Tile tile)
@@ -58,9 +64,9 @@ public class ExpansionManager : Singleton<ExpansionManager>
     {
         if (!tile.Claimed)
         {
-            if(ResourcesManager.Instance.CanAfford(Resource.Claim, tile.TileData.ClaimCost))
+            if(ResourcesManager.Instance.CanAffordClaim(tile.TileData.ClaimCost))
             {
-                ResourcesManager.Instance.UpdateResource(Resource.Claim, tile.TileData.ClaimCost, Transaction.Spent);
+                ResourcesManager.Instance.UpdateClaim(tile.TileData.ClaimCost, Transaction.Spent);
                 tile.ClaimTile();
                 _claimedTiles.Add(tile);
                 foreach (Tile t in _claimedTiles)
@@ -77,7 +83,6 @@ public class ExpansionManager : Singleton<ExpansionManager>
     {
         if (_availableTown != 0)// && ResourcesManager.Instance.CanAfford())
         {
-            
             //Start by claiming the tile if needed
             if (!tile.Claimed)
             {
