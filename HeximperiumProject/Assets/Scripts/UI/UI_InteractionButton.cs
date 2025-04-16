@@ -46,7 +46,7 @@ public class UI_InteractionButton : MonoBehaviour
                 _associatedTile = associatedTile;
                 _interaction = Interaction.Infrastructure;
                 _infraData = infraData;
-                if(!ResourcesManager.Instance.CanAfford(_infraData.Costs))
+                if(!ResourcesManager.Instance.CanAfford(_infraData.Costs) || !ExploitationManager.Instance.IsInfraAvailable(infraData))
                     _renderer.color = UIManager.Instance.ColorCantAfford;
                 _renderer.sprite = Resources.Load<Sprite>("InteractionButtons/" + infraData.name);
                 break;
