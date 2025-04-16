@@ -9,6 +9,7 @@ public class TileData : ScriptableObject
     [SerializeField] private TypeIncomeUpgrade _typeIncomeUpgrade;
     [SerializeField] private List<ResourceValue> _incomes = new List<ResourceValue>();
     [SerializeField] private List<InfrastructureData> _availableInfrastructures = new List<InfrastructureData>();
+    [SerializeField] private SpecialBehaviour _specialBehaviour;
 
     public string TileName { get => _name; }
     public int ClaimCost { get => _claimCost; }
@@ -16,6 +17,7 @@ public class TileData : ScriptableObject
     public List<ResourceValue> Incomes { get => _incomes; }
     public TypeIncomeUpgrade TypeIncomeUpgrade { get => _typeIncomeUpgrade; }
     public List<InfrastructureData> AvailableInfrastructures { get => _availableInfrastructures; }
+    public SpecialBehaviour SpecialBehaviour { get => _specialBehaviour; }
 
     public int GetSpecificIncome(Resource resource)
     {

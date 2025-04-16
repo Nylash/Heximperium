@@ -17,6 +17,8 @@ MonoBehaviour:
   _textEffect: Remove base tile income. +3 Gold Income to surrounding hunter's cabins
   _typeIncomeUpgrade: 1
   _incomes: []
+  _availableInfrastructures: []
+  _specialBehaviour: {fileID: 11400000, guid: dbed50ea8f0a28f47922b675ad50174b, type: 2}
   _scoutStartingPoint: 0
   _costs:
   - resource: 6

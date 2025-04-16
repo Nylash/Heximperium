@@ -18,6 +18,8 @@ MonoBehaviour:
     adjacent tiles)
   _typeIncomeUpgrade: 1
   _incomes: []
+  _availableInfrastructures: []
+  _specialBehaviour: {fileID: 11400000, guid: 76410f1dec70a074289e3002308e9c1d, type: 2}
   _scoutStartingPoint: 0
   _costs:
   - resource: 6

@@ -17,6 +17,8 @@ MonoBehaviour:
   _textEffect: Remove base tile income. +2 Gold Income to surrounding farms
   _typeIncomeUpgrade: 1
   _incomes: []
+  _availableInfrastructures: []
+  _specialBehaviour: {fileID: 11400000, guid: 7ca701c08f762dd4fa86300725250759, type: 2}
   _scoutStartingPoint: 0
   _costs:
   - resource: 6

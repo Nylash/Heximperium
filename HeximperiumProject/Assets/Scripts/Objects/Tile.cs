@@ -1,6 +1,8 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class Tile : MonoBehaviour
 {
@@ -21,6 +23,9 @@ public class Tile : MonoBehaviour
     private TextMeshPro _scoutCounter;
     #endregion
 
+    //previous Incomes, new Incomes
+    [HideInInspector] public UnityEvent<List<ResourceValue>, List<ResourceValue>> event_IncomeModified;
+
     #region ACCESSORS
     public Vector2 Coordinate { get => _coordinate; set => _coordinate = value; }
     public TileData TileData
@@ -28,13 +33,33 @@ public class Tile : MonoBehaviour
         get => _tileData;
         set
         {
+            //Remove previous special behaviour
+            if (_tileData.SpecialBehaviour != null)
+            {
+                _tileData.SpecialBehaviour.RollbackSpecialBehaviour();
+            }
+
             if (value.TypeIncomeUpgrade == TypeIncomeUpgrade.Merge)
-                _incomes = Utilities.MergeResourceValues(_incomes, value.Incomes);
+                Incomes = Utilities.MergeResourceValues(_incomes, value.Incomes);
             else
-                _incomes = value.Incomes;
+                Incomes = value.Incomes;
             name = value.TileName + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
             _tileData = value;
             UpdateVisual();
+
+            //Tile special behaviour
+            if (_tileData.SpecialBehaviour != null)
+            {
+                _tileData.SpecialBehaviour.Tile = this;
+                _tileData.SpecialBehaviour.RealizeSpecialBehaviour();
+            }
+                
+            //Foreach neighbors check if their special behaviour should impact the new tile
+            foreach (Tile item in _neighbors)
+            {
+                if(item.TileData.SpecialBehaviour != null)
+                    item.TileData.SpecialBehaviour.RealizeSpecialBehaviour(this);
+            }
         }
     }
     public bool Claimed { get => _claimed;}
@@ -42,9 +67,23 @@ public class Tile : MonoBehaviour
     public Biome Biome { get => _biome; set => _biome = value; }
     public Tile[] Neighbors { get => _neighbors;}
     public List<Scout> Scouts { get => _scouts; set => _scouts = value; }
-    public List<ResourceValue> Incomes { get => _incomes; set => _incomes = value; }
+    public List<ResourceValue> Incomes
+    {
+        get => _incomes;
+        set
+        {
+            event_IncomeModified.Invoke(_incomes, value);
+            _incomes = value;
+        }
+    }
     public TileData InitialData { get => _initialData; set => _initialData = value; }
     #endregion
+
+    private void OnEnable()
+    {
+        if (event_IncomeModified == null)
+            event_IncomeModified = new UnityEvent<List<ResourceValue>, List<ResourceValue>>();
+    }
 
     private void Awake()
     {
