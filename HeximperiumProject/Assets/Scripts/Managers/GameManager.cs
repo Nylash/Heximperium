@@ -271,7 +271,3 @@ public class GameManager : Singleton<GameManager>
     }
 }
 
-public enum Phase
-{
-    Explore, Expand, Exploit, Entertain
-}

@@ -112,14 +112,3 @@ public class ResourcesManager : Singleton<ResourcesManager>
             return false;
     }
 }
-
-
-public enum Resource
-{
-    Stone, Essence, Horse, Pigment, Crystal, Emberbone, Gold
-}
-
-public enum Transaction
-{
-    Gain, Spent
-}

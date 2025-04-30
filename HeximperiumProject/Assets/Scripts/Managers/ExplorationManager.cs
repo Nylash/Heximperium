@@ -180,9 +180,3 @@ public class ExplorationManager : Singleton<ExplorationManager>
         }
     }
 }
-
-//The int respect the neighbors order, so simply cast it to int match the good neighbor
-public enum Direction
-{
-    TopRight, Right, BottomRight, BottomLeft, Left, TopLeft
-}
