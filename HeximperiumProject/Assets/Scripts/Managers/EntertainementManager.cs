@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class EntertainementManager : Singleton<EntertainementManager>
 {
+    [SerializeField] private GameObject _entertainerPrefab;
+    [SerializeField] private Transform _entertainersParent;
+
     private List<Entertainer> _entertainers = new List<Entertainer>();
     private List<Vector3> _interactionPositions = new List<Vector3>();
     private List<GameObject> _buttons = new List<GameObject>();
@@ -52,6 +55,29 @@ public class EntertainementManager : Singleton<EntertainementManager>
         }
     }
 
+    public void SpawnEntertainer(Tile tile, EntertainerData data)
+    {
+        if (tile.Entertainer != null)
+            return;
+
+        if (ResourcesManager.Instance.CanAfford(data.Costs))
+        {
+            ResourcesManager.Instance.UpdateResource(data.Costs, Transaction.Spent);
+
+            Entertainer currentEntertainer = Instantiate(_entertainerPrefab, 
+                tile.transform.position + _entertainerPrefab.transform.localPosition, 
+                _entertainerPrefab.transform.rotation, 
+                _entertainersParent).GetComponent<Entertainer>();
+
+            currentEntertainer.Tile = tile;
+            currentEntertainer.EntertainerData = data;
+            currentEntertainer.Renderer.sprite = Resources.Load<Sprite>("Units/" + data.Entertainer);
+
+            _entertainers.Add(currentEntertainer);
+            tile.Entertainer = currentEntertainer;
+        }
+    }
+
     private void EntertainerInteraction(Tile tile, int positionIndex, EntertainerData data)
     {
         GameObject button = Instantiate(GameManager.Instance.InteractionPrefab, _interactionPositions[positionIndex], Quaternion.identity);
@@ -70,6 +96,7 @@ public class EntertainementManager : Singleton<EntertainementManager>
 
     public void DestroyEntertainer(Tile tile)
     {
+        Destroy(tile.Entertainer.gameObject);
         _entertainers.Remove(tile.Entertainer);
         tile.Entertainer = null;
     }

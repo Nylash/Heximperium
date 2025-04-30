@@ -229,6 +229,9 @@ public class GameManager : Singleton<GameManager>
                 else if (_currentPhase == Phase.Entertain)
                     EntertainementManager.Instance.DestroyEntertainer(button.AssociatedTile);
                     break;
+            case Interaction.Entertainer:
+                EntertainementManager.Instance.SpawnEntertainer(button.AssociatedTile, button.UnitData as EntertainerData);
+                break;
             default: 
                 Debug.LogError("This interaction is not handle : " +  button.Interaction);
                 break;
