@@ -14,7 +14,7 @@ public class UI_InteractionButton : MonoBehaviour
     public InfrastructureData InfrastructureData { get => _infraData;}
     public UnitData UnitData { get => _unitData;}
 
-    public void Initialize(Tile associatedTile, Interaction action, InfrastructureData infraData = null)
+    public void Initialize(Tile associatedTile, Interaction action, InfrastructureData infraData = null, EntertainerData entrainData = null)
     {
         switch (action)
         {
@@ -55,11 +55,19 @@ public class UI_InteractionButton : MonoBehaviour
                 _interaction = Interaction.Destroy;
                 _renderer.sprite = Resources.Load<Sprite>("InteractionButtons/" + action.ToString());
                 break;
+            case Interaction.Entertainer:
+                _associatedTile = associatedTile;
+                _interaction = Interaction.Entertainer;
+                _unitData = entrainData;
+                if (!ResourcesManager.Instance.CanAfford(_unitData.Costs))
+                    _renderer.color = UIManager.Instance.ColorCantAfford;
+                _renderer.sprite = Resources.Load<Sprite>("InteractionButtons/" + entrainData.Entertainer);
+                break;
         }
     }
 }
 
 public enum Interaction
 {
-    Claim, Town, Scout, Infrastructure, Destroy
+    Claim, Town, Scout, Infrastructure, Destroy, Entertainer
 }

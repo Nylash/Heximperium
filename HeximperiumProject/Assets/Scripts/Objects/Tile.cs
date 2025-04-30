@@ -21,6 +21,7 @@ public class Tile : MonoBehaviour
     private Animator _animator;
     private List<Scout> _scouts = new List<Scout>();
     private TextMeshPro _scoutCounter;
+    private Entertainer _entertainer;
     #endregion
 
     //previous Incomes, new Incomes
@@ -77,6 +78,7 @@ public class Tile : MonoBehaviour
         }
     }
     public TileData InitialData { get => _initialData; set => _initialData = value; }
+    public Entertainer Entertainer { get => _entertainer; set => _entertainer = value; }
     #endregion
 
     private void OnEnable()

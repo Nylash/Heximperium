@@ -40,6 +40,8 @@ public class ExpansionManager : Singleton<ExpansionManager>
         if (GameManager.Instance.CurrentPhase != Phase.Expand)
             return;
 
+        _interactionPositions.Clear();
+
         if (tile.Claimed)
         {
             if(tile.TileData as BasicTileData)
@@ -56,8 +58,6 @@ public class ExpansionManager : Singleton<ExpansionManager>
             TownInteraction(tile, 0);
         if (tile.IsOneNeighborClaimed())
             ClaimInteraction(tile, 1);
-
-        _interactionPositions.Clear();
     }
 
     public void ClaimTile(Tile tile)

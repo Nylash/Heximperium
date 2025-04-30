@@ -71,7 +71,9 @@ public class ExplorationManager : Singleton<ExplorationManager>
         if (GameManager.Instance.CurrentPhase != Phase.Explore)
             return;
 
-        if(tile.TileData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
+        _interactionPositions.Clear();
+
+        if (tile.TileData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
         {
             _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
             ScoutInteraction(tile, 0);

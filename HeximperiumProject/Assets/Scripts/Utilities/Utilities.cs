@@ -131,4 +131,14 @@ public enum TypeIncomeUpgrade
 {
     Merge, Replace
 }
+
+public enum EntertainerType
+{
+    Sculptor, Painter, AromaWeaver, Magician, EquestrianDancer, FireEater
+}
+
+public enum EntertainerFamily
+{
+    Artist, Mystic, Performer
+}
 #endregion
