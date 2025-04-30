@@ -81,7 +81,7 @@ public class ExpansionManager : Singleton<ExpansionManager>
 
     public void BuildTown(Tile tile)
     {
-        if (_availableTown != 0)// && ResourcesManager.Instance.CanAfford())
+        if (_availableTown != 0 && ResourcesManager.Instance.CanAfford(Resources.Load<InfrastructureData>("Data/Infrastructures/Town").Costs))
         {
             //Start by claiming the tile if needed
             if (!tile.Claimed)
