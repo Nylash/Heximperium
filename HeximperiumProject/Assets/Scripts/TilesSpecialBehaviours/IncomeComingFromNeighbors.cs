@@ -9,7 +9,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
         tile.event_IncomeModified.AddListener(AdjustIncomeFromNeighbor);
     }
 
-    public override void RealizeSpecialBehaviour()
+    public override void InitializeSpecialBehaviour()
     {
         foreach (Tile neighbor in _tile.Neighbors)
         {
@@ -19,9 +19,9 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
         }
     }
 
-    public override void RealizeSpecialBehaviour(Tile specificTile)
+    public override void ApplySpecialBehaviour(Tile specificTile)
     {
-        //Handle by the event
+        //Nothing needed, this behaviour doesn't impact others tiles
     }
 
     public override void RollbackSpecialBehaviour()

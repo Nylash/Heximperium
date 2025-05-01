@@ -17,6 +17,8 @@ MonoBehaviour:
   _textEffect: Remove base tile income. +3 Points for surrounding and on tile Artists
   _typeIncomeUpgrade: 1
   _incomes: []
+  _availableInfrastructures: []
+  _specialBehaviour: {fileID: 11400000, guid: e4a692c5d37ea7f489e3fe374e80e17e, type: 2}
   _scoutStartingPoint: 0
   _costs:
   - resource: 6

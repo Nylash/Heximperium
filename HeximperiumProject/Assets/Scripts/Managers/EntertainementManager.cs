@@ -29,9 +29,7 @@ public class EntertainementManager : Singleton<EntertainementManager>
         if (phase != Phase.Entertain)
             return;
 
-        ResourcesManager.Instance.UpdateResource(Resource.Stone, 5, Transaction.Gain);
-        ResourcesManager.Instance.UpdateResource(Resource.Crystal, 5, Transaction.Gain);
-        ResourcesManager.Instance.UpdateResource(Resource.Gold, 100, Transaction.Gain);
+        ResourcesManager.Instance.CHEAT_GAIN_ALL_RESOURCES();
     }
 
     private void NewTileSelected(Tile tile)
@@ -74,10 +72,10 @@ public class EntertainementManager : Singleton<EntertainementManager>
                 _entertainerPrefab.transform.rotation, 
                 _entertainersParent).GetComponent<Entertainer>();
 
-            currentEntertainer.Initialize(tile, data);
-
             _entertainers.Add(currentEntertainer);
             tile.Entertainer = currentEntertainer;
+
+            currentEntertainer.Initialize(tile, data);
         }
     }
 

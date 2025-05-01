@@ -22,7 +22,9 @@ public class Tile : MonoBehaviour
     private List<Scout> _scouts = new List<Scout>();
     private TextMeshPro _scoutCounter;
     private Entertainer _entertainer;
-    #endregion
+
+    private readonly List<string> _uniqueMaterialTiles = new List<string> { "Water", "Amphitheater", "EnchantedPavilion", "ShowcasePlaza", "Workshop" };
+#endregion
 
     //previous Incomes, new Incomes
     [HideInInspector] public UnityEvent<List<ResourceValue>, List<ResourceValue>> event_IncomeModified;
@@ -52,14 +54,14 @@ public class Tile : MonoBehaviour
             if (_tileData.SpecialBehaviour != null)
             {
                 _tileData.SpecialBehaviour.Tile = this;
-                _tileData.SpecialBehaviour.RealizeSpecialBehaviour();
+                _tileData.SpecialBehaviour.InitializeSpecialBehaviour();
             }
                 
             //Foreach neighbors check if their special behaviour should impact the new tile
             foreach (Tile item in _neighbors)
             {
                 if(item.TileData.SpecialBehaviour != null)
-                    item.TileData.SpecialBehaviour.RealizeSpecialBehaviour(this);
+                    item.TileData.SpecialBehaviour.ApplySpecialBehaviour(this);
             }
         }
     }
@@ -121,7 +123,7 @@ public class Tile : MonoBehaviour
 
     private void UpdateVisual()
     {
-        if (_tileData.name == "Water")
+        if (_uniqueMaterialTiles.Contains(_tileData.name))
         {
             //Material not linked to biome
             GetComponent<Renderer>().material = Resources.Load("TilesMaterial/UnspecifiedMaterial/" + _tileData.name) as Material;

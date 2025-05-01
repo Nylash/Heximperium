@@ -25,6 +25,18 @@ public class Entertainer : MonoBehaviour
         _points = _entertainerData.Points;
 
         CheckSynergies();
+        CheckBoostingInfra();
+    }
+
+    private void CheckBoostingInfra()
+    {
+        if (_tile.TileData.SpecialBehaviour is EntertainersBoosting entertainersBoosting)
+            entertainersBoosting.BoostingSpecificEntertainer(_tile.Entertainer);
+        foreach (Tile neighbor in _tile.Neighbors)
+        {
+            if (neighbor.TileData.SpecialBehaviour is EntertainersBoosting NeighborEntertainersBoosting)
+                NeighborEntertainersBoosting.BoostingSpecificEntertainer(_tile.Entertainer);
+        }
     }
 
     private void CheckSynergies()
