@@ -99,6 +99,7 @@ public class EntertainementManager : Singleton<EntertainementManager>
 
     public void DestroyEntertainer(Tile tile)
     {
+        tile.Entertainer.RemoveSynergies();
         Destroy(tile.Entertainer.gameObject);
         _entertainers.Remove(tile.Entertainer);
         tile.Entertainer = null;

@@ -7,7 +7,10 @@ public class Entertainer : MonoBehaviour
     private SpriteRenderer _renderer;
     private int _points;
 
-    public int Points { get => _points; }
+    private const int SYNERGY_BONUS = 2;
+
+    public int Points { get => _points; set => _points = value; }
+    public EntertainerData EntertainerData { get => _entertainerData; }
 
     private void Awake()
     {
@@ -18,7 +21,36 @@ public class Entertainer : MonoBehaviour
     {
         _tile = tile;
         _entertainerData = data;
-        _renderer.sprite = Resources.Load<Sprite>("Units/" + data.Entertainer);
+        _renderer.sprite = Resources.Load<Sprite>("Units/" + data.EntertainerType);
         _points = _entertainerData.Points;
+
+        CheckSynergies();
+    }
+
+    private void CheckSynergies()
+    {
+        foreach (Tile neighbor in _tile.Neighbors)
+        {
+            if (!neighbor.Entertainer)
+                continue;
+            if (_entertainerData.Synergies.Contains(neighbor.Entertainer.EntertainerData.EntertainerType))
+            {
+                _points += SYNERGY_BONUS;
+                neighbor.Entertainer.Points += SYNERGY_BONUS;
+            }
+        }
+    }
+
+    public void RemoveSynergies()
+    {
+        foreach (Tile neighbor in _tile.Neighbors)
+        {
+            if (!neighbor.Entertainer)
+                continue;
+            if (_entertainerData.Synergies.Contains(neighbor.Entertainer.EntertainerData.EntertainerType))
+            {
+                neighbor.Entertainer.Points -= SYNERGY_BONUS;
+            }
+        }
     }
 }

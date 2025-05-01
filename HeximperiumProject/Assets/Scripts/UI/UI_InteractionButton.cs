@@ -61,7 +61,7 @@ public class UI_InteractionButton : MonoBehaviour
                 _unitData = entrainData;
                 if (!ResourcesManager.Instance.CanAfford(_unitData.Costs))
                     _renderer.color = UIManager.Instance.ColorCantAfford;
-                _renderer.sprite = Resources.Load<Sprite>("InteractionButtons/" + entrainData.Entertainer);
+                _renderer.sprite = Resources.Load<Sprite>("InteractionButtons/" + entrainData.EntertainerType);
                 break;
         }
     }
