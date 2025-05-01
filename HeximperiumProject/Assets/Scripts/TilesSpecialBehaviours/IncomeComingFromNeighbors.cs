@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/Special Behaviour/IncomeCoomingFromneighbors")]
-public class IncomeCoomingFromNeighbors : SpecialBehaviour
+public class IncomeComingFromNeighbors : SpecialBehaviour
 {
     private void AddListener(Tile tile)
     {
