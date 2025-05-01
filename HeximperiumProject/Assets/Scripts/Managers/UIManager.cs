@@ -77,6 +77,11 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
+    public void UpdateScoreUI(int value)
+    {
+        _scoreText.text = value.ToString();
+    }
+
     #region PopUp UI
     public void HoverUIPopupCheck(GameObject obj)
     {

@@ -10,6 +10,7 @@ public class EntertainementManager : Singleton<EntertainementManager>
     private List<Vector3> _interactionPositions = new List<Vector3>();
     private List<GameObject> _buttons = new List<GameObject>();
     private List<EntertainerData> _entertainerDatas = new List<EntertainerData>();
+    private int _score;
 
     protected override void OnAwake()
     {
@@ -27,6 +28,10 @@ public class EntertainementManager : Singleton<EntertainementManager>
     {
         if (phase != Phase.Entertain)
             return;
+
+        ResourcesManager.Instance.UpdateResource(Resource.Stone, 5, Transaction.Gain);
+        ResourcesManager.Instance.UpdateResource(Resource.Crystal, 5, Transaction.Gain);
+        ResourcesManager.Instance.UpdateResource(Resource.Gold, 100, Transaction.Gain);
     }
 
     private void NewTileSelected(Tile tile)
@@ -69,9 +74,7 @@ public class EntertainementManager : Singleton<EntertainementManager>
                 _entertainerPrefab.transform.rotation, 
                 _entertainersParent).GetComponent<Entertainer>();
 
-            currentEntertainer.Tile = tile;
-            currentEntertainer.EntertainerData = data;
-            currentEntertainer.Renderer.sprite = Resources.Load<Sprite>("Units/" + data.Entertainer);
+            currentEntertainer.Initialize(tile, data);
 
             _entertainers.Add(currentEntertainer);
             tile.Entertainer = currentEntertainer;
@@ -108,5 +111,14 @@ public class EntertainementManager : Singleton<EntertainementManager>
             Destroy(button);
         }
         _buttons.Clear();
+    }
+
+    public void ConfirmingPhase()
+    {
+        foreach (Entertainer item in _entertainers)
+        {
+            _score += item.Points;
+            UIManager.Instance.UpdateScoreUI(_score);
+        }
     }
 }

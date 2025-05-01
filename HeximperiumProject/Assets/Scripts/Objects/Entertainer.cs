@@ -2,17 +2,23 @@ using UnityEngine;
 
 public class Entertainer : MonoBehaviour
 {
-    [SerializeField] private EntertainerData _entertainerData;
-
+    private EntertainerData _entertainerData;
     private Tile _tile;
     private SpriteRenderer _renderer;
+    private int _points;
 
-    public EntertainerData EntertainerData { get => _entertainerData; set => _entertainerData = value; }
-    public Tile Tile { get => _tile; set => _tile = value; }
-    public SpriteRenderer Renderer { get => _renderer; }
+    public int Points { get => _points; }
 
     private void Awake()
     {
         _renderer = GetComponent<SpriteRenderer>();
+    }
+
+    public void Initialize(Tile tile, EntertainerData data)
+    {
+        _tile = tile;
+        _entertainerData = data;
+        _renderer.sprite = Resources.Load<Sprite>("Units/" + data.Entertainer);
+        _points = _entertainerData.Points;
     }
 }

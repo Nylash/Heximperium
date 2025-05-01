@@ -261,6 +261,7 @@ public class GameManager : Singleton<GameManager>
                 PhaseFinalized();
                 break;
             case Phase.Entertain:
+                EntertainementManager.Instance.ConfirmingPhase();
                 _currentPhase = Phase.Explore;
                 _turnCounter++;
                 event_newTurn.Invoke(_turnCounter);
