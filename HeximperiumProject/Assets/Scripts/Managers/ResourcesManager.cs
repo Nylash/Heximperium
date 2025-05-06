@@ -1,5 +1,7 @@
+using NUnit.Framework.Internal;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class ResourcesManager : Singleton<ResourcesManager>
 {
@@ -13,6 +15,18 @@ public class ResourcesManager : Singleton<ResourcesManager>
     private int _emberbone;
 
     public int Claim { get => _claim; }
+
+    public void CHEAT_GAIN_ALL_RESOURCES()
+    {
+        Debug.LogWarning("USING CHEAT !");
+        UpdateResource(Resource.Stone, 50, Transaction.Gain);
+        UpdateResource(Resource.Essence, 50, Transaction.Gain);
+        UpdateResource(Resource.Horse, 50, Transaction.Gain);
+        UpdateResource(Resource.Pigment, 50, Transaction.Gain);
+        UpdateResource(Resource.Crystal, 50, Transaction.Gain);
+        UpdateResource(Resource.Emberbone, 50, Transaction.Gain);
+        UpdateResource(Resource.Gold, 500, Transaction.Gain);
+    }
 
     public void UpdateResource(Resource resource, int value, Transaction transaction)
     {
@@ -111,15 +125,4 @@ public class ResourcesManager : Singleton<ResourcesManager>
         else
             return false;
     }
-}
-
-
-public enum Resource
-{
-    Stone, Essence, Horse, Pigment, Crystal, Emberbone, Gold
-}
-
-public enum Transaction
-{
-    Gain, Spent
 }

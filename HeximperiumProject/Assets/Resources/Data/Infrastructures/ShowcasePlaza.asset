@@ -17,6 +17,8 @@ MonoBehaviour:
   _textEffect: Remove base tile income. +2 Points for surrounding and on tile Entertainers
   _typeIncomeUpgrade: 1
   _incomes: []
+  _availableInfrastructures: []
+  _specialBehaviour: {fileID: 11400000, guid: f04a3af70c88233459416a21f2e1f070, type: 2}
   _scoutStartingPoint: 0
   _costs:
   - resource: 6

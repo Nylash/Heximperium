@@ -18,19 +18,18 @@ public class ExpansionManager : Singleton<ExpansionManager>
 
     protected override void OnAwake()
     {
-        GameManager.Instance.event_newPhase.AddListener(StartPhase);
+        GameManager.Instance.EventStartExpansionPhase.AddListener(StartPhase);
+        GameManager.Instance.EventEndExpansionPhase.AddListener(ConfirmPhase);
         GameManager.Instance.event_newTileSelected.AddListener(NewTileSelected);
         GameManager.Instance.event_tileUnselected.AddListener(TileUnselected);
     }
 
-    private void StartPhase(Phase phase)
+    private void StartPhase()
     {
-        if (phase != Phase.Expand)
-            return;
         ResourcesManager.Instance.UpdateClaim(_baseClaimPerTurn, Transaction.Gain);
     }
 
-    public void ConfirmingPhase()
+    private void ConfirmPhase()
     {
         ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim, Transaction.Spent);
     }
@@ -39,6 +38,8 @@ public class ExpansionManager : Singleton<ExpansionManager>
     {
         if (GameManager.Instance.CurrentPhase != Phase.Expand)
             return;
+
+        _interactionPositions.Clear();
 
         if (tile.Claimed)
         {
@@ -56,8 +57,6 @@ public class ExpansionManager : Singleton<ExpansionManager>
             TownInteraction(tile, 0);
         if (tile.IsOneNeighborClaimed())
             ClaimInteraction(tile, 1);
-
-        _interactionPositions.Clear();
     }
 
     public void ClaimTile(Tile tile)

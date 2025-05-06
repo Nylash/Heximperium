@@ -1,5 +1,7 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : Singleton<UIManager>
 {
@@ -23,6 +25,13 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private float _durationHoverForUI = 2.0f;
     [Header("Radial menu")]
     [SerializeField] private Color _colorCantAfford;
+    [Header("Units visibility UI")]
+    [SerializeField] private Image _scoutsImage;
+    [SerializeField] private Image _entertainersImage;
+    [SerializeField] private Sprite _scoutsVisible;
+    [SerializeField] private Sprite _scoutsHidden;
+    [SerializeField] private Sprite _entertainersVisible;
+    [SerializeField] private Sprite _entertainersHidden;
 
     private GameObject _objectUnderMouse;
     private float _hoverTimer;
@@ -30,12 +39,26 @@ public class UIManager : Singleton<UIManager>
     private float _screenHeight;
     private GameObject _popup;
 
+    private bool _areScoutsVisible;
+    private bool _areEntertainersVisible;
+
     public Color ColorCantAfford { get => _colorCantAfford;}
 
     protected override void OnAwake()
     {
-        GameManager.Instance.event_newTurn.AddListener(UpdateTurnCounterText);
-        GameManager.Instance.event_newPhase.AddListener(UpdatePhaseUI);
+        GameManager.Instance.EventNewTurn.AddListener(UpdateTurnCounterText);
+
+        GameManager.Instance.EventStartExplorationPhase.AddListener(UpdatePhaseUI);
+        GameManager.Instance.EventStartExpansionPhase.AddListener(UpdatePhaseUI);
+        GameManager.Instance.EventStartExploitationPhase.AddListener(UpdatePhaseUI);
+        GameManager.Instance.EventStartEntertainementPhase.AddListener(UpdatePhaseUI);
+
+        GameManager.Instance.EventStartExplorationPhase.AddListener(ForceScoutsToShow);
+        GameManager.Instance.EventStartExplorationPhase.AddListener(ForceEntertainersToHide);
+
+        GameManager.Instance.EventStartEntertainementPhase.AddListener(ForceScoutsToHide);
+        GameManager.Instance.EventStartEntertainementPhase.AddListener(ForceEntertainersToShow);
+
     }
 
     private void Start()
@@ -44,6 +67,7 @@ public class UIManager : Singleton<UIManager>
         _screenHeight = Screen.height;
 }
 
+    #region Resource bar UI
     public void UpdateClaimUI(int value)
     {
         _claimText.text = value.ToString();
@@ -76,6 +100,82 @@ public class UIManager : Singleton<UIManager>
                 break;
         }
     }
+
+    public void UpdateScoreUI(int value)
+    {
+        _scoreText.text = value.ToString();
+    }
+    #endregion
+
+    #region Units visibility UI
+    public void ScoutsVisibility()
+    {
+        _areScoutsVisible = !_areScoutsVisible;
+
+        _scoutsImage.sprite = _areScoutsVisible ? _scoutsVisible : _scoutsHidden;
+
+        foreach (Scout item in ExplorationManager.Instance.Scouts)
+        {
+            item.ScoutVisibility(_areScoutsVisible);
+        }
+    }
+
+    private void ScoutsVisibility(bool visible)
+    {
+        _areScoutsVisible = visible;
+
+        _scoutsImage.sprite = _areScoutsVisible ? _scoutsVisible : _scoutsHidden;
+
+        foreach (Scout item in ExplorationManager.Instance.Scouts)
+        {
+            item.ScoutVisibility(visible);
+        }
+    }
+
+    private void ForceScoutsToShow()
+    {
+        ScoutsVisibility(true);
+    }
+
+    private void ForceScoutsToHide()
+    {
+        ScoutsVisibility(false);
+    }
+
+    public void EntertainersVisibility()
+    {
+        _areEntertainersVisible = !_areEntertainersVisible;
+
+        _entertainersImage.sprite = _areEntertainersVisible ? _entertainersVisible : _entertainersHidden;
+
+        foreach (Entertainer item in EntertainementManager.Instance.Entertainers)
+        {
+            item.EntertainerVisibility(_areEntertainersVisible);
+        }
+    }
+
+    private void EntertainersVisibility(bool visible)
+    {
+        _areEntertainersVisible = visible;
+
+        _entertainersImage.sprite = _areEntertainersVisible ? _entertainersVisible : _entertainersHidden;
+
+        foreach (Entertainer item in EntertainementManager.Instance.Entertainers)
+        {
+            item.EntertainerVisibility(visible);
+        }
+    }
+
+    private void ForceEntertainersToShow()
+    {
+        EntertainersVisibility(true);
+    }
+
+    private void ForceEntertainersToHide()
+    {
+        EntertainersVisibility(false);
+    }
+    #endregion
 
     #region PopUp UI
     public void HoverUIPopupCheck(GameObject obj)
@@ -166,9 +266,9 @@ public class UIManager : Singleton<UIManager>
 #endregion
 
     #region Phase UI
-    private void UpdatePhaseUI(Phase phase)
+    private void UpdatePhaseUI()
     {
-        switch (phase)
+        switch (GameManager.Instance.CurrentPhase)
         {
             case Phase.Explore:
                 _currentPhaseText.text = "Explore";

@@ -7,7 +7,7 @@ public class BoostNeighborsIncome : SpecialBehaviour
     [SerializeField] private List<ResourceValue> _incomeBoost = new List<ResourceValue>();
     [SerializeField] private InfrastructureData _infrastructureBoosted;
 
-    public override void RealizeSpecialBehaviour()
+    public override void InitializeSpecialBehaviour()
     {
         foreach (Tile neighbor in _tile.Neighbors) 
         {
@@ -18,7 +18,7 @@ public class BoostNeighborsIncome : SpecialBehaviour
         }
     }
 
-    public override void RealizeSpecialBehaviour(Tile specificTile)
+    public override void ApplySpecialBehaviour(Tile specificTile)
     {
         if(specificTile.TileData == _infrastructureBoosted)
         {

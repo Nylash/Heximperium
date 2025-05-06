@@ -7,9 +7,9 @@ public abstract class SpecialBehaviour : ScriptableObject
     public Tile Tile { get => _tile; set => _tile = value; }
 
     //Realize special behaviour as the tile with the behaviour
-    public abstract void RealizeSpecialBehaviour();
+    public abstract void InitializeSpecialBehaviour();
 
     //Realize special behaviour toward a specific tile (e.g. when this specific tile change)
-    public abstract void RealizeSpecialBehaviour(Tile specificTile);
+    public abstract void ApplySpecialBehaviour(Tile specificTile);
     public abstract void RollbackSpecialBehaviour();
 }

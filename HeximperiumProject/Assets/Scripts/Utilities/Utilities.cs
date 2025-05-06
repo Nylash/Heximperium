@@ -103,3 +103,42 @@ public static class Utilities
         return mergedDictionary.Select(kvp => new ResourceValue(kvp.Key, kvp.Value)).ToList();
     }
 }
+
+#region ENUMS
+public enum Phase
+{
+    Explore, Expand, Exploit, Entertain
+}
+
+//The int respect the neighbors order, so simply cast it to int match the good neighbor
+public enum Direction
+{
+    TopRight, Right, BottomRight, BottomLeft, Left, TopLeft
+}
+
+public enum Resource
+{
+    Stone, Essence, Horse, Pigment, Crystal, Emberbone, Gold
+}
+
+public enum Transaction
+{
+    Gain, Spent
+}
+
+//Whereas the new income is added (merge) or replace the previous one
+public enum TypeIncomeUpgrade
+{
+    Merge, Replace
+}
+
+public enum EntertainerType
+{
+    Sculptor, Painter, AromaWeaver, Magician, EquestrianDancer, FireEater
+}
+
+public enum EntertainerFamily
+{
+    Artist, Mystic, Performer
+}
+#endregion
