@@ -1,7 +1,7 @@
-using TMPro;
 using UnityEngine;
-using System;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.UIElements;
 
 public class Scout : MonoBehaviour
 {
@@ -15,6 +15,8 @@ public class Scout : MonoBehaviour
     private int _speed;
     private int _lifespan;
     private int _revealRadius;
+
+    private List<Renderer> _renderers = new List<Renderer>();
 
     public Direction Direction
     {
@@ -36,7 +38,11 @@ public class Scout : MonoBehaviour
 
     private void Awake()
     {
-        ExplorationManager.Instance.event_phaseFinalized.AddListener(CheckLifeSpan);
+        _renderers.Add(GetComponent<Renderer>());
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>()) 
+            _renderers.Add(renderer);
+
+        ExplorationManager.Instance.EventScoutsMovementDone.AddListener(CheckLifeSpan);
     }
 
     private void Start()
@@ -145,6 +151,14 @@ public class Scout : MonoBehaviour
             case Direction.TopLeft:
                 transform.GetChild(0).transform.localEulerAngles = new Vector3(0, 0, -300);
                 break;
+        }
+    }
+
+    public void ScoutVisibility(bool visible)
+    {
+        foreach (Renderer item in _renderers)
+        {
+            item.enabled = visible;
         }
     }
 }

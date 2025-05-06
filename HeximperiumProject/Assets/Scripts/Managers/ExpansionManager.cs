@@ -18,19 +18,18 @@ public class ExpansionManager : Singleton<ExpansionManager>
 
     protected override void OnAwake()
     {
-        GameManager.Instance.event_newPhase.AddListener(StartPhase);
+        GameManager.Instance.EventStartExpansionPhase.AddListener(StartPhase);
+        GameManager.Instance.EventEndExpansionPhase.AddListener(ConfirmPhase);
         GameManager.Instance.event_newTileSelected.AddListener(NewTileSelected);
         GameManager.Instance.event_tileUnselected.AddListener(TileUnselected);
     }
 
-    private void StartPhase(Phase phase)
+    private void StartPhase()
     {
-        if (phase != Phase.Expand)
-            return;
         ResourcesManager.Instance.UpdateClaim(_baseClaimPerTurn, Transaction.Gain);
     }
 
-    public void ConfirmingPhase()
+    private void ConfirmPhase()
     {
         ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim, Transaction.Spent);
     }

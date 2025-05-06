@@ -65,4 +65,9 @@ public class Entertainer : MonoBehaviour
             }
         }
     }
+
+    public void EntertainerVisibility(bool visible)
+    {
+        _renderer.enabled = visible;
+    }
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EntertainementManager : Singleton<EntertainementManager>
 {
@@ -12,9 +13,12 @@ public class EntertainementManager : Singleton<EntertainementManager>
     private List<EntertainerData> _entertainerDatas = new List<EntertainerData>();
     private int _score;
 
+    public List<Entertainer> Entertainers { get => _entertainers; }
+
     protected override void OnAwake()
     {
-        GameManager.Instance.event_newPhase.AddListener(StartPhase);
+        GameManager.Instance.EventStartEntertainementPhase.AddListener(StartPhase);
+        GameManager.Instance.EventEndEntertainementPhase.AddListener(ConfirmPhase);
         GameManager.Instance.event_newTileSelected.AddListener(NewTileSelected);
         GameManager.Instance.event_tileUnselected.AddListener(TileUnselected);
 
@@ -24,12 +28,18 @@ public class EntertainementManager : Singleton<EntertainementManager>
         }
     }
 
-    private void StartPhase(Phase phase)
+    private void StartPhase()
     {
-        if (phase != Phase.Entertain)
-            return;
-
         ResourcesManager.Instance.CHEAT_GAIN_ALL_RESOURCES();
+    }
+
+    private void ConfirmPhase()
+    {
+        foreach (Entertainer item in _entertainers)
+        {
+            _score += item.Points;
+            UIManager.Instance.UpdateScoreUI(_score);
+        }
     }
 
     private void NewTileSelected(Tile tile)
@@ -110,14 +120,5 @@ public class EntertainementManager : Singleton<EntertainementManager>
             Destroy(button);
         }
         _buttons.Clear();
-    }
-
-    public void ConfirmingPhase()
-    {
-        foreach (Entertainer item in _entertainers)
-        {
-            _score += item.Points;
-            UIManager.Instance.UpdateScoreUI(_score);
-        }
     }
 }

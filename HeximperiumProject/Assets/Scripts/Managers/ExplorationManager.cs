@@ -20,7 +20,7 @@ public class ExplorationManager : Singleton<ExplorationManager>
     private bool _choosingScoutDirection;
     private Tile _tileRefForScoutDirection;
 
-    [HideInInspector] public UnityEvent event_phaseFinalized;
+    [HideInInspector] public UnityEvent EventScoutsMovementDone;
 
     public int FreeScouts { get => _freeScouts; set => _freeScouts = value; }
     public bool ChoosingScoutDirection { get => _choosingScoutDirection;}
@@ -30,13 +30,14 @@ public class ExplorationManager : Singleton<ExplorationManager>
 
     private void OnEnable()
     {
-        if (event_phaseFinalized == null)
-            event_phaseFinalized = new UnityEvent();
+        if (EventScoutsMovementDone == null)
+            EventScoutsMovementDone = new UnityEvent();
     }
 
     protected override void OnAwake()
     {
-        GameManager.Instance.event_newPhase.AddListener(StartPhase);
+        GameManager.Instance.EventStartExplorationPhase.AddListener(StartPhase);
+        GameManager.Instance.EventEndExplorationPhase.AddListener(ConfirmPhase);
         GameManager.Instance.event_newTileSelected.AddListener(NewTileSelected);
         GameManager.Instance.event_tileUnselected.AddListener(TileUnselected);
     }
@@ -55,15 +56,23 @@ public class ExplorationManager : Singleton<ExplorationManager>
                     return;
             }
             _finalizingPhase = false;
-            event_phaseFinalized.Invoke();
+            EventScoutsMovementDone.Invoke();
         }
         
     }
 
-    private void StartPhase(Phase phase)
+    private void StartPhase()
     {
-        if (phase != Phase.Explore)
-            return;
+
+    }
+
+    private void ConfirmPhase()
+    {
+        _finalizingPhase = true;
+        foreach (Scout scout in _scouts)
+        {
+            StartCoroutine(scout.Move());
+        }
     }
 
     private void NewTileSelected(Tile tile)
@@ -87,15 +96,6 @@ public class ExplorationManager : Singleton<ExplorationManager>
             Destroy(button);
         }
         _buttons.Clear();
-    }
-
-    public void ConfirmingPhase()
-    {
-        _finalizingPhase = true;
-        foreach (Scout scout in _scouts)
-        {
-            StartCoroutine(scout.Move());
-        }
     }
 
     public void SpawnScout(Tile tile, UnitData data)

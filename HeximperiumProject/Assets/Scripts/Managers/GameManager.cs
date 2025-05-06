@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 
 public class GameManager : Singleton<GameManager>
 {
+    #region VARIABLES
     private InputSystem_Actions _inputActions;
 
     //Interaction with tiles
@@ -15,16 +16,22 @@ public class GameManager : Singleton<GameManager>
     private GameObject _highlightObject;
     [SerializeField] private GameObject _highlighPrefab;
     [SerializeField] private GameObject _interactionPrefab;
-    private bool _waitingPhaseFinalization;
 
-    #region VARIABLES
+    private bool _waitingPhaseFinalization;
     private Phase _currentPhase;
     private int _turnCounter;
     #endregion
 
     #region EVENTS
-    [HideInInspector] public UnityEvent<int> event_newTurn;
-    [HideInInspector] public UnityEvent<Phase> event_newPhase;
+    [HideInInspector] public UnityEvent<int> EventNewTurn;
+    [HideInInspector] public UnityEvent EventStartExplorationPhase;
+    [HideInInspector] public UnityEvent EventEndExplorationPhase;
+    [HideInInspector] public UnityEvent EventStartExpansionPhase;
+    [HideInInspector] public UnityEvent EventEndExpansionPhase;
+    [HideInInspector] public UnityEvent EventStartExploitationPhase;
+    [HideInInspector] public UnityEvent EventEndExploitationPhase;
+    [HideInInspector] public UnityEvent EventStartEntertainementPhase;
+    [HideInInspector] public UnityEvent EventEndEntertainementPhase;
     [HideInInspector] public UnityEvent<Tile> event_newTileSelected;
     [HideInInspector] public UnityEvent event_tileUnselected;
     #endregion
@@ -39,10 +46,24 @@ public class GameManager : Singleton<GameManager>
     {
         _inputActions.Player.Enable();
 
-        if (event_newTurn == null)
-            event_newTurn = new UnityEvent<int>();
-        if (event_newPhase == null)
-            event_newPhase = new UnityEvent<Phase>();
+        if (EventNewTurn == null)
+            EventNewTurn = new UnityEvent<int>();
+        if (EventStartExplorationPhase == null)
+            EventStartExplorationPhase = new UnityEvent();
+        if (EventEndExplorationPhase == null)
+            EventEndExplorationPhase = new UnityEvent();
+        if (EventStartExpansionPhase == null)
+            EventStartExpansionPhase = new UnityEvent();
+        if (EventEndExpansionPhase == null)
+            EventEndExpansionPhase = new UnityEvent();
+        if (EventStartExploitationPhase == null)
+            EventStartExploitationPhase = new UnityEvent();
+        if (EventEndExploitationPhase == null)
+            EventEndExploitationPhase = new UnityEvent();
+        if (EventStartEntertainementPhase == null)
+            EventStartEntertainementPhase = new UnityEvent();
+        if (EventEndEntertainementPhase == null)
+            EventEndEntertainementPhase = new UnityEvent();
         if (event_newTileSelected == null)
             event_newTileSelected = new UnityEvent<Tile>();
         if (event_tileUnselected == null)
@@ -58,7 +79,7 @@ public class GameManager : Singleton<GameManager>
         _inputActions.Player.LeftClick.performed += ctx => LeftClickAction();
 
         MapManager.Instance.event_mapGenerated.AddListener(InitializeGame);
-        ExplorationManager.Instance.event_phaseFinalized.AddListener(PhaseFinalized);
+        ExplorationManager.Instance.EventScoutsMovementDone.AddListener(PhaseFinalized);
     }
 
     private void Start()
@@ -68,6 +89,8 @@ public class GameManager : Singleton<GameManager>
         {
             _currentPhase = Phase.Explore;
         }
+
+        EventStartExplorationPhase.Invoke();
 
         _turnCounter = 1;
     }
@@ -158,6 +181,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    #region Actions
     private void LeftClickAction()
     {
         if (ExplorationManager.Instance.ChoosingScoutDirection)
@@ -165,8 +189,10 @@ public class GameManager : Singleton<GameManager>
             ExplorationManager.Instance.ConfirmDirection();
             return;
         }
-            _previousSelectedTile = _selectedTile;
+
+        _previousSelectedTile = _selectedTile;
         _selectedTile = null;
+
         if (_highlightObject)
         {
             Destroy(_highlightObject);
@@ -237,9 +263,12 @@ public class GameManager : Singleton<GameManager>
                 break;
         }
     }
+    #endregion
 
+    #region Phase confirmation
     public void ConfirmPhase()
     {
+        //The phase is finalizing its logic
         if (_waitingPhaseFinalization)
             return;
         //Avoid confirming phase when scout aren't properly initialized
@@ -249,23 +278,21 @@ public class GameManager : Singleton<GameManager>
         switch (_currentPhase)
         {
             case Phase.Explore:
-                ExplorationManager.Instance.ConfirmingPhase();
+                EventEndExplorationPhase.Invoke();
                 //Waiting scouts movement
                 _waitingPhaseFinalization = true;
                 return;
             case Phase.Expand:
-                ExpansionManager.Instance.ConfirmingPhase();
+                EventEndExpansionPhase.Invoke();
                 PhaseFinalized();
                 break;
             case Phase.Exploit:
+                EventEndExploitationPhase.Invoke();
                 PhaseFinalized();
                 break;
             case Phase.Entertain:
-                EntertainementManager.Instance.ConfirmingPhase();
-                _currentPhase = Phase.Explore;
-                _turnCounter++;
-                event_newTurn.Invoke(_turnCounter);
-                event_newPhase.Invoke(_currentPhase);
+                EventEndEntertainementPhase.Invoke();
+                PhaseFinalized();
                 break;
         } 
     }
@@ -273,8 +300,29 @@ public class GameManager : Singleton<GameManager>
     private void PhaseFinalized()
     {
         _waitingPhaseFinalization = false;
-        _currentPhase++;
-        event_newPhase.Invoke(_currentPhase);
+
+        switch (_currentPhase)
+        {
+            case Phase.Explore:
+                _currentPhase++;
+                EventStartExpansionPhase.Invoke();
+                break;
+            case Phase.Expand:
+                _currentPhase++;
+                EventStartExploitationPhase.Invoke();
+                break;
+            case Phase.Exploit:
+                _currentPhase++;
+                EventStartEntertainementPhase.Invoke();
+                break;
+            case Phase.Entertain:
+                _currentPhase = Phase.Explore;
+                EventStartExplorationPhase.Invoke();
+                _turnCounter++;
+                EventNewTurn.Invoke(_turnCounter);
+                break;
+        }
     }
+    #endregion
 }
 
