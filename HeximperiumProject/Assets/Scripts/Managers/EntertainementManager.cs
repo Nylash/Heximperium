@@ -114,22 +114,14 @@ public class EntertainementManager : Singleton<EntertainementManager>
     #endregion
 
     #region INTERACTION
-    private void CreateInteractionButton(Tile tile, int positionIndex, Interaction interactionType, EntertainerData data = null)
-    {
-        GameObject button = Instantiate(GameManager.Instance.InteractionPrefab, _interactionPositions[positionIndex], Quaternion.identity);
-        button.GetComponent<UI_InteractionButton>().Initialize(tile, interactionType, null, data);
-
-        _buttons.Add(button);
-    }
-
     private void EntertainerInteraction(Tile tile, int positionIndex, EntertainerData data)
     {
-        CreateInteractionButton(tile, positionIndex, Interaction.Entertainer, data);
+        _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Entertainer, null, data));
     }
 
     private void DestroyInteraction(Tile tile, int positionIndex)
     {
-        CreateInteractionButton(tile, positionIndex, Interaction.Destroy);
+        _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Destroy));
     }
 
     public void SpawnEntertainer(Tile tile, EntertainerData data)

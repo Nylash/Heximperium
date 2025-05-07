@@ -102,22 +102,14 @@ public class ExpansionManager : Singleton<ExpansionManager>
     #endregion
 
     #region INTERACTION
-    private void CreateInteractionButton(Tile tile, int positionIndex, Interaction interactionType)
-    {
-        GameObject button = Instantiate(GameManager.Instance.InteractionPrefab, _interactionPositions[positionIndex], Quaternion.identity);
-        button.GetComponent<UI_InteractionButton>().Initialize(tile, interactionType);
-
-        _buttons.Add(button);
-    }
-
     private void ClaimInteraction(Tile tile, int positionIndex)
     {
-        CreateInteractionButton(tile, positionIndex, Interaction.Claim);
+        _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Claim));
     }
 
     private void TownInteraction(Tile tile, int positionIndex)
     {
-        CreateInteractionButton(tile, positionIndex, Interaction.Town);
+        _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Town));
     }
 
     public void ClaimTile(Tile tile)
