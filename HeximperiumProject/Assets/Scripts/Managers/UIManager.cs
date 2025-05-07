@@ -1,10 +1,10 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : Singleton<UIManager>
 {
+    #region CONFIGURATION
     [SerializeField] private Transform _mainCanvas;
     [Header("Resources")]
     [SerializeField] private TextMeshProUGUI _claimText;
@@ -32,7 +32,9 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Sprite _scoutsHidden;
     [SerializeField] private Sprite _entertainersVisible;
     [SerializeField] private Sprite _entertainersHidden;
+    #endregion
 
+    #region VARIABLES
     private GameObject _objectUnderMouse;
     private float _hoverTimer;
     private float _screenWidth;
@@ -41,8 +43,11 @@ public class UIManager : Singleton<UIManager>
 
     private bool _areScoutsVisible;
     private bool _areEntertainersVisible;
+    #endregion
 
+    #region ACCESSORS
     public Color ColorCantAfford { get => _colorCantAfford;}
+    #endregion
 
     protected override void OnAwake()
     {
@@ -67,7 +72,7 @@ public class UIManager : Singleton<UIManager>
         _screenHeight = Screen.height;
 }
 
-    #region Resource bar UI
+    #region RESOURCES BAR UI
     public void UpdateClaimUI(int value)
     {
         _claimText.text = value.ToString();
@@ -107,7 +112,8 @@ public class UIManager : Singleton<UIManager>
     }
     #endregion
 
-    #region Units visibility UI
+    #region UNITS VISIBILITY UI
+    //OnClick for UI button
     public void ScoutsVisibility()
     {
         _areScoutsVisible = !_areScoutsVisible;
@@ -142,6 +148,7 @@ public class UIManager : Singleton<UIManager>
         ScoutsVisibility(false);
     }
 
+    //OnClick for UI button
     public void EntertainersVisibility()
     {
         _areEntertainersVisible = !_areEntertainersVisible;
@@ -177,7 +184,7 @@ public class UIManager : Singleton<UIManager>
     }
     #endregion
 
-    #region PopUp UI
+    #region POPUP UI
     public void HoverUIPopupCheck(GameObject obj)
     {
         if (obj == _objectUnderMouse) 
@@ -186,12 +193,12 @@ public class UIManager : Singleton<UIManager>
             _hoverTimer += Time.deltaTime;
             if (_hoverTimer >= _durationHoverForUI && _popup == null) 
             {
-                Tile tmp = obj.GetComponent<Tile>();
-                if(tmp != null)
+                Tile tile = obj.GetComponent<Tile>();
+                if(tile != null)
                 {
-                    if (tmp.Revealed)
+                    if (tile.Revealed)
                     {
-                        DisplayPopUp(tmp);
+                        DisplayPopUp(tile);
                     }
                 }
             }
@@ -213,8 +220,8 @@ public class UIManager : Singleton<UIManager>
             Debug.LogError("Popup for no tile.");
             return;
         }
-        //if (!tile.Revealed)
-          //  return;
+
+        //Display Pop up for unclaimed tile
         if (!tile.Claimed)
         {
             TileData data = tile.TileData;
@@ -225,6 +232,7 @@ public class UIManager : Singleton<UIManager>
 
             _popup.SetActive(true);
         }
+        //Add for every possibility of tile
     }
 
     private void PositionPopup(Transform popup, Vector2 popupSize)
@@ -263,9 +271,9 @@ public class UIManager : Singleton<UIManager>
     {
         return new Vector2(rectTransform.rect.width, rectTransform.rect.height);
     }
-#endregion
+    #endregion
 
-    #region Phase UI
+    #region PHASE UI
     private void UpdatePhaseUI()
     {
         switch (GameManager.Instance.CurrentPhase)
