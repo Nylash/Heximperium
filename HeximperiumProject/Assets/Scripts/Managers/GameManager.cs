@@ -112,9 +112,8 @@ public class GameManager : Singleton<GameManager>
 
         //Give the player resources for the initial town 
         ExpansionManager.Instance.AvailableTown += 1;
-        InfrastructureData townData = Resources.Load<InfrastructureData>(TOWN_DATA_PATH);//const
-        foreach (ResourceValue cost in townData.Costs)
-            ResourcesManager.Instance.UpdateResource(cost.resource, cost.value, Transaction.Gain);
+        InfrastructureData townData = Resources.Load<InfrastructureData>(TOWN_DATA_PATH);
+        ResourcesManager.Instance.UpdateResource(townData.Costs, Transaction.Gain);
         ExpansionManager.Instance.BuildTown(centralTile);
 
         // Depth-specific logic
