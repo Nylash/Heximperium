@@ -5,11 +5,14 @@ using UnityEngine.Events;
 
 public class ExplorationManager : Singleton<ExplorationManager>
 {
+    #region CONFIGURATION
     [SerializeField] private Transform _scoutsParent;
     [SerializeField] private GameObject _scoutPrefab;
     [SerializeField] private GameObject _scoutCounterPrefab;
     [SerializeField] private float _awaitTimeScoutMovement = 0.25f;
+    #endregion
 
+    #region VARIABLES
     private List<Scout> _scouts = new List<Scout>();
     private List<GameObject> _buttons = new List<GameObject>();
     private List<Vector3> _interactionPositions = new List<Vector3>();
@@ -19,20 +22,19 @@ public class ExplorationManager : Singleton<ExplorationManager>
     private Scout _currentScout;
     private bool _choosingScoutDirection;
     private Tile _tileRefForScoutDirection;
+    #endregion
 
-    [HideInInspector] public UnityEvent OnPhaseFinalized;
+    #region EVENTS
+    [HideInInspector] public UnityEvent OnPhaseFinalized = new UnityEvent();
+    #endregion
 
+    #region ACCESSORS
     public int FreeScouts { get => _freeScouts; set => _freeScouts = value; }
     public bool ChoosingScoutDirection { get => _choosingScoutDirection;}
     public GameObject ScoutCounterPrefab { get => _scoutCounterPrefab;}
     public float AwaitTimeScoutMovement { get => _awaitTimeScoutMovement;}
     public List<Scout> Scouts { get => _scouts;}
-
-    private void OnEnable()
-    {
-        if (OnPhaseFinalized == null)
-            OnPhaseFinalized = new UnityEvent();
-    }
+    #endregion
 
     protected override void OnAwake()
     {
@@ -47,9 +49,11 @@ public class ExplorationManager : Singleton<ExplorationManager>
         if (GameManager.Instance.CurrentPhase != Phase.Explore)
             return;
 
+        //Update scout's orientation during scout spawning
         if(ChoosingScoutDirection)
             _currentScout.Direction = GetAngleForScout();
 
+        //Check if scouts have finished their movement
         if (_finalizingPhase)
         {
             foreach (Scout scout in _scouts)
@@ -63,6 +67,7 @@ public class ExplorationManager : Singleton<ExplorationManager>
         
     }
 
+    #region PHASE LOGIC
     private void StartPhase()
     {
 
@@ -84,7 +89,9 @@ public class ExplorationManager : Singleton<ExplorationManager>
 
         OnPhaseFinalized.Invoke();
     }
+    #endregion
 
+    #region TILE SELECTION
     private void NewTileSelected(Tile tile)
     {
         if (GameManager.Instance.CurrentPhase != Phase.Explore)
@@ -107,7 +114,9 @@ public class ExplorationManager : Singleton<ExplorationManager>
         }
         _buttons.Clear();
     }
+    #endregion
 
+    #region INTERACTION
     public void SpawnScout(Tile tile, UnitData data)
     {
         if(ResourcesManager.Instance.CanAfford(data.Costs) || _freeScouts != 0)
@@ -132,12 +141,11 @@ public class ExplorationManager : Singleton<ExplorationManager>
 
     private void ScoutInteraction(Tile tile, int positionIndex)
     {
-        GameObject buttonScout = Instantiate(GameManager.Instance.InteractionPrefab, _interactionPositions[positionIndex], Quaternion.identity);
-        buttonScout.GetComponent<UI_InteractionButton>().Initialize(tile, Interaction.Scout);
-
-        _buttons.Add(buttonScout);
+        _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Scout));
     }
+    #endregion
 
+    #region SCOUT SPAWN
     public void ConfirmDirection()
     {
         _choosingScoutDirection = false;
@@ -191,4 +199,5 @@ public class ExplorationManager : Singleton<ExplorationManager>
             return Direction.TopLeft;
         }
     }
+    #endregion
 }
