@@ -4,6 +4,10 @@ using UnityEngine.EventSystems;
 
 public class GameManager : Singleton<GameManager>
 {
+    #region CONSTANTS
+    private const string TOWN_DATA_PATH = "Data/Infrastructures/Town";
+    #endregion
+
     #region VARIABLES
     private InputSystem_Actions _inputActions;
 
@@ -23,17 +27,17 @@ public class GameManager : Singleton<GameManager>
     #endregion
 
     #region EVENTS
-    [HideInInspector] public UnityEvent<int> EventNewTurn;
-    [HideInInspector] public UnityEvent EventStartExplorationPhase;
-    [HideInInspector] public UnityEvent EventEndExplorationPhase;
-    [HideInInspector] public UnityEvent EventStartExpansionPhase;
-    [HideInInspector] public UnityEvent EventEndExpansionPhase;
-    [HideInInspector] public UnityEvent EventStartExploitationPhase;
-    [HideInInspector] public UnityEvent EventEndExploitationPhase;
-    [HideInInspector] public UnityEvent EventStartEntertainementPhase;
-    [HideInInspector] public UnityEvent EventEndEntertainementPhase;
-    [HideInInspector] public UnityEvent<Tile> event_newTileSelected;
-    [HideInInspector] public UnityEvent event_tileUnselected;
+    [HideInInspector] public UnityEvent<int> OnNewTurn = new UnityEvent<int>();
+    [HideInInspector] public UnityEvent OnExplorationPhaseStarted = new UnityEvent();
+    [HideInInspector] public UnityEvent OnExplorationPhaseEnded = new UnityEvent();
+    [HideInInspector] public UnityEvent OnExpansionPhaseStarted = new UnityEvent();
+    [HideInInspector] public UnityEvent OnExpansionPhaseEnded = new UnityEvent();
+    [HideInInspector] public UnityEvent OnExploitationPhaseStarted = new UnityEvent();
+    [HideInInspector] public UnityEvent OnExploitationPhaseEnded = new UnityEvent();
+    [HideInInspector] public UnityEvent OnEntertainementPhaseStarted = new UnityEvent();
+    [HideInInspector] public UnityEvent OnEntertainementPhaseEnded = new UnityEvent();
+    [HideInInspector] public UnityEvent<Tile> OnNewTileSelected = new UnityEvent<Tile>();
+    [HideInInspector] public UnityEvent OnTileUnselected = new UnityEvent();
     #endregion
 
     #region ACCESSORS
@@ -42,33 +46,7 @@ public class GameManager : Singleton<GameManager>
     public GameObject InteractionPrefab { get => _interactionPrefab;}
     #endregion
 
-    private void OnEnable()
-    {
-        _inputActions.Player.Enable();
-
-        if (EventNewTurn == null)
-            EventNewTurn = new UnityEvent<int>();
-        if (EventStartExplorationPhase == null)
-            EventStartExplorationPhase = new UnityEvent();
-        if (EventEndExplorationPhase == null)
-            EventEndExplorationPhase = new UnityEvent();
-        if (EventStartExpansionPhase == null)
-            EventStartExpansionPhase = new UnityEvent();
-        if (EventEndExpansionPhase == null)
-            EventEndExpansionPhase = new UnityEvent();
-        if (EventStartExploitationPhase == null)
-            EventStartExploitationPhase = new UnityEvent();
-        if (EventEndExploitationPhase == null)
-            EventEndExploitationPhase = new UnityEvent();
-        if (EventStartEntertainementPhase == null)
-            EventStartEntertainementPhase = new UnityEvent();
-        if (EventEndEntertainementPhase == null)
-            EventEndEntertainementPhase = new UnityEvent();
-        if (event_newTileSelected == null)
-            event_newTileSelected = new UnityEvent<Tile>();
-        if (event_tileUnselected == null)
-            event_tileUnselected = new UnityEvent();
-    }
+    private void OnEnable() => _inputActions.Player.Enable();
 
     private void OnDisable() => _inputActions.Player.Disable();
 
@@ -78,41 +56,54 @@ public class GameManager : Singleton<GameManager>
 
         _inputActions.Player.LeftClick.performed += ctx => LeftClickAction();
 
-        MapManager.Instance.event_mapGenerated.AddListener(InitializeGame);
-        ExplorationManager.Instance.EventScoutsMovementDone.AddListener(PhaseFinalized);
+        MapManager.Instance.OnMapGenerated.AddListener(InitializeGame);
+        ExplorationManager.Instance.OnPhaseFinalized.AddListener(PhaseFinalized);
+        ExpansionManager.Instance.OnPhaseFinalized.AddListener(PhaseFinalized);
+        ExploitationManager.Instance.OnPhaseFinalized.AddListener(PhaseFinalized);
+        EntertainementManager.Instance.OnPhaseFinalized.AddListener(PhaseFinalized);
     }
 
     private void Start()
     {
+        //Tmp
         //Replace it by save logic
         if (_currentPhase != Phase.Explore)
         {
             _currentPhase = Phase.Explore;
         }
 
-        EventStartExplorationPhase.Invoke();
+        OnExplorationPhaseStarted.Invoke();
 
         _turnCounter = 1;
     }
 
     private void Update()
     {
+        //Check if the cursor if over UI
         _isPointerOverUI = EventSystem.current.IsPointerOverGameObject();
     }
 
+    #region INITIALIZATION
+    //Tmp until save and game setting logic
     private void InitializeGame()
     {
+        
         if (_turnCounter == 1)
         {
             Initializer(1);
         }
     }
 
-    //Depth will be replace by game settings
+    //Depth will be replace by game settings and magic numbers will be replace by game settings value
     private void Initializer(int depth)
     {
         Tile centralTile;
-        MapManager.Instance.Tiles.TryGetValue(Vector2.zero, out centralTile);
+
+        if (!MapManager.Instance.Tiles.TryGetValue(Vector2.zero, out centralTile))
+        {
+            Debug.LogError("Central tile not found.");
+            return;
+        }
 
         //Reveal the central tile and its neighbors
         centralTile.RevealTile(true);
@@ -121,120 +112,160 @@ public class GameManager : Singleton<GameManager>
 
         //Give the player resources for the initial town 
         ExpansionManager.Instance.AvailableTown += 1;
-        InfrastructureData townData = Resources.Load<InfrastructureData>("Data/Infrastructures/Town");
+        InfrastructureData townData = Resources.Load<InfrastructureData>(TOWN_DATA_PATH);//const
         foreach (ResourceValue cost in townData.Costs)
             ResourcesManager.Instance.UpdateResource(cost.resource, cost.value, Transaction.Gain);
         ExpansionManager.Instance.BuildTown(centralTile);
 
-        if (depth == 0)
+        // Depth-specific logic
+        switch (depth)
         {
-            ExplorationManager.Instance.FreeScouts = 1;
-            ExpansionManager.Instance.BaseClaimPerTurn = 2;
+            case 0:
+                InitializeDepthZero();
+                break;
+            case 1:
+                InitializeDepthOne(centralTile);
+                break;
+            case 2:
+                InitializeDepthTwo(centralTile);
+                break;
+            default:
+                Debug.LogError("Unhandled depth value: " + depth);
+                break;
         }
-        if(depth == 1)
+    }
+
+    //Hard mode, no pre-claimed tiles except the town
+    private void InitializeDepthZero()
+    {
+        ExplorationManager.Instance.FreeScouts = 1;
+        ExpansionManager.Instance.BaseClaimPerTurn = 2;
+    }
+
+    //Medium mode, 1 ring pre-claimed
+    private void InitializeDepthOne(Tile centralTile)
+    {
+        ExplorationManager.Instance.FreeScouts = 3;
+        ExpansionManager.Instance.BaseClaimPerTurn = 4;
+
+        //Reveal the tiles without animation
+        foreach (Tile tile in centralTile.Neighbors)
         {
-            ExplorationManager.Instance.FreeScouts = 3;
-            ExpansionManager.Instance.BaseClaimPerTurn = 4;
-            foreach (Tile tile in centralTile.Neighbors)
+            foreach (Tile t in tile.Neighbors)
+                t.RevealTile(true);
+        }
+
+        //Claim the tiles
+        foreach (Tile tile in centralTile.Neighbors)
+        {
+            //Give the player claim for the tile
+            ResourcesManager.Instance.UpdateClaim(tile.TileData.ClaimCost, Transaction.Gain);
+            ExpansionManager.Instance.ClaimTile(tile);
+        }
+    }
+
+    //Easy mode, 2 ring pre-claimed
+    private void InitializeDepthTwo(Tile centralTile)
+    {
+        ExplorationManager.Instance.FreeScouts = 5;
+        ExpansionManager.Instance.BaseClaimPerTurn = 6;
+
+        //Reveal the tiles without animation
+        foreach (Tile tile in centralTile.Neighbors)
+        {
+            foreach (Tile t in tile.Neighbors)
             {
-                foreach (Tile t in tile.Neighbors)
-                    t.RevealTile(true);
+                t.RevealTile(true);
+                foreach (Tile item in t.Neighbors)
+                    item.RevealTile(true);
             }
-            foreach (Tile tile in centralTile.Neighbors)
+        }
+
+        //Claim the tiles
+        foreach (Tile firstRingTile in centralTile.Neighbors)
+        {
+            if (!firstRingTile.Claimed)
             {
                 //Give the player claim for the tile
-                ResourcesManager.Instance.UpdateClaim(tile.TileData.ClaimCost, Transaction.Gain);
-                ExpansionManager.Instance.ClaimTile(tile);
+                ResourcesManager.Instance.UpdateClaim(firstRingTile.TileData.ClaimCost, Transaction.Gain);
+                ExpansionManager.Instance.ClaimTile(firstRingTile);
             }
-        }
-        if (depth == 2) 
-        {
-            ExplorationManager.Instance.FreeScouts = 5;
-            ExpansionManager.Instance.BaseClaimPerTurn = 6;
-            foreach (Tile tile in centralTile.Neighbors)
+            foreach (Tile secondRingTile in firstRingTile.Neighbors)
             {
-                foreach (Tile t in tile.Neighbors)
-                {
-                    t.RevealTile(true);
-                    foreach (Tile item in t.Neighbors)
-                        item.RevealTile(true);
-                }
-            }
-            foreach (Tile firstRingTile in centralTile.Neighbors)
-            {
-                if (!firstRingTile.Claimed)
+                if (!secondRingTile.Claimed)
                 {
                     //Give the player claim for the tile
-                    ResourcesManager.Instance.UpdateClaim(firstRingTile.TileData.ClaimCost, Transaction.Gain);
-                    ExpansionManager.Instance.ClaimTile(firstRingTile);
-                }
-                foreach (Tile secondRingTile in firstRingTile.Neighbors)
-                {
-                    if (!secondRingTile.Claimed)
-                    {
-                        //Give the player claim for the tile
-                        ResourcesManager.Instance.UpdateClaim(secondRingTile.TileData.ClaimCost, Transaction.Gain);
-                        ExpansionManager.Instance.ClaimTile(secondRingTile);
-                    }
+                    ResourcesManager.Instance.UpdateClaim(secondRingTile.TileData.ClaimCost, Transaction.Gain);
+                    ExpansionManager.Instance.ClaimTile(secondRingTile);
                 }
             }
         }
     }
+    #endregion
 
-    #region Actions
+    #region ACTIONS
     private void LeftClickAction()
     {
+        //Specific behaviour with scouts instancing
         if (ExplorationManager.Instance.ChoosingScoutDirection)
         {
             ExplorationManager.Instance.ConfirmDirection();
             return;
         }
 
+        //If a tile was selected we unselect it
+        if (_selectedTile)
+        {
+            Destroy(_highlightObject);
+            OnTileUnselected.Invoke();
+        }
+
         _previousSelectedTile = _selectedTile;
         _selectedTile = null;
 
-        if (_highlightObject)
-        {
-            Destroy(_highlightObject);
-            event_tileUnselected.Invoke();
-        }
+        //The action is performed only if the cursor is not on UI
+        if (_isPointerOverUI)
+            return;
 
-        if (!_isPointerOverUI)
+        _mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(_mouseRay, out _mouseRayHit))
         {
-            _mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(_mouseRay, out _mouseRayHit))
+            //Check if we clicked on a Tile or on a Interaction Button
+            if (_mouseRayHit.collider.gameObject.GetComponent<Tile>())
             {
-                if (_mouseRayHit.collider.gameObject.GetComponent<Tile>())
-                {
-                    SelectTile(_mouseRayHit.collider.gameObject.GetComponent<Tile>());
-                }
-                if (_mouseRayHit.collider.gameObject.GetComponent<UI_InteractionButton>())
-                {
-                    InteractWithButton(_mouseRayHit.collider.gameObject.GetComponent<UI_InteractionButton>());
-                }
+                SelectTile(_mouseRayHit.collider.gameObject.GetComponent<Tile>());
+            }
+            else if (_mouseRayHit.collider.gameObject.GetComponent<UI_InteractionButton>())
+            {
+                InteractWithButton(_mouseRayHit.collider.gameObject.GetComponent<UI_InteractionButton>());
             }
         }
     }
 
     private void SelectTile(Tile tile)
     {
-        if (tile.Revealed)
-        {
-            _selectedTile = tile;
-            if (_selectedTile == _previousSelectedTile)
-            {
-                _previousSelectedTile = null;
-                _selectedTile = null;
-                return;
-            }
+        //We can only select revealed tiles
+        if (!tile.Revealed)
+            return;
 
-            _highlightObject = Instantiate(_highlighPrefab, _selectedTile.transform.position + new Vector3(0, 0.01f, 0), Quaternion.identity);
-            event_newTileSelected.Invoke(_selectedTile);
+        _selectedTile = tile;
+
+        //If we click on the previous tile we just unselect it and stop the action
+        if (_selectedTile == _previousSelectedTile)
+        {
+            _previousSelectedTile = null;
+            _selectedTile = null;
+            return;
         }
+
+        //Spawn highlight and call event
+        _highlightObject = Instantiate(_highlighPrefab, _selectedTile.transform.position + new Vector3(0, 0.01f, 0), Quaternion.identity);
+        OnNewTileSelected.Invoke(_selectedTile);
     }
 
     private void InteractWithButton(UI_InteractionButton button)
     {
+        //Call the right method depending on the nature of the button
         switch (button.Interaction)
         {
             case Interaction.Claim:
@@ -265,61 +296,83 @@ public class GameManager : Singleton<GameManager>
     }
     #endregion
 
-    #region Phase confirmation
+    #region PHASE LOGIC
     public void ConfirmPhase()
     {
         //The phase is finalizing its logic
         if (_waitingPhaseFinalization)
             return;
+
         //Avoid confirming phase when scout aren't properly initialized
         if (ExplorationManager.Instance.ChoosingScoutDirection)
             return;
 
-        switch (_currentPhase)
-        {
-            case Phase.Explore:
-                EventEndExplorationPhase.Invoke();
-                //Waiting scouts movement
-                _waitingPhaseFinalization = true;
-                return;
-            case Phase.Expand:
-                EventEndExpansionPhase.Invoke();
-                PhaseFinalized();
-                break;
-            case Phase.Exploit:
-                EventEndExploitationPhase.Invoke();
-                PhaseFinalized();
-                break;
-            case Phase.Entertain:
-                EventEndEntertainementPhase.Invoke();
-                PhaseFinalized();
-                break;
-        } 
+        InvokePhaseEndEvent(_currentPhase);
+
+        _waitingPhaseFinalization = true;
     }
 
     private void PhaseFinalized()
     {
         _waitingPhaseFinalization = false;
 
-        switch (_currentPhase)
+        _currentPhase = GetNextPhase(_currentPhase);
+        InvokePhaseStartEvent(_currentPhase);
+
+        //New turn logic
+        if (_currentPhase == Phase.Explore)
+        {
+            _turnCounter++;
+            OnNewTurn.Invoke(_turnCounter);
+        }
+    }
+
+    private Phase GetNextPhase(Phase currentPhase)
+    {
+        return currentPhase switch
+        {
+            Phase.Explore => Phase.Expand,
+            Phase.Expand => Phase.Exploit,
+            Phase.Exploit => Phase.Entertain,
+            Phase.Entertain => Phase.Explore,
+            _ => currentPhase
+        };
+    }
+
+    private void InvokePhaseStartEvent(Phase phase)
+    {
+        switch (phase)
         {
             case Phase.Explore:
-                _currentPhase++;
-                EventStartExpansionPhase.Invoke();
+                OnExplorationPhaseStarted.Invoke();
                 break;
             case Phase.Expand:
-                _currentPhase++;
-                EventStartExploitationPhase.Invoke();
+                OnExpansionPhaseStarted.Invoke();
                 break;
             case Phase.Exploit:
-                _currentPhase++;
-                EventStartEntertainementPhase.Invoke();
+                OnExploitationPhaseStarted.Invoke();
                 break;
             case Phase.Entertain:
-                _currentPhase = Phase.Explore;
-                EventStartExplorationPhase.Invoke();
-                _turnCounter++;
-                EventNewTurn.Invoke(_turnCounter);
+                OnEntertainementPhaseStarted.Invoke();
+                break;
+        }
+    }
+
+    private void InvokePhaseEndEvent(Phase phase)
+    {
+        switch (phase)
+        {
+            case Phase.Explore:
+                OnExplorationPhaseEnded.Invoke();
+                break;
+            case Phase.Expand:
+                OnExpansionPhaseEnded.Invoke();
+                break;
+            case Phase.Exploit:
+                OnExploitationPhaseEnded.Invoke();
+                break;
+            case Phase.Entertain:
+                OnEntertainementPhaseEnded.Invoke();
                 break;
         }
     }

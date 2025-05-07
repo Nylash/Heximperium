@@ -46,18 +46,18 @@ public class UIManager : Singleton<UIManager>
 
     protected override void OnAwake()
     {
-        GameManager.Instance.EventNewTurn.AddListener(UpdateTurnCounterText);
+        GameManager.Instance.OnNewTurn.AddListener(UpdateTurnCounterText);
 
-        GameManager.Instance.EventStartExplorationPhase.AddListener(UpdatePhaseUI);
-        GameManager.Instance.EventStartExpansionPhase.AddListener(UpdatePhaseUI);
-        GameManager.Instance.EventStartExploitationPhase.AddListener(UpdatePhaseUI);
-        GameManager.Instance.EventStartEntertainementPhase.AddListener(UpdatePhaseUI);
+        GameManager.Instance.OnExplorationPhaseStarted.AddListener(UpdatePhaseUI);
+        GameManager.Instance.OnExpansionPhaseStarted.AddListener(UpdatePhaseUI);
+        GameManager.Instance.OnExploitationPhaseStarted.AddListener(UpdatePhaseUI);
+        GameManager.Instance.OnEntertainementPhaseStarted.AddListener(UpdatePhaseUI);
 
-        GameManager.Instance.EventStartExplorationPhase.AddListener(ForceScoutsToShow);
-        GameManager.Instance.EventStartExplorationPhase.AddListener(ForceEntertainersToHide);
+        GameManager.Instance.OnExplorationPhaseStarted.AddListener(ForceScoutsToShow);
+        GameManager.Instance.OnExplorationPhaseStarted.AddListener(ForceEntertainersToHide);
 
-        GameManager.Instance.EventStartEntertainementPhase.AddListener(ForceScoutsToHide);
-        GameManager.Instance.EventStartEntertainementPhase.AddListener(ForceEntertainersToShow);
+        GameManager.Instance.OnEntertainementPhaseStarted.AddListener(ForceScoutsToHide);
+        GameManager.Instance.OnEntertainementPhaseStarted.AddListener(ForceEntertainersToShow);
 
     }
 

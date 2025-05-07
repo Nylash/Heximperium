@@ -42,7 +42,7 @@ public class Scout : MonoBehaviour
         foreach (Renderer renderer in GetComponentsInChildren<Renderer>()) 
             _renderers.Add(renderer);
 
-        ExplorationManager.Instance.EventScoutsMovementDone.AddListener(CheckLifeSpan);
+        ExplorationManager.Instance.OnPhaseFinalized.AddListener(CheckLifeSpan);
     }
 
     private void Start()

@@ -13,14 +13,14 @@ public class MapManager : Singleton<MapManager>
     private Transform _grid;
     private Dictionary<Vector2, Tile> _tiles = new Dictionary<Vector2, Tile>();
 
-    [HideInInspector] public UnityEvent event_mapGenerated;
+    [HideInInspector] public UnityEvent OnMapGenerated;
 
     public Dictionary<Vector2, Tile> Tiles { get => _tiles;}
 
     private void OnEnable()
     {
-        if (event_mapGenerated == null)
-            event_mapGenerated = new UnityEvent();
+        if (OnMapGenerated == null)
+            OnMapGenerated = new UnityEvent();
     }
 
     void Start()
@@ -49,7 +49,7 @@ public class MapManager : Singleton<MapManager>
             tile.SearchNeighbors();
         }
 
-        event_mapGenerated.Invoke();
+        OnMapGenerated.Invoke();
     }
 
     void GenerateHexagonalGrid()

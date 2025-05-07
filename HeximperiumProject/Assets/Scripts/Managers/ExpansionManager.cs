@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ExpansionManager : Singleton<ExpansionManager>
 {
@@ -16,12 +18,20 @@ public class ExpansionManager : Singleton<ExpansionManager>
     public int BaseClaimPerTurn { get => _baseClaimPerTurn; set => _baseClaimPerTurn = value; }
     public List<Tile> ClaimedTiles { get => _claimedTiles; }
 
+    [HideInInspector] public UnityEvent OnPhaseFinalized;
+
+    private void OnEnable()
+    {
+        if (OnPhaseFinalized == null)
+            OnPhaseFinalized = new UnityEvent();
+    }
+
     protected override void OnAwake()
     {
-        GameManager.Instance.EventStartExpansionPhase.AddListener(StartPhase);
-        GameManager.Instance.EventEndExpansionPhase.AddListener(ConfirmPhase);
-        GameManager.Instance.event_newTileSelected.AddListener(NewTileSelected);
-        GameManager.Instance.event_tileUnselected.AddListener(TileUnselected);
+        GameManager.Instance.OnExpansionPhaseStarted.AddListener(StartPhase);
+        GameManager.Instance.OnExpansionPhaseEnded.AddListener(ConfirmPhase);
+        GameManager.Instance.OnNewTileSelected.AddListener(NewTileSelected);
+        GameManager.Instance.OnTileUnselected.AddListener(TileUnselected);
     }
 
     private void StartPhase()
@@ -32,6 +42,16 @@ public class ExpansionManager : Singleton<ExpansionManager>
     private void ConfirmPhase()
     {
         ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim, Transaction.Spent);
+
+        StartCoroutine(PhaseFinalized());
+    }
+
+    private IEnumerator PhaseFinalized()
+    {
+        // Wait for one frame
+        yield return null;
+
+        OnPhaseFinalized.Invoke();
     }
 
     private void NewTileSelected(Tile tile)

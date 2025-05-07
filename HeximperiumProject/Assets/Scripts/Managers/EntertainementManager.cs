@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -15,12 +16,20 @@ public class EntertainementManager : Singleton<EntertainementManager>
 
     public List<Entertainer> Entertainers { get => _entertainers; }
 
+    [HideInInspector] public UnityEvent OnPhaseFinalized;
+
+    private void OnEnable()
+    {
+        if (OnPhaseFinalized == null)
+            OnPhaseFinalized = new UnityEvent();
+    }
+
     protected override void OnAwake()
     {
-        GameManager.Instance.EventStartEntertainementPhase.AddListener(StartPhase);
-        GameManager.Instance.EventEndEntertainementPhase.AddListener(ConfirmPhase);
-        GameManager.Instance.event_newTileSelected.AddListener(NewTileSelected);
-        GameManager.Instance.event_tileUnselected.AddListener(TileUnselected);
+        GameManager.Instance.OnEntertainementPhaseStarted.AddListener(StartPhase);
+        GameManager.Instance.OnEntertainementPhaseEnded.AddListener(ConfirmPhase);
+        GameManager.Instance.OnNewTileSelected.AddListener(NewTileSelected);
+        GameManager.Instance.OnTileUnselected.AddListener(TileUnselected);
 
         foreach (EntertainerData item in Resources.LoadAll<EntertainerData>("Data/Units/Entertainers/"))
         {
@@ -30,7 +39,7 @@ public class EntertainementManager : Singleton<EntertainementManager>
 
     private void StartPhase()
     {
-        ResourcesManager.Instance.CHEAT_GAIN_ALL_RESOURCES();
+
     }
 
     private void ConfirmPhase()
@@ -40,6 +49,15 @@ public class EntertainementManager : Singleton<EntertainementManager>
             _score += item.Points;
             UIManager.Instance.UpdateScoreUI(_score);
         }
+        StartCoroutine(PhaseFinalized());
+    }
+
+    private IEnumerator PhaseFinalized()
+    {
+        // Wait for one frame
+        yield return null;
+
+        OnPhaseFinalized.Invoke();
     }
 
     private void NewTileSelected(Tile tile)

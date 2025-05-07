@@ -1,5 +1,5 @@
+using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -20,7 +20,7 @@ public class ExplorationManager : Singleton<ExplorationManager>
     private bool _choosingScoutDirection;
     private Tile _tileRefForScoutDirection;
 
-    [HideInInspector] public UnityEvent EventScoutsMovementDone;
+    [HideInInspector] public UnityEvent OnPhaseFinalized;
 
     public int FreeScouts { get => _freeScouts; set => _freeScouts = value; }
     public bool ChoosingScoutDirection { get => _choosingScoutDirection;}
@@ -30,24 +30,26 @@ public class ExplorationManager : Singleton<ExplorationManager>
 
     private void OnEnable()
     {
-        if (EventScoutsMovementDone == null)
-            EventScoutsMovementDone = new UnityEvent();
+        if (OnPhaseFinalized == null)
+            OnPhaseFinalized = new UnityEvent();
     }
 
     protected override void OnAwake()
     {
-        GameManager.Instance.EventStartExplorationPhase.AddListener(StartPhase);
-        GameManager.Instance.EventEndExplorationPhase.AddListener(ConfirmPhase);
-        GameManager.Instance.event_newTileSelected.AddListener(NewTileSelected);
-        GameManager.Instance.event_tileUnselected.AddListener(TileUnselected);
+        GameManager.Instance.OnExplorationPhaseStarted.AddListener(StartPhase);
+        GameManager.Instance.OnExplorationPhaseEnded.AddListener(ConfirmPhase);
+        GameManager.Instance.OnNewTileSelected.AddListener(NewTileSelected);
+        GameManager.Instance.OnTileUnselected.AddListener(TileUnselected);
     }
 
     private void Update()
     {
         if (GameManager.Instance.CurrentPhase != Phase.Explore)
             return;
+
         if(ChoosingScoutDirection)
             _currentScout.Direction = GetAngleForScout();
+
         if (_finalizingPhase)
         {
             foreach (Scout scout in _scouts)
@@ -56,7 +58,7 @@ public class ExplorationManager : Singleton<ExplorationManager>
                     return;
             }
             _finalizingPhase = false;
-            EventScoutsMovementDone.Invoke();
+            StartCoroutine(PhaseFinalized());
         }
         
     }
@@ -73,6 +75,14 @@ public class ExplorationManager : Singleton<ExplorationManager>
         {
             StartCoroutine(scout.Move());
         }
+    }
+
+    private IEnumerator PhaseFinalized()
+    {
+        // Wait for one frame
+        yield return null;
+
+        OnPhaseFinalized.Invoke();
     }
 
     private void NewTileSelected(Tile tile)
