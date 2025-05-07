@@ -4,31 +4,34 @@ using UnityEngine.Events;
 
 public class MapManager : Singleton<MapManager>
 {
+    #region CONFIGURATION
     [SerializeField] private GameObject _tilePrefab;
+    [SerializeField] private GameObject _emptyMap;
+    //Tmp until game configuration menu
     [SerializeField] private int _mapRadius;
     [SerializeField] private GameObject _predefinedMap;
-    [SerializeField] private GameObject _emptyMap;
+    #endregion
+
+    #region VARIABLES
     private float _deltaX = 1f;
     private float _deltaZ = 0.91f;
     private Transform _grid;
     private Dictionary<Vector2, Tile> _tiles = new Dictionary<Vector2, Tile>();
+    #endregion
 
-    [HideInInspector] public UnityEvent OnMapGenerated;
+    #region EVENTS
+    [HideInInspector] public UnityEvent OnMapGenerated = new UnityEvent();
+    #endregion
 
+    #region ACCESSORS
     public Dictionary<Vector2, Tile> Tiles { get => _tiles;}
-
-    private void OnEnable()
-    {
-        if (OnMapGenerated == null)
-            OnMapGenerated = new UnityEvent();
-    }
+    #endregion
 
     void Start()
     {
         if(_predefinedMap != null)
         {
-            GameObject bite = Instantiate(_predefinedMap);
-            _grid = bite.transform;
+            _grid = Instantiate(_predefinedMap).transform;
 
             //Manually get all tiles in dictionnary
             for (int i = 0; i < _grid.childCount; i++)
@@ -84,9 +87,4 @@ public class MapManager : Singleton<MapManager>
             }
         }
     }
-}
-
-public enum Biome
-{
-    Grassland, DeepForest, Mountain, Desert, Swamp, Ice 
 }
