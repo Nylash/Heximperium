@@ -5,26 +5,32 @@ using UnityEngine.Events;
 
 public class ExpansionManager : Singleton<ExpansionManager>
 {
-    [SerializeField] private Transform _borderParent;
+    #region CONSTANTS
+    private const string TOWN_DATA_PATH = "Data/Infrastructures/Town";
+    #endregion
 
+    #region CONFIGURATION
+    [SerializeField] private Transform _borderParent;
+    #endregion
+
+    #region VARIABLES
     private List<GameObject> _buttons = new List<GameObject>();
     private List<Tile> _claimedTiles = new List<Tile>();
     private List<Vector3> _interactionPositions = new List<Vector3>();
     private int _availableTown;
     private int _baseClaimPerTurn;
+    #endregion
 
+    #region ACCESSORS
     public int AvailableTown { get => _availableTown; set => _availableTown = value; }
     public Transform BorderParent { get => _borderParent; }
     public int BaseClaimPerTurn { get => _baseClaimPerTurn; set => _baseClaimPerTurn = value; }
     public List<Tile> ClaimedTiles { get => _claimedTiles; }
+    #endregion
 
-    [HideInInspector] public UnityEvent OnPhaseFinalized;
-
-    private void OnEnable()
-    {
-        if (OnPhaseFinalized == null)
-            OnPhaseFinalized = new UnityEvent();
-    }
+    #region EVENTS
+    [HideInInspector] public UnityEvent OnPhaseFinalized = new UnityEvent();
+    #endregion
 
     protected override void OnAwake()
     {
@@ -34,6 +40,7 @@ public class ExpansionManager : Singleton<ExpansionManager>
         GameManager.Instance.OnTileUnselected.AddListener(TileUnselected);
     }
 
+    #region PHASE LOGIC
     private void StartPhase()
     {
         ResourcesManager.Instance.UpdateClaim(_baseClaimPerTurn, Transaction.Gain);
@@ -53,7 +60,9 @@ public class ExpansionManager : Singleton<ExpansionManager>
 
         OnPhaseFinalized.Invoke();
     }
+    #endregion
 
+    #region TILE SELECTION
     private void NewTileSelected(Tile tile)
     {
         if (GameManager.Instance.CurrentPhase != Phase.Expand)
@@ -61,9 +70,11 @@ public class ExpansionManager : Singleton<ExpansionManager>
 
         _interactionPositions.Clear();
 
+        //Claimed tiles can only be used for town
         if (tile.Claimed)
         {
-            if(tile.TileData as BasicTileData)
+            //We can only build town on basic tile
+            if (tile.TileData as BasicTileData)
             {
                 _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
                 TownInteraction(tile, 0);
@@ -71,49 +82,13 @@ public class ExpansionManager : Singleton<ExpansionManager>
             return;
         }
 
-
         _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 2);
+        //We can only build town on basic tile
         if (tile.TileData as BasicTileData)
             TownInteraction(tile, 0);
+        //We can only claimed tiles adjacent to already claimed tiles
         if (tile.IsOneNeighborClaimed())
             ClaimInteraction(tile, 1);
-    }
-
-    public void ClaimTile(Tile tile)
-    {
-        if (!tile.Claimed)
-        {
-            if(ResourcesManager.Instance.CanAffordClaim(tile.TileData.ClaimCost))
-            {
-                ResourcesManager.Instance.UpdateClaim(tile.TileData.ClaimCost, Transaction.Spent);
-                tile.ClaimTile();
-                _claimedTiles.Add(tile);
-                foreach (Tile t in _claimedTiles)
-                    t.CheckBorder();
-            }
-        }
-        else
-        {
-            Debug.LogError("This tile shouldn't have the claim interaction " + tile.name);
-        }
-    }
-
-    public void BuildTown(Tile tile)
-    {
-        if (_availableTown != 0 && ResourcesManager.Instance.CanAfford(Resources.Load<InfrastructureData>("Data/Infrastructures/Town").Costs))
-        {
-            //Start by claiming the tile if needed
-            if (!tile.Claimed)
-            {
-                tile.ClaimTile();
-                _claimedTiles.Add(tile);
-                foreach (Tile t in _claimedTiles)
-                    t.CheckBorder();
-            }
-            _availableTown -= 1;
-            ExploitationManager.Instance.BuildInfrastructure(tile, Resources.Load<InfrastructureData>("Data/Infrastructures/Town"));
-        }
-        
     }
 
     private void TileUnselected()
@@ -124,21 +99,66 @@ public class ExpansionManager : Singleton<ExpansionManager>
         }
         _buttons.Clear();
     }
+    #endregion
 
+    #region INTERACTION
+    private void CreateInteractionButton(Tile tile, int positionIndex, Interaction interactionType)
+    {
+        GameObject button = Instantiate(GameManager.Instance.InteractionPrefab, _interactionPositions[positionIndex], Quaternion.identity);
+        button.GetComponent<UI_InteractionButton>().Initialize(tile, interactionType);
+
+        _buttons.Add(button);
+    }
 
     private void ClaimInteraction(Tile tile, int positionIndex)
     {
-        GameObject buttonClaim = Instantiate(GameManager.Instance.InteractionPrefab, _interactionPositions[positionIndex], Quaternion.identity);
-        buttonClaim.GetComponent<UI_InteractionButton>().Initialize(tile, Interaction.Claim);
-
-        _buttons.Add(buttonClaim);
+        CreateInteractionButton(tile, positionIndex, Interaction.Claim);
     }
 
     private void TownInteraction(Tile tile, int positionIndex)
     {
-        GameObject buttonTown = Instantiate(GameManager.Instance.InteractionPrefab, _interactionPositions[positionIndex], Quaternion.identity);
-        buttonTown.GetComponent<UI_InteractionButton>().Initialize(tile, Interaction.Town);
-
-        _buttons.Add(buttonTown);
+        CreateInteractionButton(tile, positionIndex, Interaction.Town);
     }
+
+    public void ClaimTile(Tile tile)
+    {
+        if (tile.Claimed)
+            return;
+        if (ResourcesManager.Instance.CanAffordClaim(tile.TileData.ClaimCost))
+        {
+            ResourcesManager.Instance.UpdateClaim(tile.TileData.ClaimCost, Transaction.Spent);
+            tile.ClaimTile();
+            _claimedTiles.Add(tile);
+            foreach (Tile t in _claimedTiles)
+                t.CheckBorder();
+        }
+    }
+
+    public void BuildTown(Tile tile)
+    {
+        if (_availableTown != 0)
+        {
+            InfrastructureData townData = Resources.Load<InfrastructureData>(TOWN_DATA_PATH);
+            if (townData == null)
+            {
+                Debug.LogError("Town data not found at path: " + TOWN_DATA_PATH);
+                return;
+            }
+
+            if (ResourcesManager.Instance.CanAfford(townData.Costs))
+            {
+                // Start by claiming the tile if needed
+                if (!tile.Claimed)
+                {
+                    tile.ClaimTile();
+                    _claimedTiles.Add(tile);
+                    foreach (Tile t in _claimedTiles)
+                        t.CheckBorder();
+                }
+                _availableTown -= 1;
+                ExploitationManager.Instance.BuildInfrastructure(tile, townData);
+            }
+        }
+    }
+    #endregion
 }
