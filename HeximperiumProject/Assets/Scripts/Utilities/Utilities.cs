@@ -68,6 +68,7 @@ public static class Utilities
         }
     }
 
+    //Create a button around a tile
     public static GameObject CreateInteractionButton(Tile tile, Vector3 positon, Interaction interactionType, InfrastructureData infraData = null, EntertainerData entertainerData = null)
     {
         GameObject button = Object.Instantiate(GameManager.Instance.InteractionPrefab, positon, Quaternion.identity);
