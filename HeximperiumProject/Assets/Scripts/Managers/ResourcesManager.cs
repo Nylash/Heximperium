@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ResourcesManager : Singleton<ResourcesManager>
 {
+    #region VARIABLES
     private int _claim;
     private int _gold;
     private int _stone;
@@ -13,8 +14,11 @@ public class ResourcesManager : Singleton<ResourcesManager>
     private int _pigment;
     private int _crystal;
     private int _emberbone;
+    #endregion
 
+    #region ACCESSORS
     public int Claim { get => _claim; }
+    #endregion
 
     public void CHEAT_GAIN_ALL_RESOURCES()
     {
@@ -28,7 +32,8 @@ public class ResourcesManager : Singleton<ResourcesManager>
         UpdateResource(Resource.Gold, 500, Transaction.Gain);
     }
 
-    public void UpdateResource(Resource resource, int value, Transaction transaction)
+    #region UPDATE RESOURCES
+    private void UpdateResource(Resource resource, int value, Transaction transaction)
     {
         if (transaction == Transaction.Spent)
             value = -value;
@@ -65,14 +70,6 @@ public class ResourcesManager : Singleton<ResourcesManager>
         }
     }
 
-    public void UpdateClaim(int value, Transaction transaction)
-    {
-        if (transaction == Transaction.Spent)
-            value = -value;
-        _claim += value;
-        UIManager.Instance.UpdateClaimUI(_claim);
-    }
-
     public void UpdateResource(List<ResourceValue> resources, Transaction transaction)
     {
         if (resources.Count == 0) return;
@@ -82,6 +79,16 @@ public class ResourcesManager : Singleton<ResourcesManager>
         }
     }
 
+    public void UpdateClaim(int value, Transaction transaction)
+    {
+        if (transaction == Transaction.Spent)
+            value = -value;
+        _claim += value;
+        UIManager.Instance.UpdateClaimUI(_claim);
+    }
+    #endregion
+
+    #region CHECK RESOURCES
     public bool CanAffordClaim(int claim)
     {
         if (_claim - claim >= 0)
@@ -90,7 +97,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
             return false;
     }
 
-    public bool CanAfford(Resource resource, int cost)
+    private bool CanAfford(Resource resource, int cost)
     {
         switch (resource)
         {
@@ -125,4 +132,5 @@ public class ResourcesManager : Singleton<ResourcesManager>
         else
             return false;
     }
+    #endregion
 }

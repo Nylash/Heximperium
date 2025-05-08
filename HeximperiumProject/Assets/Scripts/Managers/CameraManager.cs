@@ -4,6 +4,12 @@ using UnityEngine.InputSystem;
 
 public class CameraManager : Singleton<CameraManager>
 {
+    #region CONSTANTS
+    private const float MIN_ZOOM_LEVEL = 2.0f;
+    private const float MAX_ZOOM_LEVEL = 20.0f;
+    #endregion
+
+    #region CONFIGURATION
     [SerializeField] private float _cameraMovementSpeed = 5;
     [SerializeField] private float _cameraDragSpeed = 2;
     [SerializeField] private float _cameraZoomSpeed = 10;
@@ -11,9 +17,10 @@ public class CameraManager : Singleton<CameraManager>
     [SerializeField] private float _edgePanMargin = 2;
     [SerializeField] private float _edgePanSpeed = 3;
 #pragma warning restore CS0414
+    #endregion
 
+    #region VARIABLES
     private InputSystem_Actions _inputActions;
-
     //Camera
     private Vector2 _cameraMovement;
     private float _cameraZoom;
@@ -26,6 +33,7 @@ public class CameraManager : Singleton<CameraManager>
     //Mouse over
     private Ray _mouseRay;
     private RaycastHit _mouseRayHit;
+    #endregion
 
     private void OnEnable() => _inputActions.Player.Enable();
     private void OnDisable() => _inputActions.Player.Disable();
@@ -60,32 +68,49 @@ public class CameraManager : Singleton<CameraManager>
         ObjectUnderMouseDetection();
     }
 
+    //Check if the cursor is over an object, if so give the object to UI Manager to display a pop up
     private void ObjectUnderMouseDetection()
     {
-        if (!EventSystem.current.IsPointerOverGameObject())
+        //If over UI we don't continue the check
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
+        _mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(_mouseRay, out _mouseRayHit))
         {
-            _mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(_mouseRay, out _mouseRayHit))
-            {
-                UIManager.Instance.HoverUIPopupCheck(_mouseRayHit.collider.gameObject);
-            }
+            UIManager.Instance.HoverUIPopupCheck(_mouseRayHit.collider.gameObject);
         }
     }
 
-    private void KeyMovement()
-    {
-        transform.position = Vector3.MoveTowards(transform.position,
-            transform.position + new Vector3(_cameraMovement.x, 0, _cameraMovement.y) * _cameraMovementSpeed * Time.deltaTime,
-            0.5f);
-    }
-
+    #region CAMERA MOVEMENT
     private void Zoom()
     {
         transform.position = new Vector3(
             transform.position.x,
-            Mathf.Clamp(Mathf.Lerp(transform.position.y, transform.position.y + _cameraZoom, _cameraZoomSpeed * Time.deltaTime), 2.0f, 20.0f),
+            Mathf.Clamp(Mathf.Lerp(transform.position.y, transform.position.y + _cameraZoom, _cameraZoomSpeed * Time.deltaTime), MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL),
             transform.position.z
             );
+    }
+
+    private void MoveCamera(Vector2 direction, float speed)
+    {
+        transform.position = Vector3.MoveTowards(transform.position,
+            transform.position + new Vector3(direction.x, 0, direction.y) * speed * Time.deltaTime, 0.5f);
+    }
+
+    private void KeyMovement()
+    {
+        MoveCamera(_cameraMovement, _cameraMovementSpeed);
+    }
+
+    private void DragCamera()
+    {
+        if (_isMouseDragging)
+        {
+            Vector2 delta = Mouse.current.position.ReadValue() - _lastMousePosition;
+            MoveCamera(new Vector2(-delta.x, -delta.y), _cameraDragSpeed);
+            _lastMousePosition = Mouse.current.position.ReadValue();
+        }
     }
 
     private void StartDragging()
@@ -94,24 +119,14 @@ public class CameraManager : Singleton<CameraManager>
         _lastMousePosition = Mouse.current.position.ReadValue();
     }
 
-    private void DragCamera()
-    {
-        if (_isMouseDragging)
-        {
-            Vector2 delta = Mouse.current.position.ReadValue() - _lastMousePosition;
-            transform.position = Vector3.MoveTowards(transform.position,
-                transform.position + new Vector3(-delta.x, 0, -delta.y) * _cameraDragSpeed * Time.deltaTime,
-                0.5f);
-            _lastMousePosition = Mouse.current.position.ReadValue();
-        }
-    }
-
     private void EdgePan()
     {
-#if UNITY_EDITOR
+        //Disable the behaviour in the editor to avoid annoying behaviour
+        #if UNITY_EDITOR
 
-#else
-_mousePosition = Mouse.current.position.ReadValue();
+        #else
+
+        _mousePosition = Mouse.current.position.ReadValue();
         _direction = Vector2.zero;
 
         if (_mousePosition.x < _edgePanMargin)
@@ -136,7 +151,7 @@ _mousePosition = Mouse.current.position.ReadValue();
         {
             transform.position += new Vector3(_direction.x, 0, _direction.y) * _edgePanSpeed * Time.deltaTime;
         }
-#endif
+        #endif
     }
 
     //Draw Edge pan margin
@@ -154,4 +169,5 @@ _mousePosition = Mouse.current.position.ReadValue();
         // Right margin
         GUI.DrawTexture(new Rect(Screen.width - _edgePanMargin, 0, _edgePanMargin, Screen.height), Texture2D.whiteTexture);
     }*/
+#endregion
 }

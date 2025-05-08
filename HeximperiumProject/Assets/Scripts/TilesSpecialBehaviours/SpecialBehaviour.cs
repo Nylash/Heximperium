@@ -11,5 +11,7 @@ public abstract class SpecialBehaviour : ScriptableObject
 
     //Realize special behaviour toward a specific tile (e.g. when this specific tile change)
     public abstract void ApplySpecialBehaviour(Tile specificTile);
+
+    //Rollback the behaviour (typically when the infra is destroyed)
     public abstract void RollbackSpecialBehaviour();
 }

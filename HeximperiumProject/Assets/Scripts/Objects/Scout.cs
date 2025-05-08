@@ -1,11 +1,14 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.UIElements;
 
 public class Scout : MonoBehaviour
 {
+    #region CONFIGURATION
     [SerializeField] private ScoutData _data;
+    #endregion
+
+    #region VARIABLES
     private Direction _direction;
     private Animator _animator;
     private Tile _currentTile;
@@ -17,7 +20,9 @@ public class Scout : MonoBehaviour
     private int _revealRadius;
 
     private List<Renderer> _renderers = new List<Renderer>();
+    #endregion
 
+    #region ACCESSORS
     public Direction Direction
     {
         get => _direction;
@@ -35,6 +40,7 @@ public class Scout : MonoBehaviour
     public int RevealRadius { get => _revealRadius; set => _revealRadius = value; }
     public Tile CurrentTile { get => _currentTile; set => _currentTile = value; }
     public bool HasDoneMoving { get => _hasDoneMoving;}
+    #endregion
 
     private void Awake()
     {
@@ -42,7 +48,7 @@ public class Scout : MonoBehaviour
         foreach (Renderer renderer in GetComponentsInChildren<Renderer>()) 
             _renderers.Add(renderer);
 
-        ExplorationManager.Instance.EventScoutsMovementDone.AddListener(CheckLifeSpan);
+        ExplorationManager.Instance.OnPhaseFinalized.AddListener(CheckLifeSpan);
     }
 
     private void Start()
@@ -56,6 +62,7 @@ public class Scout : MonoBehaviour
         _yOffset = transform.position.y;
     }
 
+    //Coroutine to move the scout at the end of exploration phase
     public IEnumerator Move()
     {
         for (int i = 0; i < _speed; i++)
@@ -91,6 +98,7 @@ public class Scout : MonoBehaviour
         _hasDoneMoving = true;
     }
 
+    //Check if the scout must stay alive
     private void CheckLifeSpan()
     {
         //Reset bool for next Explore phase
@@ -109,6 +117,7 @@ public class Scout : MonoBehaviour
         }
     }
 
+    //Method to reveal the tiles, depending on the scout reveal radius
     private void RevealTilesRecursively(Tile currentTile, int depth)
     {
         if (depth <= 0)
@@ -129,6 +138,7 @@ public class Scout : MonoBehaviour
         }
     }
 
+    //Rotate the cursor sprites while spawning a scout
     private void UpdateCursor()
     {
         switch (_direction)

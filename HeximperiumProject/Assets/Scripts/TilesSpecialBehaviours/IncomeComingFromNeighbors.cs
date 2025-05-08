@@ -4,11 +4,13 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Scriptable Objects/Special Behaviour/IncomeCoomingFromneighbors")]
 public class IncomeComingFromNeighbors : SpecialBehaviour
 {
+    //When a neighbor has its income modify we need to mofidy this one accordingly
     private void AddListener(Tile tile)
     {
-        tile.event_IncomeModified.AddListener(AdjustIncomeFromNeighbor);
+        tile.OnIncomeModified.AddListener(AdjustIncomeFromNeighbor);
     }
 
+    //Subscribe to neighbors event OnIncomeModified and update its income based on their income
     public override void InitializeSpecialBehaviour()
     {
         foreach (Tile neighbor in _tile.Neighbors)
@@ -31,10 +33,9 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
 
     private void AdjustIncomeFromNeighbor(List<ResourceValue> previousIncome, List<ResourceValue> newIncome)
     {
+        //Switch the previous income to negative value
         foreach (ResourceValue item in previousIncome)
-        {
             item.value = -item.value;
-        }
         //Remove previous income
         _tile.Incomes = Utilities.MergeResourceValues(_tile.Incomes, previousIncome);
         //Add new income
