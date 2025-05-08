@@ -135,6 +135,11 @@ public enum Transaction
     Gain, Spent
 }
 
+public enum Interaction
+{
+    Claim, Town, Scout, Infrastructure, Destroy, Entertainer
+}
+
 //Whereas the new income is added (merge) or replace the previous one
 public enum TypeIncomeUpgrade
 {

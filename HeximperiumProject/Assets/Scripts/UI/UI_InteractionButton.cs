@@ -2,72 +2,108 @@ using UnityEngine;
 
 public class UI_InteractionButton : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer _renderer;
+    #region CONSTANTS
+    private const string PATH_DATA_INFRA = "Data/Infrastructures/";
+    private const string PATH_DATA_UNIT = "Data/Units/";
+    private const string PATH_SPRITE_INTERACTION = "InteractionButtons/";
+    #endregion
 
+    #region VARIABLES
+    private SpriteRenderer _renderer;
     private Interaction _interaction;
     private Tile _associatedTile;
     private InfrastructureData _infraData;
     private UnitData _unitData;
+    #endregion
 
+    #region ACCESSORS
     public Interaction Interaction { get => _interaction;}
     public Tile AssociatedTile { get => _associatedTile;}
     public InfrastructureData InfrastructureData { get => _infraData;}
     public UnitData UnitData { get => _unitData;}
+    #endregion
 
     public void Initialize(Tile associatedTile, Interaction action, InfrastructureData infraData = null, EntertainerData entrainData = null)
     {
+        _renderer = GetComponent<SpriteRenderer>();
+        _associatedTile = associatedTile;
+        _interaction = action;
+
         switch (action)
         {
             case Interaction.Claim:
-                _associatedTile = associatedTile;
-                _interaction = Interaction.Claim;
-                if (!ResourcesManager.Instance.CanAffordClaim(associatedTile.TileData.ClaimCost))
-                    _renderer.color = UIManager.Instance.ColorCantAfford;
-                _renderer.sprite = Resources.Load<Sprite>("InteractionButtons/" + action.ToString());
+                InitializeClaim();
                 break;
             case Interaction.Town:
-                _associatedTile = associatedTile;
-                _interaction = Interaction.Town;
-                if (!ResourcesManager.Instance.CanAfford(Resources.Load<InfrastructureData>("Data/Infrastructures/" + action.ToString()).Costs) 
-                    || ExpansionManager.Instance.AvailableTown == 0)
-                    _renderer.color = UIManager.Instance.ColorCantAfford;
-                _renderer.sprite = Resources.Load<Sprite>("InteractionButtons/" + action.ToString());
+                InitializeTown();
                 break;
             case Interaction.Scout:
-                _associatedTile = associatedTile;
-                _interaction = Interaction.Scout;
-                _unitData = Resources.Load<ScoutData>("Data/Units/" + action.ToString());
-                if (!ResourcesManager.Instance.CanAfford(_unitData.Costs)
-                    && ExplorationManager.Instance.FreeScouts == 0)
-                    _renderer.color = UIManager.Instance.ColorCantAfford;
-                _renderer.sprite = Resources.Load<Sprite>("InteractionButtons/" + action.ToString());
+                InitializeScout();
                 break;
             case Interaction.Infrastructure:
-                _associatedTile = associatedTile;
-                _interaction = Interaction.Infrastructure;
-                _infraData = infraData;
-                if(!ResourcesManager.Instance.CanAfford(_infraData.Costs) || !ExploitationManager.Instance.IsInfraAvailable(infraData))
-                    _renderer.color = UIManager.Instance.ColorCantAfford;
-                _renderer.sprite = Resources.Load<Sprite>("InteractionButtons/" + infraData.name);
+                InitializeInfrastructure(infraData);
                 break;
             case Interaction.Destroy:
-                _associatedTile = associatedTile;
-                _interaction = Interaction.Destroy;
-                _renderer.sprite = Resources.Load<Sprite>("InteractionButtons/" + action.ToString());
+                InitializeDestroy();
                 break;
             case Interaction.Entertainer:
-                _associatedTile = associatedTile;
-                _interaction = Interaction.Entertainer;
-                _unitData = entrainData;
-                if (!ResourcesManager.Instance.CanAfford(_unitData.Costs))
-                    _renderer.color = UIManager.Instance.ColorCantAfford;
-                _renderer.sprite = Resources.Load<Sprite>("InteractionButtons/" + entrainData.EntertainerType);
+                InitializeEntertainer(entrainData);
                 break;
         }
     }
-}
 
-public enum Interaction
-{
-    Claim, Town, Scout, Infrastructure, Destroy, Entertainer
+    private void InitializeClaim()
+    {
+        if (!ResourcesManager.Instance.CanAffordClaim(_associatedTile.TileData.ClaimCost))
+            _renderer.color = UIManager.Instance.ColorCantAfford;
+        LoadSprite(Interaction.Claim.ToString());
+    }
+
+    private void InitializeTown()
+    {
+        InfrastructureData townData = Resources.Load<InfrastructureData>(PATH_DATA_INFRA + Interaction.Town.ToString());
+        if (!ResourcesManager.Instance.CanAfford(townData.Costs) || ExpansionManager.Instance.AvailableTown == 0)
+            _renderer.color = UIManager.Instance.ColorCantAfford;
+        LoadSprite(Interaction.Town.ToString());
+    }
+
+    private void InitializeScout()
+    {
+        _unitData = Resources.Load<ScoutData>(PATH_DATA_UNIT + Interaction.Scout.ToString());
+        if (!ResourcesManager.Instance.CanAfford(_unitData.Costs) && ExplorationManager.Instance.FreeScouts == 0)
+            _renderer.color = UIManager.Instance.ColorCantAfford;
+        LoadSprite(Interaction.Scout.ToString());
+    }
+
+    private void InitializeInfrastructure(InfrastructureData infraData)
+    {
+        _infraData = infraData;
+        if (!ResourcesManager.Instance.CanAfford(_infraData.Costs) || !ExploitationManager.Instance.IsInfraAvailable(infraData))
+            _renderer.color = UIManager.Instance.ColorCantAfford;
+        LoadSprite(infraData.name);
+    }
+
+    private void InitializeDestroy()
+    {
+        LoadSprite(Interaction.Destroy.ToString());
+    }
+
+    private void InitializeEntertainer(EntertainerData data)
+    {
+        _unitData = data;
+        if (!ResourcesManager.Instance.CanAfford(_unitData.Costs))
+            _renderer.color = UIManager.Instance.ColorCantAfford;
+        LoadSprite(data.EntertainerType.ToString());
+    }
+
+    private void LoadSprite(string spriteName)
+    {
+        Sprite sprite = Resources.Load<Sprite>(PATH_SPRITE_INTERACTION + spriteName);
+        if (sprite == null)
+        {
+            Debug.LogError("Sprite not found at path: " + PATH_SPRITE_INTERACTION + spriteName);
+            return;
+        }
+        _renderer.sprite = sprite;
+    }
 }
