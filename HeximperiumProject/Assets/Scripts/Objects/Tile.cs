@@ -2,10 +2,19 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine.Events;
-using UnityEngine.InputSystem;
 
 public class Tile : MonoBehaviour
 {
+    #region CONSTANTS
+    private readonly List<string> UNIQUE_MATERIAL_TILES = new List<string> { "Water", "Amphitheater", "EnchantedPavilion", "ShowcasePlaza", "Workshop" };
+    private const string PATH_UNSPECIFIC_MATERIAL = "TilesMaterial/UnspecificMaterial/";
+    private const string PATH_SPECIFIC_MATERIAL = "TilesMaterial/";
+    #endregion
+
+    #region CONFIGURATION
+    [SerializeField] private GameObject _borderPrefab;
+    #endregion
+
     #region VARIABLES
     //Remove the serializedField when the map creation is fixed
     [SerializeField] private Biome _biome;
@@ -22,12 +31,12 @@ public class Tile : MonoBehaviour
     private List<Scout> _scouts = new List<Scout>();
     private TextMeshPro _scoutCounter;
     private Entertainer _entertainer;
+    #endregion
 
-    private readonly List<string> _uniqueMaterialTiles = new List<string> { "Water", "Amphitheater", "EnchantedPavilion", "ShowcasePlaza", "Workshop" };
-#endregion
-
+    #region EVENTS
     //previous Incomes, new Incomes
-    [HideInInspector] public UnityEvent<List<ResourceValue>, List<ResourceValue>> event_IncomeModified;
+    [HideInInspector] public UnityEvent<List<ResourceValue>, List<ResourceValue>> event_IncomeModified = new UnityEvent<List<ResourceValue>, List<ResourceValue>>();
+    #endregion
 
     #region ACCESSORS
     public Vector2 Coordinate { get => _coordinate; set => _coordinate = value; }
@@ -83,22 +92,17 @@ public class Tile : MonoBehaviour
     public Entertainer Entertainer { get => _entertainer; set => _entertainer = value; }
     #endregion
 
-    private void OnEnable()
-    {
-        if (event_IncomeModified == null)
-            event_IncomeModified = new UnityEvent<List<ResourceValue>, List<ResourceValue>>();
-    }
-
     private void Awake()
     {
         _animator = GetComponent<Animator>();
         _initialData = _tileData;
     }
 
+    //Claim the tile and spawn the territory boundaries
     public void ClaimTile()
     {
         _claimed = true;
-        _border = Instantiate(Resources.Load<GameObject>("Border"), transform.position, Quaternion.identity).GetComponent<Border>();
+        _border = Instantiate(_borderPrefab, transform.position, Quaternion.identity).GetComponent<Border>();
         _border.transform.parent = ExpansionManager.Instance.BorderParent;
         foreach (Tile neighbor in _neighbors) 
         {
@@ -107,6 +111,7 @@ public class Tile : MonoBehaviour
         }
     }
 
+    //Reveal the tile, with or without the flipping animation
     public void RevealTile(bool skipAnim)
     {
         _revealed = true;
@@ -116,22 +121,39 @@ public class Tile : MonoBehaviour
             _animator.SetTrigger("Reveal");
     }
 
+    //Called when a tile is claimed
     public void CheckBorder()
     {
         _border.CheckBorderVisibility(_neighbors);
     }
 
+    //Change tile's visual based on the tile data
     private void UpdateVisual()
     {
-        if (_uniqueMaterialTiles.Contains(_tileData.name))
+        if (UNIQUE_MATERIAL_TILES.Contains(_tileData.name))
         {
-            //Material not linked to biome
-            GetComponent<Renderer>().material = Resources.Load("TilesMaterial/UnspecifiedMaterial/" + _tileData.name) as Material;
+            // Material not linked to biome
+            Material unspecificMaterial = Resources.Load(PATH_UNSPECIFIC_MATERIAL + _tileData.name) as Material;
+            if (unspecificMaterial == null)
+            {
+                Debug.LogError("Material not found at path: " + PATH_UNSPECIFIC_MATERIAL + _tileData.name);
+                return;
+            }
+            GetComponent<Renderer>().material = unspecificMaterial;
             return;
         }
-        GetComponent<Renderer>().material = Resources.Load("TilesMaterial/" + _biome + "/" + _tileData.name + "_" + _biome) as Material;
+
+        Material specificMaterial = Resources.Load(PATH_SPECIFIC_MATERIAL + _biome + "/" + _tileData.name + "_" + _biome) as Material;
+        if (specificMaterial == null)
+        {
+            Debug.LogError("Material not found at path: " + PATH_SPECIFIC_MATERIAL + _biome + "/" + _tileData.name + "_" + _biome);
+            return;
+        }
+        GetComponent<Renderer>().material = specificMaterial;
     }
 
+    #region NEIGHBORS LOGIC
+    //Only called at the map generation
     public void SearchNeighbors()
     {
         // Determine the offset based on the row
@@ -172,7 +194,9 @@ public class Tile : MonoBehaviour
         }
         return false;
     }
+    #endregion
 
+    //Method used manage the scout counter of the tile (if there is several scouts on the same tile)
     public void UpdateScoutCounter()
     {
         if(_scouts.Count >= 2)

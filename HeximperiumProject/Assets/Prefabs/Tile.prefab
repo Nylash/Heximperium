@@ -102,9 +102,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68deda5187a4d3640824e252c2f7277f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _biome: 0
   _tileData: {fileID: 0}
   _coordinate: {x: 0, y: 0}
+  _incomes: []
+  event_IncomeModified:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!64 &1320174606270032190
 MeshCollider:
   m_ObjectHideFlags: 0
