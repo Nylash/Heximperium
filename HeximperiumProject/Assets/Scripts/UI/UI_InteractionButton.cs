@@ -25,7 +25,7 @@ public class UI_InteractionButton : MonoBehaviour
 
     public void Initialize(Tile associatedTile, Interaction action, InfrastructureData infraData = null, EntertainerData entrainData = null)
     {
-        _renderer = GetComponent<SpriteRenderer>();
+        _renderer = GetComponentInChildren<SpriteRenderer>();
         _associatedTile = associatedTile;
         _interaction = action;
 
