@@ -35,7 +35,7 @@ public class Tile : MonoBehaviour
 
     #region EVENTS
     //previous Incomes, new Incomes
-    [HideInInspector] public UnityEvent<List<ResourceValue>, List<ResourceValue>> event_IncomeModified = new UnityEvent<List<ResourceValue>, List<ResourceValue>>();
+    [HideInInspector] public UnityEvent<List<ResourceValue>, List<ResourceValue>> OnIncomeModified = new UnityEvent<List<ResourceValue>, List<ResourceValue>>();
     #endregion
 
     #region ACCESSORS
@@ -84,7 +84,7 @@ public class Tile : MonoBehaviour
         get => _incomes;
         set
         {
-            event_IncomeModified.Invoke(_incomes, value);
+            OnIncomeModified.Invoke(_incomes, value);
             _incomes = value;
         }
     }
