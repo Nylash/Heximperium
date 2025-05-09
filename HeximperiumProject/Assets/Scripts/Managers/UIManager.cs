@@ -216,6 +216,7 @@ public class UIManager : Singleton<UIManager>
 
     private void DisplayPopUp(Tile tile)
     {
+        //Spawn the pop up
         try
         {
             _popUp = Instantiate(tile.TileData.PopUpPrefab, _mainCanvas);
@@ -226,8 +227,10 @@ public class UIManager : Singleton<UIManager>
             return;
         }
 
+        //Initialize the popup
         _popUp.GetComponent<UI_PopUp>().InitializePopUp(tile);
 
+        //Position the pop up relatively to the mouse cursor
         PositionPopup(_popUp.transform, GetPopUpSize(_popUp.GetComponent<RectTransform>()));
 
         _popUp.SetActive(true);

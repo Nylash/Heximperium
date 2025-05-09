@@ -18,6 +18,8 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
             AddListener(neighbor);
             if (neighbor.Claimed)
                 _tile.Incomes = Utilities.MergeResourceValues(_tile.Incomes, neighbor.Incomes);
+            else
+                neighbor.OnTileClaimed.AddListener(AddClaimedTileIncome);
         }
     }
 
@@ -40,5 +42,10 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
         _tile.Incomes = Utilities.MergeResourceValues(_tile.Incomes, previousIncome);
         //Add new income
         _tile.Incomes = Utilities.MergeResourceValues(_tile.Incomes, newIncome);
+    }
+
+    private void AddClaimedTileIncome(Tile tile)
+    {
+        _tile.Incomes = Utilities.MergeResourceValues(_tile.Incomes, tile.Incomes);
     }
 }

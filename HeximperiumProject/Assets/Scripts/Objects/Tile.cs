@@ -36,6 +36,7 @@ public class Tile : MonoBehaviour
     #region EVENTS
     //previous Incomes, new Incomes
     [HideInInspector] public UnityEvent<List<ResourceValue>, List<ResourceValue>> OnIncomeModified = new UnityEvent<List<ResourceValue>, List<ResourceValue>>();
+    [HideInInspector] public UnityEvent<Tile> OnTileClaimed = new UnityEvent<Tile>();
     #endregion
 
     #region ACCESSORS
@@ -102,6 +103,7 @@ public class Tile : MonoBehaviour
     public void ClaimTile()
     {
         _claimed = true;
+        OnTileClaimed.Invoke(this);
         _border = Instantiate(_borderPrefab, transform.position, Quaternion.identity).GetComponent<Border>();
         _border.transform.parent = ExpansionManager.Instance.BorderParent;
         foreach (Tile neighbor in _neighbors) 
