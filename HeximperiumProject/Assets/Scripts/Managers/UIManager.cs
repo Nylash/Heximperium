@@ -21,8 +21,10 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TextMeshProUGUI _confirmPhaseButtonText;
     [SerializeField] private TextMeshProUGUI _turnCounterText;
     [Header("PopUp UI")]
-    [SerializeField] private GameObject _unclaimedTilePopup;
     [SerializeField] private float _durationHoverForUI = 2.0f;
+    [SerializeField] private GameObject _popUpBasicTile;
+    [SerializeField] private GameObject _popUpHazardousTile;
+    [SerializeField] private GameObject _popUpResourceTile;
     [Header("Radial menu")]
     [SerializeField] private Color _colorCantAfford;
     [Header("Units visibility UI")]
@@ -39,7 +41,7 @@ public class UIManager : Singleton<UIManager>
     private float _hoverTimer;
     private float _screenWidth;
     private float _screenHeight;
-    private GameObject _popup;
+    private GameObject _popUp;
 
     private bool _areScoutsVisible;
     private bool _areEntertainersVisible;
@@ -191,8 +193,9 @@ public class UIManager : Singleton<UIManager>
         {
             //Timer before spawning popup
             _hoverTimer += Time.deltaTime;
-            if (_hoverTimer >= _durationHoverForUI && _popup == null) 
+            if (_hoverTimer >= _durationHoverForUI && _popUp == null) 
             {
+                //TO DO Add check for object type (tile, entertainer, interaction button...)
                 Tile tile = obj.GetComponent<Tile>();
                 if(tile != null)
                 {
@@ -208,31 +211,27 @@ public class UIManager : Singleton<UIManager>
             //Object under cursor changed, so we reset everything
             _objectUnderMouse = obj;
             _hoverTimer = 0.0f;
-            if(_popup)
-                Destroy(_popup);
+            if(_popUp)
+                Destroy(_popUp);
         }
     }
 
     private void DisplayPopUp(Tile tile)
     {
-        if (tile == null)
+        _popUp = tile.TileData switch
         {
-            Debug.LogError("Popup for no tile.");
-            return;
-        }
+            BasicTileData _ => Instantiate(_popUpBasicTile, _mainCanvas),
+            HazardousTileData _ => Instantiate(_popUpHazardousTile, _mainCanvas),
+            ResourceTileData _ => Instantiate(_popUpResourceTile, _mainCanvas),
+            _ => throw new System.NotImplementedException("This tile type is not handled: " + tile)
+        };
 
-        //Display Pop up for unclaimed tile
-        if (!tile.Claimed)
-        {
-            TileData data = tile.TileData;
-            _popup = Instantiate(_unclaimedTilePopup, _mainCanvas);
-            _popup.GetComponent<UI_UnclaimedTile>().Initialize(data.TileName, tile.Biome.ToString(), data.TextEffect, data.GetSpecificIncome(Resource.Gold).ToString(), data.ClaimCost.ToString());
 
-            PositionPopup(_popup.transform, GetPopUpSize(_popup.GetComponent<RectTransform>()));
+        _popUp.GetComponent<UI_PopUp>().InitializePopUp(tile);
 
-            _popup.SetActive(true);
-        }
-        //Add for every possibility of tile
+        PositionPopup(_popUp.transform, GetPopUpSize(_popUp.GetComponent<RectTransform>()));
+
+        _popUp.SetActive(true);
     }
 
     private void PositionPopup(Transform popup, Vector2 popupSize)

@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Floral Atelier
   _claimCost: 0
-  _textEffect: +3 Essence income
+  _textEffect: +3 Floral essence income
   _typeIncomeUpgrade: 1
   _incomes:
   - resource: 1
     value: 3
+  _availableInfrastructures: []
+  _specialBehaviour: {fileID: 0}
   _scoutStartingPoint: 0
   _costs:
   - resource: 6

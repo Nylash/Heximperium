@@ -630,16 +630,37 @@ MonoBehaviour:
   _persistentSingleton: 0
   _highlighPrefab: {fileID: 5751803865783233614, guid: e580acc5ac7c8134c89770f42897a51d, type: 3}
   _interactionPrefab: {fileID: 4147331800932434178, guid: 2d0a51e95c38cdf408da2ba934e55be2, type: 3}
-  event_newTurn:
+  OnNewTurn:
     m_PersistentCalls:
       m_Calls: []
-  event_newPhase:
+  OnExplorationPhaseStarted:
     m_PersistentCalls:
       m_Calls: []
-  event_newTileSelected:
+  OnExplorationPhaseEnded:
     m_PersistentCalls:
       m_Calls: []
-  event_tileUnselected:
+  OnExpansionPhaseStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExpansionPhaseEnded:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExploitationPhaseStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExploitationPhaseEnded:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEntertainementPhaseStarted:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEntertainementPhaseEnded:
+    m_PersistentCalls:
+      m_Calls: []
+  OnNewTileSelected:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTileUnselected:
     m_PersistentCalls:
       m_Calls: []
 --- !u!4 &1153636969
@@ -671,10 +692,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
   _tilePrefab: {fileID: 5751803865783233614, guid: 8438ded482f00494aa769242da2958cd, type: 3}
+  _emptyMap: {fileID: 3026037459454811544, guid: 8e788ee934d5849459ad1a6b7658af73, type: 3}
   _mapRadius: 12
   _predefinedMap: {fileID: 2164588132861682141, guid: 6ca359bb0c3115247913e06bd5746322, type: 3}
-  _emptyMap: {fileID: 3026037459454811544, guid: 8e788ee934d5849459ad1a6b7658af73, type: 3}
-  event_mapGenerated:
+  OnMapGenerated:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &1153636972
@@ -705,6 +726,9 @@ MonoBehaviour:
   _persistentSingleton: 0
   _entertainerPrefab: {fileID: 5066032661868510455, guid: 2299a873f881c5b4d8cc7e7083bc6b38, type: 3}
   _entertainersParent: {fileID: 1084747253}
+  OnPhaseFinalized:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1153636974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -723,6 +747,9 @@ MonoBehaviour:
     availableCopy: 2
   - infrastructure: {fileID: 11400000, guid: 758e0bfcbc1c85b4f8d4064dfc028b50, type: 2}
     availableCopy: 3
+  OnPhaseFinalized:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1153636975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -737,6 +764,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
   _borderParent: {fileID: 1586287181}
+  OnPhaseFinalized:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1153636976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -754,7 +784,7 @@ MonoBehaviour:
   _scoutPrefab: {fileID: 5066032661868510455, guid: 6df47c3f9f6c2a247be0ff0800c84d61, type: 3}
   _scoutCounterPrefab: {fileID: 1835970567070459480, guid: 53d981b0fda10094ca17866fb80ecf99, type: 3}
   _awaitTimeScoutMovement: 1
-  event_phaseFinalized:
+  OnPhaseFinalized:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1586287180

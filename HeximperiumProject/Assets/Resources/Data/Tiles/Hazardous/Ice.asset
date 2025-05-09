@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Ice
   _claimCost: 3
-  _textEffect: Slow down scouts.
+  _textEffect: Slow down scouts and cannot be upgraded.
   _typeIncomeUpgrade: 1
   _incomes: []
+  _availableInfrastructures: []
+  _specialBehaviour: {fileID: 0}
