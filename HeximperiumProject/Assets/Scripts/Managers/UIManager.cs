@@ -194,13 +194,16 @@ public class UIManager : Singleton<UIManager>
             if (_hoverTimer >= _durationHoverForUI && _popUp == null) 
             {
                 //TO DO Add check for object type (tile, entertainer, interaction button...)
-                Tile tile = obj.GetComponent<Tile>();
-                if(tile != null)
+                if (obj.GetComponent<Tile>() is Tile tile)
                 {
                     if (tile.Revealed)
                     {
                         DisplayPopUp(tile);
                     }
+                }
+                else if (obj.GetComponent<UI_InteractionButton>() is  UI_InteractionButton button)
+                {
+                    DisplayPopUp(button);
                 }
             }
         }
@@ -212,6 +215,28 @@ public class UIManager : Singleton<UIManager>
             if(_popUp)
                 Destroy(_popUp);
         }
+    }
+
+    private void DisplayPopUp(UI_InteractionButton button)
+    {
+        //Spawn the pop up
+        try
+        {
+            _popUp = Instantiate(button.GetPopUp(), _mainCanvas);
+        }
+        catch
+        {
+            Debug.LogError("This interaction has no popup prefab assigned " + button.Interaction);
+            return;
+        }
+
+        //Initialize the popup
+        _popUp.GetComponent<UI_PopUp>().InitializePopUp(button.AssociatedTile, button);
+
+        //Position the pop up relatively to the mouse cursor
+        PositionPopup(_popUp.transform, GetPopUpSize(_popUp.GetComponent<RectTransform>()));
+
+        _popUp.SetActive(true);
     }
 
     private void DisplayPopUp(Tile tile)

@@ -8,6 +8,11 @@ public class UI_InteractionButton : MonoBehaviour
     private const string PATH_SPRITE_INTERACTION = "InteractionButtons/";
     #endregion
 
+    #region CONFIGURATION
+    [SerializeField] private GameObject _popUpClaim;
+    [SerializeField] private GameObject _popUpScout;
+    #endregion
+
     #region VARIABLES
     private SpriteRenderer _renderer;
     private Interaction _interaction;
@@ -105,5 +110,31 @@ public class UI_InteractionButton : MonoBehaviour
             return;
         }
         _renderer.sprite = sprite;
+    }
+
+    public GameObject GetPopUp()
+    {
+        switch (_interaction)
+        {
+            case Interaction.Claim:
+                return _popUpClaim;
+            case Interaction.Town:
+                Debug.LogError("This interaction has no popup prefab assigned " + _interaction);
+                return null;
+            case Interaction.Scout:
+                return _popUpScout;
+            case Interaction.Infrastructure:
+                Debug.LogError("This interaction has no popup prefab assigned " + _interaction);
+                return null;
+            case Interaction.Destroy:
+                Debug.LogError("This interaction has no popup prefab assigned " + _interaction);
+                return null;
+            case Interaction.Entertainer:
+                Debug.LogError("This interaction has no popup prefab assigned " + _interaction);
+                return null;
+            default:
+                Debug.LogError("This interaction has no popup prefab assigned " + _interaction);
+                return null;
+        }
     }
 }
