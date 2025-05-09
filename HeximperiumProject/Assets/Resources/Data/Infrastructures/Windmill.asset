@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Windmill
   _claimCost: 0
-  _textEffect: Remove base tile income. +2 Gold Income to surrounding farms
+  _interactionButtonPopUpText: Remove base tile income & +2 Gold to surrounding Farms
+  _tilePopUpText: +2 Gold to surrounding Farms
   _typeIncomeUpgrade: 1
   _incomes: []
   _availableInfrastructures: []
   _specialBehaviour: {fileID: 11400000, guid: 7ca701c08f762dd4fa86300725250759, type: 2}
+  _popUpPrefab: {fileID: 2936039955091290312, guid: d462d7c874ce5d44e8b78417aba55ee6, type: 3}
   _scoutStartingPoint: 0
   _costs:
   - resource: 6

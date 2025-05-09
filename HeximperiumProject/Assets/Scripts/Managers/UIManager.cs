@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,9 +23,6 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TextMeshProUGUI _turnCounterText;
     [Header("PopUp UI")]
     [SerializeField] private float _durationHoverForUI = 2.0f;
-    [SerializeField] private GameObject _popUpBasicTile;
-    [SerializeField] private GameObject _popUpHazardousTile;
-    [SerializeField] private GameObject _popUpResourceTile;
     [Header("Radial menu")]
     [SerializeField] private Color _colorCantAfford;
     [Header("Units visibility UI")]
@@ -218,14 +216,15 @@ public class UIManager : Singleton<UIManager>
 
     private void DisplayPopUp(Tile tile)
     {
-        _popUp = tile.TileData switch
+        try
         {
-            BasicTileData _ => Instantiate(_popUpBasicTile, _mainCanvas),
-            HazardousTileData _ => Instantiate(_popUpHazardousTile, _mainCanvas),
-            ResourceTileData _ => Instantiate(_popUpResourceTile, _mainCanvas),
-            _ => throw new System.NotImplementedException("This tile type is not handled: " + tile)
-        };
-
+            _popUp = Instantiate(tile.TileData.PopUpPrefab, _mainCanvas);
+        }
+        catch
+        {
+            Debug.LogError("This tile has no popup prefab assigned " + tile);
+            return;
+        }
 
         _popUp.GetComponent<UI_PopUp>().InitializePopUp(tile);
 
