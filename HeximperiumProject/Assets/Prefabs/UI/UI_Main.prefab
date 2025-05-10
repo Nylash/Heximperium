@@ -3277,11 +3277,9 @@ MonoBehaviour:
   _currentPhaseText: {fileID: 3399592720716487006}
   _confirmPhaseButtonText: {fileID: 1588121271402870833}
   _turnCounterText: {fileID: 5418171433837782113}
-  _durationHoverForUI: 2
-  _popUpBasicTile: {fileID: 4604967413891682696, guid: 8a2a6ee03e8ce0142be608694ce4402e, type: 3}
-  _popUpHazardousTile: {fileID: 9159292565962417168, guid: 787935b1706731845ae4313f79f42b96, type: 3}
-  _popUpResourceTile: {fileID: 4713123567034353809, guid: d8f213d35ee68da42bdab236132145bb, type: 3}
-  _popUpInfraIncomeOnly: {fileID: 4211441305533441537, guid: ef8dd89153ab58342bac319dd00772f5, type: 3}
+  _durationHoverForUI: 1
+  _prefabPopUpEntertainer: {fileID: 7317370589033109142, guid: 7977b42869768b74f82fe4ab1473b0c6, type: 3}
+  _prefabPopUpScout: {fileID: 0}
   _colorCantAfford: {r: 0.9056604, g: 0.23495908, b: 0.23495908, a: 1}
   _scoutsImage: {fileID: 9167870654734957644}
   _entertainersImage: {fileID: 2438287422534022373}

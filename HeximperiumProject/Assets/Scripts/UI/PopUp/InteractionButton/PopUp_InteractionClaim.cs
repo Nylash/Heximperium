@@ -5,8 +5,8 @@ public class PopUp_InteractionClaim : UI_PopUp
 {
     [SerializeField] private TextMeshProUGUI _claimCostText;
 
-    public override void InitializePopUp(Tile tile, UI_InteractionButton button = null)
+    public override void InitializePopUp(UI_InteractionButton button)
     {
-        _claimCostText.text = tile.TileData.ClaimCost.ToString();
+        _claimCostText.text = button.AssociatedTile.TileData.ClaimCost.ToString();
     }
 }

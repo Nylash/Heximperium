@@ -9,7 +9,7 @@ public class PopUp_InteractionScout : UI_PopUp
     [SerializeField] private TextMeshProUGUI _lifespanText;
     [SerializeField] private TextMeshProUGUI _costText;
 
-    public override void InitializePopUp(Tile tile, UI_InteractionButton button = null)
+    public override void InitializePopUp(UI_InteractionButton button)
     {
         if (button.UnitData is ScoutData scoutData)
         {
@@ -22,7 +22,7 @@ public class PopUp_InteractionScout : UI_PopUp
             {
                 if (!ResourcesManager.Instance.CanAfford(scoutData.Costs))
                     _costText.color = UIManager.Instance.ColorCantAfford;
-                _costText.text = "Cost : " + scoutData.Costs[0].value + " " + scoutData.Costs[0].resource.ToString();
+                _costText.text = "Cost : " + scoutData.Costs[0].value + " " + scoutData.Costs[0].resource.ToCustomString();
             }
                 
         }

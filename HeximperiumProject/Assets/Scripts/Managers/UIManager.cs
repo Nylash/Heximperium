@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,6 +23,9 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TextMeshProUGUI _turnCounterText;
     [Header("PopUp UI")]
     [SerializeField] private float _durationHoverForUI = 2.0f;
+    [SerializeField] private float _offsetBetweenPopUps = 0.5f;
+    [SerializeField] private GameObject _prefabPopUpEntertainer;
+    [SerializeField] private GameObject _prefabPopUpScout;
     [Header("Radial menu")]
     [SerializeField] private Color _colorCantAfford;
     [Header("Units visibility UI")]
@@ -39,7 +42,7 @@ public class UIManager : Singleton<UIManager>
     private float _hoverTimer;
     private float _screenWidth;
     private float _screenHeight;
-    private GameObject _popUp;
+    private List<GameObject> _popUps = new List<GameObject>();
 
     private bool _areScoutsVisible;
     private bool _areEntertainersVisible;
@@ -191,14 +194,21 @@ public class UIManager : Singleton<UIManager>
         {
             //Timer before spawning popup
             _hoverTimer += Time.deltaTime;
-            if (_hoverTimer >= _durationHoverForUI && _popUp == null) 
+            if (_hoverTimer >= _durationHoverForUI && _popUps.Count == 0) 
             {
-                //TO DO Add check for object type (tile, entertainer, interaction button...)
                 if (obj.GetComponent<Tile>() is Tile tile)
                 {
                     if (tile.Revealed)
                     {
                         DisplayPopUp(tile);
+                        if (tile.Entertainer != null)
+                        {
+                            DisplayPopUp(tile.Entertainer);
+                        }
+                        if (tile.Scouts.Count > 0) 
+                        {
+                            //POP UP SCOUTS
+                        }
                     }
                 }
                 else if (obj.GetComponent<UI_InteractionButton>() is  UI_InteractionButton button)
@@ -212,17 +222,43 @@ public class UIManager : Singleton<UIManager>
             //Object under cursor changed, so we reset everything
             _objectUnderMouse = obj;
             _hoverTimer = 0.0f;
-            if(_popUp)
-                Destroy(_popUp);
+            if(_popUps.Count > 0)
+            {
+                foreach (GameObject item in _popUps)
+                {
+                    Destroy(item);
+                }
+                _popUps.Clear();
+            }
         }
+    }
+
+    private void DisplayPopUp(Entertainer entertainer)
+    {
+        GameObject popUp;
+
+        //Spawn the pop up
+        popUp = Instantiate(_prefabPopUpEntertainer, _mainCanvas);
+        _popUps.Add(popUp);
+
+        //Initialize the popup
+        popUp.GetComponent<UI_PopUp>().InitializePopUp(entertainer);
+
+        //Position the pop up relatively to the mouse cursor
+        PositionPopup(popUp.transform, GetPopUpSize(popUp.GetComponent<RectTransform>()));
+
+        popUp.SetActive(true);
     }
 
     private void DisplayPopUp(UI_InteractionButton button)
     {
+        GameObject popUp;
+
         //Spawn the pop up
         try
         {
-            _popUp = Instantiate(button.GetPopUp(), _mainCanvas);
+            popUp = Instantiate(button.GetPopUpPrefab(), _mainCanvas);
+            _popUps.Add(popUp);
         }
         catch
         {
@@ -231,20 +267,23 @@ public class UIManager : Singleton<UIManager>
         }
 
         //Initialize the popup
-        _popUp.GetComponent<UI_PopUp>().InitializePopUp(button.AssociatedTile, button);
+        popUp.GetComponent<UI_PopUp>().InitializePopUp(button);
 
         //Position the pop up relatively to the mouse cursor
-        PositionPopup(_popUp.transform, GetPopUpSize(_popUp.GetComponent<RectTransform>()));
+        PositionPopup(popUp.transform, GetPopUpSize(popUp.GetComponent<RectTransform>()));
 
-        _popUp.SetActive(true);
+        popUp.SetActive(true);
     }
 
     private void DisplayPopUp(Tile tile)
     {
+        GameObject popUp;
+
         //Spawn the pop up
         try
         {
-            _popUp = Instantiate(tile.TileData.PopUpPrefab, _mainCanvas);
+            popUp = Instantiate(tile.TileData.PopUpPrefab, _mainCanvas);
+            _popUps.Add(popUp);
         }
         catch
         {
@@ -253,12 +292,12 @@ public class UIManager : Singleton<UIManager>
         }
 
         //Initialize the popup
-        _popUp.GetComponent<UI_PopUp>().InitializePopUp(tile);
+        popUp.GetComponent<UI_PopUp>().InitializePopUp(tile);
 
         //Position the pop up relatively to the mouse cursor
-        PositionPopup(_popUp.transform, GetPopUpSize(_popUp.GetComponent<RectTransform>()));
+        PositionPopup(popUp.transform, GetPopUpSize(popUp.GetComponent<RectTransform>()));
 
-        _popUp.SetActive(true);
+        popUp.SetActive(true);
     }
 
     private void PositionPopup(Transform popup, Vector2 popupSize)
@@ -270,27 +309,35 @@ public class UIManager : Singleton<UIManager>
         bool isLeft = mousePosition.x < (_screenWidth / 2);
         bool isTop = mousePosition.y > (_screenHeight / 2);
 
+        // Calculate the cumulative vertical offset based on the sizes of previous pop-ups
+        float verticalOffset = 0;
+        //_popUps.Count -1 to avoid counting the current pop up
+        for (int i = 0; i < _popUps.Count -1; i++)
+        {
+            RectTransform previousPopupRectTransform = _popUps[i].GetComponent<RectTransform>();
+            verticalOffset += previousPopupRectTransform.rect.height + _offsetBetweenPopUps;
+        }
+
         if (isLeft && isTop)
         {
             // Top-Left Quadrant: Snap top-left corner to cursor
-            popup.position = new Vector3(mousePosition.x + popupSize.x / 2, mousePosition.y - popupSize.y / 2, 0);
+            popup.position = new Vector3(mousePosition.x + popupSize.x / 2, mousePosition.y - popupSize.y / 2 - verticalOffset, 0);
         }
         else if (!isLeft && isTop)
         {
             // Top-Right Quadrant: Snap top-right corner to cursor
-            popup.position = new Vector3(mousePosition.x - popupSize.x / 2, mousePosition.y - popupSize.y / 2, 0);
+            popup.position = new Vector3(mousePosition.x - popupSize.x / 2, mousePosition.y - popupSize.y / 2 - verticalOffset, 0);
         }
         else if (isLeft && !isTop)
         {
             // Bottom-Left Quadrant: Snap bottom-left corner to cursor
-            popup.position = new Vector3(mousePosition.x + popupSize.x / 2, mousePosition.y + popupSize.y / 2, 0);
+            popup.position = new Vector3(mousePosition.x + popupSize.x / 2, mousePosition.y + popupSize.y / 2 + verticalOffset, 0);
         }
         else
         {
             // Bottom-Right Quadrant: Snap bottom-right corner to cursor
-            popup.position = new Vector3(mousePosition.x - popupSize.x / 2, mousePosition.y + popupSize.y / 2, 0);
+            popup.position = new Vector3(mousePosition.x - popupSize.x / 2, mousePosition.y + popupSize.y / 2 + verticalOffset, 0);
         }
-
     }
 
     private Vector2 GetPopUpSize(RectTransform rectTransform)

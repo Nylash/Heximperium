@@ -11,6 +11,9 @@ public class UI_InteractionButton : MonoBehaviour
     #region CONFIGURATION
     [SerializeField] private GameObject _popUpClaim;
     [SerializeField] private GameObject _popUpScout;
+    [SerializeField] private GameObject _popUpDestroy;
+    [SerializeField] private GameObject _popUpEntertainer;
+    [SerializeField] private GameObject _popUpInfra;
     #endregion
 
     #region VARIABLES
@@ -66,8 +69,8 @@ public class UI_InteractionButton : MonoBehaviour
 
     private void InitializeTown()
     {
-        InfrastructureData townData = Resources.Load<InfrastructureData>(PATH_DATA_INFRA + Interaction.Town.ToString());
-        if (!ResourcesManager.Instance.CanAfford(townData.Costs) || ExpansionManager.Instance.AvailableTown == 0)
+        _infraData = Resources.Load<InfrastructureData>(PATH_DATA_INFRA + Interaction.Town.ToString());
+        if (!ResourcesManager.Instance.CanAfford(_infraData.Costs) || !ExploitationManager.Instance.IsInfraAvailable(_infraData))
             _renderer.color = UIManager.Instance.ColorCantAfford;
         LoadSprite(Interaction.Town.ToString());
     }
@@ -112,26 +115,22 @@ public class UI_InteractionButton : MonoBehaviour
         _renderer.sprite = sprite;
     }
 
-    public GameObject GetPopUp()
+    public GameObject GetPopUpPrefab()
     {
         switch (_interaction)
         {
             case Interaction.Claim:
                 return _popUpClaim;
             case Interaction.Town:
-                Debug.LogError("This interaction has no popup prefab assigned " + _interaction);
-                return null;
+                return _popUpInfra;
             case Interaction.Scout:
                 return _popUpScout;
             case Interaction.Infrastructure:
-                Debug.LogError("This interaction has no popup prefab assigned " + _interaction);
-                return null;
+                return _popUpInfra;
             case Interaction.Destroy:
-                Debug.LogError("This interaction has no popup prefab assigned " + _interaction);
-                return null;
+                return _popUpDestroy;
             case Interaction.Entertainer:
-                Debug.LogError("This interaction has no popup prefab assigned " + _interaction);
-                return null;
+                return _popUpEntertainer;
             default:
                 Debug.LogError("This interaction has no popup prefab assigned " + _interaction);
                 return null;

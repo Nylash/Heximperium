@@ -8,7 +8,7 @@ public class PopUp_TileWithGoldIncome : UI_PopUp
     [SerializeField] private TextMeshProUGUI _goldText;
     [SerializeField] private TextMeshProUGUI _claimText;
 
-    public override void InitializePopUp(Tile tile, UI_InteractionButton button = null)
+    public override void InitializePopUp(Tile tile)
     {
         _nameText.text = tile.TileData.TileName;
         _effectText.text = tile.TileData.TilePopUpText;
