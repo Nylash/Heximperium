@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class PopUp_InteractionEntertainer : UI_PopUp
+public class PopUp_InteractionEntertainer : UI_DynamicPopUp
 {
     [SerializeField] private TextMeshProUGUI _effectText;
     [SerializeField] private TextMeshProUGUI _pointsText;

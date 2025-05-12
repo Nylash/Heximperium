@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class CameraManager : Singleton<CameraManager>
 {
@@ -31,6 +33,9 @@ public class CameraManager : Singleton<CameraManager>
     private Vector2 _mousePosition;
     private Vector2 _direction;
     //Mouse over
+    private GraphicRaycaster raycaster;
+    private PointerEventData pointerEventData;
+    private EventSystem eventSystem;
     private Ray _mouseRay;
     private RaycastHit _mouseRayHit;
     #endregion
@@ -56,6 +61,12 @@ public class CameraManager : Singleton<CameraManager>
         _inputActions.Player.MouseMovement.performed += ctx => DragCamera();
     }
 
+    private void Start()
+    {
+        raycaster = FindFirstObjectByType<GraphicRaycaster>();
+        eventSystem = EventSystem.current;
+    }
+
     private void Update()
     {
         if (!_isMouseDragging)
@@ -71,14 +82,27 @@ public class CameraManager : Singleton<CameraManager>
     //Check if the cursor is over an object, if so give the object to UI Manager to display a pop up
     private void ObjectUnderMouseDetection()
     {
-        //If over UI we don't continue the check
+        // Check if the pointer is over a UI GameObject
         if (EventSystem.current.IsPointerOverGameObject())
-            return;
-
-        _mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(_mouseRay, out _mouseRayHit))
         {
-            UIManager.Instance.HoverUIPopupCheck(_mouseRayHit.collider.gameObject);
+            pointerEventData = new PointerEventData(eventSystem);
+            pointerEventData.position = Input.mousePosition;
+            List<RaycastResult> results = new List<RaycastResult>();
+            raycaster.Raycast(pointerEventData, results);
+
+            if (results.Count > 0)
+            {
+                // Pass the topmost UI object under the cursor
+                UIManager.Instance.PopUpUI(results[0].gameObject);
+            }
+        }
+        else
+        {
+            _mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(_mouseRay, out _mouseRayHit))
+            {
+                UIManager.Instance.PopUpNonUI(_mouseRayHit.collider.gameObject);
+            }
         }
     }
 

@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-public class PopUp_TileWithGoldIncome : UI_PopUp
+public class PopUp_TileWithGoldIncome : UI_DynamicPopUp
 {
     [SerializeField] private TextMeshProUGUI _nameText;
     [SerializeField] private TextMeshProUGUI _effectText;

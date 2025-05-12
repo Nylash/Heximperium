@@ -186,7 +186,29 @@ public class UIManager : Singleton<UIManager>
     #endregion
 
     #region POPUP UI
-    public void HoverUIPopupCheck(GameObject obj)
+    public void PopUpUI(GameObject obj)
+    {
+        if(obj == _objectUnderMouse)
+        {
+            //Timer before spawning popup
+            _hoverTimer += Time.deltaTime;
+            if (_hoverTimer >= _durationHoverForUI && _popUps.Count == 0)
+            {
+                UI_PopUp popUpComponent = obj.GetComponent<UI_PopUp>();
+                if (popUpComponent != null)
+                {
+                    _popUps.Add(popUpComponent.InitializePopUp(_mainCanvas));
+                }
+            }
+        }
+        else
+        {
+            //Object under cursor changed, so we reset everything
+            ResetPopUps(obj);
+        }
+    }
+
+    public void PopUpNonUI(GameObject obj)
     {
         if (obj == _objectUnderMouse) 
         {
@@ -221,18 +243,24 @@ public class UIManager : Singleton<UIManager>
         else
         {
             //Object under cursor changed, so we reset everything
-            _objectUnderMouse = obj;
-            _hoverTimer = 0.0f;
-            if(_popUps.Count > 0)
-            {
-                foreach (GameObject item in _popUps)
-                {
-                    Destroy(item);
-                }
-                _popUps.Clear();
-            }
+            ResetPopUps(obj);
         }
     }
+
+    private void ResetPopUps(GameObject obj)
+    {
+        _objectUnderMouse = obj;
+        _hoverTimer = 0.0f;
+        if (_popUps.Count > 0)
+        {
+            foreach (GameObject item in _popUps)
+            {
+                Destroy(item);
+            }
+            _popUps.Clear();
+        }
+    }
+
     private void DisplayPopUp<T>(T item, GameObject prefab)
     {
         GameObject popUp;
@@ -242,12 +270,10 @@ public class UIManager : Singleton<UIManager>
         _popUps.Add(popUp);
 
         // Initialize the popup
-        popUp.GetComponent<UI_PopUp>().InitializePopUp(item);
+        popUp.GetComponent<UI_DynamicPopUp>().InitializePopUp(item);
 
         // Position the pop up relatively to the mouse cursor
         PositionPopup(popUp.transform, GetPopUpSize(popUp.GetComponent<RectTransform>()));
-
-        popUp.SetActive(true);
     }
 
     // Overloaded methods for different types

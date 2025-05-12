@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class PopUp_InteractionScout : UI_PopUp
+public class PopUp_InteractionScout : UI_DynamicPopUp
 {
     [SerializeField] private TextMeshProUGUI _speedText;
     [SerializeField] private TextMeshProUGUI _radiusText;

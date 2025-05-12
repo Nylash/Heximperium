@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class PopUp_InteractionDestroy : UI_PopUp
+public class PopUp_InteractionDestroy : UI_DynamicPopUp
 {
     [SerializeField] private TextMeshProUGUI _effectText;
 

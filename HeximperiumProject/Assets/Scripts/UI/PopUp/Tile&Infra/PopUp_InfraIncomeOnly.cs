@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class PopUp_InfraIncomeOnly : UI_PopUp
+public class PopUp_InfraIncomeOnly : UI_DynamicPopUp
 {
     [SerializeField] private TextMeshProUGUI _nameText;
     [SerializeField] private TextMeshProUGUI _previousTile;

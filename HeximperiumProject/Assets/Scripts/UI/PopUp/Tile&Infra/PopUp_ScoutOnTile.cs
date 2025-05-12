@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class PopUp_ScoutOnTile : UI_PopUp
+public class PopUp_ScoutOnTile : UI_DynamicPopUp
 {
     [SerializeField] private TextMeshProUGUI _directionText;
     [SerializeField] private TextMeshProUGUI _speedText;

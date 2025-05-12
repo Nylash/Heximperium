@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class PopUp_InteractionClaim : UI_PopUp
+public class PopUp_InteractionClaim : UI_DynamicPopUp
 {
     [SerializeField] private TextMeshProUGUI _claimCostText;
 
