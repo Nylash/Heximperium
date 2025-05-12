@@ -62,9 +62,7 @@ public class UIManager : Singleton<UIManager>
         GameManager.Instance.OnEntertainementPhaseStarted.AddListener(UpdatePhaseUI);
 
         GameManager.Instance.OnExplorationPhaseStarted.AddListener(ForceScoutsToShow);
-        GameManager.Instance.OnExplorationPhaseStarted.AddListener(ForceEntertainersToHide);
 
-        GameManager.Instance.OnEntertainementPhaseStarted.AddListener(ForceScoutsToHide);
         GameManager.Instance.OnEntertainementPhaseStarted.AddListener(ForceEntertainersToShow);
 
     }
@@ -207,7 +205,10 @@ public class UIManager : Singleton<UIManager>
                         }
                         if (tile.Scouts.Count > 0) 
                         {
-                            //POP UP SCOUTS
+                            foreach (Scout item in tile.Scouts)
+                            {
+                                DisplayPopUp(item);
+                            }
                         }
                     }
                 }
@@ -232,72 +233,42 @@ public class UIManager : Singleton<UIManager>
             }
         }
     }
-
-    private void DisplayPopUp(Entertainer entertainer)
+    private void DisplayPopUp<T>(T item, GameObject prefab)
     {
         GameObject popUp;
 
-        //Spawn the pop up
-        popUp = Instantiate(_prefabPopUpEntertainer, _mainCanvas);
+        // Spawn the pop up
+        popUp = Instantiate(prefab, _mainCanvas);
         _popUps.Add(popUp);
 
-        //Initialize the popup
-        popUp.GetComponent<UI_PopUp>().InitializePopUp(entertainer);
+        // Initialize the popup
+        popUp.GetComponent<UI_PopUp>().InitializePopUp(item);
 
-        //Position the pop up relatively to the mouse cursor
+        // Position the pop up relatively to the mouse cursor
         PositionPopup(popUp.transform, GetPopUpSize(popUp.GetComponent<RectTransform>()));
 
         popUp.SetActive(true);
+    }
+
+    // Overloaded methods for different types
+    private void DisplayPopUp(Scout scout)
+    {
+        DisplayPopUp(scout, _prefabPopUpScout);
+    }
+
+    private void DisplayPopUp(Entertainer entertainer)
+    {
+        DisplayPopUp(entertainer, _prefabPopUpEntertainer);
     }
 
     private void DisplayPopUp(UI_InteractionButton button)
     {
-        GameObject popUp;
-
-        //Spawn the pop up
-        try
-        {
-            popUp = Instantiate(button.GetPopUpPrefab(), _mainCanvas);
-            _popUps.Add(popUp);
-        }
-        catch
-        {
-            Debug.LogError("This interaction has no popup prefab assigned " + button.Interaction);
-            return;
-        }
-
-        //Initialize the popup
-        popUp.GetComponent<UI_PopUp>().InitializePopUp(button);
-
-        //Position the pop up relatively to the mouse cursor
-        PositionPopup(popUp.transform, GetPopUpSize(popUp.GetComponent<RectTransform>()));
-
-        popUp.SetActive(true);
+        DisplayPopUp(button, button.GetPopUpPrefab());
     }
 
     private void DisplayPopUp(Tile tile)
     {
-        GameObject popUp;
-
-        //Spawn the pop up
-        try
-        {
-            popUp = Instantiate(tile.TileData.PopUpPrefab, _mainCanvas);
-            _popUps.Add(popUp);
-        }
-        catch
-        {
-            Debug.LogError("This tile has no popup prefab assigned " + tile);
-            return;
-        }
-
-        //Initialize the popup
-        popUp.GetComponent<UI_PopUp>().InitializePopUp(tile);
-
-        //Position the pop up relatively to the mouse cursor
-        PositionPopup(popUp.transform, GetPopUpSize(popUp.GetComponent<RectTransform>()));
-
-        popUp.SetActive(true);
+        DisplayPopUp(tile, tile.TileData.PopUpPrefab);
     }
 
     private void PositionPopup(Transform popup, Vector2 popupSize)

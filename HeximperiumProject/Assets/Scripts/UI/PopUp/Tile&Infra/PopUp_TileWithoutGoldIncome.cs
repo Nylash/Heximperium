@@ -7,7 +7,15 @@ public class PopUp_TileWithoutGoldIncome : UI_PopUp
     [SerializeField] private TextMeshProUGUI _effectText;
     [SerializeField] private TextMeshProUGUI _claimText;
 
-    public override void InitializePopUp(Tile tile)
+    public override void InitializePopUp<T>(T item)
+    {
+        if (item is Tile tile)
+        {
+            InitializePopUp(tile);
+        }
+    }
+
+    private void InitializePopUp(Tile tile)
     {
         _nameText.text = tile.TileData.TileName;
         _effectText.text = tile.TileData.TilePopUpText;

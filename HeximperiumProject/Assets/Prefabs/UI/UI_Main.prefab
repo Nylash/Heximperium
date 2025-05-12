@@ -3278,8 +3278,9 @@ MonoBehaviour:
   _confirmPhaseButtonText: {fileID: 1588121271402870833}
   _turnCounterText: {fileID: 5418171433837782113}
   _durationHoverForUI: 1
+  _offsetBetweenPopUps: 1
   _prefabPopUpEntertainer: {fileID: 7317370589033109142, guid: 7977b42869768b74f82fe4ab1473b0c6, type: 3}
-  _prefabPopUpScout: {fileID: 0}
+  _prefabPopUpScout: {fileID: 7242006630199399831, guid: a4ef471a94a74ec4cb1fb7247f7b301a, type: 3}
   _colorCantAfford: {r: 0.9056604, g: 0.23495908, b: 0.23495908, a: 1}
   _scoutsImage: {fileID: 9167870654734957644}
   _entertainersImage: {fileID: 2438287422534022373}

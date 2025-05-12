@@ -8,7 +8,15 @@ public class PopUp_EntertainerOnTile : UI_PopUp
     [SerializeField] private TextMeshProUGUI _familyText;
     [SerializeField] private TextMeshProUGUI _synergyText;
 
-    public override void InitializePopUp(Entertainer unit)
+    public override void InitializePopUp<T>(T item)
+    {
+        if (item is Entertainer unit)
+        {
+            InitializePopUp(unit);
+        }
+    }
+
+    private void InitializePopUp(Entertainer unit)
     {
         _nameText.text = unit.EntertainerData.EntertainerType.ToCustomString();
         _pointsText.text += unit.EntertainerData.Points;

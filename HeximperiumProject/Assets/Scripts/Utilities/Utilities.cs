@@ -141,6 +141,20 @@ public static class Utilities
             _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
         };
     }
+
+    public static string ToCustomString(this Direction value)
+    {
+        return value switch
+        {
+            Direction.Left => "West",
+            Direction.TopLeft => "Northwest",
+            Direction.TopRight => "Northeast",
+            Direction.Right => "East",
+            Direction.BottomRight => "Southeast",
+            Direction.BottomLeft => "Southwest",
+            _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
+        };
+    }
 }
 
 #region ENUMS

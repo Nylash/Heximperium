@@ -9,7 +9,15 @@ public class PopUp_InteractionEntertainer : UI_PopUp
     [SerializeField] private TextMeshProUGUI _synergyText;
     [SerializeField] private TextMeshProUGUI _costText;
 
-    public override void InitializePopUp(UI_InteractionButton button)
+    public override void InitializePopUp<T>(T item)
+    {
+        if (item is UI_InteractionButton button)
+        {
+            InitializePopUp(button);
+        }
+    }
+
+    private void InitializePopUp(UI_InteractionButton button)
     {
         if (button.UnitData is EntertainerData data)
         {
