@@ -21,6 +21,15 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TextMeshProUGUI _currentPhaseText;
     [SerializeField] private TextMeshProUGUI _confirmPhaseButtonText;
     [SerializeField] private TextMeshProUGUI _turnCounterText;
+    [SerializeField] private Material _materialBack;
+    [SerializeField] private Color _colorTopExplo;
+    [SerializeField] private Color _colorBotExplo;
+    [SerializeField] private Color _colorTopExpand;
+    [SerializeField] private Color _colorBotExpand;
+    [SerializeField] private Color _colorTopExploit;
+    [SerializeField] private Color _colorBotExploit;
+    [SerializeField] private Color _colorTopEntertain;
+    [SerializeField] private Color _colorBotEntertain;
     [Header("PopUp UI")]
     [SerializeField] private float _durationHoverForUI = 2.0f;
     [SerializeField] private float _offsetBetweenPopUps = 0.5f;
@@ -351,18 +360,26 @@ public class UIManager : Singleton<UIManager>
             case Phase.Explore:
                 _currentPhaseText.text = "Explore";
                 _confirmPhaseButtonText.text = "End Phase";
+                _materialBack.SetColor("_ColorTop", _colorTopExplo);
+                _materialBack.SetColor("_ColorBottom", _colorBotExplo);
                 break;
             case Phase.Expand:
                 _currentPhaseText.text = "Expand";
                 _confirmPhaseButtonText.text = "End Phase";
+                _materialBack.SetColor("_ColorTop", _colorTopExpand);
+                _materialBack.SetColor("_ColorBottom", _colorBotExpand);
                 break;
             case Phase.Exploit:
                 _currentPhaseText.text = "Exploit";
                 _confirmPhaseButtonText.text = "End Phase";
+                _materialBack.SetColor("_ColorTop", _colorTopExploit);
+                _materialBack.SetColor("_ColorBottom", _colorBotExploit);
                 break;
             case Phase.Entertain:
                 _currentPhaseText.text = "Entertain";
                 _confirmPhaseButtonText.text = "End Turn";
+                _materialBack.SetColor("_ColorTop", _colorTopEntertain);
+                _materialBack.SetColor("_ColorBottom", _colorBotEntertain);
                 break;
         }
     }
