@@ -1,8 +1,11 @@
 using UnityEngine;
 
-public abstract class UI_PopUp : MonoBehaviour
+public class UI_PopUp : MonoBehaviour
 {
     [SerializeField] protected GameObject _popUp;
 
-    public abstract GameObject InitializePopUp(Transform canvas);
+    public virtual GameObject SpawnPopUp(Transform canvas)
+    {
+        return Instantiate(_popUp, canvas);
+    }
 }

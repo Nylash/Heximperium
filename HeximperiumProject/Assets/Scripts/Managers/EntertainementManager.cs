@@ -24,6 +24,7 @@ public class EntertainementManager : Singleton<EntertainementManager>
 
     #region ACCESSORS
     public List<Entertainer> Entertainers { get => _entertainers; }
+    public int Score { get => _score; }
     #endregion
 
     #region EVENTS
@@ -46,6 +47,16 @@ public class EntertainementManager : Singleton<EntertainementManager>
         {
             _entertainerDatas.AddRange(entertainerDataArray);
         }
+    }
+
+    public int GetPointsIncome()
+    {
+        int value = 0;
+        foreach (Entertainer item in _entertainers)
+        {
+            value += item.Points;
+        }
+        return value;
     }
 
     #region PHASE LOGIC

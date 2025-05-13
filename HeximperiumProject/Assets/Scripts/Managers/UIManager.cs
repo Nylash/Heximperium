@@ -204,9 +204,16 @@ public class UIManager : Singleton<UIManager>
             if (_hoverTimer >= _durationHoverForUI && _popUps.Count == 0)
             {
                 UI_PopUp popUpComponent = obj.GetComponent<UI_PopUp>();
+
                 if (popUpComponent != null)
                 {
-                    _popUps.Add(popUpComponent.InitializePopUp(_mainCanvas));
+                    GameObject popUp = popUpComponent.SpawnPopUp(_mainCanvas);
+
+                    UI_ResourcePopUp popUpResource = popUp.GetComponent<UI_ResourcePopUp>();
+                    if (popUpResource != null)
+                        popUpResource.InitializePopUp();
+
+                    _popUps.Add(popUp);
                 }
             }
         }

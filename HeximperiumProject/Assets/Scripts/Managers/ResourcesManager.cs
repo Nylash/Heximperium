@@ -20,6 +20,29 @@ public class ResourcesManager : Singleton<ResourcesManager>
     public int Claim { get => _claim; }
     #endregion
 
+    public int GetResourceStock(Resource resource)
+    {
+        switch (resource)
+        {
+            case Resource.Stone:
+                return _stone;
+            case Resource.Essence:
+                return _essence;
+            case Resource.Horse:
+                return _horse;
+            case Resource.Pigment:
+                return _pigment;
+            case Resource.Crystal:
+                return _crystal;
+            case Resource.Emberbone:
+                return _emberbone;
+            case Resource.Gold:
+                return _gold;
+            default:
+                return 0;
+        }
+    }
+
     public void CHEAT_GAIN_ALL_RESOURCES()
     {
         Debug.LogWarning("USING CHEAT !");
