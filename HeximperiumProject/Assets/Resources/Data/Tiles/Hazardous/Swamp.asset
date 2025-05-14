@@ -17,3 +17,15 @@ MonoBehaviour:
   _textEffect: Slow down scouts.
   _typeIncomeUpgrade: 1
   _incomes: []
+  _availableInfrastructures: []
+  _specialBehaviour: {fileID: 0}
+  _biomeMaterials:
+  - biome: 1
+    materials:
+    - {fileID: 2100000, guid: a9bb71bc7900adf4496f052c669c345b, type: 2}
+  - biome: 2
+    materials:
+    - {fileID: 2100000, guid: 7c0788e88d1a3194f8ae596dcb77ec93, type: 2}
+  - biome: 4
+    materials:
+    - {fileID: 2100000, guid: 604135d4d0f05424695b78cd951179e6, type: 2}

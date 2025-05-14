@@ -19,6 +19,25 @@ MonoBehaviour:
   _incomes: []
   _availableInfrastructures: []
   _specialBehaviour: {fileID: 11400000, guid: f04a3af70c88233459416a21f2e1f070, type: 2}
+  _biomeMaterials:
+  - biome: 0
+    materials:
+    - {fileID: 2100000, guid: 9a699076ef4452445a7ffcff090afcc6, type: 2}
+  - biome: 1
+    materials:
+    - {fileID: 2100000, guid: 9a699076ef4452445a7ffcff090afcc6, type: 2}
+  - biome: 2
+    materials:
+    - {fileID: 2100000, guid: 9a699076ef4452445a7ffcff090afcc6, type: 2}
+  - biome: 3
+    materials:
+    - {fileID: 2100000, guid: 9a699076ef4452445a7ffcff090afcc6, type: 2}
+  - biome: 4
+    materials:
+    - {fileID: 2100000, guid: 9a699076ef4452445a7ffcff090afcc6, type: 2}
+  - biome: 5
+    materials:
+    - {fileID: 2100000, guid: 9a699076ef4452445a7ffcff090afcc6, type: 2}
   _scoutStartingPoint: 0
   _costs:
   - resource: 6

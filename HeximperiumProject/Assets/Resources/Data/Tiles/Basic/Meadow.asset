@@ -28,3 +28,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8ccfa048b2984884f9f9d523375c02c5, type: 2}
   - {fileID: 11400000, guid: e779e3985649cf447850ff0b982df028, type: 2}
   - {fileID: 11400000, guid: 7bc2665cae1849d40811eca4f1049b75, type: 2}
+  _specialBehaviour: {fileID: 0}
+  _biomeMaterials:
+  - biome: 0
+    materials:
+    - {fileID: 2100000, guid: 3cfe066665d98054f99e6fe27dc97d2e, type: 2}
+  - biome: 1
+    materials:
+    - {fileID: 2100000, guid: 03f62ec148d82cd44b78096ddba410e1, type: 2}

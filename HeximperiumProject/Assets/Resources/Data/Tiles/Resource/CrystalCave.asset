@@ -19,3 +19,14 @@ MonoBehaviour:
   _incomes: []
   _availableInfrastructures:
   - {fileID: 11400000, guid: 3d0ee4608b263f74aaa46646c1cf3360, type: 2}
+  _specialBehaviour: {fileID: 0}
+  _biomeMaterials:
+  - biome: 2
+    materials:
+    - {fileID: 2100000, guid: 44cfb7c6b2c25224aa32a1386cbaae38, type: 2}
+  - biome: 3
+    materials:
+    - {fileID: 2100000, guid: d86f58de5cb2caa49b77da0b1d341087, type: 2}
+  - biome: 5
+    materials:
+    - {fileID: 2100000, guid: 3dbc43526e985534b9cd51273f9c1f8e, type: 2}

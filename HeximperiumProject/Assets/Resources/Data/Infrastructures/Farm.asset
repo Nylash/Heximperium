@@ -28,6 +28,15 @@ MonoBehaviour:
   - biome: 1
     materials:
     - {fileID: 2100000, guid: 818d65efb5b39bd468fa818fc800f274, type: 2}
+  - biome: 4
+    materials:
+    - {fileID: 0}
+  - biome: 2
+    materials:
+    - {fileID: 0}
+  - biome: 3
+    materials:
+    - {fileID: 0}
   _scoutStartingPoint: 0
   _costs:
   - resource: 6
