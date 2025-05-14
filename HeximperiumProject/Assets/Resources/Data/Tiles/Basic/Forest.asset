@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Forest
   _claimCost: 1
-  _textEffect: Can be upgraded with various infrastructures.
+  _interactionText: 
+  _tilePopUpText: Can be upgraded with various infrastructures
   _typeIncomeUpgrade: 1
   _incomes:
   - resource: 6
@@ -27,6 +28,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8ccfa048b2984884f9f9d523375c02c5, type: 2}
   - {fileID: 11400000, guid: 7bc2665cae1849d40811eca4f1049b75, type: 2}
   _specialBehaviour: {fileID: 0}
+  _popUpPrefab: {fileID: 4604967413891682696, guid: 8a2a6ee03e8ce0142be608694ce4402e, type: 3}
   _biomeMaterials:
   - biome: 0
     materials:

@@ -14,12 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Minerals vein
   _claimCost: 1
-  _textEffect: Can be upgraded to produce pigment.
+  _interactionText: 
+  _tilePopUpText: Can be upgraded to produce Pigment
   _typeIncomeUpgrade: 1
   _incomes: []
   _availableInfrastructures:
   - {fileID: 11400000, guid: cf1ab9c803f94fb4c825de85fccc7ba9, type: 2}
   _specialBehaviour: {fileID: 0}
+  _popUpPrefab: {fileID: 4713123567034353809, guid: d8f213d35ee68da42bdab236132145bb, type: 3}
   _biomeMaterials:
   - biome: 2
     materials:

@@ -14,13 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Tavern
   _claimCost: 0
-  _textEffect: Remove base tile income. +2 Gold Income. Scout starting position
-  _typeIncomeUpgrade: 1
+  _interactionButtonPopUpText: +2 Gold & Scout Starting Position
+  _tilePopUpText: Scout Starting Position
+  _typeIncomeUpgrade: 0
   _incomes:
   - resource: 6
     value: 2
   _availableInfrastructures: []
   _specialBehaviour: {fileID: 0}
+  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
   _biomeMaterials:
   - biome: 0
     materials:

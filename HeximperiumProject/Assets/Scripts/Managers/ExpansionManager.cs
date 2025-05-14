@@ -17,12 +17,10 @@ public class ExpansionManager : Singleton<ExpansionManager>
     private List<GameObject> _buttons = new List<GameObject>();
     private List<Tile> _claimedTiles = new List<Tile>();
     private List<Vector3> _interactionPositions = new List<Vector3>();
-    private int _availableTown;
     private int _baseClaimPerTurn;
     #endregion
 
     #region ACCESSORS
-    public int AvailableTown { get => _availableTown; set => _availableTown = value; }
     public Transform BorderParent { get => _borderParent; }
     public int BaseClaimPerTurn { get => _baseClaimPerTurn; set => _baseClaimPerTurn = value; }
     public List<Tile> ClaimedTiles { get => _claimedTiles; }
@@ -128,15 +126,15 @@ public class ExpansionManager : Singleton<ExpansionManager>
 
     public void BuildTown(Tile tile)
     {
-        if (_availableTown != 0)
+        InfrastructureData townData = Resources.Load<InfrastructureData>(TOWN_DATA_PATH);
+        if (townData == null)
         {
-            InfrastructureData townData = Resources.Load<InfrastructureData>(TOWN_DATA_PATH);
-            if (townData == null)
-            {
-                Debug.LogError("Town data not found at path: " + TOWN_DATA_PATH);
-                return;
-            }
+            Debug.LogError("Town data not found at path: " + TOWN_DATA_PATH);
+            return;
+        }
 
+        if (ExploitationManager.Instance.IsInfraAvailable(townData))
+        {
             if (ResourcesManager.Instance.CanAfford(townData.Costs))
             {
                 // Start by claiming the tile if needed
@@ -147,7 +145,6 @@ public class ExpansionManager : Singleton<ExpansionManager>
                     foreach (Tile t in _claimedTiles)
                         t.CheckBorder();
                 }
-                _availableTown -= 1;
                 ExploitationManager.Instance.BuildInfrastructure(tile, townData);
             }
         }

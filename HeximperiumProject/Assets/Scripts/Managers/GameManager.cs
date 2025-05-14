@@ -111,8 +111,8 @@ public class GameManager : Singleton<GameManager>
             tile.RevealTile(true);
 
         //Give the player resources for the initial town 
-        ExpansionManager.Instance.AvailableTown += 1;
         InfrastructureData townData = Resources.Load<InfrastructureData>(TOWN_DATA_PATH);
+        ExploitationManager.Instance.InfraAvailableModify(townData, Transaction.Gain);
         ResourcesManager.Instance.UpdateResource(townData.Costs, Transaction.Gain);
         ExpansionManager.Instance.BuildTown(centralTile);
 

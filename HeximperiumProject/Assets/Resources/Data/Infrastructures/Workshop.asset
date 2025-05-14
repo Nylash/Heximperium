@@ -14,11 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Workshop
   _claimCost: 0
-  _textEffect: Remove base tile income. +3 Points for surrounding and on tile Artists
+  _interactionButtonPopUpText: Remove base tile income & +3 Points for surrounding
+    and on tile Artists
+  _tilePopUpText: +3 Points for surrounding and on tile Artists
   _typeIncomeUpgrade: 1
   _incomes: []
   _availableInfrastructures: []
   _specialBehaviour: {fileID: 11400000, guid: e4a692c5d37ea7f489e3fe374e80e17e, type: 2}
+  _popUpPrefab: {fileID: 2936039955091290312, guid: d462d7c874ce5d44e8b78417aba55ee6, type: 3}
   _biomeMaterials:
   - biome: 0
     materials:
