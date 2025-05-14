@@ -5,12 +5,6 @@ using UnityEngine.Events;
 
 public class Tile : MonoBehaviour
 {
-    #region CONSTANTS
-    private readonly List<string> UNIQUE_MATERIAL_TILES = new List<string> { "Water", "Amphitheater", "EnchantedPavilion", "ShowcasePlaza", "Workshop" };
-    private const string PATH_UNSPECIFIC_MATERIAL = "TilesMaterial/UnspecificMaterial/";
-    private const string PATH_SPECIFIC_MATERIAL = "TilesMaterial/";
-    #endregion
-
     #region CONFIGURATION
     [SerializeField] private GameObject _borderPrefab;
     #endregion
@@ -130,26 +124,20 @@ public class Tile : MonoBehaviour
     //Change tile's visual based on the tile data
     private void UpdateVisual()
     {
-        if (UNIQUE_MATERIAL_TILES.Contains(_tileData.name))
-        {
-            // Material not linked to biome
-            Material unspecificMaterial = Resources.Load(PATH_UNSPECIFIC_MATERIAL + _tileData.name) as Material;
-            if (unspecificMaterial == null)
-            {
-                Debug.LogError("Material not found at path: " + PATH_UNSPECIFIC_MATERIAL + _tileData.name);
-                return;
-            }
-            GetComponent<Renderer>().material = unspecificMaterial;
-            return;
-        }
+        List<Material> materials = _tileData.GetMaterials(_biome);
 
-        Material specificMaterial = Resources.Load(PATH_SPECIFIC_MATERIAL + _biome + "/" + _tileData.name + "_" + _biome) as Material;
-        if (specificMaterial == null)
+        switch (materials.Count)
         {
-            Debug.LogError("Material not found at path: " + PATH_SPECIFIC_MATERIAL + _biome + "/" + _tileData.name + "_" + _biome);
-            return;
+            case 0:
+                Debug.LogError("This tile " + _tileData + " has no material configured for this biome " + _biome);
+                break;
+            case 1:
+                GetComponent<Renderer>().material = materials[0];
+                break;
+            default:
+                GetComponent<Renderer>().material = materials[UnityEngine.Random.Range(0, materials.Count)];
+                break;
         }
-        GetComponent<Renderer>().material = specificMaterial;
     }
 
     #region NEIGHBORS LOGIC

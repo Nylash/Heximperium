@@ -10,6 +10,7 @@ public class TileData : ScriptableObject
     [SerializeField] private List<ResourceValue> _incomes = new List<ResourceValue>();
     [SerializeField] private List<InfrastructureData> _availableInfrastructures = new List<InfrastructureData>();
     [SerializeField] private SpecialBehaviour _specialBehaviour;
+    [SerializeField] private List<Dico_BiomeMaterials> _biomeMaterials;
 
     public string TileName { get => _name; }
     public int ClaimCost { get => _claimCost; }
@@ -27,5 +28,15 @@ public class TileData : ScriptableObject
                 return item.value;
         }
         return 0;
+    }
+
+    public List<Material> GetMaterials(Biome b)
+    {
+        foreach (Dico_BiomeMaterials item in _biomeMaterials)
+        {
+            if(item.biome == b)
+                return item.materials;
+        }
+        return new List<Material>();
     }
 }
