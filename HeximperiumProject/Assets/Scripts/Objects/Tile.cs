@@ -93,6 +93,12 @@ public class Tile : MonoBehaviour
         _initialData = _tileData;
     }
 
+    private void Start()
+    {
+        //TMP To remove when map generation is done
+        UpdateVisual();
+    }
+
     //Claim the tile and spawn the territory boundaries
     public void ClaimTile()
     {

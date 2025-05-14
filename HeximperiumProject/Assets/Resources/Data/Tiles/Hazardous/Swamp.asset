@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Swamp
   _claimCost: 3
-  _interactionText: 
+  _interactionButtonPopUpText: 
   _tilePopUpText: Slow down scouts and cannot be upgraded
   _typeIncomeUpgrade: 1
   _incomes: []
@@ -31,3 +31,4 @@ MonoBehaviour:
   - biome: 4
     materials:
     - {fileID: 2100000, guid: 604135d4d0f05424695b78cd951179e6, type: 2}
+    - {fileID: 2100000, guid: 3e0841c8fd934d542b5dfe834be37aab, type: 2}
