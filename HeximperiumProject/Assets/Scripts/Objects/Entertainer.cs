@@ -16,6 +16,7 @@ public class Entertainer : MonoBehaviour
     #region ACCESSORS
     public int Points { get => _points; set => _points = value; }
     public EntertainerData EntertainerData { get => _entertainerData; }
+    public Tile Tile { get => _tile; }
     #endregion
 
     private void Awake()

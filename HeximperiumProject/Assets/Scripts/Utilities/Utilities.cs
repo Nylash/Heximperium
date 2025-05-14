@@ -155,6 +155,20 @@ public static class Utilities
             _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
         };
     }
+
+    //Spawn VFX for resources (and points) gain
+    public static void PlayResourceGainVFX(Tile tile, GameObject prefab, Material mat, int value)
+    {
+        GameObject vfx = GameObject.Instantiate(prefab, prefab.transform.position + tile.transform.position, prefab.transform.rotation);
+
+        ParticleSystem particleSystem = vfx.GetComponent<ParticleSystem>();
+
+        particleSystem.emission.SetBurst(0, new ParticleSystem.Burst(0, value));
+
+        vfx.GetComponent<ParticleSystemRenderer>().material = mat;
+
+        particleSystem.Play();
+    }
 }
 
 #region ENUMS

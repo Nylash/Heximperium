@@ -1,10 +1,20 @@
-using NUnit.Framework.Internal;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class ResourcesManager : Singleton<ResourcesManager>
 {
+    #region CONFIGURATION
+    [SerializeField] private GameObject _resourceGainPrefab;
+    [SerializeField] private Material _goldVFXMat;
+    [SerializeField] private Material _stoneVFXMat;
+    [SerializeField] private Material _essenceVFXMat;
+    [SerializeField] private Material _horseVFXMat;
+    [SerializeField] private Material _pigmentVFXMat;
+    [SerializeField] private Material _crystalVFXMat;
+    [SerializeField] private Material _emberboneVFXMat;
+    #endregion
+
     #region VARIABLES
     private int _claim;
     private int _gold;
@@ -93,12 +103,41 @@ public class ResourcesManager : Singleton<ResourcesManager>
         }
     }
 
-    public void UpdateResource(List<ResourceValue> resources, Transaction transaction)
+    public void UpdateResource(List<ResourceValue> resources, Transaction transaction, Tile tile = null)
     {
         if (resources.Count == 0) return;
         foreach (ResourceValue item in resources)
         {
             UpdateResource(item.resource, item.value, transaction);
+
+            //Play VFX if we gain resource from a tile
+            if( tile != null && transaction == Transaction.Gain)
+            {
+                switch (item.resource)
+                {
+                    case Resource.Stone:
+                        Utilities.PlayResourceGainVFX(tile, _resourceGainPrefab, _stoneVFXMat, item.value);
+                        break;
+                    case Resource.Essence:
+                        Utilities.PlayResourceGainVFX(tile, _resourceGainPrefab, _essenceVFXMat, item.value);
+                        break;
+                    case Resource.Horse:
+                        Utilities.PlayResourceGainVFX(tile, _resourceGainPrefab, _horseVFXMat, item.value);
+                        break;
+                    case Resource.Pigment:
+                        Utilities.PlayResourceGainVFX(tile, _resourceGainPrefab, _pigmentVFXMat, item.value);
+                        break;
+                    case Resource.Crystal:
+                        Utilities.PlayResourceGainVFX(tile, _resourceGainPrefab, _crystalVFXMat, item.value);
+                        break;
+                    case Resource.Emberbone:
+                        Utilities.PlayResourceGainVFX(tile, _resourceGainPrefab, _emberboneVFXMat, item.value);
+                        break;
+                    case Resource.Gold:
+                        Utilities.PlayResourceGainVFX(tile, _resourceGainPrefab, _goldVFXMat, item.value);
+                        break;
+                }
+            }
         }
     }
 
