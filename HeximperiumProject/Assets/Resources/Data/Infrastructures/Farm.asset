@@ -19,6 +19,15 @@ MonoBehaviour:
   _incomes:
   - resource: 6
     value: 2
+  _availableInfrastructures: []
+  _specialBehaviour: {fileID: 0}
+  _biomeMaterials:
+  - biome: 0
+    materials:
+    - {fileID: 2100000, guid: 03239661f465b8d499e4e85aa1565a72, type: 2}
+  - biome: 1
+    materials:
+    - {fileID: 2100000, guid: 818d65efb5b39bd468fa818fc800f274, type: 2}
   _scoutStartingPoint: 0
   _costs:
   - resource: 6
