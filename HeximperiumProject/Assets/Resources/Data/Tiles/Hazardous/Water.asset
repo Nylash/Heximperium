@@ -21,3 +21,22 @@ MonoBehaviour:
   _availableInfrastructures: []
   _specialBehaviour: {fileID: 0}
   _popUpPrefab: {fileID: 9159292565962417168, guid: 787935b1706731845ae4313f79f42b96, type: 3}
+  _biomeMaterials:
+  - biome: 0
+    materials:
+    - {fileID: 2100000, guid: 0ca2f32323c98a949aa45fbf6b47d03e, type: 2}
+  - biome: 1
+    materials:
+    - {fileID: 2100000, guid: 0ca2f32323c98a949aa45fbf6b47d03e, type: 2}
+  - biome: 2
+    materials:
+    - {fileID: 2100000, guid: 0ca2f32323c98a949aa45fbf6b47d03e, type: 2}
+  - biome: 3
+    materials:
+    - {fileID: 2100000, guid: 0ca2f32323c98a949aa45fbf6b47d03e, type: 2}
+  - biome: 4
+    materials:
+    - {fileID: 2100000, guid: 0ca2f32323c98a949aa45fbf6b47d03e, type: 2}
+  - biome: 5
+    materials:
+    - {fileID: 2100000, guid: 0ca2f32323c98a949aa45fbf6b47d03e, type: 2}
