@@ -103,11 +103,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
+  _highlightBoostPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _biome: 0
   _tileData: {fileID: 0}
   _coordinate: {x: 0, y: 0}
   _incomes: []
-  event_IncomeModified:
+  OnIncomeModified:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTileClaimed:
     m_PersistentCalls:
       m_Calls: []
 --- !u!64 &1320174606270032190
