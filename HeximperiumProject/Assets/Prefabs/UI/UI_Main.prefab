@@ -679,7 +679,7 @@ GameObject:
   - component: {fileID: 5130283583825736803}
   - component: {fileID: 8082542350643433617}
   - component: {fileID: 625113198576919614}
-  - component: {fileID: 2642001222996860597}
+  - component: {fileID: 6913254451276351675}
   m_Layer: 5
   m_Name: ScoutsVisibility
   m_TagString: Untagged
@@ -801,7 +801,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &2642001222996860597
+--- !u!114 &6913254451276351675
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -810,7 +810,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 773504880753935708}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9fee2d32adc78a47bcfb4a27784113b, type: 3}
+  m_Script: {fileID: 11500000, guid: dd50dec83bafd534498730e7d8ac32e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _popUp: {fileID: 5077026704930332122, guid: a5f4419078f74ee429252d22e7b31ebd, type: 3}
@@ -1761,7 +1761,7 @@ GameObject:
   - component: {fileID: 7630113414661153720}
   - component: {fileID: 2393110000065303825}
   - component: {fileID: 4743669454575444352}
-  - component: {fileID: 7121590366106106964}
+  - component: {fileID: 813455984792468084}
   m_Layer: 5
   m_Name: Gold
   m_TagString: Untagged
@@ -1828,7 +1828,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7121590366106106964
+--- !u!114 &813455984792468084
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1837,7 +1837,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3554080220711624458}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9fee2d32adc78a47bcfb4a27784113b, type: 3}
+  m_Script: {fileID: 11500000, guid: dd50dec83bafd534498730e7d8ac32e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _popUp: {fileID: 6545422123523209529, guid: ceb19fde1702ead4095f7e4c499095c7, type: 3}
@@ -2039,7 +2039,7 @@ GameObject:
   - component: {fileID: 2887112351607765695}
   - component: {fileID: 5363588578146455631}
   - component: {fileID: 4730380524691398893}
-  - component: {fileID: 4065938354160373188}
+  - component: {fileID: 4437560406371797463}
   m_Layer: 5
   m_Name: Score
   m_TagString: Untagged
@@ -2106,7 +2106,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4065938354160373188
+--- !u!114 &4437560406371797463
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2115,7 +2115,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5058990865049337396}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9fee2d32adc78a47bcfb4a27784113b, type: 3}
+  m_Script: {fileID: 11500000, guid: dd50dec83bafd534498730e7d8ac32e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _popUp: {fileID: 326830480188270648, guid: fdf5bcac48ad9884e9c7ede7768aef0d, type: 3}
@@ -2131,7 +2131,7 @@ GameObject:
   - component: {fileID: 4180726170676365980}
   - component: {fileID: 992515839949692358}
   - component: {fileID: 5142446992727956182}
-  - component: {fileID: 3781263105611065579}
+  - component: {fileID: 6577391381906975599}
   m_Layer: 5
   m_Name: EntertainersVisibility
   m_TagString: Untagged
@@ -2253,7 +2253,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &3781263105611065579
+--- !u!114 &6577391381906975599
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2262,7 +2262,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5530468356035863892}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9fee2d32adc78a47bcfb4a27784113b, type: 3}
+  m_Script: {fileID: 11500000, guid: dd50dec83bafd534498730e7d8ac32e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _popUp: {fileID: 4404409470802837502, guid: a502d36fa428b7546ad17eea69a6850a, type: 3}
@@ -3962,7 +3962,7 @@ GameObject:
   - component: {fileID: 120870279906372822}
   - component: {fileID: 1286717399631703486}
   - component: {fileID: 722698192746755025}
-  - component: {fileID: 8917396261375057315}
+  - component: {fileID: 9093544114012967743}
   m_Layer: 5
   m_Name: Claims
   m_TagString: Untagged
@@ -4029,7 +4029,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8917396261375057315
+--- !u!114 &9093544114012967743
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4038,7 +4038,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8106488771803450434}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9fee2d32adc78a47bcfb4a27784113b, type: 3}
+  m_Script: {fileID: 11500000, guid: dd50dec83bafd534498730e7d8ac32e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _popUp: {fileID: 4726505612984096945, guid: 952bba7efd17191458fe09134a1cfaa8, type: 3}

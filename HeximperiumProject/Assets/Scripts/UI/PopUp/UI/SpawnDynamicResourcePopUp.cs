@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PopUp_SpecialResourcesPopUp : UI_PopUp
+public class SpawnDynamicResourcePopUp : SpawnUIPopUp
 {
     [SerializeField] private Resource _resource;
     [SerializeField][Range(0.0f,1.0f)] private float _anchorMinX;

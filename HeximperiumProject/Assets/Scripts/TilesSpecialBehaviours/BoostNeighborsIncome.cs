@@ -8,9 +8,9 @@ public class BoostNeighborsIncome : SpecialBehaviour
     [SerializeField] private InfrastructureData _infrastructureBoosted;
 
     //Boost the neighbors if it's the right one
-    public override void InitializeSpecialBehaviour()
+    public override void InitializeSpecialBehaviour(Tile behaviourTile)
     {
-        foreach (Tile neighbor in _tile.Neighbors) 
+        foreach (Tile neighbor in behaviourTile.Neighbors) 
         {
             if(neighbor.TileData == _infrastructureBoosted)
             {
@@ -29,7 +29,7 @@ public class BoostNeighborsIncome : SpecialBehaviour
     }
 
     //Create a list with -boost and then merge it with the neighbors of the right type
-    public override void RollbackSpecialBehaviour()
+    public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
         List<ResourceValue> tmpList = new List<ResourceValue>();
 
@@ -37,11 +37,22 @@ public class BoostNeighborsIncome : SpecialBehaviour
         {
             tmpList.Add(new ResourceValue(resourceValue.resource, -resourceValue.value));
         }
-        foreach (Tile neighbor in _tile.Neighbors)
+        foreach (Tile neighbor in behaviourTile.Neighbors)
         {
             if (neighbor.TileData == _infrastructureBoosted)
             {
                 neighbor.Incomes = Utilities.MergeResourceValues(neighbor.Incomes, tmpList);
+            }
+        }
+    }
+
+    public override void HighlightImpactedTile(Tile behaviourTile, bool show)
+    {
+        foreach (Tile neighbor in behaviourTile.Neighbors)
+        {
+            if (neighbor.TileData == _infrastructureBoosted)
+            {
+                neighbor.BoostHighlight(show);
             }
         }
     }

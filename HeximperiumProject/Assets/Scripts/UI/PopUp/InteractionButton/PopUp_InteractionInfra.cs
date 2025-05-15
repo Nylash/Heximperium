@@ -8,6 +8,8 @@ public class PopUp_InteractionInfra : UI_DynamicPopUp
     [SerializeField] private TextMeshProUGUI _detailsText;
     [SerializeField] private TextMeshProUGUI _costText;
 
+    private UI_InteractionButton _associatedButton;
+
     public override void InitializePopUp<T>(T item)
     {
         if (item is UI_InteractionButton button)
@@ -40,11 +42,28 @@ public class PopUp_InteractionInfra : UI_DynamicPopUp
                     _copyText.color = UIManager.Instance.ColorCantAfford;
 
                 _copyText.text += item.availableCopy;
-                return;
+                _copyText.enabled = true;
+                break;
             }
         }
 
-        //Infra has no copy limitation so we hide the text associated
-        _copyText.enabled = false;
+        //Show highlight impacted tiles by the special behaviour of this infra
+        if(button.InfrastructureData.SpecialBehaviour != null)
+        {
+            button.InfrastructureData.SpecialBehaviour.HighlightImpactedTile(button.AssociatedTile ,true);
+        }
+
+        _associatedButton = button;
+    }
+
+    public override void DestroyPopUp()
+    {
+        //Hide highlight impacted tiles by the special behaviour of this infra
+        if (_associatedButton.InfrastructureData.SpecialBehaviour != null)
+        {
+            _associatedButton.InfrastructureData.SpecialBehaviour.HighlightImpactedTile(_associatedButton.AssociatedTile, false);
+        }
+
+        base.DestroyPopUp();
     }
 }

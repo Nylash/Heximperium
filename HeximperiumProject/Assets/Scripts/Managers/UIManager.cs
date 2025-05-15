@@ -203,7 +203,7 @@ public class UIManager : Singleton<UIManager>
             _hoverTimer += Time.deltaTime;
             if (_hoverTimer >= _durationHoverForUI && _popUps.Count == 0)
             {
-                UI_PopUp popUpComponent = obj.GetComponent<UI_PopUp>();
+                SpawnUIPopUp popUpComponent = obj.GetComponent<SpawnUIPopUp>();
 
                 if (popUpComponent != null)
                 {
@@ -271,7 +271,11 @@ public class UIManager : Singleton<UIManager>
         {
             foreach (GameObject item in _popUps)
             {
-                Destroy(item);
+                UI_PopUp scriptPopUp = item.GetComponent<UI_PopUp>();
+                if (scriptPopUp)
+                    scriptPopUp.DestroyPopUp();
+                else
+                    Destroy(item);
             }
             _popUps.Clear();
         }

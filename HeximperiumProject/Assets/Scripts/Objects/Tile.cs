@@ -7,6 +7,7 @@ public class Tile : MonoBehaviour
 {
     #region CONFIGURATION
     [SerializeField] private GameObject _borderPrefab;
+    [SerializeField] private GameObject _highlightBoostPrefab;
     #endregion
 
     #region VARIABLES
@@ -25,6 +26,7 @@ public class Tile : MonoBehaviour
     private List<Scout> _scouts = new List<Scout>();
     private TextMeshPro _scoutCounter;
     private Entertainer _entertainer;
+    private GameObject _highlightBoostObject;
     #endregion
 
     #region EVENTS
@@ -43,30 +45,21 @@ public class Tile : MonoBehaviour
             //Remove previous special behaviour
             if (_tileData.SpecialBehaviour != null)
             {
-                _tileData.SpecialBehaviour.RollbackSpecialBehaviour();
+                _tileData.SpecialBehaviour.RollbackSpecialBehaviour(this);
             }
 
+            //Set the new income
             if (value.TypeIncomeUpgrade == TypeIncomeUpgrade.Merge)
                 Incomes = Utilities.MergeResourceValues(_incomes, value.Incomes);
             else
                 Incomes = value.Incomes;
+
             name = value.TileName + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
             _tileData = value;
+
             UpdateVisual();
 
-            //Tile special behaviour
-            if (_tileData.SpecialBehaviour != null)
-            {
-                _tileData.SpecialBehaviour.Tile = this;
-                _tileData.SpecialBehaviour.InitializeSpecialBehaviour();
-            }
-                
-            //Foreach neighbors check if their special behaviour should impact the new tile
-            foreach (Tile item in _neighbors)
-            {
-                if(item.TileData.SpecialBehaviour != null)
-                    item.TileData.SpecialBehaviour.ApplySpecialBehaviour(this);
-            }
+            CheckSpecialBehaviour();
         }
     }
     public bool Claimed { get => _claimed;}
@@ -142,6 +135,14 @@ public class Tile : MonoBehaviour
         }
     }
 
+    public void BoostHighlight(bool show)
+    {
+        if (show)
+            _highlightBoostObject = Instantiate(_highlightBoostPrefab, transform.position + new Vector3(0, 0.02f, 0), Quaternion.identity);
+        else
+            Destroy(_highlightBoostObject);
+    }
+
     #region NEIGHBORS LOGIC
     //Only called at the map generation
     public void SearchNeighbors()
@@ -201,4 +202,53 @@ public class Tile : MonoBehaviour
                 Destroy(_scoutCounter.gameObject);
         }
     }
+
+
+    #region SPECIAL BEHAVIOUR
+    private void CheckSpecialBehaviour()
+    {
+        //Tile special behaviour
+        if (_tileData.SpecialBehaviour != null)
+        {
+            _tileData.SpecialBehaviour.InitializeSpecialBehaviour(this);
+
+            //Special case for IncomeComingFromNeighbors
+            if (_tileData.SpecialBehaviour is IncomeComingFromNeighbors)
+            {
+                foreach (Tile neighbor in _neighbors)
+                {
+                    neighbor.OnIncomeModified.AddListener(AdjustIncomeFromNeighbor);
+                    if (!neighbor.Claimed)
+                        neighbor.OnTileClaimed.AddListener(AddClaimedTileIncome);
+                }
+            }
+        }
+
+        //Foreach neighbors check if their special behaviour should impact the new tile
+        foreach (Tile item in _neighbors)
+        {
+            if (item.TileData.SpecialBehaviour != null)
+                item.TileData.SpecialBehaviour.ApplySpecialBehaviour(this);
+        }
+    }
+
+    //Region for the special behaviour IncomeComingFromNeighbors, 
+    #region IncomeComingFromNeighbors
+    private void AddClaimedTileIncome(Tile tile)
+    {
+        if (_tileData.SpecialBehaviour is IncomeComingFromNeighbors specialBehaviour)
+        {
+            specialBehaviour.AddClaimedTileIncome(this, tile);
+        }
+    }
+
+    private void AdjustIncomeFromNeighbor(List<ResourceValue> previousIncome, List<ResourceValue> newIncome)
+    {
+        if(_tileData.SpecialBehaviour is IncomeComingFromNeighbors specialBehaviour)
+        {
+            specialBehaviour.AdjustIncomeFromNeighbor(this, previousIncome, newIncome);
+        }
+    }
+    #endregion
+    #endregion
 }

@@ -8,14 +8,14 @@ public class EntertainersBoosting : SpecialBehaviour
     [SerializeField] private int _bonus;
  
     //If the tile and its neighbors had a unit of the right family apply a boost
-    public override void InitializeSpecialBehaviour()
+    public override void InitializeSpecialBehaviour(Tile behaviourTile)
     {
-        if (_tile.Entertainer)
+        if (behaviourTile.Entertainer)
         {
-            if (_boostedFamilies.Contains(_tile.Entertainer.EntertainerData.Family))
-                _tile.Entertainer.Points += _bonus;
+            if (_boostedFamilies.Contains(behaviourTile.Entertainer.EntertainerData.Family))
+                behaviourTile.Entertainer.Points += _bonus;
         }
-        foreach (Tile neighbor in _tile.Neighbors)
+        foreach (Tile neighbor in behaviourTile.Neighbors)
         {
             if (!neighbor.Entertainer)
                 continue;
@@ -37,19 +37,35 @@ public class EntertainersBoosting : SpecialBehaviour
     }
 
     //Remove the bonuses
-    public override void RollbackSpecialBehaviour()
+    public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
-        if (_tile.Entertainer)
+        if (behaviourTile.Entertainer)
         {
-            if (_boostedFamilies.Contains(_tile.Entertainer.EntertainerData.Family))
-                _tile.Entertainer.Points -= _bonus;
+            if (_boostedFamilies.Contains(behaviourTile.Entertainer.EntertainerData.Family))
+                behaviourTile.Entertainer.Points -= _bonus;
         }
-        foreach (Tile neighbor in _tile.Neighbors)
+        foreach (Tile neighbor in behaviourTile.Neighbors)
         {
             if (!neighbor.Entertainer)
                 continue;
             if (_boostedFamilies.Contains(neighbor.Entertainer.EntertainerData.Family))
                 neighbor.Entertainer.Points -= _bonus;
+        }
+    }
+
+    public override void HighlightImpactedTile(Tile behaviourTile, bool show)
+    {
+        if (behaviourTile.Entertainer)
+        {
+            if (_boostedFamilies.Contains(behaviourTile.Entertainer.EntertainerData.Family))
+                behaviourTile.BoostHighlight(show);
+        }
+        foreach (Tile neighbor in behaviourTile.Neighbors)
+        {
+            if (!neighbor.Entertainer)
+                continue;
+            if (_boostedFamilies.Contains(neighbor.Entertainer.EntertainerData.Family))
+                neighbor.BoostHighlight(show);
         }
     }
 }
