@@ -18,7 +18,7 @@ public class EntertainementManager : Singleton<EntertainementManager>
 
     #region VARIABLES
     private List<Entertainer> _entertainers = new List<Entertainer>();
-    private List<Vector3> _interactionPositions = new List<Vector3>();
+    private List<Vector2> _interactionPositions = new List<Vector2>();
     private List<GameObject> _buttons = new List<GameObject>();
     private List<EntertainerData> _entertainerDatas = new List<EntertainerData>();
     private int _score;
@@ -102,13 +102,13 @@ public class EntertainementManager : Singleton<EntertainementManager>
             //Interaction depend on if the tile got an entertainer or not
             if(tile.Entertainer != null)
             {
-                _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
+                _interactionPositions = Utilities.GetInteractionButtonsPosition(1);
                 DestroyInteraction(tile, 0);
                 return;
             }
             else
             {
-                _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, _entertainerDatas.Count);
+                _interactionPositions = Utilities.GetInteractionButtonsPosition(_entertainerDatas.Count);
                 for (int i = 0; i < _entertainerDatas.Count; i++)
                 {
                     EntertainerInteraction(tile, i, _entertainerDatas[i]);
@@ -130,12 +130,12 @@ public class EntertainementManager : Singleton<EntertainementManager>
     #region INTERACTION
     private void EntertainerInteraction(Tile tile, int positionIndex, EntertainerData data)
     {
-        _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Entertainer, null, data));
+        _buttons.Add(Utilities.CreateInteractionButton(UIManager.Instance.MainCanvas, tile, _interactionPositions[positionIndex], Interaction.Entertainer, null, data));
     }
 
     private void DestroyInteraction(Tile tile, int positionIndex)
     {
-        _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Destroy));
+        _buttons.Add(Utilities.CreateInteractionButton(UIManager.Instance.MainCanvas, tile, _interactionPositions[positionIndex], Interaction.Destroy));
     }
 
     public void SpawnEntertainer(Tile tile, EntertainerData data)

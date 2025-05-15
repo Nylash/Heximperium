@@ -1,11 +1,18 @@
 using UnityEngine.Events;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
     #region CONSTANTS
     private const string TOWN_DATA_PATH = "Data/Infrastructures/Town";
+    #endregion
+
+    #region CONFIGURATION
+    [SerializeField] private GameObject _highlighPrefab;
+    [SerializeField] private GameObject _interactionPrefab;
     #endregion
 
     #region VARIABLES
@@ -18,8 +25,9 @@ public class GameManager : Singleton<GameManager>
     private Tile _previousSelectedTile;
     private bool _isPointerOverUI;
     private GameObject _highlightObject;
-    [SerializeField] private GameObject _highlighPrefab;
-    [SerializeField] private GameObject _interactionPrefab;
+    private GraphicRaycaster raycaster;
+    private PointerEventData pointerEventData;
+    private EventSystem eventSystem;
 
     private bool _waitingPhaseFinalization;
     private Phase _currentPhase;
@@ -75,6 +83,9 @@ public class GameManager : Singleton<GameManager>
         OnExplorationPhaseStarted.Invoke();
 
         _turnCounter = 1;
+
+        raycaster = FindFirstObjectByType<GraphicRaycaster>();
+        eventSystem = EventSystem.current;
     }
 
     private void Update()
@@ -212,6 +223,25 @@ public class GameManager : Singleton<GameManager>
             return;
         }
 
+        //Check if the UI is an interaction button
+        if (_isPointerOverUI)
+        {
+            pointerEventData = new PointerEventData(eventSystem);
+            pointerEventData.position = Input.mousePosition;
+            List<RaycastResult> results = new List<RaycastResult>();
+            raycaster.Raycast(pointerEventData, results);
+
+            if (results.Count > 0)
+            {
+                foreach (RaycastResult item in results)
+                {
+                    UI_InteractionButton button = item.gameObject.GetComponent<UI_InteractionButton>();
+                    if(button != null)
+                        InteractWithButton(button);
+                }
+            }
+        }
+
         //If a tile was selected we unselect it
         if (_selectedTile)
         {
@@ -222,23 +252,21 @@ public class GameManager : Singleton<GameManager>
         _previousSelectedTile = _selectedTile;
         _selectedTile = null;
 
-        //The action is performed only if the cursor is not on UI
-        if (_isPointerOverUI)
-            return;
-
-        _mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(_mouseRay, out _mouseRayHit))
+        //Check if we are over a tile
+        if (!_isPointerOverUI)
         {
-            //Check if we clicked on a Tile or on a Interaction Button
-            if (_mouseRayHit.collider.gameObject.GetComponent<Tile>())
+            _mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(_mouseRay, out _mouseRayHit))
             {
-                SelectTile(_mouseRayHit.collider.gameObject.GetComponent<Tile>());
-            }
-            else if (_mouseRayHit.collider.gameObject.GetComponent<UI_InteractionButton>())
-            {
-                InteractWithButton(_mouseRayHit.collider.gameObject.GetComponent<UI_InteractionButton>());
+                //Check if we clicked on a Tile
+                if (_mouseRayHit.collider.gameObject.GetComponent<Tile>())
+                {
+                    SelectTile(_mouseRayHit.collider.gameObject.GetComponent<Tile>());
+                }
             }
         }
+
+        
     }
 
     private void SelectTile(Tile tile)

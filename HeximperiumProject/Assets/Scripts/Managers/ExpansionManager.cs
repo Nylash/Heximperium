@@ -16,7 +16,7 @@ public class ExpansionManager : Singleton<ExpansionManager>
     #region VARIABLES
     private List<GameObject> _buttons = new List<GameObject>();
     private List<Tile> _claimedTiles = new List<Tile>();
-    private List<Vector3> _interactionPositions = new List<Vector3>();
+    private List<Vector2> _interactionPositions = new List<Vector2>();
     private int _baseClaimPerTurn;
     #endregion
 
@@ -74,19 +74,28 @@ public class ExpansionManager : Singleton<ExpansionManager>
             //We can only build town on basic tile
             if (tile.TileData as BasicTileData)
             {
-                _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
+                _interactionPositions = Utilities.GetInteractionButtonsPosition(1);
                 TownInteraction(tile, 0);
             }
             return;
         }
 
-        _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 2);
-        //We can only build town on basic tile
-        if (tile.TileData as BasicTileData)
+        if (tile.TileData as BasicTileData && tile.HasOneNeighborClaimed())
+        {
+            _interactionPositions = Utilities.GetInteractionButtonsPosition(2);
+            ClaimInteraction(tile, 0);
+            TownInteraction(tile, 1);
+        }
+        else if (tile.TileData as BasicTileData)
+        {
+            _interactionPositions = Utilities.GetInteractionButtonsPosition(1);
             TownInteraction(tile, 0);
-        //We can only claimed tiles adjacent to already claimed tiles
-        if (tile.IsOneNeighborClaimed())
-            ClaimInteraction(tile, 1);
+        }
+        else if (tile.HasOneNeighborClaimed())
+        {
+            _interactionPositions = Utilities.GetInteractionButtonsPosition(1);
+            ClaimInteraction(tile, 0);
+        }   
     }
 
     private void TileUnselected()
@@ -102,12 +111,12 @@ public class ExpansionManager : Singleton<ExpansionManager>
     #region INTERACTION
     private void ClaimInteraction(Tile tile, int positionIndex)
     {
-        _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Claim));
+        _buttons.Add(Utilities.CreateInteractionButton(UIManager.Instance.MainCanvas, tile, _interactionPositions[positionIndex], Interaction.Claim));
     }
 
     private void TownInteraction(Tile tile, int positionIndex)
     {
-        _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Town));
+        _buttons.Add(Utilities.CreateInteractionButton(UIManager.Instance.MainCanvas, tile, _interactionPositions[positionIndex], Interaction.Town));
     }
 
     public void ClaimTile(Tile tile)
