@@ -30,6 +30,10 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Color _colorBotExploit;
     [SerializeField] private Color _colorTopEntertain;
     [SerializeField] private Color _colorBotEntertain;
+    [SerializeField] private Animator _popUpExploPhase;
+    [SerializeField] private Animator _popUpExpandPhase;
+    [SerializeField] private Animator _popUpExploitPhase;
+    [SerializeField] private Animator _popUpEntertainPhase;
     [Header("PopUp UI")]
     [SerializeField] private float _durationHoverForUI = 2.0f;
     [SerializeField] private float _offsetBetweenPopUps = 0.5f;
@@ -374,24 +378,36 @@ public class UIManager : Singleton<UIManager>
                 _confirmPhaseButtonText.text = "End Phase";
                 _materialBack.SetColor("_ColorTop", _colorTopExplo);
                 _materialBack.SetColor("_ColorBottom", _colorBotExplo);
+                EnableRenderers(_popUpEntertainPhase.gameObject, false);
+                EnableRenderers(_popUpExploPhase.gameObject, true);
+                _popUpExploPhase.SetTrigger("PopUp");
                 break;
             case Phase.Expand:
                 _currentPhaseText.text = "Expand";
                 _confirmPhaseButtonText.text = "End Phase";
                 _materialBack.SetColor("_ColorTop", _colorTopExpand);
                 _materialBack.SetColor("_ColorBottom", _colorBotExpand);
+                EnableRenderers(_popUpExploPhase.gameObject, false);
+                EnableRenderers(_popUpExpandPhase.gameObject, true);
+                _popUpExpandPhase.SetTrigger("PopUp");
                 break;
             case Phase.Exploit:
                 _currentPhaseText.text = "Exploit";
                 _confirmPhaseButtonText.text = "End Phase";
                 _materialBack.SetColor("_ColorTop", _colorTopExploit);
                 _materialBack.SetColor("_ColorBottom", _colorBotExploit);
+                EnableRenderers(_popUpExpandPhase.gameObject, false);
+                EnableRenderers(_popUpExploitPhase.gameObject, true);
+                _popUpExploitPhase.SetTrigger("PopUp");
                 break;
             case Phase.Entertain:
                 _currentPhaseText.text = "Entertain";
                 _confirmPhaseButtonText.text = "End Turn";
                 _materialBack.SetColor("_ColorTop", _colorTopEntertain);
                 _materialBack.SetColor("_ColorBottom", _colorBotEntertain);
+                EnableRenderers(_popUpExploitPhase.gameObject, false);
+                EnableRenderers(_popUpEntertainPhase.gameObject, true);
+                _popUpEntertainPhase.SetTrigger("PopUp");
                 break;
         }
     }
@@ -399,6 +415,15 @@ public class UIManager : Singleton<UIManager>
     private void UpdateTurnCounterText(int turnCounter)
     {
         _turnCounterText.text = "Turn : " + turnCounter;
+    }
+
+    private void EnableRenderers(GameObject item, bool enable)
+    {
+        item.GetComponent<Image>().enabled = enable;
+        foreach (TextMeshProUGUI t in item.GetComponentsInChildren<TextMeshProUGUI>()) 
+        {
+            t.enabled = enable;
+        }
     }
     #endregion
 }
