@@ -95,6 +95,8 @@ public class Tile : MonoBehaviour
         _border.transform.parent = ExpansionManager.Instance.BorderParent;
         foreach (Tile neighbor in _neighbors) 
         {
+            if (!neighbor)
+                continue;
             if (!neighbor.Revealed)
                 neighbor.RevealTile(false);
         }
@@ -217,6 +219,8 @@ public class Tile : MonoBehaviour
             {
                 foreach (Tile neighbor in _neighbors)
                 {
+                    if (!neighbor)
+                        continue;
                     neighbor.OnIncomeModified.AddListener(AdjustIncomeFromNeighbor);
                     if (!neighbor.Claimed)
                         neighbor.OnTileClaimed.AddListener(AddClaimedTileIncome);
@@ -227,6 +231,8 @@ public class Tile : MonoBehaviour
         //Foreach neighbors check if their special behaviour should impact the new tile
         foreach (Tile item in _neighbors)
         {
+            if (!item)
+                continue;
             if (item.TileData.SpecialBehaviour != null)
                 item.TileData.SpecialBehaviour.ApplySpecialBehaviour(this);
         }

@@ -41,6 +41,8 @@ public class Entertainer : MonoBehaviour
             entertainersBoosting.BoostingSpecificEntertainer(_tile.Entertainer);
         foreach (Tile neighbor in _tile.Neighbors)
         {
+            if (!neighbor)
+                continue;
             if (neighbor.TileData.SpecialBehaviour is EntertainersBoosting NeighborEntertainersBoosting)
                 NeighborEntertainersBoosting.BoostingSpecificEntertainer(_tile.Entertainer);
         }
@@ -51,6 +53,8 @@ public class Entertainer : MonoBehaviour
     {
         foreach (Tile neighbor in _tile.Neighbors)
         {
+            if (!neighbor)
+                continue;
             if (!neighbor.Entertainer)
                 continue;
             if (_entertainerData.Synergies.Contains(neighbor.Entertainer.EntertainerData.EntertainerType))
@@ -66,6 +70,8 @@ public class Entertainer : MonoBehaviour
     {
         foreach (Tile neighbor in _tile.Neighbors)
         {
+            if (!neighbor)
+                continue;
             if (!neighbor.Entertainer)
                 continue;
             if (_entertainerData.Synergies.Contains(neighbor.Entertainer.EntertainerData.EntertainerType))

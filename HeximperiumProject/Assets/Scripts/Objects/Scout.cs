@@ -127,7 +127,7 @@ public class Scout : MonoBehaviour
 
         foreach (Tile neighbor in currentTile.Neighbors)
         {
-            if (neighbor == null)
+            if (!neighbor)
                 continue;
             if (!neighbor.Revealed)
             {

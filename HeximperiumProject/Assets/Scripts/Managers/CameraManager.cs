@@ -38,6 +38,7 @@ public class CameraManager : Singleton<CameraManager>
     private EventSystem eventSystem;
     private Ray _mouseRay;
     private RaycastHit _mouseRayHit;
+    private UI_InteractionButton _shrinkedButton;
     #endregion
 
     private void OnEnable() => _inputActions.Player.Enable();
@@ -85,6 +86,7 @@ public class CameraManager : Singleton<CameraManager>
         // Check if the pointer is over a UI GameObject
         if (EventSystem.current.IsPointerOverGameObject())
         {
+            Debug.Log("UI");
             pointerEventData = new PointerEventData(eventSystem);
             pointerEventData.position = Input.mousePosition;
             List<RaycastResult> results = new List<RaycastResult>();
@@ -95,6 +97,14 @@ public class CameraManager : Singleton<CameraManager>
                 // Pass the topmost UI object under the cursor
                 UIManager.Instance.PopUpUI(results[0].gameObject);
             }
+
+            //If a interaction button was shrink we unshrink it
+            if (_shrinkedButton != null)
+            {
+                Debug.Log("Unshrinking button." + _shrinkedButton);
+                _shrinkedButton.ShrinkAnimation(false);
+                _shrinkedButton = null;
+            }
         }
         else
         {
@@ -102,7 +112,43 @@ public class CameraManager : Singleton<CameraManager>
             if (Physics.Raycast(_mouseRay, out _mouseRayHit))
             {
                 UIManager.Instance.PopUpNonUI(_mouseRayHit.collider.gameObject);
+
+                //If we detect a InteractionButton we play the shrink animation
+                if (_mouseRayHit.collider.gameObject.GetComponent<UI_InteractionButton>() is UI_InteractionButton button)
+                {
+                    Debug.Log("Hit a button.");
+
+                    //Check if the cursor is over a new InteractionButton and so unshrink the previous one (if there is one)
+                    if (_shrinkedButton != null)
+                    {
+                        Debug.Log("Got a previous button");
+                        if (_shrinkedButton != button)
+                        {
+                            Debug.Log("Unshrinking button." + _shrinkedButton);
+                            _shrinkedButton.ShrinkAnimation(false);
+                            _shrinkedButton = null;
+                        }
+                    }
+
+                    Debug.Log("Shrink button." + button);
+                    button.ShrinkAnimation(true);
+                    _shrinkedButton = button;
+                }
+                else
+                {
+                    Debug.Log("Hit something else than a button");
+
+                    //If a interaction button was shrink we unshrink it
+                    if (_shrinkedButton != null)
+                    {
+                        Debug.Log("Unshrinking button." + _shrinkedButton);
+                        _shrinkedButton.ShrinkAnimation(false);
+                        _shrinkedButton = null;
+                    }
+                }
             }
+            else
+                Debug.Log("NOTHING ?");
         }
     }
 

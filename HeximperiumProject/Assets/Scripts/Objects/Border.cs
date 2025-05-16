@@ -20,7 +20,10 @@ public class Border : MonoBehaviour
         {
             //No tile so we activate the border
             if (neighbors[i] == null)
+            {
                 _renderers[i].enabled = true;
+                continue;
+            }
             //Neighbor is claimed, so no border
             if(neighbors[i].Claimed)
                 _renderers[i].enabled = false;

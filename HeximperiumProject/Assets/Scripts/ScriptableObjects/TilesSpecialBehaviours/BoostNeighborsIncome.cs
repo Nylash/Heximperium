@@ -12,7 +12,9 @@ public class BoostNeighborsIncome : SpecialBehaviour
     {
         foreach (Tile neighbor in behaviourTile.Neighbors) 
         {
-            if(neighbor.TileData == _infrastructureBoosted)
+            if (!neighbor)
+                continue;
+            if (neighbor.TileData == _infrastructureBoosted)
             {
                 neighbor.Incomes = Utilities.MergeResourceValues(neighbor.Incomes, _incomeBoost);
             }
@@ -39,6 +41,8 @@ public class BoostNeighborsIncome : SpecialBehaviour
         }
         foreach (Tile neighbor in behaviourTile.Neighbors)
         {
+            if (!neighbor)
+                continue;
             if (neighbor.TileData == _infrastructureBoosted)
             {
                 neighbor.Incomes = Utilities.MergeResourceValues(neighbor.Incomes, tmpList);
@@ -50,6 +54,8 @@ public class BoostNeighborsIncome : SpecialBehaviour
     {
         foreach (Tile neighbor in behaviourTile.Neighbors)
         {
+            if (!neighbor)
+                continue;
             if (neighbor.TileData == _infrastructureBoosted)
             {
                 neighbor.BoostHighlight(show);

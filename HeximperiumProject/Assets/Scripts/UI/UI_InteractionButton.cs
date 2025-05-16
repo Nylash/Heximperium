@@ -166,6 +166,12 @@ public class UI_InteractionButton : MonoBehaviour
         }
     }
 
+    public void ShrinkAnimation(bool shrink)
+    {
+        if (_animator.GetBool("Shrink") != shrink)
+            _animator.SetBool("Shrink", shrink);
+    }
+
     public void FadeAnimation(bool fade)
     {
         _animator.SetBool("Fade", fade);

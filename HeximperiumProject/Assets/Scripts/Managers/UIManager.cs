@@ -267,6 +267,7 @@ public class UIManager : Singleton<UIManager>
     {
         _objectUnderMouse = obj;
         _hoverTimer = 0.0f;
+
         if (_popUps.Count > 0)
         {
             foreach (GameObject item in _popUps)

@@ -127,7 +127,12 @@ public class GameManager : Singleton<GameManager>
         //Reveal the central tile and its neighbors
         centralTile.RevealTile(true);
         foreach (Tile tile in centralTile.Neighbors)
+        {
+            if (!tile)
+                continue;
             tile.RevealTile(true);
+        }
+            
 
         //Give the player resources for the initial town 
         InfrastructureData townData = Resources.Load<InfrastructureData>(TOWN_DATA_PATH);
@@ -169,13 +174,21 @@ public class GameManager : Singleton<GameManager>
         //Reveal the tiles without animation
         foreach (Tile tile in centralTile.Neighbors)
         {
+            if (!tile)
+                continue;
             foreach (Tile t in tile.Neighbors)
+            {
+                if (!t)
+                    continue;
                 t.RevealTile(true);
+            }
         }
 
         //Claim the tiles
         foreach (Tile tile in centralTile.Neighbors)
         {
+            if (!tile)
+                continue;
             //Give the player claim for the tile
             ResourcesManager.Instance.UpdateClaim(tile.TileData.ClaimCost, Transaction.Gain);
             ExpansionManager.Instance.ClaimTile(tile);
@@ -191,17 +204,27 @@ public class GameManager : Singleton<GameManager>
         //Reveal the tiles without animation
         foreach (Tile tile in centralTile.Neighbors)
         {
+            if (!tile)
+                continue;
             foreach (Tile t in tile.Neighbors)
             {
+                if (!t)
+                    continue;
                 t.RevealTile(true);
                 foreach (Tile item in t.Neighbors)
+                {
+                    if (!item)
+                        continue;
                     item.RevealTile(true);
+                }
             }
         }
 
         //Claim the tiles
         foreach (Tile firstRingTile in centralTile.Neighbors)
         {
+            if (!firstRingTile)
+                continue;
             if (!firstRingTile.Claimed)
             {
                 //Give the player claim for the tile
@@ -210,6 +233,8 @@ public class GameManager : Singleton<GameManager>
             }
             foreach (Tile secondRingTile in firstRingTile.Neighbors)
             {
+                if (!secondRingTile)
+                    continue;
                 if (!secondRingTile.Claimed)
                 {
                     //Give the player claim for the tile

@@ -11,6 +11,8 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
     {
         foreach (Tile neighbor in behaviourTile.Neighbors)
         {
+            if (!neighbor)
+                continue;
             if (neighbor.Claimed)
             {
                 List<ResourceValue> income = new List<ResourceValue>();
@@ -56,6 +58,8 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
     {
         foreach (Tile neighbor in behaviourTile.Neighbors)
         {
+            if (!neighbor)
+                continue;
             if (neighbor.Claimed)
             {
                 foreach (ResourceValue item in neighbor.Incomes)

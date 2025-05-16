@@ -17,6 +17,8 @@ public class EntertainersBoosting : SpecialBehaviour
         }
         foreach (Tile neighbor in behaviourTile.Neighbors)
         {
+            if (!neighbor)
+                continue;
             if (!neighbor.Entertainer)
                 continue;
             if (_boostedFamilies.Contains(neighbor.Entertainer.EntertainerData.Family))
@@ -46,6 +48,8 @@ public class EntertainersBoosting : SpecialBehaviour
         }
         foreach (Tile neighbor in behaviourTile.Neighbors)
         {
+            if (!neighbor)
+                continue;
             if (!neighbor.Entertainer)
                 continue;
             if (_boostedFamilies.Contains(neighbor.Entertainer.EntertainerData.Family))
@@ -62,6 +66,8 @@ public class EntertainersBoosting : SpecialBehaviour
         }
         foreach (Tile neighbor in behaviourTile.Neighbors)
         {
+            if (!neighbor)
+                continue;
             if (!neighbor.Entertainer)
                 continue;
             if (_boostedFamilies.Contains(neighbor.Entertainer.EntertainerData.Family))
