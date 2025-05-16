@@ -79,7 +79,7 @@ public static class Utilities
     }
 
     //Merge two List<ResourceValue>
-    public static List<ResourceValue> MergeResourceValues(List<ResourceValue> list1, List<ResourceValue> list2)
+    public static List<ResourceToIntMap> MergeResourceValues(List<ResourceToIntMap> list1, List<ResourceToIntMap> list2)
     {
         var mergedDictionary = new Dictionary<Resource, int>();
 
@@ -110,7 +110,7 @@ public static class Utilities
         }
 
         // Convert the dictionary back to a list
-        return mergedDictionary.Select(kvp => new ResourceValue(kvp.Key, kvp.Value)).ToList();
+        return mergedDictionary.Select(kvp => new ResourceToIntMap(kvp.Key, kvp.Value)).ToList();
     }
 
     public static string ToCustomString(this Resource value)

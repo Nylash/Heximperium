@@ -15,12 +15,12 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
                 continue;
             if (neighbor.Claimed)
             {
-                List<ResourceValue> income = new List<ResourceValue>();
+                List<ResourceToIntMap> income = new List<ResourceToIntMap>();
 
-                foreach (ResourceValue item in neighbor.Incomes)
+                foreach (ResourceToIntMap item in neighbor.Incomes)
                 {
                     if (item.resource == _resource)
-                        income.Add(new ResourceValue(_resource, item.value));
+                        income.Add(new ResourceToIntMap(_resource, item.value));
                 }
 
                 behaviourTile.Incomes = Utilities.MergeResourceValues(behaviourTile.Incomes, income);
@@ -38,10 +38,10 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
         //Nothing needed, replacing by previous tile will be enough (this behaviour only modify its own tile)
     }
 
-    public void AdjustIncomeFromNeighbor(Tile behaviourTile, List<ResourceValue> previousIncome, List<ResourceValue> newIncome)
+    public void AdjustIncomeFromNeighbor(Tile behaviourTile, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
     {
         //Switch the previous income to negative value
-        foreach (ResourceValue item in previousIncome)
+        foreach (ResourceToIntMap item in previousIncome)
             item.value = -item.value;
         //Remove previous income
         behaviourTile.Incomes = Utilities.MergeResourceValues(behaviourTile.Incomes, previousIncome);
@@ -62,7 +62,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
                 continue;
             if (neighbor.Claimed)
             {
-                foreach (ResourceValue item in neighbor.Incomes)
+                foreach (ResourceToIntMap item in neighbor.Incomes)
                 {
                     if (item.resource == _resource)
                         neighbor.BoostHighlight(show);

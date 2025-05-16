@@ -103,10 +103,10 @@ public class ResourcesManager : Singleton<ResourcesManager>
         }
     }
 
-    public void UpdateResource(List<ResourceValue> resources, Transaction transaction, Tile tile = null)
+    public void UpdateResource(List<ResourceToIntMap> resources, Transaction transaction, Tile tile = null)
     {
         if (resources.Count == 0) return;
-        foreach (ResourceValue item in resources)
+        foreach (ResourceToIntMap item in resources)
         {
             UpdateResource(item.resource, item.value, transaction);
 
@@ -181,7 +181,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
         return false;
     }
 
-    public bool CanAfford(List<ResourceValue> costs) 
+    public bool CanAfford(List<ResourceToIntMap> costs) 
     {
         if(costs.Count == 0) return false;
         return costs.All(cost => CanAfford(cost.resource, cost.value));

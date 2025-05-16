@@ -15,7 +15,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private Biome _biome;
     [SerializeField] private TileData _tileData;
     [SerializeField] private Vector2 _coordinate;
-    [SerializeField] private List<ResourceValue> _incomes = new List<ResourceValue>();
+    [SerializeField] private List<ResourceToIntMap> _incomes = new List<ResourceToIntMap>();
 
     private Tile[] _neighbors = new Tile[6];
     private TileData _initialData;
@@ -31,7 +31,7 @@ public class Tile : MonoBehaviour
 
     #region EVENTS
     //previous Incomes, new Incomes
-    [HideInInspector] public UnityEvent<List<ResourceValue>, List<ResourceValue>> OnIncomeModified = new UnityEvent<List<ResourceValue>, List<ResourceValue>>();
+    [HideInInspector] public UnityEvent<List<ResourceToIntMap>, List<ResourceToIntMap>> OnIncomeModified = new UnityEvent<List<ResourceToIntMap>, List<ResourceToIntMap>>();
     [HideInInspector] public UnityEvent<Tile> OnTileClaimed = new UnityEvent<Tile>();
     #endregion
 
@@ -67,7 +67,7 @@ public class Tile : MonoBehaviour
     public Biome Biome { get => _biome; set => _biome = value; }
     public Tile[] Neighbors { get => _neighbors;}
     public List<Scout> Scouts { get => _scouts; set => _scouts = value; }
-    public List<ResourceValue> Incomes
+    public List<ResourceToIntMap> Incomes
     {
         get => _incomes;
         set
@@ -248,7 +248,7 @@ public class Tile : MonoBehaviour
         }
     }
 
-    private void AdjustIncomeFromNeighbor(List<ResourceValue> previousIncome, List<ResourceValue> newIncome)
+    private void AdjustIncomeFromNeighbor(List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
     {
         if(_tileData.SpecialBehaviour is IncomeComingFromNeighbors specialBehaviour)
         {

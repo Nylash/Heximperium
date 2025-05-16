@@ -34,7 +34,7 @@ public class PopUp_InteractionInfra : UI_DynamicPopUp
         }
 
         //Check if the infra has copy limitation
-        foreach (InfraAvailableCopy item in ExploitationManager.Instance.InfraAvailableCopies)
+        foreach (InfraDataToIntMap item in ExploitationManager.Instance.InfraAvailableCopies)
         {
             if (button.InfrastructureData == item.infrastructure)
             {

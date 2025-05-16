@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Scriptable Objects/Special Behaviour/BoostNeighborsIncome")]
 public class BoostNeighborsIncome : SpecialBehaviour
 {
-    [SerializeField] private List<ResourceValue> _incomeBoost = new List<ResourceValue>();
+    [SerializeField] private List<ResourceToIntMap> _incomeBoost = new List<ResourceToIntMap>();
     [SerializeField] private InfrastructureData _infrastructureBoosted;
 
     //Boost the neighbors if it's the right one
@@ -33,11 +33,11 @@ public class BoostNeighborsIncome : SpecialBehaviour
     //Create a list with -boost and then merge it with the neighbors of the right type
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
-        List<ResourceValue> tmpList = new List<ResourceValue>();
+        List<ResourceToIntMap> tmpList = new List<ResourceToIntMap>();
 
-        foreach (ResourceValue resourceValue in _incomeBoost)
+        foreach (ResourceToIntMap resourceValue in _incomeBoost)
         {
-            tmpList.Add(new ResourceValue(resourceValue.resource, -resourceValue.value));
+            tmpList.Add(new ResourceToIntMap(resourceValue.resource, -resourceValue.value));
         }
         foreach (Tile neighbor in behaviourTile.Neighbors)
         {

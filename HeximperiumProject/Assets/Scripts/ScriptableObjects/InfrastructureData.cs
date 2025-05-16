@@ -5,8 +5,8 @@ using UnityEngine;
 public class InfrastructureData : TileData
 {
     [SerializeField] private bool _scoutStartingPoint;
-    [SerializeField] private List<ResourceValue> _costs = new List<ResourceValue>();
+    [SerializeField] private List<ResourceToIntMap> _costs = new List<ResourceToIntMap>();
 
     public bool ScoutStartingPoint { get => _scoutStartingPoint; }
-    public List<ResourceValue> Costs { get => _costs; }
+    public List<ResourceToIntMap> Costs { get => _costs; }
 }
