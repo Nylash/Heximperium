@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class UI_InteractionButton : MonoBehaviour
+public class InteractionButton : MonoBehaviour
 {
     #region CONSTANTS
     private const string PATH_DATA_INFRA = "Data/Infrastructures/";

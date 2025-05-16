@@ -171,7 +171,7 @@ public class EntertainementManager : Singleton<EntertainementManager>
     {
         foreach (GameObject item in _buttons)
         {
-            item.GetComponent<UI_InteractionButton>().FadeAnimation(fade);
+            item.GetComponent<InteractionButton>().FadeAnimation(fade);
         }
     }
     #endregion

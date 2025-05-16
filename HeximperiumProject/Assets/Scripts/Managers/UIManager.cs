@@ -250,7 +250,7 @@ public class UIManager : Singleton<UIManager>
                         }
                     }
                 }
-                else if (obj.GetComponent<UI_InteractionButton>() is  UI_InteractionButton button)
+                else if (obj.GetComponent<InteractionButton>() is  InteractionButton button)
                 {
                     DisplayPopUp(button);
                 }
@@ -308,7 +308,7 @@ public class UIManager : Singleton<UIManager>
         DisplayPopUp(entertainer, _prefabPopUpEntertainer);
     }
 
-    private void DisplayPopUp(UI_InteractionButton button)
+    private void DisplayPopUp(InteractionButton button)
     {
         DisplayPopUp(button, button.GetPopUpPrefab());
     }

@@ -5,17 +5,17 @@ public class PopUp_InteractionClaim : UI_DynamicPopUp
 {
     [SerializeField] private TextMeshProUGUI _claimCostText;
 
-    private UI_InteractionButton _associatedButton;
+    private InteractionButton _associatedButton;
 
     public override void InitializePopUp<T>(T item)
     {
-        if (item is UI_InteractionButton button)
+        if (item is InteractionButton button)
         {
             InitializePopUp(button);
         }
     }
 
-    private void InitializePopUp(UI_InteractionButton button)
+    private void InitializePopUp(InteractionButton button)
     {
         _claimCostText.text = button.AssociatedTile.TileData.ClaimCost.ToString();
 

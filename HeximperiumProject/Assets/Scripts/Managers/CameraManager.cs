@@ -38,7 +38,7 @@ public class CameraManager : Singleton<CameraManager>
     private EventSystem eventSystem;
     private Ray _mouseRay;
     private RaycastHit _mouseRayHit;
-    private UI_InteractionButton _shrinkedButton;
+    private InteractionButton _shrinkedButton;
     #endregion
 
     private void OnEnable() => _inputActions.Player.Enable();
@@ -112,7 +112,7 @@ public class CameraManager : Singleton<CameraManager>
                 UIManager.Instance.PopUpNonUI(_mouseRayHit.collider.gameObject);
 
                 //If we detect a InteractionButton we play the shrink animation
-                if (_mouseRayHit.collider.gameObject.GetComponent<UI_InteractionButton>() is UI_InteractionButton button)
+                if (_mouseRayHit.collider.gameObject.GetComponent<InteractionButton>() is InteractionButton button)
                 {
                     //Check if the cursor is over a new InteractionButton and so unshrink the previous one (if there is one)
                     if (_shrinkedButton != null)

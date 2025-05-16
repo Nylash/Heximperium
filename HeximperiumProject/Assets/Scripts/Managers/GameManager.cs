@@ -278,9 +278,9 @@ public class GameManager : Singleton<GameManager>
             {
                 SelectTile(_mouseRayHit.collider.gameObject.GetComponent<Tile>());
             }
-            else if (_mouseRayHit.collider.gameObject.GetComponent<UI_InteractionButton>())
+            else if (_mouseRayHit.collider.gameObject.GetComponent<InteractionButton>())
             {
-                InteractWithButton(_mouseRayHit.collider.gameObject.GetComponent<UI_InteractionButton>());
+                InteractWithButton(_mouseRayHit.collider.gameObject.GetComponent<InteractionButton>());
             }
         }
     }
@@ -306,7 +306,7 @@ public class GameManager : Singleton<GameManager>
         OnNewTileSelected.Invoke(_selectedTile);
     }
 
-    private void InteractWithButton(UI_InteractionButton button)
+    private void InteractWithButton(InteractionButton button)
     {
         //Call the right method depending on the nature of the button
         switch (button.Interaction)

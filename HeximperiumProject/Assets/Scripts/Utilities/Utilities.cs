@@ -73,7 +73,7 @@ public static class Utilities
     public static GameObject CreateInteractionButton(Tile tile, Vector3 positon, Interaction interactionType, InfrastructureData infraData = null, EntertainerData entertainerData = null)
     {
         GameObject button = GameObject.Instantiate(GameManager.Instance.InteractionPrefab, positon, Quaternion.identity);
-        button.GetComponent<UI_InteractionButton>().Initialize(tile, interactionType, infraData, entertainerData);
+        button.GetComponent<InteractionButton>().Initialize(tile, interactionType, infraData, entertainerData);
 
         return button;
     }
