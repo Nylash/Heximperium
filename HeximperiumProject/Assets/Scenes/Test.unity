@@ -629,7 +629,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
   _highlighPrefab: {fileID: 5751803865783233614, guid: e580acc5ac7c8134c89770f42897a51d, type: 3}
-  _interactionPrefab: {fileID: 7893199182542449550, guid: a0766944756eca344ba402592da04e2b, type: 3}
+  _interactionPrefab: {fileID: 4147331800932434178, guid: 2d0a51e95c38cdf408da2ba934e55be2, type: 3}
   OnNewTurn:
     m_PersistentCalls:
       m_Calls: []

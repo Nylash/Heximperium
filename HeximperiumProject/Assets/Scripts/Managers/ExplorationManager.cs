@@ -15,7 +15,7 @@ public class ExplorationManager : Singleton<ExplorationManager>
     #region VARIABLES
     private List<Scout> _scouts = new List<Scout>();
     private List<GameObject> _buttons = new List<GameObject>();
-    private List<Vector2> _interactionPositions = new List<Vector2>();
+    private List<Vector3> _interactionPositions = new List<Vector3>();
     private int _freeScouts;
     private bool _finalizingPhase;
 
@@ -101,7 +101,7 @@ public class ExplorationManager : Singleton<ExplorationManager>
 
         if (tile.TileData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
         {
-            _interactionPositions = Utilities.GetInteractionButtonsPosition(1);
+            _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
             ScoutInteraction(tile, 0);
         }
     }
@@ -141,7 +141,7 @@ public class ExplorationManager : Singleton<ExplorationManager>
 
     private void ScoutInteraction(Tile tile, int positionIndex)
     {
-        _buttons.Add(Utilities.CreateInteractionButton(UIManager.Instance.MainCanvas, tile, _interactionPositions[positionIndex], Interaction.Scout));
+        _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Scout));
     }
     #endregion
 

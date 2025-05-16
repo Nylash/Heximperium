@@ -173,7 +173,7 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public bool HasOneNeighborClaimed()
+    public bool IsOneNeighborClaimed()
     {
         foreach (Tile tile in _neighbors)
         {

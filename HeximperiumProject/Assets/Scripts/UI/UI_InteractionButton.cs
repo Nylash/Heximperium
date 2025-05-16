@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UI_InteractionButton : MonoBehaviour
 {
@@ -10,7 +9,6 @@ public class UI_InteractionButton : MonoBehaviour
     #endregion
 
     #region CONFIGURATION
-    [SerializeField] private Image _icon;
     [SerializeField] private GameObject _popUpClaim;
     [SerializeField] private GameObject _popUpScout;
     [SerializeField] private GameObject _popUpDestroy;
@@ -19,6 +17,7 @@ public class UI_InteractionButton : MonoBehaviour
     #endregion
 
     #region VARIABLES
+    private SpriteRenderer _renderer;
     private Interaction _interaction;
     private Tile _associatedTile;
     private InfrastructureData _infraData;
@@ -34,6 +33,7 @@ public class UI_InteractionButton : MonoBehaviour
 
     public void Initialize(Tile associatedTile, Interaction action, InfrastructureData infraData = null, EntertainerData entrainData = null)
     {
+        _renderer = GetComponentInChildren<SpriteRenderer>();
         _associatedTile = associatedTile;
         _interaction = action;
 
@@ -63,7 +63,7 @@ public class UI_InteractionButton : MonoBehaviour
     private void InitializeClaim()
     {
         if (!ResourcesManager.Instance.CanAffordClaim(_associatedTile.TileData.ClaimCost))
-            _icon.color = UIManager.Instance.ColorCantAfford;
+            _renderer.color = UIManager.Instance.ColorCantAfford;
         LoadSprite(Interaction.Claim.ToString());
     }
 
@@ -71,7 +71,7 @@ public class UI_InteractionButton : MonoBehaviour
     {
         _infraData = Resources.Load<InfrastructureData>(PATH_DATA_INFRA + Interaction.Town.ToString());
         if (!ResourcesManager.Instance.CanAfford(_infraData.Costs) || !ExploitationManager.Instance.IsInfraAvailable(_infraData))
-            _icon.color = UIManager.Instance.ColorCantAfford;
+            _renderer.color = UIManager.Instance.ColorCantAfford;
         LoadSprite(Interaction.Town.ToString());
     }
 
@@ -79,7 +79,7 @@ public class UI_InteractionButton : MonoBehaviour
     {
         _unitData = Resources.Load<ScoutData>(PATH_DATA_UNIT + Interaction.Scout.ToString());
         if (!ResourcesManager.Instance.CanAfford(_unitData.Costs) && ExplorationManager.Instance.FreeScouts == 0)
-            _icon.color = UIManager.Instance.ColorCantAfford;
+            _renderer.color = UIManager.Instance.ColorCantAfford;
         LoadSprite(Interaction.Scout.ToString());
     }
 
@@ -87,7 +87,7 @@ public class UI_InteractionButton : MonoBehaviour
     {
         _infraData = infraData;
         if (!ResourcesManager.Instance.CanAfford(_infraData.Costs) || !ExploitationManager.Instance.IsInfraAvailable(infraData))
-            _icon.color = UIManager.Instance.ColorCantAfford;
+            _renderer.color = UIManager.Instance.ColorCantAfford;
         LoadSprite(infraData.name);
     }
 
@@ -100,7 +100,7 @@ public class UI_InteractionButton : MonoBehaviour
     {
         _unitData = data;
         if (!ResourcesManager.Instance.CanAfford(_unitData.Costs))
-            _icon.color = UIManager.Instance.ColorCantAfford;
+            _renderer.color = UIManager.Instance.ColorCantAfford;
         LoadSprite(data.EntertainerType.ToString());
     }
 
@@ -112,7 +112,7 @@ public class UI_InteractionButton : MonoBehaviour
             Debug.LogError("Sprite not found at path: " + PATH_SPRITE_INTERACTION + spriteName);
             return;
         }
-        _icon.sprite = sprite;
+        _renderer.sprite = sprite;
     }
 
     public GameObject GetPopUpPrefab()

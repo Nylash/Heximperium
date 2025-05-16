@@ -59,7 +59,6 @@ public class UIManager : Singleton<UIManager>
 
     #region ACCESSORS
     public Color ColorCantAfford { get => _colorCantAfford;}
-    public Transform MainCanvas { get => _mainCanvas; }
     #endregion
 
     protected override void OnAwake()
@@ -204,24 +203,17 @@ public class UIManager : Singleton<UIManager>
             _hoverTimer += Time.deltaTime;
             if (_hoverTimer >= _durationHoverForUI && _popUps.Count == 0)
             {
-                if (obj.GetComponent<UI_InteractionButton>() is UI_InteractionButton button)
+                SpawnUIPopUp popUpComponent = obj.GetComponent<SpawnUIPopUp>();
+
+                if (popUpComponent != null)
                 {
-                    DisplayPopUp(button);
-                }
-                else
-                {
-                    SpawnUIPopUp popUpComponent = obj.GetComponent<SpawnUIPopUp>();
+                    GameObject popUp = popUpComponent.SpawnPopUp(_mainCanvas);
 
-                    if (popUpComponent != null)
-                    {
-                        GameObject popUp = popUpComponent.SpawnPopUp(_mainCanvas);
+                    UI_ResourcePopUp popUpResource = popUp.GetComponent<UI_ResourcePopUp>();
+                    if (popUpResource != null)
+                        popUpResource.InitializePopUp();
 
-                        UI_ResourcePopUp popUpResource = popUp.GetComponent<UI_ResourcePopUp>();
-                        if (popUpResource != null)
-                            popUpResource.InitializePopUp();
-
-                        _popUps.Add(popUp);
-                    }
+                    _popUps.Add(popUp);
                 }
             }
         }
@@ -257,6 +249,10 @@ public class UIManager : Singleton<UIManager>
                             }
                         }
                     }
+                }
+                else if (obj.GetComponent<UI_InteractionButton>() is  UI_InteractionButton button)
+                {
+                    DisplayPopUp(button);
                 }
             }
         }
