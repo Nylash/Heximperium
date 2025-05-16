@@ -166,5 +166,13 @@ public class EntertainementManager : Singleton<EntertainementManager>
         _entertainers.Remove(tile.Entertainer);
         tile.Entertainer = null;
     }
+
+    public void ButtonsFade(bool fade)
+    {
+        foreach (GameObject item in _buttons)
+        {
+            item.GetComponent<UI_InteractionButton>().FadeAnimation(fade);
+        }
+    }
     #endregion
 }

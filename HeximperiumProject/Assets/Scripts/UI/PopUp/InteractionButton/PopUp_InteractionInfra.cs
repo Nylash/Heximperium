@@ -53,6 +53,10 @@ public class PopUp_InteractionInfra : UI_DynamicPopUp
             button.InfrastructureData.SpecialBehaviour.HighlightImpactedTile(button.AssociatedTile ,true);
         }
 
+        //Fade out interaction buttons and spawn a clone on the tile where the interaction will be
+        GameManager.Instance.InteractionButtonsFade(true);
+        button.CreateHighlightedClone();
+
         _associatedButton = button;
     }
 
@@ -61,8 +65,12 @@ public class PopUp_InteractionInfra : UI_DynamicPopUp
         //Hide highlight impacted tiles by the special behaviour of this infra
         if (_associatedButton.InfrastructureData.SpecialBehaviour != null)
         {
-            _associatedButton.InfrastructureData.SpecialBehaviour.HighlightImpactedTile(_associatedButton.AssociatedTile, false);
+            _associatedButton.InfrastructureData.SpecialBehaviour.HighlightImpactedTile(_associatedButton.AssociatedTile, false); 
         }
+
+        //Fade in interaction buttons and remove the clone
+        GameManager.Instance.InteractionButtonsFade(false);
+        _associatedButton.DestroyHighlightedClone();
 
         base.DestroyPopUp();
     }

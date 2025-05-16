@@ -149,5 +149,13 @@ public class ExpansionManager : Singleton<ExpansionManager>
             }
         }
     }
+
+    public void ButtonsFade(bool fade)
+    {
+        foreach (GameObject item in _buttons)
+        {
+            item.GetComponent<UI_InteractionButton>().FadeAnimation(fade);
+        }
+    }
     #endregion
 }

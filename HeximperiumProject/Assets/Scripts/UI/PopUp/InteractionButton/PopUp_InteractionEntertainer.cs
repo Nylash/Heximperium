@@ -9,6 +9,8 @@ public class PopUp_InteractionEntertainer : UI_DynamicPopUp
     [SerializeField] private TextMeshProUGUI _synergyText;
     [SerializeField] private TextMeshProUGUI _costText;
 
+    private UI_InteractionButton _associatedButton;
+
     public override void InitializePopUp<T>(T item)
     {
         if (item is UI_InteractionButton button)
@@ -39,5 +41,20 @@ public class PopUp_InteractionEntertainer : UI_DynamicPopUp
         {
             Debug.LogError("UnitData is not of type EntertainerData");
         }
+
+        //Fade out interaction buttons and spawn a clone on the tile where the interaction will be
+        GameManager.Instance.InteractionButtonsFade(true);
+        button.CreateHighlightedClone();
+
+        _associatedButton = button;
+    }
+
+    public override void DestroyPopUp()
+    {
+        //Fade in interaction buttons and remove the clone
+        GameManager.Instance.InteractionButtonsFade(false);
+        _associatedButton.DestroyHighlightedClone();
+
+        base.DestroyPopUp();
     }
 }

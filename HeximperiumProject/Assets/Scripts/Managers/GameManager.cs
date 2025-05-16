@@ -83,6 +83,25 @@ public class GameManager : Singleton<GameManager>
         _isPointerOverUI = EventSystem.current.IsPointerOverGameObject();
     }
 
+    public void  InteractionButtonsFade(bool fade)
+    {
+        switch (_currentPhase)
+        {
+            case Phase.Explore:
+                ExplorationManager.Instance.ButtonsFade(fade);
+                break;
+            case Phase.Expand:
+                ExpansionManager.Instance.ButtonsFade(fade);
+                break;
+            case Phase.Exploit:
+                ExploitationManager.Instance.ButtonsFade(fade);
+                break;
+            case Phase.Entertain:
+                EntertainementManager.Instance.ButtonsFade(fade);
+                break;
+        }
+    }
+
     #region INITIALIZATION
     //Tmp until save and game setting logic
     private void InitializeGame()

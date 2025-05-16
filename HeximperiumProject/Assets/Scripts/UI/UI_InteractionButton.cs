@@ -14,6 +14,11 @@ public class UI_InteractionButton : MonoBehaviour
     [SerializeField] private GameObject _popUpDestroy;
     [SerializeField] private GameObject _popUpEntertainer;
     [SerializeField] private GameObject _popUpInfra;
+    [SerializeField] private Texture _textureExplo;
+    [SerializeField] private Texture _textureExpand;
+    [SerializeField] private Texture _textureExploit;
+    [SerializeField] private Texture _textureEntertain;
+    [SerializeField] private GameObject _highlightedInteractionPrefab;
     #endregion
 
     #region VARIABLES
@@ -22,6 +27,8 @@ public class UI_InteractionButton : MonoBehaviour
     private Tile _associatedTile;
     private InfrastructureData _infraData;
     private UnitData _unitData;
+    private Animator _animator;
+    private GameObject _highlightedClone;
     #endregion
 
     #region ACCESSORS
@@ -30,6 +37,26 @@ public class UI_InteractionButton : MonoBehaviour
     public InfrastructureData InfrastructureData { get => _infraData;}
     public UnitData UnitData { get => _unitData;}
     #endregion
+
+    private void Awake()
+    {
+        switch (GameManager.Instance.CurrentPhase)
+        {
+            case Phase.Explore:
+                GetComponent<MeshRenderer>().material.mainTexture = _textureExplo;
+                break;
+            case Phase.Expand:
+                GetComponent<MeshRenderer>().material.mainTexture = _textureExpand;
+                break;
+            case Phase.Exploit:
+                GetComponent<MeshRenderer>().material.mainTexture = _textureExploit;
+                break;
+            case Phase.Entertain:
+                GetComponent<MeshRenderer>().material.mainTexture = _textureEntertain;
+                break;
+        }
+        
+    }
 
     public void Initialize(Tile associatedTile, Interaction action, InfrastructureData infraData = null, EntertainerData entrainData = null)
     {
@@ -58,6 +85,8 @@ public class UI_InteractionButton : MonoBehaviour
                 InitializeEntertainer(entrainData);
                 break;
         }
+
+        _animator = GetComponentInChildren<Animator>();
     }
 
     private void InitializeClaim()
@@ -135,5 +164,23 @@ public class UI_InteractionButton : MonoBehaviour
                 Debug.LogError("This interaction has no popup prefab assigned " + _interaction);
                 return null;
         }
+    }
+
+    public void FadeAnimation(bool fade)
+    {
+        _animator.SetBool("Fade", fade);
+    }
+
+    public void CreateHighlightedClone()
+    {
+        _highlightedClone = Instantiate(_highlightedInteractionPrefab, _associatedTile.transform.position + new Vector3(0, 0.2f, 0), Quaternion.identity);
+        _highlightedClone.GetComponent<MeshRenderer>().material.mainTexture = GetComponent<MeshRenderer>().material.mainTexture;
+        _highlightedClone.GetComponentInChildren<SpriteRenderer>().color = _renderer.color;
+        _highlightedClone.GetComponentInChildren<SpriteRenderer>().sprite = _renderer.sprite;
+    }
+
+    public void DestroyHighlightedClone()
+    {
+        _highlightedClone.GetComponent<Animator>().SetTrigger("Destroy");
     }
 }
