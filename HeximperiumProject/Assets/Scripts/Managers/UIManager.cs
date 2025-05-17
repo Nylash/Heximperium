@@ -48,6 +48,8 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Sprite _scoutsHidden;
     [SerializeField] private Sprite _entertainersVisible;
     [SerializeField] private Sprite _entertainersHidden;
+    [Header("Menu")]
+    [SerializeField] private GameObject _menu;
     #endregion
 
     #region VARIABLES
@@ -59,10 +61,13 @@ public class UIManager : Singleton<UIManager>
 
     private bool _areScoutsVisible;
     private bool _areEntertainersVisible;
+
+    private bool _menuOpen;
     #endregion
 
     #region ACCESSORS
     public Color ColorCantAfford { get => _colorCantAfford;}
+    public bool MenuOpen { get => _menuOpen; }
     #endregion
 
     protected override void OnAwake()
@@ -424,6 +429,14 @@ public class UIManager : Singleton<UIManager>
         {
             t.enabled = enable;
         }
+    }
+    #endregion
+
+    #region MAIN MENU
+    public void OpenCloseMenu()
+    {
+        _menu.SetActive(!_menu.activeSelf);
+        _menuOpen = _menu.activeSelf;
     }
     #endregion
 }

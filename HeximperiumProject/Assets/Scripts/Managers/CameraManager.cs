@@ -70,6 +70,9 @@ public class CameraManager : Singleton<CameraManager>
 
     private void Update()
     {
+        if (UIManager.Instance.MenuOpen)
+            return;
+
         if (!_isMouseDragging)
         {
             KeyMovement();
@@ -162,6 +165,9 @@ public class CameraManager : Singleton<CameraManager>
 
     private void DragCamera()
     {
+        if (UIManager.Instance.MenuOpen)
+            return;
+
         if (_isMouseDragging)
         {
             Vector2 delta = Mouse.current.position.ReadValue() - _lastMousePosition;
@@ -172,6 +178,9 @@ public class CameraManager : Singleton<CameraManager>
 
     private void StartDragging()
     {
+        if (UIManager.Instance.MenuOpen)
+            return;
+
         _isMouseDragging = true;
         _lastMousePosition = Mouse.current.position.ReadValue();
     }
