@@ -143,6 +143,14 @@ public class ExplorationManager : Singleton<ExplorationManager>
     {
         _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Scout));
     }
+
+    public void ButtonsFade(bool fade)
+    {
+        foreach (GameObject item in _buttons)
+        {
+            item.GetComponent<InteractionButton>().FadeAnimation(fade);
+        }
+    }
     #endregion
 
     #region SCOUT SPAWN

@@ -5,14 +5,9 @@ using UnityEngine.Events;
 
 public class Tile : MonoBehaviour
 {
-    #region CONSTANTS
-    private readonly List<string> UNIQUE_MATERIAL_TILES = new List<string> { "Water", "Amphitheater", "EnchantedPavilion", "ShowcasePlaza", "Workshop" };
-    private const string PATH_UNSPECIFIC_MATERIAL = "TilesMaterial/UnspecificMaterial/";
-    private const string PATH_SPECIFIC_MATERIAL = "TilesMaterial/";
-    #endregion
-
     #region CONFIGURATION
     [SerializeField] private GameObject _borderPrefab;
+    [SerializeField] private GameObject _highlightBoostPrefab;
     #endregion
 
     #region VARIABLES
@@ -20,7 +15,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private Biome _biome;
     [SerializeField] private TileData _tileData;
     [SerializeField] private Vector2 _coordinate;
-    [SerializeField] private List<ResourceValue> _incomes = new List<ResourceValue>();
+    [SerializeField] private List<ResourceToIntMap> _incomes = new List<ResourceToIntMap>();
 
     private Tile[] _neighbors = new Tile[6];
     private TileData _initialData;
@@ -31,11 +26,13 @@ public class Tile : MonoBehaviour
     private List<Scout> _scouts = new List<Scout>();
     private TextMeshPro _scoutCounter;
     private Entertainer _entertainer;
+    private GameObject _highlightBoostObject;
     #endregion
 
     #region EVENTS
     //previous Incomes, new Incomes
-    [HideInInspector] public UnityEvent<List<ResourceValue>, List<ResourceValue>> OnIncomeModified = new UnityEvent<List<ResourceValue>, List<ResourceValue>>();
+    [HideInInspector] public UnityEvent<List<ResourceToIntMap>, List<ResourceToIntMap>> OnIncomeModified = new UnityEvent<List<ResourceToIntMap>, List<ResourceToIntMap>>();
+    [HideInInspector] public UnityEvent<Tile> OnTileClaimed = new UnityEvent<Tile>();
     #endregion
 
     #region ACCESSORS
@@ -48,30 +45,21 @@ public class Tile : MonoBehaviour
             //Remove previous special behaviour
             if (_tileData.SpecialBehaviour != null)
             {
-                _tileData.SpecialBehaviour.RollbackSpecialBehaviour();
+                _tileData.SpecialBehaviour.RollbackSpecialBehaviour(this);
             }
 
+            //Set the new income
             if (value.TypeIncomeUpgrade == TypeIncomeUpgrade.Merge)
                 Incomes = Utilities.MergeResourceValues(_incomes, value.Incomes);
             else
                 Incomes = value.Incomes;
+
             name = value.TileName + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
             _tileData = value;
+
             UpdateVisual();
 
-            //Tile special behaviour
-            if (_tileData.SpecialBehaviour != null)
-            {
-                _tileData.SpecialBehaviour.Tile = this;
-                _tileData.SpecialBehaviour.InitializeSpecialBehaviour();
-            }
-                
-            //Foreach neighbors check if their special behaviour should impact the new tile
-            foreach (Tile item in _neighbors)
-            {
-                if(item.TileData.SpecialBehaviour != null)
-                    item.TileData.SpecialBehaviour.ApplySpecialBehaviour(this);
-            }
+            CheckSpecialBehaviour();
         }
     }
     public bool Claimed { get => _claimed;}
@@ -79,7 +67,7 @@ public class Tile : MonoBehaviour
     public Biome Biome { get => _biome; set => _biome = value; }
     public Tile[] Neighbors { get => _neighbors;}
     public List<Scout> Scouts { get => _scouts; set => _scouts = value; }
-    public List<ResourceValue> Incomes
+    public List<ResourceToIntMap> Incomes
     {
         get => _incomes;
         set
@@ -102,10 +90,13 @@ public class Tile : MonoBehaviour
     public void ClaimTile()
     {
         _claimed = true;
+        OnTileClaimed.Invoke(this);
         _border = Instantiate(_borderPrefab, transform.position, Quaternion.identity).GetComponent<Border>();
         _border.transform.parent = ExpansionManager.Instance.BorderParent;
         foreach (Tile neighbor in _neighbors) 
         {
+            if (!neighbor)
+                continue;
             if (!neighbor.Revealed)
                 neighbor.RevealTile(false);
         }
@@ -130,26 +121,28 @@ public class Tile : MonoBehaviour
     //Change tile's visual based on the tile data
     private void UpdateVisual()
     {
-        if (UNIQUE_MATERIAL_TILES.Contains(_tileData.name))
-        {
-            // Material not linked to biome
-            Material unspecificMaterial = Resources.Load(PATH_UNSPECIFIC_MATERIAL + _tileData.name) as Material;
-            if (unspecificMaterial == null)
-            {
-                Debug.LogError("Material not found at path: " + PATH_UNSPECIFIC_MATERIAL + _tileData.name);
-                return;
-            }
-            GetComponent<Renderer>().material = unspecificMaterial;
-            return;
-        }
+        List<Material> materials = _tileData.GetMaterials(_biome);
 
-        Material specificMaterial = Resources.Load(PATH_SPECIFIC_MATERIAL + _biome + "/" + _tileData.name + "_" + _biome) as Material;
-        if (specificMaterial == null)
+        switch (materials.Count)
         {
-            Debug.LogError("Material not found at path: " + PATH_SPECIFIC_MATERIAL + _biome + "/" + _tileData.name + "_" + _biome);
-            return;
+            case 0:
+                Debug.LogError("This tile " + _tileData + " has no material configured for this biome " + _biome);
+                break;
+            case 1:
+                GetComponent<Renderer>().material = materials[0];
+                break;
+            default:
+                GetComponent<Renderer>().material = materials[UnityEngine.Random.Range(0, materials.Count)];
+                break;
         }
-        GetComponent<Renderer>().material = specificMaterial;
+    }
+
+    public void BoostHighlight(bool show)
+    {
+        if (show)
+            _highlightBoostObject = Instantiate(_highlightBoostPrefab, transform.position + new Vector3(0, 0.02f, 0), Quaternion.identity);
+        else
+            Destroy(_highlightBoostObject);
     }
 
     #region NEIGHBORS LOGIC
@@ -211,4 +204,57 @@ public class Tile : MonoBehaviour
                 Destroy(_scoutCounter.gameObject);
         }
     }
+
+
+    #region SPECIAL BEHAVIOUR
+    private void CheckSpecialBehaviour()
+    {
+        //Tile special behaviour
+        if (_tileData.SpecialBehaviour != null)
+        {
+            _tileData.SpecialBehaviour.InitializeSpecialBehaviour(this);
+
+            //Special case for IncomeComingFromNeighbors
+            if (_tileData.SpecialBehaviour is IncomeComingFromNeighbors)
+            {
+                foreach (Tile neighbor in _neighbors)
+                {
+                    if (!neighbor)
+                        continue;
+                    neighbor.OnIncomeModified.AddListener(AdjustIncomeFromNeighbor);
+                    if (!neighbor.Claimed)
+                        neighbor.OnTileClaimed.AddListener(AddClaimedTileIncome);
+                }
+            }
+        }
+
+        //Foreach neighbors check if their special behaviour should impact the new tile
+        foreach (Tile item in _neighbors)
+        {
+            if (!item)
+                continue;
+            if (item.TileData.SpecialBehaviour != null)
+                item.TileData.SpecialBehaviour.ApplySpecialBehaviour(this);
+        }
+    }
+
+    //Region for the special behaviour IncomeComingFromNeighbors, 
+    #region IncomeComingFromNeighbors
+    private void AddClaimedTileIncome(Tile tile)
+    {
+        if (_tileData.SpecialBehaviour is IncomeComingFromNeighbors specialBehaviour)
+        {
+            specialBehaviour.AddClaimedTileIncome(this, tile);
+        }
+    }
+
+    private void AdjustIncomeFromNeighbor(List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
+    {
+        if(_tileData.SpecialBehaviour is IncomeComingFromNeighbors specialBehaviour)
+        {
+            specialBehaviour.AdjustIncomeFromNeighbor(this, previousIncome, newIncome);
+        }
+    }
+    #endregion
+    #endregion
 }

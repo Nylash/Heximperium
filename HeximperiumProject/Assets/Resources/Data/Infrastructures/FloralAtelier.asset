@@ -14,11 +14,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Floral Atelier
   _claimCost: 0
-  _textEffect: +3 Essence income
+  _interactionButtonPopUpText: +3 Floral essence
+  _tilePopUpText: 
   _typeIncomeUpgrade: 1
   _incomes:
   - resource: 1
     value: 3
+  _availableInfrastructures: []
+  _specialBehaviour: {fileID: 0}
+  _popUpPrefab: {fileID: 4211441305533441537, guid: ef8dd89153ab58342bac319dd00772f5, type: 3}
+  _biomeMaterials:
+  - biome: 0
+    materials:
+    - {fileID: 2100000, guid: 363e822890411a24288cbed81b83f196, type: 2}
+  - biome: 1
+    materials:
+    - {fileID: 2100000, guid: 1a2bdccd055fdec4cb9fe3b3af38e2b6, type: 2}
+  - biome: 4
+    materials:
+    - {fileID: 2100000, guid: 319fc3dd2b19b5b409089a403adbbb69, type: 2}
   _scoutStartingPoint: 0
   _costs:
   - resource: 6

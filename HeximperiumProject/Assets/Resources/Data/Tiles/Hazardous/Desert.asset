@@ -14,6 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Desert
   _claimCost: 3
-  _textEffect: Slow down scouts.
+  _interactionText: 
+  _tilePopUpText: Slow down scouts and cannot be upgraded
   _typeIncomeUpgrade: 1
   _incomes: []
+  _availableInfrastructures: []
+  _specialBehaviour: {fileID: 0}
+  _popUpPrefab: {fileID: 9159292565962417168, guid: 787935b1706731845ae4313f79f42b96, type: 3}
+  _biomeMaterials:
+  - biome: 3
+    materials:
+    - {fileID: 2100000, guid: b32ab3d85f55de34898b768a0b08af42, type: 2}

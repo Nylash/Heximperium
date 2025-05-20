@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public static class Utilities
 {
@@ -71,14 +72,14 @@ public static class Utilities
     //Create a button around a tile
     public static GameObject CreateInteractionButton(Tile tile, Vector3 positon, Interaction interactionType, InfrastructureData infraData = null, EntertainerData entertainerData = null)
     {
-        GameObject button = Object.Instantiate(GameManager.Instance.InteractionPrefab, positon, Quaternion.identity);
-        button.GetComponent<UI_InteractionButton>().Initialize(tile, interactionType, infraData, entertainerData);
+        GameObject button = GameObject.Instantiate(GameManager.Instance.InteractionPrefab, positon, Quaternion.identity);
+        button.GetComponent<InteractionButton>().Initialize(tile, interactionType, infraData, entertainerData);
 
         return button;
     }
 
     //Merge two List<ResourceValue>
-    public static List<ResourceValue> MergeResourceValues(List<ResourceValue> list1, List<ResourceValue> list2)
+    public static List<ResourceToIntMap> MergeResourceValues(List<ResourceToIntMap> list1, List<ResourceToIntMap> list2)
     {
         var mergedDictionary = new Dictionary<Resource, int>();
 
@@ -109,7 +110,64 @@ public static class Utilities
         }
 
         // Convert the dictionary back to a list
-        return mergedDictionary.Select(kvp => new ResourceValue(kvp.Key, kvp.Value)).ToList();
+        return mergedDictionary.Select(kvp => new ResourceToIntMap(kvp.Key, kvp.Value)).ToList();
+    }
+
+    public static string ToCustomString(this Resource value)
+    {
+        return value switch
+        {
+            Resource.Gold => "Gold",
+            Resource.Crystal => "Crystal",
+            Resource.Stone => "Stone",
+            Resource.Essence => "Floral essence",
+            Resource.Horse => "Horse",
+            Resource.Pigment => "Pigment",
+            Resource.Emberbone => "Emberbone",
+            _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
+        };
+    }
+
+    public static string ToCustomString(this EntertainerType value)
+    {
+        return value switch
+        {
+            EntertainerType.Sculptor => "Sculptor",
+            EntertainerType.Magician => "Magician",
+            EntertainerType.Painter => "Painter",
+            EntertainerType.EquestrianDancer => "Equestrian dancer",
+            EntertainerType.FireEater => "Fire eater",
+            EntertainerType.AromaWeaver => "Aroma weaver",
+            _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
+        };
+    }
+
+    public static string ToCustomString(this Direction value)
+    {
+        return value switch
+        {
+            Direction.Left => "West",
+            Direction.TopLeft => "Northwest",
+            Direction.TopRight => "Northeast",
+            Direction.Right => "East",
+            Direction.BottomRight => "Southeast",
+            Direction.BottomLeft => "Southwest",
+            _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
+        };
+    }
+
+    //Spawn VFX for resources (and points) gain
+    public static void PlayResourceGainVFX(Tile tile, GameObject prefab, Material mat, int value)
+    {
+        GameObject vfx = GameObject.Instantiate(prefab, prefab.transform.position + tile.transform.position, prefab.transform.rotation);
+
+        ParticleSystem particleSystem = vfx.GetComponent<ParticleSystem>();
+
+        particleSystem.emission.SetBurst(0, new ParticleSystem.Burst(0, value));
+
+        vfx.GetComponent<ParticleSystemRenderer>().material = mat;
+
+        particleSystem.Play();
     }
 }
 

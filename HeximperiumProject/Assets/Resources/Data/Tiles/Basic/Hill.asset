@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Hill
   _claimCost: 1
-  _textEffect: Can be upgraded with various infrastructures.
+  _interactionText: 
+  _tilePopUpText: Can be upgraded with various infrastructures
   _typeIncomeUpgrade: 1
   _incomes:
   - resource: 6
@@ -28,3 +29,21 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 758e0bfcbc1c85b4f8d4064dfc028b50, type: 2}
   - {fileID: 11400000, guid: bdca8022095e9c64bb08848a6143d808, type: 2}
   - {fileID: 11400000, guid: e779e3985649cf447850ff0b982df028, type: 2}
+  _specialBehaviour: {fileID: 0}
+  _popUpPrefab: {fileID: 4604967413891682696, guid: 8a2a6ee03e8ce0142be608694ce4402e, type: 3}
+  _biomeMaterials:
+  - biome: 0
+    materials:
+    - {fileID: 2100000, guid: a4c37c8376ee9a549b38016f7f88a4fa, type: 2}
+  - biome: 1
+    materials:
+    - {fileID: 2100000, guid: d5040b91fcf39c94093e205731e55bc3, type: 2}
+  - biome: 2
+    materials:
+    - {fileID: 2100000, guid: 1ebc39b92fec28b4db4d2b97fe7ad22a, type: 2}
+  - biome: 3
+    materials:
+    - {fileID: 2100000, guid: 5f2866b2062ea304eb0dc4ec23e618f7, type: 2}
+  - biome: 4
+    materials:
+    - {fileID: 2100000, guid: f62d9856baa158240a6061610b1c5ef9, type: 2}

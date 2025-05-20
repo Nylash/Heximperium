@@ -13,4 +13,17 @@ public class EntertainerData : UnitData
     public EntertainerFamily Family { get => _family; }
     public int Points { get => _points; }
     public List<EntertainerType> Synergies { get => _synergies; }
+
+    public void HighlightSynergyTile(Tile tile, bool show)
+    {
+        foreach (Tile neighbor in tile.Neighbors)
+        {
+            if (!neighbor)
+                continue;
+            if (!neighbor.Entertainer)
+                continue;
+            if (_synergies.Contains(neighbor.Entertainer.EntertainerData.EntertainerType))
+                neighbor.BoostHighlight(show);
+        }
+    }
 }

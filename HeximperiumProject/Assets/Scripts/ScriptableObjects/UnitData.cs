@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class UnitData : ScriptableObject
 {
-    [SerializeField] private List<ResourceValue> _costs = new List<ResourceValue>();
+    [SerializeField] private List<ResourceToIntMap> _costs = new List<ResourceToIntMap>();
 
-    public List<ResourceValue> Costs { get => _costs; }
+    public List<ResourceToIntMap> Costs { get => _costs; }
 }

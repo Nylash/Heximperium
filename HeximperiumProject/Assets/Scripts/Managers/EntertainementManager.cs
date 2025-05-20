@@ -12,6 +12,8 @@ public class EntertainementManager : Singleton<EntertainementManager>
     #region CONFIGURATION
     [SerializeField] private GameObject _entertainerPrefab;
     [SerializeField] private Transform _entertainersParent;
+    [SerializeField] private GameObject _pointsGainPrefab;
+    [SerializeField] private Material _pointVFXMat;
     #endregion
 
     #region VARIABLES
@@ -24,6 +26,7 @@ public class EntertainementManager : Singleton<EntertainementManager>
 
     #region ACCESSORS
     public List<Entertainer> Entertainers { get => _entertainers; }
+    public int Score { get => _score; }
     #endregion
 
     #region EVENTS
@@ -48,6 +51,16 @@ public class EntertainementManager : Singleton<EntertainementManager>
         }
     }
 
+    public int GetPointsIncome()
+    {
+        int value = 0;
+        foreach (Entertainer item in _entertainers)
+        {
+            value += item.Points;
+        }
+        return value;
+    }
+
     #region PHASE LOGIC
     private void StartPhase()
     {
@@ -61,6 +74,7 @@ public class EntertainementManager : Singleton<EntertainementManager>
         {
             _score += item.Points;
             UIManager.Instance.UpdateScoreUI(_score);
+            Utilities.PlayResourceGainVFX(item.Tile, _pointsGainPrefab, _pointVFXMat, item.Points);
         }
         StartCoroutine(PhaseFinalized());
     }
@@ -151,6 +165,14 @@ public class EntertainementManager : Singleton<EntertainementManager>
         Destroy(tile.Entertainer.gameObject);
         _entertainers.Remove(tile.Entertainer);
         tile.Entertainer = null;
+    }
+
+    public void ButtonsFade(bool fade)
+    {
+        foreach (GameObject item in _buttons)
+        {
+            item.GetComponent<InteractionButton>().FadeAnimation(fade);
+        }
     }
     #endregion
 }
