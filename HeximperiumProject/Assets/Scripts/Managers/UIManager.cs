@@ -51,6 +51,8 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Sprite _entertainersHidden;
     [Header("Menu")]
     [SerializeField] private GameObject _menu;
+    [SerializeField] private GameObject _endMenu;
+    [SerializeField] private TextMeshProUGUI _endScore;
     [Header("Tutorial")]
     [SerializeField] private GameObject _exploTuto;
     [SerializeField] private GameObject _expandTuto;
@@ -89,6 +91,7 @@ public class UIManager : Singleton<UIManager>
 
         GameManager.Instance.OnEntertainementPhaseStarted.AddListener(ForceEntertainersToShow);
 
+        GameManager.Instance.OnGameFinished.AddListener(GameFinished);
     }
 
     private void Start()
@@ -460,6 +463,12 @@ public class UIManager : Singleton<UIManager>
     #endregion
 
     #region MENU
+    private void GameFinished()
+    {
+        _endMenu.SetActive(true);
+        _endScore.text = EntertainementManager.Instance.Score.ToString();
+    }
+
     public void OpenCloseMenu()
     {
         _menu.SetActive(!_menu.activeSelf);

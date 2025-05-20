@@ -685,6 +685,9 @@ MonoBehaviour:
   OnTileUnselected:
     m_PersistentCalls:
       m_Calls: []
+  OnGameFinished:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1153636969
 Transform:
   m_ObjectHideFlags: 0
@@ -992,8 +995,8 @@ SceneRoots:
   - {fileID: 410087041}
   - {fileID: 584298749}
   - {fileID: 343468654}
-  - {fileID: 7713550484805800230}
   - {fileID: 1153636969}
   - {fileID: 1586287181}
   - {fileID: 1914034364}
   - {fileID: 1084747253}
+  - {fileID: 7713550484805800230}

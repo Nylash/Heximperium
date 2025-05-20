@@ -6,6 +6,7 @@ public class GameManager : Singleton<GameManager>
 {
     #region CONSTANTS
     private const string TOWN_DATA_PATH = "Data/Infrastructures/Town";
+    private const int TURN_LIMIT = 20;
     #endregion
 
     #region VARIABLES
@@ -38,6 +39,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public UnityEvent OnEntertainementPhaseEnded = new UnityEvent();
     [HideInInspector] public UnityEvent<Tile> OnNewTileSelected = new UnityEvent<Tile>();
     [HideInInspector] public UnityEvent OnTileUnselected = new UnityEvent();
+    [HideInInspector] public UnityEvent OnGameFinished = new UnityEvent();
     #endregion
 
     #region ACCESSORS
@@ -365,6 +367,11 @@ public class GameManager : Singleton<GameManager>
         //New turn logic
         if (_currentPhase == Phase.Explore)
         {
+            if (_turnCounter == TURN_LIMIT)
+            {
+                OnGameFinished.Invoke();
+                return;
+            }
             _turnCounter++;
             OnNewTurn.Invoke(_turnCounter);
         }
