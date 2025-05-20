@@ -6,6 +6,7 @@ public class GameManager : Singleton<GameManager>
 {
     #region CONSTANTS
     private const string TOWN_DATA_PATH = "Data/Infrastructures/Town";
+    private const int TURN_LIMIT = 20;
     #endregion
 
     #region VARIABLES
@@ -23,7 +24,7 @@ public class GameManager : Singleton<GameManager>
 
     private bool _waitingPhaseFinalization;
     private Phase _currentPhase;
-    private int _turnCounter;
+    private int _turnCounter = 1;
     #endregion
 
     #region EVENTS
@@ -38,6 +39,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public UnityEvent OnEntertainementPhaseEnded = new UnityEvent();
     [HideInInspector] public UnityEvent<Tile> OnNewTileSelected = new UnityEvent<Tile>();
     [HideInInspector] public UnityEvent OnTileUnselected = new UnityEvent();
+    [HideInInspector] public UnityEvent OnGameFinished = new UnityEvent();
     #endregion
 
     #region ACCESSORS
@@ -83,6 +85,25 @@ public class GameManager : Singleton<GameManager>
         _isPointerOverUI = EventSystem.current.IsPointerOverGameObject();
     }
 
+    public void  InteractionButtonsFade(bool fade)
+    {
+        switch (_currentPhase)
+        {
+            case Phase.Explore:
+                ExplorationManager.Instance.ButtonsFade(fade);
+                break;
+            case Phase.Expand:
+                ExpansionManager.Instance.ButtonsFade(fade);
+                break;
+            case Phase.Exploit:
+                ExploitationManager.Instance.ButtonsFade(fade);
+                break;
+            case Phase.Entertain:
+                EntertainementManager.Instance.ButtonsFade(fade);
+                break;
+        }
+    }
+
     #region INITIALIZATION
     //Tmp until save and game setting logic
     private void InitializeGame()
@@ -108,7 +129,12 @@ public class GameManager : Singleton<GameManager>
         //Reveal the central tile and its neighbors
         centralTile.RevealTile(true);
         foreach (Tile tile in centralTile.Neighbors)
+        {
+            if (!tile)
+                continue;
             tile.RevealTile(true);
+        }
+            
 
         //Give the player resources for the initial town 
         InfrastructureData townData = Resources.Load<InfrastructureData>(TOWN_DATA_PATH);
@@ -150,13 +176,21 @@ public class GameManager : Singleton<GameManager>
         //Reveal the tiles without animation
         foreach (Tile tile in centralTile.Neighbors)
         {
+            if (!tile)
+                continue;
             foreach (Tile t in tile.Neighbors)
+            {
+                if (!t)
+                    continue;
                 t.RevealTile(true);
+            }
         }
 
         //Claim the tiles
         foreach (Tile tile in centralTile.Neighbors)
         {
+            if (!tile)
+                continue;
             //Give the player claim for the tile
             ResourcesManager.Instance.UpdateClaim(tile.TileData.ClaimCost, Transaction.Gain);
             ExpansionManager.Instance.ClaimTile(tile);
@@ -172,17 +206,27 @@ public class GameManager : Singleton<GameManager>
         //Reveal the tiles without animation
         foreach (Tile tile in centralTile.Neighbors)
         {
+            if (!tile)
+                continue;
             foreach (Tile t in tile.Neighbors)
             {
+                if (!t)
+                    continue;
                 t.RevealTile(true);
                 foreach (Tile item in t.Neighbors)
+                {
+                    if (!item)
+                        continue;
                     item.RevealTile(true);
+                }
             }
         }
 
         //Claim the tiles
         foreach (Tile firstRingTile in centralTile.Neighbors)
         {
+            if (!firstRingTile)
+                continue;
             if (!firstRingTile.Claimed)
             {
                 //Give the player claim for the tile
@@ -191,6 +235,8 @@ public class GameManager : Singleton<GameManager>
             }
             foreach (Tile secondRingTile in firstRingTile.Neighbors)
             {
+                if (!secondRingTile)
+                    continue;
                 if (!secondRingTile.Claimed)
                 {
                     //Give the player claim for the tile
@@ -234,9 +280,9 @@ public class GameManager : Singleton<GameManager>
             {
                 SelectTile(_mouseRayHit.collider.gameObject.GetComponent<Tile>());
             }
-            else if (_mouseRayHit.collider.gameObject.GetComponent<UI_InteractionButton>())
+            else if (_mouseRayHit.collider.gameObject.GetComponent<InteractionButton>())
             {
-                InteractWithButton(_mouseRayHit.collider.gameObject.GetComponent<UI_InteractionButton>());
+                InteractWithButton(_mouseRayHit.collider.gameObject.GetComponent<InteractionButton>());
             }
         }
     }
@@ -262,7 +308,7 @@ public class GameManager : Singleton<GameManager>
         OnNewTileSelected.Invoke(_selectedTile);
     }
 
-    private void InteractWithButton(UI_InteractionButton button)
+    private void InteractWithButton(InteractionButton button)
     {
         //Call the right method depending on the nature of the button
         switch (button.Interaction)
@@ -321,6 +367,11 @@ public class GameManager : Singleton<GameManager>
         //New turn logic
         if (_currentPhase == Phase.Explore)
         {
+            if (_turnCounter == TURN_LIMIT)
+            {
+                OnGameFinished.Invoke();
+                return;
+            }
             _turnCounter++;
             OnNewTurn.Invoke(_turnCounter);
         }

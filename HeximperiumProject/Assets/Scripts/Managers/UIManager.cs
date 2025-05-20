@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : Singleton<UIManager>
@@ -30,6 +31,10 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Color _colorBotExploit;
     [SerializeField] private Color _colorTopEntertain;
     [SerializeField] private Color _colorBotEntertain;
+    [SerializeField] private Animator _popUpExploPhase;
+    [SerializeField] private Animator _popUpExpandPhase;
+    [SerializeField] private Animator _popUpExploitPhase;
+    [SerializeField] private Animator _popUpEntertainPhase;
     [Header("PopUp UI")]
     [SerializeField] private float _durationHoverForUI = 2.0f;
     [SerializeField] private float _offsetBetweenPopUps = 0.5f;
@@ -44,6 +49,15 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Sprite _scoutsHidden;
     [SerializeField] private Sprite _entertainersVisible;
     [SerializeField] private Sprite _entertainersHidden;
+    [Header("Menu")]
+    [SerializeField] private GameObject _menu;
+    [SerializeField] private GameObject _endMenu;
+    [SerializeField] private TextMeshProUGUI _endScore;
+    [Header("Tutorial")]
+    [SerializeField] private GameObject _exploTuto;
+    [SerializeField] private GameObject _expandTuto;
+    [SerializeField] private GameObject _exploitTuto;
+    [SerializeField] private GameObject _entertainTuto;
     #endregion
 
     #region VARIABLES
@@ -55,10 +69,13 @@ public class UIManager : Singleton<UIManager>
 
     private bool _areScoutsVisible;
     private bool _areEntertainersVisible;
+
+    private bool _menuOpen;
     #endregion
 
     #region ACCESSORS
     public Color ColorCantAfford { get => _colorCantAfford;}
+    public bool MenuOpen { get => _menuOpen; }
     #endregion
 
     protected override void OnAwake()
@@ -74,6 +91,7 @@ public class UIManager : Singleton<UIManager>
 
         GameManager.Instance.OnEntertainementPhaseStarted.AddListener(ForceEntertainersToShow);
 
+        GameManager.Instance.OnGameFinished.AddListener(GameFinished);
     }
 
     private void Start()
@@ -203,7 +221,7 @@ public class UIManager : Singleton<UIManager>
             _hoverTimer += Time.deltaTime;
             if (_hoverTimer >= _durationHoverForUI && _popUps.Count == 0)
             {
-                UI_PopUp popUpComponent = obj.GetComponent<UI_PopUp>();
+                SpawnUIPopUp popUpComponent = obj.GetComponent<SpawnUIPopUp>();
 
                 if (popUpComponent != null)
                 {
@@ -250,7 +268,7 @@ public class UIManager : Singleton<UIManager>
                         }
                     }
                 }
-                else if (obj.GetComponent<UI_InteractionButton>() is  UI_InteractionButton button)
+                else if (obj.GetComponent<InteractionButton>() is  InteractionButton button)
                 {
                     DisplayPopUp(button);
                 }
@@ -267,11 +285,16 @@ public class UIManager : Singleton<UIManager>
     {
         _objectUnderMouse = obj;
         _hoverTimer = 0.0f;
+
         if (_popUps.Count > 0)
         {
             foreach (GameObject item in _popUps)
             {
-                Destroy(item);
+                UI_PopUp scriptPopUp = item.GetComponent<UI_PopUp>();
+                if (scriptPopUp)
+                    scriptPopUp.DestroyPopUp();
+                else
+                    Destroy(item);
             }
             _popUps.Clear();
         }
@@ -303,7 +326,7 @@ public class UIManager : Singleton<UIManager>
         DisplayPopUp(entertainer, _prefabPopUpEntertainer);
     }
 
-    private void DisplayPopUp(UI_InteractionButton button)
+    private void DisplayPopUp(InteractionButton button)
     {
         DisplayPopUp(button, button.GetPopUpPrefab());
     }
@@ -369,24 +392,57 @@ public class UIManager : Singleton<UIManager>
                 _confirmPhaseButtonText.text = "End Phase";
                 _materialBack.SetColor("_ColorTop", _colorTopExplo);
                 _materialBack.SetColor("_ColorBottom", _colorBotExplo);
+                EnableRenderers(_popUpEntertainPhase.gameObject, false);
+                EnableRenderers(_popUpExploPhase.gameObject, true);
+                _popUpExploPhase.SetTrigger("PopUp");
+                //TMP
+                if (_entertainTuto)
+                {
+                    if (_entertainTuto.activeSelf)
+                        Destroy(_entertainTuto);
+                }  
                 break;
             case Phase.Expand:
                 _currentPhaseText.text = "Expand";
                 _confirmPhaseButtonText.text = "End Phase";
                 _materialBack.SetColor("_ColorTop", _colorTopExpand);
                 _materialBack.SetColor("_ColorBottom", _colorBotExpand);
+                EnableRenderers(_popUpExploPhase.gameObject, false);
+                EnableRenderers(_popUpExpandPhase.gameObject, true);
+                _popUpExpandPhase.SetTrigger("PopUp");
+                //TMP
+                if (_exploTuto)
+                    Destroy(_exploTuto);
+                if (_expandTuto)
+                    _expandTuto.SetActive(true);
                 break;
             case Phase.Exploit:
                 _currentPhaseText.text = "Exploit";
                 _confirmPhaseButtonText.text = "End Phase";
                 _materialBack.SetColor("_ColorTop", _colorTopExploit);
                 _materialBack.SetColor("_ColorBottom", _colorBotExploit);
+                EnableRenderers(_popUpExpandPhase.gameObject, false);
+                EnableRenderers(_popUpExploitPhase.gameObject, true);
+                _popUpExploitPhase.SetTrigger("PopUp");
+                //TMP
+                if (_expandTuto)
+                    Destroy(_expandTuto);
+                if (_exploitTuto)
+                    _exploitTuto.SetActive(true);
                 break;
             case Phase.Entertain:
                 _currentPhaseText.text = "Entertain";
                 _confirmPhaseButtonText.text = "End Turn";
                 _materialBack.SetColor("_ColorTop", _colorTopEntertain);
                 _materialBack.SetColor("_ColorBottom", _colorBotEntertain);
+                EnableRenderers(_popUpExploitPhase.gameObject, false);
+                EnableRenderers(_popUpEntertainPhase.gameObject, true);
+                _popUpEntertainPhase.SetTrigger("PopUp");
+                //TMP
+                if (_exploitTuto)
+                    Destroy(_exploitTuto);
+                if (_entertainTuto)
+                    _entertainTuto.SetActive(true);
                 break;
         }
     }
@@ -394,6 +450,40 @@ public class UIManager : Singleton<UIManager>
     private void UpdateTurnCounterText(int turnCounter)
     {
         _turnCounterText.text = "Turn : " + turnCounter;
+    }
+
+    private void EnableRenderers(GameObject item, bool enable)
+    {
+        item.GetComponent<Image>().enabled = enable;
+        foreach (TextMeshProUGUI t in item.GetComponentsInChildren<TextMeshProUGUI>()) 
+        {
+            t.enabled = enable;
+        }
+    }
+    #endregion
+
+    #region MENU
+    private void GameFinished()
+    {
+        _endMenu.SetActive(true);
+        _endScore.text = EntertainementManager.Instance.Score.ToString();
+    }
+
+    public void OpenCloseMenu()
+    {
+        _menu.SetActive(!_menu.activeSelf);
+        _menuOpen = _menu.activeSelf;
+    }
+
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void QuitGame()
+    {
+        Application.OpenURL("https://docs.google.com/forms/d/e/1FAIpQLSfav2yqM8XQFg-BkDHh5HvbugKSOXGCSP6hiaSW58-OyttKgQ/viewform?usp=sharing&ouid=102342740940582761191");
+        Application.Quit();
     }
     #endregion
 }

@@ -9,15 +9,17 @@ public class PopUp_InteractionEntertainer : UI_DynamicPopUp
     [SerializeField] private TextMeshProUGUI _synergyText;
     [SerializeField] private TextMeshProUGUI _costText;
 
+    private InteractionButton _associatedButton;
+
     public override void InitializePopUp<T>(T item)
     {
-        if (item is UI_InteractionButton button)
+        if (item is InteractionButton button)
         {
             InitializePopUp(button);
         }
     }
 
-    private void InitializePopUp(UI_InteractionButton button)
+    private void InitializePopUp(InteractionButton button)
     {
         if (button.UnitData is EntertainerData data)
         {
@@ -34,10 +36,32 @@ public class PopUp_InteractionEntertainer : UI_DynamicPopUp
                 else
                     _costText.text += " & " + data.Costs[i].value + " " + data.Costs[i].resource.ToCustomString();
             }
+
+            data.HighlightSynergyTile(button.AssociatedTile, true);
         }
         else
         {
             Debug.LogError("UnitData is not of type EntertainerData");
         }
+
+        //Fade out interaction buttons and spawn a clone on the tile where the interaction will be
+        GameManager.Instance.InteractionButtonsFade(true);
+        button.CreateHighlightedClone();
+
+        _associatedButton = button;
+    }
+
+    public override void DestroyPopUp()
+    {
+        if (_associatedButton.UnitData is EntertainerData data)
+        {
+            data.HighlightSynergyTile(_associatedButton.AssociatedTile, false);
+        }
+
+        //Fade in interaction buttons and remove the clone
+        GameManager.Instance.InteractionButtonsFade(false);
+        _associatedButton.DestroyHighlightedClone();
+
+        base.DestroyPopUp();
     }
 }

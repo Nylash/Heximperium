@@ -16,6 +16,7 @@ public class Entertainer : MonoBehaviour
     #region ACCESSORS
     public int Points { get => _points; set => _points = value; }
     public EntertainerData EntertainerData { get => _entertainerData; }
+    public Tile Tile { get => _tile; }
     #endregion
 
     private void Awake()
@@ -40,6 +41,8 @@ public class Entertainer : MonoBehaviour
             entertainersBoosting.BoostingSpecificEntertainer(_tile.Entertainer);
         foreach (Tile neighbor in _tile.Neighbors)
         {
+            if (!neighbor)
+                continue;
             if (neighbor.TileData.SpecialBehaviour is EntertainersBoosting NeighborEntertainersBoosting)
                 NeighborEntertainersBoosting.BoostingSpecificEntertainer(_tile.Entertainer);
         }
@@ -50,6 +53,8 @@ public class Entertainer : MonoBehaviour
     {
         foreach (Tile neighbor in _tile.Neighbors)
         {
+            if (!neighbor)
+                continue;
             if (!neighbor.Entertainer)
                 continue;
             if (_entertainerData.Synergies.Contains(neighbor.Entertainer.EntertainerData.EntertainerType))
@@ -65,6 +70,8 @@ public class Entertainer : MonoBehaviour
     {
         foreach (Tile neighbor in _tile.Neighbors)
         {
+            if (!neighbor)
+                continue;
             if (!neighbor.Entertainer)
                 continue;
             if (_entertainerData.Synergies.Contains(neighbor.Entertainer.EntertainerData.EntertainerType))

@@ -286,6 +286,7 @@ GameObject:
   - component: {fileID: 343468654}
   - component: {fileID: 343468653}
   - component: {fileID: 343468652}
+  - component: {fileID: 343468655}
   m_Layer: 0
   m_Name: Back
   m_TagString: Untagged
@@ -361,6 +362,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &343468655
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 343468651}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 10, y: 0.01, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -663,6 +685,9 @@ MonoBehaviour:
   OnTileUnselected:
     m_PersistentCalls:
       m_Calls: []
+  OnGameFinished:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1153636969
 Transform:
   m_ObjectHideFlags: 0
@@ -711,6 +736,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
+  _resourceGainPrefab: {fileID: 1592618839310326476, guid: 8877b2626b274684c822c44ca64252e0, type: 3}
+  _goldVFXMat: {fileID: 2100000, guid: 4494af5224e05ff45bd6a3182b886f8e, type: 2}
+  _stoneVFXMat: {fileID: 2100000, guid: c3d77015b9f6c2541a95682dcf5a38f1, type: 2}
+  _essenceVFXMat: {fileID: 2100000, guid: d9a193013e9d3b340b0c20715400742d, type: 2}
+  _horseVFXMat: {fileID: 2100000, guid: 73e51268612bb8c4783de752884abdb1, type: 2}
+  _pigmentVFXMat: {fileID: 2100000, guid: 1e4412142c5cea14ca3fc678023a694f, type: 2}
+  _crystalVFXMat: {fileID: 2100000, guid: e5d1665f444108047aa456ef01fb8a35, type: 2}
+  _emberboneVFXMat: {fileID: 2100000, guid: 689194fe8f4bd2e499f6d4a01eb23aec, type: 2}
 --- !u!114 &1153636973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -726,6 +759,8 @@ MonoBehaviour:
   _persistentSingleton: 0
   _entertainerPrefab: {fileID: 5066032661868510455, guid: 2299a873f881c5b4d8cc7e7083bc6b38, type: 3}
   _entertainersParent: {fileID: 1084747253}
+  _pointsGainPrefab: {fileID: 1592618839310326476, guid: 8877b2626b274684c822c44ca64252e0, type: 3}
+  _pointVFXMat: {fileID: 2100000, guid: 37165071fda418845bd5d92d7d9da370, type: 2}
   OnPhaseFinalized:
     m_PersistentCalls:
       m_Calls: []
@@ -960,8 +995,8 @@ SceneRoots:
   - {fileID: 410087041}
   - {fileID: 584298749}
   - {fileID: 343468654}
-  - {fileID: 7713550484805800230}
   - {fileID: 1153636969}
   - {fileID: 1586287181}
   - {fileID: 1914034364}
   - {fileID: 1084747253}
+  - {fileID: 7713550484805800230}

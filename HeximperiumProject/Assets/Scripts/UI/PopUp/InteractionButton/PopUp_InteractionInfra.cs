@@ -8,15 +8,17 @@ public class PopUp_InteractionInfra : UI_DynamicPopUp
     [SerializeField] private TextMeshProUGUI _detailsText;
     [SerializeField] private TextMeshProUGUI _costText;
 
+    private InteractionButton _associatedButton;
+
     public override void InitializePopUp<T>(T item)
     {
-        if (item is UI_InteractionButton button)
+        if (item is InteractionButton button)
         {
             InitializePopUp(button);
         }
     }
 
-    private void InitializePopUp(UI_InteractionButton button)
+    private void InitializePopUp(InteractionButton button)
     {
         _effectText.text += button.InfrastructureData.TileName;
         _detailsText.text = button.InfrastructureData.InteractionButtonPopUpText;
@@ -32,7 +34,7 @@ public class PopUp_InteractionInfra : UI_DynamicPopUp
         }
 
         //Check if the infra has copy limitation
-        foreach (InfraAvailableCopy item in ExploitationManager.Instance.InfraAvailableCopies)
+        foreach (InfraDataToIntMap item in ExploitationManager.Instance.InfraAvailableCopies)
         {
             if (button.InfrastructureData == item.infrastructure)
             {
@@ -40,11 +42,36 @@ public class PopUp_InteractionInfra : UI_DynamicPopUp
                     _copyText.color = UIManager.Instance.ColorCantAfford;
 
                 _copyText.text += item.availableCopy;
-                return;
+                _copyText.enabled = true;
+                break;
             }
         }
 
-        //Infra has no copy limitation so we hide the text associated
-        _copyText.enabled = false;
+        //Show highlight impacted tiles by the special behaviour of this infra
+        if(button.InfrastructureData.SpecialBehaviour != null)
+        {
+            button.InfrastructureData.SpecialBehaviour.HighlightImpactedTile(button.AssociatedTile ,true);
+        }
+
+        //Fade out interaction buttons and spawn a clone on the tile where the interaction will be
+        GameManager.Instance.InteractionButtonsFade(true);
+        button.CreateHighlightedClone();
+
+        _associatedButton = button;
+    }
+
+    public override void DestroyPopUp()
+    {
+        //Hide highlight impacted tiles by the special behaviour of this infra
+        if (_associatedButton.InfrastructureData.SpecialBehaviour != null)
+        {
+            _associatedButton.InfrastructureData.SpecialBehaviour.HighlightImpactedTile(_associatedButton.AssociatedTile, false); 
+        }
+
+        //Fade in interaction buttons and remove the clone
+        GameManager.Instance.InteractionButtonsFade(false);
+        _associatedButton.DestroyHighlightedClone();
+
+        base.DestroyPopUp();
     }
 }

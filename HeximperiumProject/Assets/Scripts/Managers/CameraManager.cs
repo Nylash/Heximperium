@@ -38,6 +38,7 @@ public class CameraManager : Singleton<CameraManager>
     private EventSystem eventSystem;
     private Ray _mouseRay;
     private RaycastHit _mouseRayHit;
+    private InteractionButton _shrinkedButton;
     #endregion
 
     private void OnEnable() => _inputActions.Player.Enable();
@@ -69,6 +70,9 @@ public class CameraManager : Singleton<CameraManager>
 
     private void Update()
     {
+        if (UIManager.Instance.MenuOpen)
+            return;
+
         if (!_isMouseDragging)
         {
             KeyMovement();
@@ -95,6 +99,13 @@ public class CameraManager : Singleton<CameraManager>
                 // Pass the topmost UI object under the cursor
                 UIManager.Instance.PopUpUI(results[0].gameObject);
             }
+
+            //If a interaction button was shrink we unshrink it
+            if (_shrinkedButton != null)
+            {
+                _shrinkedButton.ShrinkAnimation(false);
+                _shrinkedButton = null;
+            }
         }
         else
         {
@@ -102,6 +113,31 @@ public class CameraManager : Singleton<CameraManager>
             if (Physics.Raycast(_mouseRay, out _mouseRayHit))
             {
                 UIManager.Instance.PopUpNonUI(_mouseRayHit.collider.gameObject);
+
+                //If we detect a InteractionButton we play the shrink animation
+                if (_mouseRayHit.collider.gameObject.GetComponent<InteractionButton>() is InteractionButton button)
+                {
+                    //Check if the cursor is over a new InteractionButton and so unshrink the previous one (if there is one)
+                    if (_shrinkedButton != null)
+                    {
+                        if (_shrinkedButton != button)
+                        {
+                            _shrinkedButton.ShrinkAnimation(false);
+                            _shrinkedButton = null;
+                        }
+                    }
+                    button.ShrinkAnimation(true);
+                    _shrinkedButton = button;
+                }
+                else
+                {
+                    //If a interaction button was shrink we unshrink it
+                    if (_shrinkedButton != null)
+                    {
+                        _shrinkedButton.ShrinkAnimation(false);
+                        _shrinkedButton = null;
+                    }
+                }
             }
         }
     }
@@ -129,6 +165,9 @@ public class CameraManager : Singleton<CameraManager>
 
     private void DragCamera()
     {
+        if (UIManager.Instance.MenuOpen)
+            return;
+
         if (_isMouseDragging)
         {
             Vector2 delta = Mouse.current.position.ReadValue() - _lastMousePosition;
@@ -139,6 +178,9 @@ public class CameraManager : Singleton<CameraManager>
 
     private void StartDragging()
     {
+        if (UIManager.Instance.MenuOpen)
+            return;
+
         _isMouseDragging = true;
         _lastMousePosition = Mouse.current.position.ReadValue();
     }
