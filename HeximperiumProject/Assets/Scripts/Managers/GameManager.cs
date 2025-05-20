@@ -23,7 +23,7 @@ public class GameManager : Singleton<GameManager>
 
     private bool _waitingPhaseFinalization;
     private Phase _currentPhase;
-    private int _turnCounter;
+    private int _turnCounter = 1;
     #endregion
 
     #region EVENTS
