@@ -36,6 +36,8 @@ public class PopUp_InteractionEntertainer : UI_DynamicPopUp
                 else
                     _costText.text += " & " + data.Costs[i].value + " " + data.Costs[i].resource.ToCustomString();
             }
+
+            data.HighlightSynergyTile(button.AssociatedTile, true);
         }
         else
         {
@@ -51,6 +53,11 @@ public class PopUp_InteractionEntertainer : UI_DynamicPopUp
 
     public override void DestroyPopUp()
     {
+        if (_associatedButton.UnitData is EntertainerData data)
+        {
+            data.HighlightSynergyTile(_associatedButton.AssociatedTile, false);
+        }
+
         //Fade in interaction buttons and remove the clone
         GameManager.Instance.InteractionButtonsFade(false);
         _associatedButton.DestroyHighlightedClone();
