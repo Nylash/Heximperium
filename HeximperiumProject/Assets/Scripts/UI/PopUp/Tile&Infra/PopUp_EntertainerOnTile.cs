@@ -19,7 +19,7 @@ public class PopUp_EntertainerOnTile : UI_DynamicPopUp
     private void InitializePopUp(Entertainer unit)
     {
         _nameText.text = unit.EntertainerData.EntertainerType.ToCustomString();
-        _pointsText.text += unit.EntertainerData.Points;
+        _pointsText.text += unit.Points;
         _familyText.text += unit.EntertainerData.Family;
         _synergyText.text += unit.EntertainerData.Synergies[0].ToCustomString() + " & " + unit.EntertainerData.Synergies[1].ToCustomString();
     }
