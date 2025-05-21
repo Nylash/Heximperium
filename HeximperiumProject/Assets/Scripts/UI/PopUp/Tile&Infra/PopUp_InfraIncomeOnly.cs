@@ -23,6 +23,6 @@ public class PopUp_InfraIncomeOnly : UI_DynamicPopUp
         if (tile.Incomes.Count > 1)
             Debug.LogError("This tile doesn't show the right pop up.");
 
-        _incomeText.text = tile.Incomes[0].resource.ToCustomString() + " income : " + tile.Incomes[0].value;
+        _incomeText.text = tile.Incomes[0].resource.ToCustomString() + " income : +" + tile.Incomes[0].value;
     }
 }
