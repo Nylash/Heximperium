@@ -15,4 +15,4 @@ MonoBehaviour:
   _incomeBoost:
   - resource: 6
     value: 3
-  _infrastructureBoosted: {fileID: 11400000, guid: 87df111a95844d84c8c0d1ddece93ce9, type: 2}
+  _infrastructureBoosted: {fileID: 11400000, guid: d605880768b6f2d4b8e1f144917d1503, type: 2}
