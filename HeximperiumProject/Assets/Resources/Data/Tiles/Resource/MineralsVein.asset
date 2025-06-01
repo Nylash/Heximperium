@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9990022dae7882f489cdaf785d5dbad0, type: 3}
+  m_Name: MineralsVein
+  m_EditorClassIdentifier: 
+  _name: Minerals vein
+  _claimCost: 1
+  _interactionText: 
+  _tilePopUpText: Can be upgraded to produce Pigment
+  _typeIncomeUpgrade: 1
+  _incomes: []
+  _availableInfrastructures:
+  - {fileID: 11400000, guid: cf1ab9c803f94fb4c825de85fccc7ba9, type: 2}
+  _specialBehaviour: {fileID: 0}
+  _popUpPrefab: {fileID: 4713123567034353809, guid: d8f213d35ee68da42bdab236132145bb, type: 3}
+  _biomeMaterials:
+  - biome: 2
+    materials:
+    - {fileID: 2100000, guid: b8cefc4d46386294880f3c0f5bd8c59d, type: 2}
+  - biome: 3
+    materials:
+    - {fileID: 2100000, guid: 97211d3e966935d44b3628dbf801e5fa, type: 2}
+  - biome: 5
+    materials:
+    - {fileID: 2100000, guid: df5f30ba27bde5b47af25e92395f0730, type: 2}

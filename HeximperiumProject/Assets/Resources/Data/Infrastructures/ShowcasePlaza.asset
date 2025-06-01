@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e0e460f401a6ce44ad84d3534c37a05, type: 3}
+  m_Name: ShowcasePlaza
+  m_EditorClassIdentifier: 
+  _name: Showcase Plaza
+  _claimCost: 0
+  _interactionButtonPopUpText: Remove base tile income & +2 Points for surrounding
+    and on tile Entertainers
+  _tilePopUpText: +2 Points for surrounding and on tile Entertainers
+  _typeIncomeUpgrade: 1
+  _incomes: []
+  _availableInfrastructures: []
+  _specialBehaviour: {fileID: 11400000, guid: f04a3af70c88233459416a21f2e1f070, type: 2}
+  _popUpPrefab: {fileID: 2936039955091290312, guid: d462d7c874ce5d44e8b78417aba55ee6, type: 3}
+  _biomeMaterials:
+  - biome: 0
+    materials:
+    - {fileID: 2100000, guid: 9a699076ef4452445a7ffcff090afcc6, type: 2}
+  - biome: 1
+    materials:
+    - {fileID: 2100000, guid: 9a699076ef4452445a7ffcff090afcc6, type: 2}
+  - biome: 2
+    materials:
+    - {fileID: 2100000, guid: 9a699076ef4452445a7ffcff090afcc6, type: 2}
+  - biome: 3
+    materials:
+    - {fileID: 2100000, guid: 9a699076ef4452445a7ffcff090afcc6, type: 2}
+  - biome: 4
+    materials:
+    - {fileID: 2100000, guid: 9a699076ef4452445a7ffcff090afcc6, type: 2}
+  - biome: 5
+    materials:
+    - {fileID: 2100000, guid: 9a699076ef4452445a7ffcff090afcc6, type: 2}
+  _scoutStartingPoint: 0
+  _costs:
+  - resource: 6
+    value: 40

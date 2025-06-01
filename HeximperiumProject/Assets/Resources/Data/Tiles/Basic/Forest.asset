@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02c008b3c4c3a7041807076b3594d034, type: 3}
+  m_Name: Forest
+  m_EditorClassIdentifier: 
+  _name: Forest
+  _claimCost: 1
+  _interactionText: 
+  _tilePopUpText: Can be upgraded with various infrastructures
+  _typeIncomeUpgrade: 1
+  _incomes:
+  - resource: 6
+    value: 2
+  _availableInfrastructures:
+  - {fileID: 11400000, guid: d605880768b6f2d4b8e1f144917d1503, type: 2}
+  - {fileID: 11400000, guid: 946a616f3c376984ba521801c12fbee6, type: 2}
+  - {fileID: 11400000, guid: 87df111a95844d84c8c0d1ddece93ce9, type: 2}
+  - {fileID: 11400000, guid: 758e0bfcbc1c85b4f8d4064dfc028b50, type: 2}
+  - {fileID: 11400000, guid: 8ccfa048b2984884f9f9d523375c02c5, type: 2}
+  - {fileID: 11400000, guid: 7bc2665cae1849d40811eca4f1049b75, type: 2}
+  _specialBehaviour: {fileID: 0}
+  _popUpPrefab: {fileID: 4604967413891682696, guid: 8a2a6ee03e8ce0142be608694ce4402e, type: 3}
+  _biomeMaterials:
+  - biome: 0
+    materials:
+    - {fileID: 2100000, guid: e6b96fa77398b29419670ed5197c8598, type: 2}
+  - biome: 1
+    materials:
+    - {fileID: 2100000, guid: 171ad03c6d1e65840ade1ca94b46f6a4, type: 2}
+  - biome: 2
+    materials:
+    - {fileID: 2100000, guid: d964e040f676bf0478512b947848c0d2, type: 2}
+  - biome: 3
+    materials:
+    - {fileID: 2100000, guid: f769cb43bd4617b4783993b35e302387, type: 2}
+  - biome: 4
+    materials:
+    - {fileID: 2100000, guid: 7e2c6d146834b034f8cf678ab415f4a6, type: 2}
+  - biome: 5
+    materials:
+    - {fileID: 2100000, guid: 5daefa660ba11ea4aa8f7c1d10081d92, type: 2}
