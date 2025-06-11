@@ -78,7 +78,7 @@ public static class Utilities
         return button;
     }
 
-    //Merge two List<ResourceValue>
+    //Merge two List<ResourceToIntMap>
     public static List<ResourceToIntMap> MergeResourceValues(List<ResourceToIntMap> list1, List<ResourceToIntMap> list2)
     {
         var mergedDictionary = new Dictionary<Resource, int>();
@@ -170,7 +170,7 @@ public static class Utilities
         particleSystem.Play();
     }
 
-    //Subtract a by b and return the result
+    //Subtract a by b and return the resulting List<ResourceToIntMap>
     public static List<ResourceToIntMap> SubtractResourceValues(List<ResourceToIntMap> a, List<ResourceToIntMap> b)
     {
         var result = new Dictionary<Resource, int>();
