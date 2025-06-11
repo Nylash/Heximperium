@@ -72,7 +72,7 @@ public class ExpansionManager : Singleton<ExpansionManager>
         if (tile.Claimed)
         {
             //We can only build town on basic tile
-            if (tile.TileData as BasicTileData)
+            if (tile.TileData is BasicTileData)
             {
                 _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
                 TownInteraction(tile, 0);
@@ -82,7 +82,7 @@ public class ExpansionManager : Singleton<ExpansionManager>
 
         _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 2);
         //We can only build town on basic tile
-        if (tile.TileData as BasicTileData)
+        if (tile.TileData is BasicTileData)
             TownInteraction(tile, 0);
         //We can only claimed tiles adjacent to already claimed tiles
         if (tile.IsOneNeighborClaimed())
