@@ -39,6 +39,8 @@ public class CameraManager : Singleton<CameraManager>
     private Ray _mouseRay;
     private RaycastHit _mouseRayHit;
     private InteractionButton _shrinkedButton;
+
+    private Vector3 _initialPos;
     #endregion
 
     private void OnEnable() => _inputActions.Player.Enable();
@@ -46,6 +48,8 @@ public class CameraManager : Singleton<CameraManager>
 
     protected override void OnAwake()
     {
+        _initialPos = transform.position;
+
         _inputActions = new InputSystem_Actions();
 
         //Key input
@@ -60,6 +64,8 @@ public class CameraManager : Singleton<CameraManager>
         _inputActions.Player.RightClick.started += ctx => StartDragging();
         _inputActions.Player.RightClick.canceled += ctx => _isMouseDragging = false;
         _inputActions.Player.MouseMovement.performed += ctx => DragCamera();
+
+        _inputActions.Player.CenterCam.performed += ctx => CenterCam();
     }
 
     private void Start()
@@ -70,7 +76,7 @@ public class CameraManager : Singleton<CameraManager>
 
     private void Update()
     {
-        if (UIManager.Instance.MenuOpen)
+        if (GameManager.Instance.GamePaused)
             return;
 
         if (!_isMouseDragging)
@@ -143,6 +149,14 @@ public class CameraManager : Singleton<CameraManager>
     }
 
     #region CAMERA MOVEMENT
+    private void CenterCam()
+    {
+        if (GameManager.Instance.GamePaused)
+            return;
+
+        transform.position = _initialPos;
+    }
+
     private void Zoom()
     {
         transform.position = new Vector3(
@@ -165,7 +179,7 @@ public class CameraManager : Singleton<CameraManager>
 
     private void DragCamera()
     {
-        if (UIManager.Instance.MenuOpen)
+        if (GameManager.Instance.GamePaused)
             return;
 
         if (_isMouseDragging)
@@ -178,7 +192,7 @@ public class CameraManager : Singleton<CameraManager>
 
     private void StartDragging()
     {
-        if (UIManager.Instance.MenuOpen)
+        if (GameManager.Instance.GamePaused)
             return;
 
         _isMouseDragging = true;

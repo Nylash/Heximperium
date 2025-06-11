@@ -25,6 +25,8 @@ public class GameManager : Singleton<GameManager>
     private bool _waitingPhaseFinalization;
     private Phase _currentPhase;
     private int _turnCounter = 1;
+
+    private bool _gamePaused;
     #endregion
 
     #region EVENTS
@@ -46,6 +48,7 @@ public class GameManager : Singleton<GameManager>
     public Phase CurrentPhase { get => _currentPhase;}
     public int TurnCounter { get => _turnCounter;}
     public GameObject InteractionPrefab { get => _interactionPrefab;}
+    public bool GamePaused { get => _gamePaused; set => _gamePaused = value; }
     #endregion
 
     private void OnEnable() => _inputActions.Player.Enable();
@@ -57,6 +60,8 @@ public class GameManager : Singleton<GameManager>
         _inputActions = new InputSystem_Actions();
 
         _inputActions.Player.LeftClick.performed += ctx => LeftClickAction();
+        _inputActions.Player.ConfirmPhase.performed += ctx => ConfirmPhase();
+        _inputActions.Player.Menu.performed += ctx => UIManager.Instance.OpenCloseMenu();
 
         MapManager.Instance.OnMapGenerated.AddListener(InitializeGame);
         ExplorationManager.Instance.OnPhaseFinalized.AddListener(PhaseFinalized);
@@ -353,6 +358,9 @@ public class GameManager : Singleton<GameManager>
     #region PHASE LOGIC
     public void ConfirmPhase()
     {
+        if(_gamePaused) 
+            return;
+
         //The phase is finalizing its logic
         if (_waitingPhaseFinalization)
             return;

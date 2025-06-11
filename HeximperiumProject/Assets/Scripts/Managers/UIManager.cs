@@ -69,13 +69,10 @@ public class UIManager : Singleton<UIManager>
 
     private bool _areScoutsVisible;
     private bool _areEntertainersVisible;
-
-    private bool _menuOpen;
     #endregion
 
     #region ACCESSORS
     public Color ColorCantAfford { get => _colorCantAfford;}
-    public bool MenuOpen { get => _menuOpen; }
     #endregion
 
     protected override void OnAwake()
@@ -484,7 +481,8 @@ public class UIManager : Singleton<UIManager>
     public void OpenCloseMenu()
     {
         _menu.SetActive(!_menu.activeSelf);
-        _menuOpen = _menu.activeSelf;
+        GameManager.Instance.GamePaused = _menu.activeSelf;
+        ResetPopUps(null);
     }
 
     public void LoadMainMenu()
@@ -494,7 +492,6 @@ public class UIManager : Singleton<UIManager>
 
     public void QuitGame()
     {
-        Application.OpenURL("https://docs.google.com/forms/d/e/1FAIpQLSfav2yqM8XQFg-BkDHh5HvbugKSOXGCSP6hiaSW58-OyttKgQ/viewform?usp=sharing&ouid=102342740940582761191");
         Application.Quit();
     }
     #endregion
