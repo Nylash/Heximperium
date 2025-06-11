@@ -224,10 +224,7 @@ public class Tile : MonoBehaviour
                     neighbor.OnIncomeModified.RemoveListener(AdjustIncomeFromNeighbor);
                     neighbor.OnIncomeModified.AddListener(AdjustIncomeFromNeighbor);
                     if (!neighbor.Claimed)
-                    {
-                        neighbor.OnTileClaimed.RemoveListener(AddClaimedTileIncome);
                         neighbor.OnTileClaimed.AddListener(AddClaimedTileIncome);
-                    }   
                 }
             }
         }

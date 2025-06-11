@@ -38,14 +38,6 @@ public class ExpansionManager : Singleton<ExpansionManager>
         GameManager.Instance.OnTileUnselected.AddListener(TileUnselected);
     }
 
-    private void OnDestroy()
-    {
-        GameManager.Instance.OnExpansionPhaseStarted.RemoveListener(StartPhase);
-        GameManager.Instance.OnExpansionPhaseEnded.RemoveListener(ConfirmPhase);
-        GameManager.Instance.OnNewTileSelected.RemoveListener(NewTileSelected);
-        GameManager.Instance.OnTileUnselected.RemoveListener(TileUnselected);
-    }
-
     #region PHASE LOGIC
     private void StartPhase()
     {

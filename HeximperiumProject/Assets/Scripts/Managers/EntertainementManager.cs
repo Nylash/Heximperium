@@ -51,14 +51,6 @@ public class EntertainementManager : Singleton<EntertainementManager>
         }
     }
 
-    private void OnDestroy()
-    {
-        GameManager.Instance.OnEntertainementPhaseStarted.RemoveListener(StartPhase);
-        GameManager.Instance.OnEntertainementPhaseEnded.RemoveListener(ConfirmPhase);
-        GameManager.Instance.OnNewTileSelected.RemoveListener(NewTileSelected);
-        GameManager.Instance.OnTileUnselected.RemoveListener(TileUnselected);
-    }
-
     public int GetPointsIncome()
     {
         int value = 0;

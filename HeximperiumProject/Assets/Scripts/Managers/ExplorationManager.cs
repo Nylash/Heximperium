@@ -44,14 +44,6 @@ public class ExplorationManager : Singleton<ExplorationManager>
         GameManager.Instance.OnTileUnselected.AddListener(TileUnselected);
     }
 
-    private void OnDestroy()
-    {
-        GameManager.Instance.OnExplorationPhaseStarted.RemoveListener(StartPhase);
-        GameManager.Instance.OnExplorationPhaseEnded.RemoveListener(ConfirmPhase);
-        GameManager.Instance.OnNewTileSelected.RemoveListener(NewTileSelected);
-        GameManager.Instance.OnTileUnselected.RemoveListener(TileUnselected);
-    }
-
     private void Update()
     {
         if (GameManager.Instance.CurrentPhase != Phase.Explore)
