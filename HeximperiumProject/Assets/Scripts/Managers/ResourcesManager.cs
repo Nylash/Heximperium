@@ -183,7 +183,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
 
     public bool CanAfford(List<ResourceToIntMap> costs) 
     {
-        if(costs.Count == 0) return false;
+        if(costs.Count == 0) return true;
         return costs.All(cost => CanAfford(cost.resource, cost.value));
     }
 
