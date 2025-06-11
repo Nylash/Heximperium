@@ -70,9 +70,9 @@ public static class Utilities
     }
 
     //Create a button around a tile
-    public static GameObject CreateInteractionButton(Tile tile, Vector3 positon, Interaction interactionType, InfrastructureData infraData = null, EntertainerData entertainerData = null)
+    public static GameObject CreateInteractionButton(Tile tile, Vector3 position, Interaction interactionType, InfrastructureData infraData = null, EntertainerData entertainerData = null)
     {
-        GameObject button = GameObject.Instantiate(GameManager.Instance.InteractionPrefab, positon, Quaternion.identity);
+        GameObject button = GameObject.Instantiate(GameManager.Instance.InteractionPrefab, position, Quaternion.identity);
         button.GetComponent<InteractionButton>().Initialize(tile, interactionType, infraData, entertainerData);
 
         return button;
