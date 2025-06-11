@@ -65,6 +65,15 @@ public class GameManager : Singleton<GameManager>
         EntertainementManager.Instance.OnPhaseFinalized.AddListener(PhaseFinalized);
     }
 
+    private void OnDestroy()
+    {
+        MapManager.Instance.OnMapGenerated.RemoveListener(InitializeGame);
+        ExplorationManager.Instance.OnPhaseFinalized.RemoveListener(PhaseFinalized);
+        ExpansionManager.Instance.OnPhaseFinalized.RemoveListener(PhaseFinalized);
+        ExploitationManager.Instance.OnPhaseFinalized.RemoveListener(PhaseFinalized);
+        EntertainementManager.Instance.OnPhaseFinalized.RemoveListener(PhaseFinalized);
+    }
+
     private void Start()
     {
         //Tmp

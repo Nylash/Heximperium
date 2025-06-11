@@ -94,6 +94,18 @@ public class UIManager : Singleton<UIManager>
         GameManager.Instance.OnGameFinished.AddListener(GameFinished);
     }
 
+    private void OnDestroy()
+    {
+        GameManager.Instance.OnNewTurn.RemoveListener(UpdateTurnCounterText);
+        GameManager.Instance.OnExplorationPhaseStarted.RemoveListener(UpdatePhaseUI);
+        GameManager.Instance.OnExpansionPhaseStarted.RemoveListener(UpdatePhaseUI);
+        GameManager.Instance.OnExploitationPhaseStarted.RemoveListener(UpdatePhaseUI);
+        GameManager.Instance.OnEntertainementPhaseStarted.RemoveListener(UpdatePhaseUI);
+        GameManager.Instance.OnExplorationPhaseStarted.RemoveListener(ForceScoutsToShow);
+        GameManager.Instance.OnEntertainementPhaseStarted.RemoveListener(ForceEntertainersToShow);
+        GameManager.Instance.OnGameFinished.RemoveListener(GameFinished);
+    }
+
     private void Start()
     {
         _screenWidth = Screen.width;

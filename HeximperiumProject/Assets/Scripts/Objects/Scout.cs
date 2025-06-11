@@ -51,6 +51,11 @@ public class Scout : MonoBehaviour
         ExplorationManager.Instance.OnPhaseFinalized.AddListener(CheckLifeSpan);
     }
 
+    private void OnDestroy()
+    {
+        ExplorationManager.Instance.OnPhaseFinalized.RemoveListener(CheckLifeSpan);
+    }
+
     private void Start()
     {
         _animator = GetComponent<Animator>();
