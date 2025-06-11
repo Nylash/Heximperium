@@ -31,7 +31,7 @@ public class Tile : MonoBehaviour
 
     #region EVENTS
     //previous Incomes, new Incomes
-    [HideInInspector] public UnityEvent<List<ResourceToIntMap>, List<ResourceToIntMap>> OnIncomeModified = new UnityEvent<List<ResourceToIntMap>, List<ResourceToIntMap>>();
+    [HideInInspector] public UnityEvent<Tile, List<ResourceToIntMap>, List<ResourceToIntMap>> OnIncomeModified = new UnityEvent<Tile, List<ResourceToIntMap>, List<ResourceToIntMap>>();
     [HideInInspector] public UnityEvent<Tile> OnTileClaimed = new UnityEvent<Tile>();
     #endregion
 
@@ -72,7 +72,7 @@ public class Tile : MonoBehaviour
         get => _incomes;
         set
         {
-            OnIncomeModified.Invoke(_incomes, value);
+            OnIncomeModified.Invoke(this, _incomes, value);
             _incomes = value;
         }
     }
@@ -221,6 +221,7 @@ public class Tile : MonoBehaviour
                 {
                     if (!neighbor)
                         continue;
+                    neighbor.OnIncomeModified.RemoveListener(AdjustIncomeFromNeighbor);
                     neighbor.OnIncomeModified.AddListener(AdjustIncomeFromNeighbor);
                     if (!neighbor.Claimed)
                         neighbor.OnTileClaimed.AddListener(AddClaimedTileIncome);
@@ -248,11 +249,11 @@ public class Tile : MonoBehaviour
         }
     }
 
-    private void AdjustIncomeFromNeighbor(List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
+    private void AdjustIncomeFromNeighbor(Tile neighbor, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
     {
         if(_tileData.SpecialBehaviour is IncomeComingFromNeighbors specialBehaviour)
         {
-            specialBehaviour.AdjustIncomeFromNeighbor(this, previousIncome, newIncome);
+            specialBehaviour.AdjustIncomeFromNeighbor(neighbor, this, previousIncome, newIncome);
         }
     }
     #endregion

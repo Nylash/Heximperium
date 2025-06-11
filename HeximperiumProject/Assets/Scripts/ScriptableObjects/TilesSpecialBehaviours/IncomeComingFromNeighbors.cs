@@ -5,6 +5,7 @@ using UnityEngine;
 public class IncomeComingFromNeighbors : SpecialBehaviour
 {
     [SerializeField] private Resource _resource;
+    [SerializeField] private List<InfrastructureData> _excludedInfra = new List<InfrastructureData>();
 
     //Subscribe to neighbors event OnIncomeModified and update its income based on their income
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
@@ -15,6 +16,22 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
                 continue;
             if (neighbor.Claimed)
             {
+                //Don't do the adjustement if the neighbor is excluded
+                bool exclude = false;
+                if (neighbor.TileData is InfrastructureData)
+                {
+                    foreach (InfrastructureData item in _excludedInfra)
+                    {
+                        if (item == neighbor.TileData)
+                        {
+                            exclude = true;
+                            break;
+                        }
+                    }
+                }
+                if (exclude)
+                    continue;
+
                 List<ResourceToIntMap> income = new List<ResourceToIntMap>();
 
                 foreach (ResourceToIntMap item in neighbor.Incomes)
@@ -38,15 +55,23 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
         //Nothing needed, replacing by previous tile will be enough (this behaviour only modify its own tile)
     }
 
-    public void AdjustIncomeFromNeighbor(Tile behaviourTile, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
+    public void AdjustIncomeFromNeighbor(Tile neighbor, Tile behaviourTile, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
     {
-        //Switch the previous income to negative value
-        foreach (ResourceToIntMap item in previousIncome)
-            item.value = -item.value;
-        //Remove previous income
-        behaviourTile.Incomes = Utilities.MergeResourceValues(behaviourTile.Incomes, previousIncome);
-        //Add new income
-        behaviourTile.Incomes = Utilities.MergeResourceValues(behaviourTile.Incomes, newIncome);
+        //Don't do the adjustement if the neighbor is excluded
+        if (neighbor.TileData is InfrastructureData)
+        {
+            foreach (InfrastructureData item in _excludedInfra)
+            {
+                if (item == neighbor.TileData)
+                    return;
+            }
+        }
+
+        // Calculate delta = newIncome - previousIncome
+        List<ResourceToIntMap> delta = Utilities.SubtractResourceValues(newIncome, previousIncome);
+
+        // Apply delta
+        behaviourTile.Incomes = Utilities.MergeResourceValues(behaviourTile.Incomes, delta);
     }
 
     public void AddClaimedTileIncome(Tile behaviourTile, Tile tile)
@@ -62,6 +87,22 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
                 continue;
             if (neighbor.Claimed)
             {
+                //Don't do the highlight if the neighbor is excluded
+                bool exclude = false;
+                if (neighbor.TileData is InfrastructureData)
+                {
+                    foreach (InfrastructureData item in _excludedInfra)
+                    {
+                        if (item == neighbor.TileData)
+                        {
+                            exclude = true;
+                            break;
+                        }
+                    }
+                }
+                if (exclude)
+                    continue;
+
                 foreach (ResourceToIntMap item in neighbor.Incomes)
                 {
                     if (item.resource == _resource)

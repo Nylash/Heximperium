@@ -169,6 +169,23 @@ public static class Utilities
 
         particleSystem.Play();
     }
+
+    //Subtract a by b and return the result
+    public static List<ResourceToIntMap> SubtractResourceValues(List<ResourceToIntMap> a, List<ResourceToIntMap> b)
+    {
+        var result = new Dictionary<Resource, int>();
+
+        foreach (var item in a)
+            result[item.resource] = result.GetValueOrDefault(item.resource, 0) + item.value;
+
+        foreach (var item in b)
+            result[item.resource] = result.GetValueOrDefault(item.resource, 0) - item.value;
+
+        return result
+            .Where(kvp => kvp.Value != 0)
+            .Select(kvp => new ResourceToIntMap(kvp.Key, kvp.Value))
+            .ToList();
+    }
 }
 
 #region ENUMS
