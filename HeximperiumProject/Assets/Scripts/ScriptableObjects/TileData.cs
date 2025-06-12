@@ -12,7 +12,7 @@ public class TileData : ScriptableObject
     [SerializeField] private List<InfrastructureData> _availableInfrastructures = new List<InfrastructureData>();
     [SerializeField] private SpecialBehaviour _specialBehaviour;
     [SerializeField] private GameObject _popUpPrefab;
-    [SerializeField] private List<BiomeToMaterialsMap> _biomeMaterials;
+    [SerializeField] private List<Material> _visuals;
 
     public string TileName { get => _name; }
     public int ClaimCost { get => _claimCost; }
@@ -23,6 +23,7 @@ public class TileData : ScriptableObject
     public GameObject PopUpPrefab { get => _popUpPrefab; }
     public string InteractionButtonPopUpText { get => _interactionButtonPopUpText; }
     public string TilePopUpText { get => _tilePopUpText; }
+    public List<Material> Visuals { get => _visuals; }
 
     public int GetSpecificIncome(Resource resource)
     {
@@ -32,15 +33,5 @@ public class TileData : ScriptableObject
                 return item.value;
         }
         return 0;
-    }
-
-    public List<Material> GetMaterials(Biome b)
-    {
-        foreach (BiomeToMaterialsMap item in _biomeMaterials)
-        {
-            if(item.biome == b)
-                return item.materials;
-        }
-        return new List<Material>();
     }
 }

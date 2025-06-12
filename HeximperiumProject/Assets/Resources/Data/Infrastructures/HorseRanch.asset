@@ -14,26 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Horse Ranch
   _claimCost: 0
-  _interactionButtonPopUpText: +3 Horse
-  _tilePopUpText: 
+  _interactionButtonPopUpText: +3 Special Resources & -1 cost in Special Resources
+    for Upgrades and Enhancements related to Exploration
+  _tilePopUpText: -1 cost in Special Resources for Upgrades and Enhancements related
+    to Exploration
   _typeIncomeUpgrade: 1
   _incomes:
-  - resource: 2
+  - resource: 1
     value: 3
   _availableInfrastructures: []
   _specialBehaviour: {fileID: 0}
-  _popUpPrefab: {fileID: 4211441305533441537, guid: ef8dd89153ab58342bac319dd00772f5, type: 3}
-  _biomeMaterials:
-  - biome: 0
-    materials:
-    - {fileID: 2100000, guid: 59b1fb8b5d9fca944806ccda642abd73, type: 2}
-  - biome: 1
-    materials:
-    - {fileID: 2100000, guid: 624767bd2034fb34993422336d60437b, type: 2}
-  - biome: 4
-    materials:
-    - {fileID: 2100000, guid: ad4f886793851db40aa96568df901a83, type: 2}
+  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
+  _visuals:
+  - {fileID: 2100000, guid: 59b1fb8b5d9fca944806ccda642abd73, type: 2}
   _scoutStartingPoint: 0
   _costs:
-  - resource: 6
+  - resource: 0
     value: 10

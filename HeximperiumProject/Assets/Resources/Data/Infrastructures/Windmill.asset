@@ -21,23 +21,9 @@ MonoBehaviour:
   _availableInfrastructures: []
   _specialBehaviour: {fileID: 11400000, guid: 7ca701c08f762dd4fa86300725250759, type: 2}
   _popUpPrefab: {fileID: 2936039955091290312, guid: d462d7c874ce5d44e8b78417aba55ee6, type: 3}
-  _biomeMaterials:
-  - biome: 0
-    materials:
-    - {fileID: 2100000, guid: 4900a9191f0121042b81899b5944fbd2, type: 2}
-  - biome: 1
-    materials:
-    - {fileID: 2100000, guid: dbba7fd84794d264eaa4d891fd118de1, type: 2}
-  - biome: 2
-    materials:
-    - {fileID: 2100000, guid: 63ad127ea207ef046b3dd31195f3d5a9, type: 2}
-  - biome: 3
-    materials:
-    - {fileID: 2100000, guid: 5c65990227d2ad84e826f6870e620a59, type: 2}
-  - biome: 4
-    materials:
-    - {fileID: 2100000, guid: 6f36a94b69098134bb077f0cb6a32094, type: 2}
+  _visuals:
+  - {fileID: 2100000, guid: 4900a9191f0121042b81899b5944fbd2, type: 2}
   _scoutStartingPoint: 0
   _costs:
-  - resource: 6
+  - resource: 0
     value: 30

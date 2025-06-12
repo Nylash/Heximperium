@@ -8,16 +8,12 @@ public class UIManager : Singleton<UIManager>
 {
     #region CONFIGURATION
     [SerializeField] private Transform _mainCanvas;
-    [Header("Resources")]
+    [Header("Resources Bar")]
+    [SerializeField] private TextMeshProUGUI _scoutsLimitText;
     [SerializeField] private TextMeshProUGUI _claimText;
+    [SerializeField] private TextMeshProUGUI _townsLimitText;
     [SerializeField] private TextMeshProUGUI _goldText;
-    [SerializeField] private TextMeshProUGUI _stoneText;
-    [SerializeField] private TextMeshProUGUI _essenceText;
-    [SerializeField] private TextMeshProUGUI _horseText;
-    [SerializeField] private TextMeshProUGUI _pigmentText;
-    [SerializeField] private TextMeshProUGUI _crystalText;
-    [SerializeField] private TextMeshProUGUI _emberboneText;
-    [SerializeField] private TextMeshProUGUI _scoreText;
+    [SerializeField] private TextMeshProUGUI _srText;
     [Header("Phase UI")]
     [SerializeField] private TextMeshProUGUI _currentPhaseText;
     [SerializeField] private TextMeshProUGUI _confirmPhaseButtonText;
@@ -44,11 +40,8 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Color _colorCantAfford;
     [Header("Units visibility UI")]
     [SerializeField] private Image _scoutsImage;
-    [SerializeField] private Image _entertainersImage;
     [SerializeField] private Sprite _scoutsVisible;
     [SerializeField] private Sprite _scoutsHidden;
-    [SerializeField] private Sprite _entertainersVisible;
-    [SerializeField] private Sprite _entertainersHidden;
     [Header("Menu")]
     [SerializeField] private GameObject _menu;
     [SerializeField] private GameObject _endMenu;
@@ -68,7 +61,6 @@ public class UIManager : Singleton<UIManager>
     private List<GameObject> _popUps = new List<GameObject>();
 
     private bool _areScoutsVisible;
-    private bool _areEntertainersVisible;
     #endregion
 
     #region ACCESSORS
@@ -85,8 +77,6 @@ public class UIManager : Singleton<UIManager>
         GameManager.Instance.OnEntertainementPhaseStarted.AddListener(UpdatePhaseUI);
 
         GameManager.Instance.OnExplorationPhaseStarted.AddListener(ForceScoutsToShow);
-
-        GameManager.Instance.OnEntertainementPhaseStarted.AddListener(ForceEntertainersToShow);
 
         GameManager.Instance.OnGameFinished.AddListener(GameFinished);
     }
@@ -107,33 +97,13 @@ public class UIManager : Singleton<UIManager>
     {
         switch (resource)
         {
-            case Resource.Stone:
-                _stoneText.text = value.ToString();
-                break;
-            case Resource.Essence:
-                _essenceText.text = value.ToString();
-                break;
-            case Resource.Horse:
-                _horseText.text = value.ToString();
-                break;
-            case Resource.Pigment:
-                _pigmentText.text = value.ToString();
-                break;
-            case Resource.Crystal:
-                _crystalText.text = value.ToString();
-                break;
-            case Resource.Emberbone:
-                _emberboneText.text = value.ToString();
-                break;
             case Resource.Gold:
                 _goldText.text = value.ToString();
                 break;
+            case Resource.SpecialResources:
+                _srText.text = value.ToString();
+                break;
         }
-    }
-
-    public void UpdateScoreUI(int value)
-    {
-        _scoreText.text = value.ToString();
     }
     #endregion
 
@@ -171,41 +141,6 @@ public class UIManager : Singleton<UIManager>
     private void ForceScoutsToHide()
     {
         ScoutsVisibility(false);
-    }
-
-    //OnClick for UI button
-    public void EntertainersVisibility()
-    {
-        _areEntertainersVisible = !_areEntertainersVisible;
-
-        _entertainersImage.sprite = _areEntertainersVisible ? _entertainersVisible : _entertainersHidden;
-
-        foreach (Entertainer item in EntertainementManager.Instance.Entertainers)
-        {
-            item.EntertainerVisibility(_areEntertainersVisible);
-        }
-    }
-
-    private void EntertainersVisibility(bool visible)
-    {
-        _areEntertainersVisible = visible;
-
-        _entertainersImage.sprite = _areEntertainersVisible ? _entertainersVisible : _entertainersHidden;
-
-        foreach (Entertainer item in EntertainementManager.Instance.Entertainers)
-        {
-            item.EntertainerVisibility(visible);
-        }
-    }
-
-    private void ForceEntertainersToShow()
-    {
-        EntertainersVisibility(true);
-    }
-
-    private void ForceEntertainersToHide()
-    {
-        EntertainersVisibility(false);
     }
     #endregion
 

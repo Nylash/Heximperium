@@ -118,12 +118,7 @@ public static class Utilities
         return value switch
         {
             Resource.Gold => "Gold",
-            Resource.Crystal => "Crystal",
-            Resource.Stone => "Stone",
-            Resource.Essence => "Floral essence",
-            Resource.Horse => "Horse",
-            Resource.Pigment => "Pigment",
-            Resource.Emberbone => "Emberbone",
+            Resource.SpecialResources => "Special Resources",
             _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
         };
     }
@@ -202,7 +197,7 @@ public enum Direction
 
 public enum Resource
 {
-    Stone, Essence, Horse, Pigment, Crystal, Emberbone, Gold
+    Gold, SpecialResources
 }
 
 public enum Transaction
@@ -229,10 +224,5 @@ public enum EntertainerType
 public enum EntertainerFamily
 {
     Artist, Mystic, Performer
-}
-
-public enum Biome
-{
-    Grassland, DeepForest, Mountain, Desert, Swamp, Ice
 }
 #endregion

@@ -14,26 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Mountain
   _claimCost: 3
-  _interactionText: 
+  _interactionButtonPopUpText: 
   _tilePopUpText: Slow down scouts and cannot be upgraded
   _typeIncomeUpgrade: 1
   _incomes: []
   _availableInfrastructures: []
   _specialBehaviour: {fileID: 0}
   _popUpPrefab: {fileID: 9159292565962417168, guid: 787935b1706731845ae4313f79f42b96, type: 3}
-  _biomeMaterials:
-  - biome: 0
-    materials:
-    - {fileID: 2100000, guid: c591919293bd663489e702d457fbd9ca, type: 2}
-  - biome: 1
-    materials:
-    - {fileID: 2100000, guid: 4632f3ab873d83440a623332c96dd381, type: 2}
-  - biome: 2
-    materials:
-    - {fileID: 2100000, guid: ae9f434df35b1f641ba717c71691c4a5, type: 2}
-  - biome: 3
-    materials:
-    - {fileID: 2100000, guid: 336523b9a43cab44fa3dacfd73d6f43f, type: 2}
-  - biome: 5
-    materials:
-    - {fileID: 2100000, guid: 776861a0e47be644c9267fabf806b527, type: 2}
+  _visuals:
+  - {fileID: 2100000, guid: c591919293bd663489e702d457fbd9ca, type: 2}

@@ -14,27 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Meadow
   _claimCost: 1
-  _interactionText: 
+  _interactionButtonPopUpText: 
   _tilePopUpText: Can be upgraded with various infrastructures
   _typeIncomeUpgrade: 1
   _incomes:
-  - resource: 6
+  - resource: 0
     value: 1
   _availableInfrastructures:
   - {fileID: 11400000, guid: 2343a704b58abda4dbeead80ff882353, type: 2}
   - {fileID: 11400000, guid: b5e79191f4522cc4a81b4bb777d213c6, type: 2}
   - {fileID: 11400000, guid: ab6dee53a8e596b40ae96f77c15d9d33, type: 2}
   - {fileID: 11400000, guid: 758e0bfcbc1c85b4f8d4064dfc028b50, type: 2}
-  - {fileID: 11400000, guid: bdca8022095e9c64bb08848a6143d808, type: 2}
-  - {fileID: 11400000, guid: 8ccfa048b2984884f9f9d523375c02c5, type: 2}
-  - {fileID: 11400000, guid: e779e3985649cf447850ff0b982df028, type: 2}
-  - {fileID: 11400000, guid: 7bc2665cae1849d40811eca4f1049b75, type: 2}
   _specialBehaviour: {fileID: 0}
   _popUpPrefab: {fileID: 4604967413891682696, guid: 8a2a6ee03e8ce0142be608694ce4402e, type: 3}
-  _biomeMaterials:
-  - biome: 0
-    materials:
-    - {fileID: 2100000, guid: 3cfe066665d98054f99e6fe27dc97d2e, type: 2}
-  - biome: 1
-    materials:
-    - {fileID: 2100000, guid: 03f62ec148d82cd44b78096ddba410e1, type: 2}
+  _visuals:
+  - {fileID: 2100000, guid: 3cfe066665d98054f99e6fe27dc97d2e, type: 2}
