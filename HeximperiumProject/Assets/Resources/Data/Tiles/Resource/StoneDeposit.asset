@@ -15,7 +15,8 @@ MonoBehaviour:
   _name: Stone deposit
   _claimCost: 1
   _interactionButtonPopUpText: 
-  _tilePopUpText: Can be upgraded to produce Stone
+  _tilePopUpText: Can be upgraded to produce Special Resources and bringing a reduction
+    to Exploitation oriented Infrastructures and Upgrades.
   _typeIncomeUpgrade: 1
   _incomes: []
   _availableInfrastructures:

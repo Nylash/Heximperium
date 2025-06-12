@@ -15,7 +15,8 @@ MonoBehaviour:
   _name: Crystal vein
   _claimCost: 1
   _interactionButtonPopUpText: 
-  _tilePopUpText: Can be upgraded to produce Crystal
+  _tilePopUpText: Can be upgraded to produce Special Resources and bringing a reduction
+    to Entertain oriented Infrastructures and Upgrades.
   _typeIncomeUpgrade: 1
   _incomes: []
   _availableInfrastructures:

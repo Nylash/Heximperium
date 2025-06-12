@@ -719,7 +719,7 @@ MonoBehaviour:
   _tilePrefab: {fileID: 5751803865783233614, guid: 8438ded482f00494aa769242da2958cd, type: 3}
   _emptyMap: {fileID: 3026037459454811544, guid: 8e788ee934d5849459ad1a6b7658af73, type: 3}
   _mapRadius: 12
-  _predefinedMap: {fileID: 4747193272070272213, guid: 0fe84ea147587554b9824f056453a065, type: 3}
+  _predefinedMap: {fileID: 5061670543475450818, guid: b8d35aa5cacaf1f43a2b5d44de2cd90b, type: 3}
   OnMapGenerated:
     m_PersistentCalls:
       m_Calls: []
@@ -738,12 +738,7 @@ MonoBehaviour:
   _persistentSingleton: 0
   _resourceGainPrefab: {fileID: 1592618839310326476, guid: 8877b2626b274684c822c44ca64252e0, type: 3}
   _goldVFXMat: {fileID: 2100000, guid: 4494af5224e05ff45bd6a3182b886f8e, type: 2}
-  _stoneVFXMat: {fileID: 2100000, guid: c3d77015b9f6c2541a95682dcf5a38f1, type: 2}
-  _essenceVFXMat: {fileID: 2100000, guid: d9a193013e9d3b340b0c20715400742d, type: 2}
-  _horseVFXMat: {fileID: 2100000, guid: 73e51268612bb8c4783de752884abdb1, type: 2}
-  _pigmentVFXMat: {fileID: 2100000, guid: 1e4412142c5cea14ca3fc678023a694f, type: 2}
-  _crystalVFXMat: {fileID: 2100000, guid: e5d1665f444108047aa456ef01fb8a35, type: 2}
-  _emberboneVFXMat: {fileID: 2100000, guid: 689194fe8f4bd2e499f6d4a01eb23aec, type: 2}
+  _srVFXMat: {fileID: 2100000, guid: a6d2a5f51d41f094e86302fc07fae9ad, type: 2}
 --- !u!114 &1153636973
 MonoBehaviour:
   m_ObjectHideFlags: 0

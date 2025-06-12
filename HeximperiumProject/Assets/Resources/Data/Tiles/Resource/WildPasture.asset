@@ -15,7 +15,8 @@ MonoBehaviour:
   _name: Wild pasture
   _claimCost: 1
   _interactionButtonPopUpText: 
-  _tilePopUpText: Can be upgraded to produce Horse
+  _tilePopUpText: Can be upgraded to produce Special Resources and bringing a reduction
+    to Exploration oriented Infrastructures and Upgrades.
   _typeIncomeUpgrade: 1
   _incomes: []
   _availableInfrastructures:

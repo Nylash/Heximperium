@@ -18,7 +18,7 @@ MonoBehaviour:
   _tilePopUpText: Scout Starting Position
   _typeIncomeUpgrade: 0
   _incomes:
-  - resource: 6
+  - resource: 0
     value: 2
   _availableInfrastructures: []
   _specialBehaviour: {fileID: 0}
@@ -27,5 +27,5 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 12d9c27e9d004cc47ae489ea8e01ddb1, type: 2}
   _scoutStartingPoint: 1
   _costs:
-  - resource: 6
+  - resource: 0
     value: 15

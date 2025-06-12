@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 1541695655722554134}
   - component: {fileID: 5242689022248886109}
   m_Layer: 5
-  m_Name: StoneText
+  m_Name: SRText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8462,7 +8462,7 @@ GameObject:
   - component: {fileID: 3596198014081954711}
   - component: {fileID: 6351944245669323249}
   m_Layer: 5
-  m_Name: Stone
+  m_Name: SpecialResources
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9284,7 +9284,7 @@ GameObject:
   - component: {fileID: 3458180290457629811}
   - component: {fileID: 6758981248557964662}
   m_Layer: 5
-  m_Name: StoneImage
+  m_Name: SRImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9304,8 +9304,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1305732232862048595}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.1}
-  m_AnchorMax: {x: 0.45, y: 0.9}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.45, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -9337,7 +9337,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 7d2930316b1e3c1429ec03bf2d2051fe, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 389906b786b19cb459255d4a0ace8195, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -9778,13 +9778,7 @@ MonoBehaviour:
   _mainCanvas: {fileID: 2806631156848996531}
   _claimText: {fileID: 8735741183201602680}
   _goldText: {fileID: 3081298897090699328}
-  _stoneText: {fileID: 1541695655722554134}
-  _essenceText: {fileID: 6687428997265309872}
-  _horseText: {fileID: 710380627979874675}
-  _pigmentText: {fileID: 3840261857272314674}
-  _crystalText: {fileID: 7004588516580792371}
-  _emberboneText: {fileID: 5870308936638522521}
-  _scoreText: {fileID: 1451127965528549099}
+  _srText: {fileID: 1541695655722554134}
   _currentPhaseText: {fileID: 3399592720716487006}
   _confirmPhaseButtonText: {fileID: 1588121271402870833}
   _turnCounterText: {fileID: 5418171433837782113}

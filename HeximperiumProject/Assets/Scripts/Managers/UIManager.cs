@@ -11,13 +11,7 @@ public class UIManager : Singleton<UIManager>
     [Header("Resources")]
     [SerializeField] private TextMeshProUGUI _claimText;
     [SerializeField] private TextMeshProUGUI _goldText;
-    [SerializeField] private TextMeshProUGUI _stoneText;
-    [SerializeField] private TextMeshProUGUI _essenceText;
-    [SerializeField] private TextMeshProUGUI _horseText;
-    [SerializeField] private TextMeshProUGUI _pigmentText;
-    [SerializeField] private TextMeshProUGUI _crystalText;
-    [SerializeField] private TextMeshProUGUI _emberboneText;
-    [SerializeField] private TextMeshProUGUI _scoreText;
+    [SerializeField] private TextMeshProUGUI _srText;
     [Header("Phase UI")]
     [SerializeField] private TextMeshProUGUI _currentPhaseText;
     [SerializeField] private TextMeshProUGUI _confirmPhaseButtonText;
@@ -107,33 +101,13 @@ public class UIManager : Singleton<UIManager>
     {
         switch (resource)
         {
-            case Resource.Stone:
-                _stoneText.text = value.ToString();
-                break;
-            case Resource.Essence:
-                _essenceText.text = value.ToString();
-                break;
-            case Resource.Horse:
-                _horseText.text = value.ToString();
-                break;
-            case Resource.Pigment:
-                _pigmentText.text = value.ToString();
-                break;
-            case Resource.Crystal:
-                _crystalText.text = value.ToString();
-                break;
-            case Resource.Emberbone:
-                _emberboneText.text = value.ToString();
-                break;
             case Resource.Gold:
                 _goldText.text = value.ToString();
                 break;
+            case Resource.SpecialResources:
+                _srText.text = value.ToString();
+                break;
         }
-    }
-
-    public void UpdateScoreUI(int value)
-    {
-        _scoreText.text = value.ToString();
     }
     #endregion
 

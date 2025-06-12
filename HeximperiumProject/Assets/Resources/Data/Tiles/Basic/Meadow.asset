@@ -18,7 +18,7 @@ MonoBehaviour:
   _tilePopUpText: Can be upgraded with various infrastructures
   _typeIncomeUpgrade: 1
   _incomes:
-  - resource: 6
+  - resource: 0
     value: 1
   _availableInfrastructures:
   - {fileID: 11400000, guid: 2343a704b58abda4dbeead80ff882353, type: 2}

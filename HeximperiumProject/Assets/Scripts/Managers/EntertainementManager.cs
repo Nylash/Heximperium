@@ -73,7 +73,6 @@ public class EntertainementManager : Singleton<EntertainementManager>
         foreach (Entertainer item in _entertainers)
         {
             _score += item.Points;
-            UIManager.Instance.UpdateScoreUI(_score);
             Utilities.PlayResourceGainVFX(item.Tile, _pointsGainPrefab, _pointVFXMat, item.Points);
         }
         StartCoroutine(PhaseFinalized());
