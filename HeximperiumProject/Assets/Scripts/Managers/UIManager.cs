@@ -380,6 +380,11 @@ public class UIManager : Singleton<UIManager>
     #endregion
 
     #region PHASE UI
+    public void ConfirmPhase()
+    {
+        GameManager.Instance.ConfirmPhase();
+    }
+    
     private void UpdatePhaseUI()
     {
         switch (GameManager.Instance.CurrentPhase)

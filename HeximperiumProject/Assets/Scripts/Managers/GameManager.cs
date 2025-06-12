@@ -113,15 +113,13 @@ public class GameManager : Singleton<GameManager>
     //Tmp until save and game setting logic
     private void InitializeGame()
     {
-        
         if (_turnCounter == 1)
         {
-            Initializer(1);
+            Initializer();
         }
     }
 
-    //Depth will be replace by game settings and magic numbers will be replace by game settings value
-    private void Initializer(int depth)
+    private void Initializer()
     {
         Tile centralTile;
 
@@ -147,50 +145,6 @@ public class GameManager : Singleton<GameManager>
         ResourcesManager.Instance.UpdateResource(townData.Costs, Transaction.Gain);
         ExpansionManager.Instance.BuildTown(centralTile);
 
-        // Depth-specific logic
-        switch (depth)
-        {
-            case 0:
-                InitializeDepthZero();
-                break;
-            case 1:
-                InitializeDepthOne(centralTile);
-                break;
-            case 2:
-                InitializeDepthTwo(centralTile);
-                break;
-            default:
-                Debug.LogError("Unhandled depth value: " + depth);
-                break;
-        }
-    }
-
-    //Hard mode, no pre-claimed tiles except the town
-    private void InitializeDepthZero()
-    {
-        ExplorationManager.Instance.FreeScouts = 1;
-        ExpansionManager.Instance.BaseClaimPerTurn = 2;
-    }
-
-    //Medium mode, 1 ring pre-claimed
-    private void InitializeDepthOne(Tile centralTile)
-    {
-        ExplorationManager.Instance.FreeScouts = 3;
-        ExpansionManager.Instance.BaseClaimPerTurn = 4;
-
-        //Reveal the tiles without animation
-        foreach (Tile tile in centralTile.Neighbors)
-        {
-            if (!tile)
-                continue;
-            foreach (Tile t in tile.Neighbors)
-            {
-                if (!t)
-                    continue;
-                t.RevealTile(true);
-            }
-        }
-
         //Claim the tiles
         foreach (Tile tile in centralTile.Neighbors)
         {
@@ -200,56 +154,9 @@ public class GameManager : Singleton<GameManager>
             ResourcesManager.Instance.UpdateClaim(tile.TileData.ClaimCost, Transaction.Gain);
             ExpansionManager.Instance.ClaimTile(tile);
         }
-    }
 
-    //Easy mode, 2 ring pre-claimed
-    private void InitializeDepthTwo(Tile centralTile)
-    {
-        ExplorationManager.Instance.FreeScouts = 5;
-        ExpansionManager.Instance.BaseClaimPerTurn = 6;
-
-        //Reveal the tiles without animation
-        foreach (Tile tile in centralTile.Neighbors)
-        {
-            if (!tile)
-                continue;
-            foreach (Tile t in tile.Neighbors)
-            {
-                if (!t)
-                    continue;
-                t.RevealTile(true);
-                foreach (Tile item in t.Neighbors)
-                {
-                    if (!item)
-                        continue;
-                    item.RevealTile(true);
-                }
-            }
-        }
-
-        //Claim the tiles
-        foreach (Tile firstRingTile in centralTile.Neighbors)
-        {
-            if (!firstRingTile)
-                continue;
-            if (!firstRingTile.Claimed)
-            {
-                //Give the player claim for the tile
-                ResourcesManager.Instance.UpdateClaim(firstRingTile.TileData.ClaimCost, Transaction.Gain);
-                ExpansionManager.Instance.ClaimTile(firstRingTile);
-            }
-            foreach (Tile secondRingTile in firstRingTile.Neighbors)
-            {
-                if (!secondRingTile)
-                    continue;
-                if (!secondRingTile.Claimed)
-                {
-                    //Give the player claim for the tile
-                    ResourcesManager.Instance.UpdateClaim(secondRingTile.TileData.ClaimCost, Transaction.Gain);
-                    ExpansionManager.Instance.ClaimTile(secondRingTile);
-                }
-            }
-        }
+        ExplorationManager.Instance.FreeScouts = 3;
+        ExpansionManager.Instance.BaseClaimPerTurn = 4;
     }
     #endregion
 
