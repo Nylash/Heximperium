@@ -53,7 +53,8 @@ public class Scout : MonoBehaviour
 
     private void OnDestroy()
     {
-        ExplorationManager.Instance.OnPhaseFinalized.RemoveListener(CheckLifeSpan);
+        if(ExploitationManager.Instance)
+            ExplorationManager.Instance.OnPhaseFinalized.RemoveListener(CheckLifeSpan);
     }
 
     private void Start()
