@@ -12,7 +12,6 @@ public class Tile : MonoBehaviour
 
     #region VARIABLES
     //Remove the serializedField when the map creation is fixed
-    [SerializeField] private Biome _biome;
     [SerializeField] private TileData _tileData;
     [SerializeField] private Vector2 _coordinate;
     [SerializeField] private List<ResourceToIntMap> _incomes = new List<ResourceToIntMap>();
@@ -64,7 +63,6 @@ public class Tile : MonoBehaviour
     }
     public bool Claimed { get => _claimed;}
     public bool Revealed { get => _revealed;}
-    public Biome Biome { get => _biome; set => _biome = value; }
     public Tile[] Neighbors { get => _neighbors;}
     public List<Scout> Scouts { get => _scouts; set => _scouts = value; }
     public List<ResourceToIntMap> Incomes
@@ -121,18 +119,16 @@ public class Tile : MonoBehaviour
     //Change tile's visual based on the tile data
     private void UpdateVisual()
     {
-        List<Material> materials = _tileData.GetMaterials(_biome);
-
-        switch (materials.Count)
+        switch (_tileData.Visuals.Count)
         {
             case 0:
-                Debug.LogError("This tile " + _tileData + " has no material configured for this biome " + _biome);
+                Debug.LogError("This tile has no material configured");
                 break;
             case 1:
-                GetComponent<Renderer>().material = materials[0];
+                GetComponent<Renderer>().material = _tileData.Visuals[0];
                 break;
             default:
-                GetComponent<Renderer>().material = materials[UnityEngine.Random.Range(0, materials.Count)];
+                GetComponent<Renderer>().material = _tileData.Visuals[UnityEngine.Random.Range(0, _tileData.Visuals.Count)];
                 break;
         }
     }

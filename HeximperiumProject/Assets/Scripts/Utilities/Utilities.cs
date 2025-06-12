@@ -230,9 +230,4 @@ public enum EntertainerFamily
 {
     Artist, Mystic, Performer
 }
-
-public enum Biome
-{
-    Grassland, DeepForest, Mountain, Desert, Swamp, Ice
-}
 #endregion
