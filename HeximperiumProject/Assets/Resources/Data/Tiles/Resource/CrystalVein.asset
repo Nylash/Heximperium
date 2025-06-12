@@ -22,4 +22,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3d0ee4608b263f74aaa46646c1cf3360, type: 2}
   _specialBehaviour: {fileID: 0}
   _popUpPrefab: {fileID: 4713123567034353809, guid: d8f213d35ee68da42bdab236132145bb, type: 3}
-  _visuals: []
+  _visuals:
+  - {fileID: 2100000, guid: a5f8ad4525c781c468dc1d657493b063, type: 2}

@@ -10,25 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9990022dae7882f489cdaf785d5dbad0, type: 3}
-  m_Name: FloweryGlade
+  m_Name: WildPasture
   m_EditorClassIdentifier: 
-  _name: Flowery glade
+  _name: Wild pasture
   _claimCost: 1
-  _interactionText: 
-  _tilePopUpText: Can be upgraded to produce Floral essence
+  _interactionButtonPopUpText: 
+  _tilePopUpText: Can be upgraded to produce Horse
   _typeIncomeUpgrade: 1
   _incomes: []
   _availableInfrastructures:
-  - {fileID: 11400000, guid: 9b016ecb35497834ead5b522a1f2e21b, type: 2}
+  - {fileID: 11400000, guid: 032ba4dc808964e438e5f544bce99796, type: 2}
   _specialBehaviour: {fileID: 0}
   _popUpPrefab: {fileID: 4713123567034353809, guid: d8f213d35ee68da42bdab236132145bb, type: 3}
-  _biomeMaterials:
-  - biome: 0
-    materials:
-    - {fileID: 2100000, guid: b919d042ecb131e4aa9e716ff361064d, type: 2}
-  - biome: 1
-    materials:
-    - {fileID: 2100000, guid: 9cb2ca2db786ed345acc9b5c6914f915, type: 2}
-  - biome: 4
-    materials:
-    - {fileID: 2100000, guid: 90a318fc562795147bb808f0f99e7f3e, type: 2}
+  _visuals:
+  - {fileID: 2100000, guid: df7c14609d10a3a478725ba1b0ebc00e, type: 2}
