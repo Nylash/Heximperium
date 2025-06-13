@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class ExplorationManager : Singleton<ExplorationManager>
 {
     #region CONFIGURATION
+    [SerializeField] private int _baseScoutsLimit = 1;
     [SerializeField] private Transform _scoutsParent;
     [SerializeField] private GameObject _scoutPrefab;
     [SerializeField] private GameObject _scoutCounterPrefab;
@@ -16,9 +17,9 @@ public class ExplorationManager : Singleton<ExplorationManager>
     private List<Scout> _scouts = new List<Scout>();
     private List<GameObject> _buttons = new List<GameObject>();
     private List<Vector3> _interactionPositions = new List<Vector3>();
-    private int _freeScouts;
     private bool _finalizingPhase;
-
+    private int _scoutsLimit;
+    private int _currentScoutsCount;
     private Scout _currentScout;
     private bool _choosingScoutDirection;
     private Tile _tileRefForScoutDirection;
@@ -26,14 +27,33 @@ public class ExplorationManager : Singleton<ExplorationManager>
 
     #region EVENTS
     [HideInInspector] public UnityEvent OnPhaseFinalized = new UnityEvent();
+    [HideInInspector] public UnityEvent OnScoutsLimitModified = new UnityEvent();
     #endregion
 
     #region ACCESSORS
-    public int FreeScouts { get => _freeScouts; set => _freeScouts = value; }
     public bool ChoosingScoutDirection { get => _choosingScoutDirection;}
     public GameObject ScoutCounterPrefab { get => _scoutCounterPrefab;}
     public float AwaitTimeScoutMovement { get => _awaitTimeScoutMovement;}
     public List<Scout> Scouts { get => _scouts;}
+    public int ScoutsLimit
+    {
+        get => _scoutsLimit;
+        set
+        {
+            _scoutsLimit = value;
+            OnScoutsLimitModified.Invoke();
+        }
+    }
+
+    public int CurrentScoutsCount
+    {
+        get => _currentScoutsCount;
+        set
+        {
+            _currentScoutsCount = value;
+            OnScoutsLimitModified.Invoke();
+        }
+    }
     #endregion
 
     protected override void OnAwake()
@@ -42,6 +62,8 @@ public class ExplorationManager : Singleton<ExplorationManager>
         GameManager.Instance.OnExplorationPhaseEnded.AddListener(ConfirmPhase);
         GameManager.Instance.OnNewTileSelected.AddListener(NewTileSelected);
         GameManager.Instance.OnTileUnselected.AddListener(TileUnselected);
+
+        ScoutsLimit = _baseScoutsLimit;
     }
 
     private void Update()
@@ -119,18 +141,14 @@ public class ExplorationManager : Singleton<ExplorationManager>
     #region INTERACTION
     public void SpawnScout(Tile tile, UnitData data)
     {
-        if(ResourcesManager.Instance.CanAfford(data.Costs) || _freeScouts != 0)
+        if(_scouts.Count < _scoutsLimit)
         {
-            if (_freeScouts != 0)
-                _freeScouts--;
-            else
-                ResourcesManager.Instance.UpdateResource(data.Costs, Transaction.Spent);
-
             _currentScout = Instantiate(_scoutPrefab, 
                 tile.transform.position + _scoutPrefab.transform.localPosition,
                 _scoutPrefab.transform.rotation, _scoutsParent).GetComponent<Scout>();
             _currentScout.CurrentTile = tile;
             _scouts.Add(_currentScout);
+            CurrentScoutsCount++;
             tile.Scouts.Add(_currentScout);
             _tileRefForScoutDirection = tile;
             tile.UpdateScoutCounter();

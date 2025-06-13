@@ -155,7 +155,6 @@ public class GameManager : Singleton<GameManager>
             ExpansionManager.Instance.ClaimTile(tile);
         }
 
-        ExplorationManager.Instance.FreeScouts = 3;
         ExpansionManager.Instance.BaseClaimPerTurn = 4;
     }
     #endregion

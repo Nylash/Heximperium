@@ -118,7 +118,7 @@ MonoBehaviour:
   _speedText: {fileID: 2637438013323553892}
   _radiusText: {fileID: 7545465693011293361}
   _lifespanText: {fileID: 2755529407254114618}
-  _costText: {fileID: 3636722456102368371}
+  _limitText: {fileID: 3636722456102368371}
 --- !u!1 &1923243465635564989
 GameObject:
   m_ObjectHideFlags: 0
@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 1896888131078577702}
   - component: {fileID: 3636722456102368371}
   m_Layer: 5
-  m_Name: Cost
+  m_Name: Limit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -184,7 +184,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Remaining free scout : 3'
+  m_text: 'Scouts limit : '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -211,7 +211,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 19.4
+  m_fontSize: 20.65
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

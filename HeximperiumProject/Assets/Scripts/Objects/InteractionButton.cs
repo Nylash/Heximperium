@@ -107,7 +107,7 @@ public class InteractionButton : MonoBehaviour
     private void InitializeScout()
     {
         _unitData = Resources.Load<ScoutData>(PATH_DATA_UNIT + Interaction.Scout.ToString());
-        if (!ResourcesManager.Instance.CanAfford(_unitData.Costs) && ExplorationManager.Instance.FreeScouts == 0)
+        if (ExplorationManager.Instance.CurrentScoutsCount >= ExplorationManager.Instance.ScoutsLimit)
             _renderer.color = UIManager.Instance.ColorCantAfford;
         LoadSprite(Interaction.Scout.ToString());
     }

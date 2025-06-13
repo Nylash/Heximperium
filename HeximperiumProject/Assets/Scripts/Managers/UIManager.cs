@@ -79,6 +79,8 @@ public class UIManager : Singleton<UIManager>
         GameManager.Instance.OnExplorationPhaseStarted.AddListener(ForceScoutsToShow);
 
         GameManager.Instance.OnGameFinished.AddListener(GameFinished);
+
+        ExplorationManager.Instance.OnScoutsLimitModified.AddListener(UpdateScoutLimit);
     }
 
     private void Start()
@@ -88,6 +90,11 @@ public class UIManager : Singleton<UIManager>
 }
 
     #region RESOURCES BAR UI
+    private void UpdateScoutLimit()
+    {
+        _scoutsLimitText.text = ExplorationManager.Instance.CurrentScoutsCount + "/" + ExplorationManager.Instance.ScoutsLimit;
+    }
+
     public void UpdateClaimUI(int value)
     {
         _claimText.text = value.ToString();

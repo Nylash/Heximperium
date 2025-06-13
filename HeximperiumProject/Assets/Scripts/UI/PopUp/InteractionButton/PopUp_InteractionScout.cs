@@ -6,7 +6,7 @@ public class PopUp_InteractionScout : UI_DynamicPopUp
     [SerializeField] private TextMeshProUGUI _speedText;
     [SerializeField] private TextMeshProUGUI _radiusText;
     [SerializeField] private TextMeshProUGUI _lifespanText;
-    [SerializeField] private TextMeshProUGUI _costText;
+    [SerializeField] private TextMeshProUGUI _limitText;
 
     private InteractionButton _associatedButton;
 
@@ -25,15 +25,9 @@ public class PopUp_InteractionScout : UI_DynamicPopUp
             _speedText.text += scoutData.Speed;
             _radiusText.text += scoutData.RevealRadius;
             _lifespanText.text += scoutData.Lifespan + " turns";
-            if (ExplorationManager.Instance.FreeScouts > 0)
-                _costText.text = "Remaining free scouts : " + ExplorationManager.Instance.FreeScouts;
-            else
-            {
-                if (!ResourcesManager.Instance.CanAfford(scoutData.Costs))
-                    _costText.color = UIManager.Instance.ColorCantAfford;
-                _costText.text = "Cost : " + scoutData.Costs[0].value + " " + scoutData.Costs[0].resource.ToCustomString();
-            }
-                
+            if (ExplorationManager.Instance.CurrentScoutsCount >= ExplorationManager.Instance.ScoutsLimit)
+                _limitText.color = UIManager.Instance.ColorCantAfford;
+            _limitText.text += ExplorationManager.Instance.CurrentScoutsCount + "/" + ExplorationManager.Instance.ScoutsLimit;
         }
         else
         {

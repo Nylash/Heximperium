@@ -108,6 +108,7 @@ public class Scout : MonoBehaviour
         if (_lifespan <= 0)
         {
             ExplorationManager.Instance.Scouts.Remove(this);
+            ExplorationManager.Instance.CurrentScoutsCount--;
             if(_currentTile != null)
             {
                 _currentTile.Scouts.Remove(this);
