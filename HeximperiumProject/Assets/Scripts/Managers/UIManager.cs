@@ -46,11 +46,6 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject _menu;
     [SerializeField] private GameObject _endMenu;
     [SerializeField] private TextMeshProUGUI _endScore;
-    [Header("Tutorial")]
-    [SerializeField] private GameObject _exploTuto;
-    [SerializeField] private GameObject _expandTuto;
-    [SerializeField] private GameObject _exploitTuto;
-    [SerializeField] private GameObject _entertainTuto;
     #endregion
 
     #region VARIABLES
@@ -339,12 +334,6 @@ public class UIManager : Singleton<UIManager>
                 EnableRenderers(_popUpEntertainPhase.gameObject, false);
                 EnableRenderers(_popUpExploPhase.gameObject, true);
                 _popUpExploPhase.SetTrigger("PopUp");
-                //TMP
-                if (_entertainTuto)
-                {
-                    if (_entertainTuto.activeSelf)
-                        Destroy(_entertainTuto);
-                }  
                 break;
             case Phase.Expand:
                 _currentPhaseText.text = "Expand";
@@ -354,11 +343,6 @@ public class UIManager : Singleton<UIManager>
                 EnableRenderers(_popUpExploPhase.gameObject, false);
                 EnableRenderers(_popUpExpandPhase.gameObject, true);
                 _popUpExpandPhase.SetTrigger("PopUp");
-                //TMP
-                if (_exploTuto)
-                    Destroy(_exploTuto);
-                if (_expandTuto)
-                    _expandTuto.SetActive(true);
                 break;
             case Phase.Exploit:
                 _currentPhaseText.text = "Exploit";
@@ -368,11 +352,6 @@ public class UIManager : Singleton<UIManager>
                 EnableRenderers(_popUpExpandPhase.gameObject, false);
                 EnableRenderers(_popUpExploitPhase.gameObject, true);
                 _popUpExploitPhase.SetTrigger("PopUp");
-                //TMP
-                if (_expandTuto)
-                    Destroy(_expandTuto);
-                if (_exploitTuto)
-                    _exploitTuto.SetActive(true);
                 break;
             case Phase.Entertain:
                 _currentPhaseText.text = "Entertain";
@@ -382,11 +361,6 @@ public class UIManager : Singleton<UIManager>
                 EnableRenderers(_popUpExploitPhase.gameObject, false);
                 EnableRenderers(_popUpEntertainPhase.gameObject, true);
                 _popUpEntertainPhase.SetTrigger("PopUp");
-                //TMP
-                if (_exploitTuto)
-                    Destroy(_exploitTuto);
-                if (_entertainTuto)
-                    _entertainTuto.SetActive(true);
                 break;
         }
     }
