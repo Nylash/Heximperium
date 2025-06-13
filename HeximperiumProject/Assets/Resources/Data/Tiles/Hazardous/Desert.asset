@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Desert
   m_EditorClassIdentifier: 
   _name: Desert
-  _claimCost: 3
+  _claimCost: 2
   _interactionButtonPopUpText: 
   _tilePopUpText: Slow down scouts and cannot be upgraded
   _typeIncomeUpgrade: 1
