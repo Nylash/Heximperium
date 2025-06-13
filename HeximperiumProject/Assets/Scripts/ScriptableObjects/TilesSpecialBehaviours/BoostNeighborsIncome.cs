@@ -58,7 +58,7 @@ public class BoostNeighborsIncome : SpecialBehaviour
                 continue;
             if (neighbor.TileData == _infrastructureBoosted)
             {
-                neighbor.BoostHighlight(show);
+                neighbor.Highlight(show);
             }
         }
     }

@@ -92,12 +92,29 @@ public class ExplorationManager : Singleton<ExplorationManager>
     #region PHASE LOGIC
     private void StartPhase()
     {
-
+        foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
+        {
+            if(tile.TileData is InfrastructureData data)
+            {
+                if (data.ScoutStartingPoint)
+                    tile.Highlight(true);
+            }
+        }
     }
 
     private void ConfirmPhase()
     {
         _finalizingPhase = true;
+
+        foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
+        {
+            if (tile.TileData is InfrastructureData data)
+            {
+                if (data.ScoutStartingPoint)
+                    tile.Highlight(false);
+            }
+        }
+
         foreach (Scout scout in _scouts)
         {
             StartCoroutine(scout.Move());

@@ -62,7 +62,7 @@ public class EntertainersBoosting : SpecialBehaviour
         if (behaviourTile.Entertainer)
         {
             if (_boostedFamilies.Contains(behaviourTile.Entertainer.EntertainerData.Family))
-                behaviourTile.BoostHighlight(show);
+                behaviourTile.Highlight(show);
         }
         foreach (Tile neighbor in behaviourTile.Neighbors)
         {
@@ -71,7 +71,7 @@ public class EntertainersBoosting : SpecialBehaviour
             if (!neighbor.Entertainer)
                 continue;
             if (_boostedFamilies.Contains(neighbor.Entertainer.EntertainerData.Family))
-                neighbor.BoostHighlight(show);
+                neighbor.Highlight(show);
         }
     }
 }

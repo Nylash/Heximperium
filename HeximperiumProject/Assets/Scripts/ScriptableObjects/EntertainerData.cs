@@ -25,7 +25,7 @@ public class EntertainerData : ScriptableObject
             if (!neighbor.Entertainer)
                 continue;
             if (_synergies.Contains(neighbor.Entertainer.EntertainerData.EntertainerType))
-                neighbor.BoostHighlight(show);
+                neighbor.Highlight(show);
         }
     }
 }

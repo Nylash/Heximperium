@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c20349d8d616c3346a7ff03f4a174fca, type: 3}
   m_Name: VillageBehaviour
   m_EditorClassIdentifier: 
-  _resource: 6
+  _resource: 0
   _excludedInfra:
   - {fileID: 11400000, guid: 758e0bfcbc1c85b4f8d4064dfc028b50, type: 2}

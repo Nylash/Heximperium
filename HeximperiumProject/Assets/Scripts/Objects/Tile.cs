@@ -7,7 +7,7 @@ public class Tile : MonoBehaviour
 {
     #region CONFIGURATION
     [SerializeField] private GameObject _borderPrefab;
-    [SerializeField] private GameObject _highlightBoostPrefab;
+    [SerializeField] private GameObject _highlightPrefab;
     #endregion
 
     #region VARIABLES
@@ -25,7 +25,7 @@ public class Tile : MonoBehaviour
     private List<Scout> _scouts = new List<Scout>();
     private TextMeshPro _scoutCounter;
     private Entertainer _entertainer;
-    private GameObject _highlightBoostObject;
+    private GameObject _highlightObject;
     #endregion
 
     #region EVENTS
@@ -126,12 +126,12 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public void BoostHighlight(bool show)
+    public void Highlight(bool show)
     {
         if (show)
-            _highlightBoostObject = Instantiate(_highlightBoostPrefab, transform.position + new Vector3(0, 0.02f, 0), Quaternion.identity);
+            _highlightObject = Instantiate(_highlightPrefab, transform.position + new Vector3(0, 0.02f, 0), Quaternion.identity);
         else
-            Destroy(_highlightBoostObject);
+            Destroy(_highlightObject);
     }
 
     #region NEIGHBORS LOGIC

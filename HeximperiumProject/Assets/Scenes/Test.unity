@@ -650,7 +650,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
-  _highlighPrefab: {fileID: 5751803865783233614, guid: e580acc5ac7c8134c89770f42897a51d, type: 3}
+  _selectionPrefab: {fileID: 5751803865783233614, guid: e580acc5ac7c8134c89770f42897a51d, type: 3}
   _interactionPrefab: {fileID: 4147331800932434178, guid: 2d0a51e95c38cdf408da2ba934e55be2, type: 3}
   OnNewTurn:
     m_PersistentCalls:
@@ -812,11 +812,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
+  _baseScoutsLimit: 1
   _scoutsParent: {fileID: 1914034364}
   _scoutPrefab: {fileID: 5066032661868510455, guid: 6df47c3f9f6c2a247be0ff0800c84d61, type: 3}
   _scoutCounterPrefab: {fileID: 1835970567070459480, guid: 53d981b0fda10094ca17866fb80ecf99, type: 3}
   _awaitTimeScoutMovement: 1
   OnPhaseFinalized:
+    m_PersistentCalls:
+      m_Calls: []
+  OnScoutsLimitModified:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1586287180

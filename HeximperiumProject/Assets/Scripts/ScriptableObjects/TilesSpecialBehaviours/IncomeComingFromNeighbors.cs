@@ -106,7 +106,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
                 foreach (ResourceToIntMap item in neighbor.Incomes)
                 {
                     if (item.resource == _resource)
-                        neighbor.BoostHighlight(show);
+                        neighbor.Highlight(show);
                 }
             }
         }

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: WindmillBehaviour
   m_EditorClassIdentifier: 
   _incomeBoost:
-  - resource: 6
+  - resource: 0
     value: 2
   _infrastructureBoosted: {fileID: 11400000, guid: 2343a704b58abda4dbeead80ff882353, type: 2}

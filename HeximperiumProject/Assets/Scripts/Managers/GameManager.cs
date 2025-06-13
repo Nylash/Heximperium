@@ -9,6 +9,11 @@ public class GameManager : Singleton<GameManager>
     private const int TURN_LIMIT = 20;
     #endregion
 
+    #region CONFIGURATION
+    [SerializeField] private GameObject _selectionPrefab;
+    [SerializeField] private GameObject _interactionPrefab;
+    #endregion
+
     #region VARIABLES
     private InputSystem_Actions _inputActions;
 
@@ -18,9 +23,7 @@ public class GameManager : Singleton<GameManager>
     private Tile _selectedTile;
     private Tile _previousSelectedTile;
     private bool _isPointerOverUI;
-    private GameObject _highlightObject;
-    [SerializeField] private GameObject _highlighPrefab;
-    [SerializeField] private GameObject _interactionPrefab;
+    private GameObject _selectionObject;
 
     private bool _waitingPhaseFinalization;
     private Phase _currentPhase;
@@ -72,16 +75,7 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-        //Tmp
-        //Replace it by save logic
-        if (_currentPhase != Phase.Explore)
-        {
-            _currentPhase = Phase.Explore;
-        }
 
-        OnExplorationPhaseStarted.Invoke();
-
-        _turnCounter = 1;
     }
 
     private void Update()
@@ -113,10 +107,16 @@ public class GameManager : Singleton<GameManager>
     //Tmp until save and game setting logic
     private void InitializeGame()
     {
-        if (_turnCounter == 1)
+        Initializer();
+
+        if (_currentPhase != Phase.Explore)
         {
-            Initializer();
+            _currentPhase = Phase.Explore;
         }
+
+        OnExplorationPhaseStarted.Invoke();
+
+        _turnCounter = 1;
     }
 
     private void Initializer()
@@ -172,7 +172,7 @@ public class GameManager : Singleton<GameManager>
         //If a tile was selected we unselect it
         if (_selectedTile)
         {
-            Destroy(_highlightObject);
+            Destroy(_selectionObject);
             OnTileUnselected.Invoke();
         }
 
@@ -215,7 +215,7 @@ public class GameManager : Singleton<GameManager>
         }
 
         //Spawn highlight and call event
-        _highlightObject = Instantiate(_highlighPrefab, _selectedTile.transform.position + new Vector3(0, 0.01f, 0), Quaternion.identity);
+        _selectionObject = Instantiate(_selectionPrefab, _selectedTile.transform.position + new Vector3(0, 0.01f, 0), Quaternion.identity);
         OnNewTileSelected.Invoke(_selectedTile);
     }
 
