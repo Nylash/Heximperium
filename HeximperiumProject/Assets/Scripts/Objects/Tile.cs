@@ -91,13 +91,6 @@ public class Tile : MonoBehaviour
         OnTileClaimed.Invoke(this);
         _border = Instantiate(_borderPrefab, transform.position, Quaternion.identity).GetComponent<Border>();
         _border.transform.parent = ExpansionManager.Instance.BorderParent;
-        foreach (Tile neighbor in _neighbors) 
-        {
-            if (!neighbor)
-                continue;
-            if (!neighbor.Revealed)
-                neighbor.RevealTile(false);
-        }
     }
 
     //Reveal the tile, with or without the flipping animation

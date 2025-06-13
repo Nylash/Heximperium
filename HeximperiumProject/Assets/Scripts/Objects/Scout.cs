@@ -51,12 +51,6 @@ public class Scout : MonoBehaviour
         ExplorationManager.Instance.OnPhaseFinalized.AddListener(CheckLifeSpan);
     }
 
-    private void OnDestroy()
-    {
-        if(ExploitationManager.Instance)
-            ExplorationManager.Instance.OnPhaseFinalized.RemoveListener(CheckLifeSpan);
-    }
-
     private void Start()
     {
         _animator = GetComponent<Animator>();
@@ -119,6 +113,7 @@ public class Scout : MonoBehaviour
                 _currentTile.Scouts.Remove(this);
                 _currentTile.UpdateScoutCounter();
             }
+            ExplorationManager.Instance.OnPhaseFinalized.RemoveListener(CheckLifeSpan);
             Destroy(gameObject);
         }
     }
