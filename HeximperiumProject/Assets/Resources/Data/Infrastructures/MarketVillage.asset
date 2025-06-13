@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e0e460f401a6ce44ad84d3534c37a05, type: 3}
-  m_Name: Shrine
+  m_Name: MarketVillage
   m_EditorClassIdentifier: 
-  _name: Shrine
+  _name: Market Village
   _claimCost: 0
-  _interactionButtonPopUpText: +1 Gold to surrounding claimed tiles
-  _tilePopUpText: +1 Gold to surrounding claimed tiles
+  _interactionButtonPopUpText: +6 Gold for each unique Infrastructure adjacent
+  _tilePopUpText: +6 Gold for each unique Infrastructure adjacent
   _typeIncomeUpgrade: 0
   _incomes: []
-  _availableInfrastructures:
-  - {fileID: 11400000, guid: 0da4e697cd92ec5468171ae0cf2590e3, type: 2}
-  - {fileID: 11400000, guid: 08209c03bce374449941d042d6de6197, type: 2}
-  _specialBehaviour: {fileID: 0}
+  _availableInfrastructures: []
+  _specialBehaviour: {fileID: 11400000, guid: 76410f1dec70a074289e3002308e9c1d, type: 2}
   _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
   _visuals:
-  - {fileID: 2100000, guid: 649b93ed111fa8646a9dfed0d552cb29, type: 2}
+  - {fileID: 2100000, guid: 7b679046be7ff704482a3f1301fd2fe4, type: 2}
   _scoutStartingPoint: 0
   _costs:
   - resource: 0
+    value: 10
+  - resource: 1
     value: 15

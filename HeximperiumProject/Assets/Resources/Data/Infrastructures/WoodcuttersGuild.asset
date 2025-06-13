@@ -18,7 +18,9 @@ MonoBehaviour:
   _tilePopUpText: +2 Gold per Lumber Camp in the empire
   _typeIncomeUpgrade: 0
   _incomes: []
-  _availableInfrastructures: []
+  _availableInfrastructures:
+  - {fileID: 11400000, guid: b7dd9d4ec1130ba4dad2e0adc871e20a, type: 2}
+  - {fileID: 11400000, guid: 5fdc6f2a97fa9af49bf9e7a325beb33f, type: 2}
   _specialBehaviour: {fileID: 0}
   _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
   _visuals:

@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: WaystoneChapel
+  m_Name: SettlersGuild
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 2100000, guid: 3b9a196579484324d8c53d0c1cf97849, type: 2}
   m_ModifiedSerializedProperties: 0
@@ -26,11 +26,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 1ac8aa6c6ae34d7418f7505de99dfd29, type: 3}
+        m_Texture: {fileID: 2800000, guid: 97efb3e0d32b2604cb86a467bd98b64d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 1ac8aa6c6ae34d7418f7505de99dfd29, type: 3}
+        m_Texture: {fileID: 2800000, guid: 97efb3e0d32b2604cb86a467bd98b64d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
