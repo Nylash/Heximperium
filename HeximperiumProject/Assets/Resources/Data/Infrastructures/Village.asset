@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Village
   _claimCost: 0
-  _interactionButtonPopUpText: +X Gold (X is equal to the sum of adjacent tiles'
-    gold income)
+  _interactionButtonPopUpText: +X Gold (X equal the sum of the income of adjacent
+    tiles, except other Villages)
   _tilePopUpText: Gold income is equal to the sum of adjacent tiles' gold income
+    (except other Villages)
   _typeIncomeUpgrade: 1
   _incomes: []
   _availableInfrastructures: []
@@ -27,4 +28,4 @@ MonoBehaviour:
   _scoutStartingPoint: 0
   _costs:
   - resource: 0
-    value: 50
+    value: 40
