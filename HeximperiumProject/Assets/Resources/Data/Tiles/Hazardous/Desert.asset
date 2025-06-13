@@ -15,7 +15,7 @@ MonoBehaviour:
   _name: Desert
   _claimCost: 2
   _interactionButtonPopUpText: 
-  _tilePopUpText: Slow down scouts and cannot be upgraded
+  _tilePopUpText: Can be enhanced only with a basic infrastructure.
   _typeIncomeUpgrade: 1
   _incomes: []
   _availableInfrastructures: []

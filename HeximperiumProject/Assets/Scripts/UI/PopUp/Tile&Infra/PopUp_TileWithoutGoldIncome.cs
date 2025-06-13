@@ -18,11 +18,17 @@ public class PopUp_TileWithoutGoldIncome : UI_DynamicPopUp
     private void InitializePopUp(Tile tile)
     {
         _nameText.text = tile.TileData.TileName;
-        _effectText.text = tile.TileData.TilePopUpText;
 
         if (tile.Claimed)
+        {
+            _effectText.text = tile.TileData.TilePopUpText;
             _claimText.text = "Tile claimed";
+        }
+            
         else
+        {
+            _effectText.text = "Slows down scouts until the tile is claimed & " + tile.TileData.TilePopUpText;
             _claimText.text = "Claim cost : " + tile.TileData.ClaimCost.ToString();
+        }    
     }
 }

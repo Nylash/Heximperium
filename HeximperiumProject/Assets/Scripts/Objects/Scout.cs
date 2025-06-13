@@ -83,7 +83,7 @@ public class Scout : MonoBehaviour
             _currentTile.Scouts.Add(this);
             transform.position = _currentTile.transform.position + new Vector3(0,_yOffset,0);
 
-            if (_currentTile.TileData is HazardousTileData) 
+            if (_currentTile.TileData is HazardousTileData && !_currentTile.Claimed) 
                i++;              
 
             //Reveal recursively
