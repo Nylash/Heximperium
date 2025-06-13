@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/Scout")]
-public class ScoutData : UnitData
+public class ScoutData : ScriptableObject
 {
     [SerializeField] private int _speed;
     [SerializeField] private int _lifespan;

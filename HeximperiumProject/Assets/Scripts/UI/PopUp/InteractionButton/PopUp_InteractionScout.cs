@@ -20,19 +20,12 @@ public class PopUp_InteractionScout : UI_DynamicPopUp
 
     private void InitializePopUp(InteractionButton button)
     {
-        if (button.UnitData is ScoutData scoutData)
-        {
-            _speedText.text += scoutData.Speed;
-            _radiusText.text += scoutData.RevealRadius;
-            _lifespanText.text += scoutData.Lifespan + " turns";
-            if (ExplorationManager.Instance.CurrentScoutsCount >= ExplorationManager.Instance.ScoutsLimit)
-                _limitText.color = UIManager.Instance.ColorCantAfford;
-            _limitText.text += ExplorationManager.Instance.CurrentScoutsCount + "/" + ExplorationManager.Instance.ScoutsLimit;
-        }
-        else
-        {
-            Debug.LogError("UnitData is not of type ScoutData");
-        }
+        _speedText.text += button.ScoutData.Speed;
+        _radiusText.text += button.ScoutData.RevealRadius;
+        _lifespanText.text += button.ScoutData.Lifespan + " turns";
+        if (ExplorationManager.Instance.CurrentScoutsCount >= ExplorationManager.Instance.ScoutsLimit)
+            _limitText.color = UIManager.Instance.ColorCantAfford;
+        _limitText.text += ExplorationManager.Instance.CurrentScoutsCount + "/" + ExplorationManager.Instance.ScoutsLimit;
 
         //Fade out interaction buttons and spawn a clone on the tile where the interaction will be
         GameManager.Instance.InteractionButtonsFade(true);

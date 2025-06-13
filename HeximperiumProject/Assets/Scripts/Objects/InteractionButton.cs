@@ -26,7 +26,8 @@ public class InteractionButton : MonoBehaviour
     private Interaction _interaction;
     private Tile _associatedTile;
     private InfrastructureData _infraData;
-    private UnitData _unitData;
+    private ScoutData _scoutData;
+    private EntertainerData _unitData;
     private Animator _animator;
     private GameObject _highlightedClone;
     #endregion
@@ -35,7 +36,8 @@ public class InteractionButton : MonoBehaviour
     public Interaction Interaction { get => _interaction;}
     public Tile AssociatedTile { get => _associatedTile;}
     public InfrastructureData InfrastructureData { get => _infraData;}
-    public UnitData UnitData { get => _unitData;}
+    public EntertainerData UnitData { get => _unitData;}
+    public ScoutData ScoutData { get => _scoutData;}
     #endregion
 
     private void Awake()
@@ -106,7 +108,7 @@ public class InteractionButton : MonoBehaviour
 
     private void InitializeScout()
     {
-        _unitData = Resources.Load<ScoutData>(PATH_DATA_UNIT + Interaction.Scout.ToString());
+        _scoutData = Resources.Load<ScoutData>(PATH_DATA_UNIT + Interaction.Scout.ToString());
         if (ExplorationManager.Instance.CurrentScoutsCount >= ExplorationManager.Instance.ScoutsLimit)
             _renderer.color = UIManager.Instance.ColorCantAfford;
         LoadSprite(Interaction.Scout.ToString());

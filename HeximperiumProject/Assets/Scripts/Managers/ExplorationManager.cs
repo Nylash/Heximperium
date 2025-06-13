@@ -139,7 +139,7 @@ public class ExplorationManager : Singleton<ExplorationManager>
     #endregion
 
     #region INTERACTION
-    public void SpawnScout(Tile tile, UnitData data)
+    public void SpawnScout(Tile tile, ScoutData data)
     {
         if(_scouts.Count < _scoutsLimit)
         {

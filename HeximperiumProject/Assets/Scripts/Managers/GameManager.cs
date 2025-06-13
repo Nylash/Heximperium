@@ -231,7 +231,7 @@ public class GameManager : Singleton<GameManager>
                 ExpansionManager.Instance.BuildTown(button.AssociatedTile);
                 break;
             case Interaction.Scout:
-                ExplorationManager.Instance.SpawnScout(button.AssociatedTile, button.UnitData);
+                ExplorationManager.Instance.SpawnScout(button.AssociatedTile, button.ScoutData);
                 break;
             case Interaction.Infrastructure:
                 ExploitationManager.Instance.BuildInfrastructure(button.AssociatedTile, button.InfrastructureData);
@@ -243,7 +243,7 @@ public class GameManager : Singleton<GameManager>
                     EntertainementManager.Instance.DestroyEntertainer(button.AssociatedTile);
                     break;
             case Interaction.Entertainer:
-                EntertainementManager.Instance.SpawnEntertainer(button.AssociatedTile, button.UnitData as EntertainerData);
+                EntertainementManager.Instance.SpawnEntertainer(button.AssociatedTile, button.UnitData);
                 break;
             default: 
                 Debug.LogError("This interaction is not handle : " +  button.Interaction);
