@@ -30,3 +30,4 @@ MonoBehaviour:
     value: 30
   - resource: 1
     value: 20
+  _associatedSystem: 2

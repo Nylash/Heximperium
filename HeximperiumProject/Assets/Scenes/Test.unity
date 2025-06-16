@@ -797,6 +797,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
+  _townData: {fileID: 11400000, guid: c09b5b1323b68174bad1aea52735ddcc, type: 2}
   _borderParent: {fileID: 1586287181}
   OnPhaseFinalized:
     m_PersistentCalls:
@@ -814,6 +815,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
+  _scoutData: {fileID: 11400000, guid: 6a1ce0d97c28e3841a7d3617eefff6a5, type: 2}
   _baseScoutsLimit: 1
   _scoutsParent: {fileID: 1914034364}
   _scoutPrefab: {fileID: 5066032661868510455, guid: 6df47c3f9f6c2a247be0ff0800c84d61, type: 3}

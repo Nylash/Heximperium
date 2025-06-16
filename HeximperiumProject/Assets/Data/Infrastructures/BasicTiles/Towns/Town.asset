@@ -27,3 +27,4 @@ MonoBehaviour:
   _costs:
   - resource: 0
     value: 100
+  _associatedSystem: 4

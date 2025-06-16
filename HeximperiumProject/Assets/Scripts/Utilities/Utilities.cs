@@ -79,7 +79,7 @@ public static class Utilities
     }
 
     //Merge two List<ResourceToIntMap>
-    public static List<ResourceToIntMap> MergeResourceValues(List<ResourceToIntMap> list1, List<ResourceToIntMap> list2)
+    public static List<ResourceToIntMap> MergeResourceToIntMaps(List<ResourceToIntMap> list1, List<ResourceToIntMap> list2)
     {
         var mergedDictionary = new Dictionary<Resource, int>();
 
@@ -166,7 +166,7 @@ public static class Utilities
     }
 
     //Subtract a by b and return the resulting List<ResourceToIntMap>
-    public static List<ResourceToIntMap> SubtractResourceValues(List<ResourceToIntMap> a, List<ResourceToIntMap> b)
+    public static List<ResourceToIntMap> SubtractResourceToIntMaps(List<ResourceToIntMap> a, List<ResourceToIntMap> b)
     {
         var result = new Dictionary<Resource, int>();
 
@@ -180,6 +180,12 @@ public static class Utilities
             .Where(kvp => kvp.Value != 0)
             .Select(kvp => new ResourceToIntMap(kvp.Key, kvp.Value))
             .ToList();
+    }
+
+    //Clone a List<ResourceToIntMap>
+    public static List<ResourceToIntMap> CloneResourceToIntMap(List<ResourceToIntMap> original)
+    {
+        return original.Select(item => new ResourceToIntMap(item.resource, item.value)).ToList();
     }
 }
 

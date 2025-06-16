@@ -6,7 +6,22 @@ public class InfrastructureData : TileData
 {
     [SerializeField] private bool _scoutStartingPoint;
     [SerializeField] private List<ResourceToIntMap> _costs = new List<ResourceToIntMap>();
+    [SerializeField] private Phase _associatedSystem = Phase.None;
 
     public bool ScoutStartingPoint { get => _scoutStartingPoint; }
-    public List<ResourceToIntMap> Costs { get => _costs; }
+    public List<ResourceToIntMap> Costs 
+    { 
+        get
+        {
+            if(_associatedSystem == Phase.None)
+                return _costs;
+            List<ResourceToIntMap> reductedCost = Utilities.CloneResourceToIntMap(_costs);
+            foreach (ResourceToIntMap item in reductedCost)
+            {
+                if (item.resource == Resource.SpecialResources)
+                    item.value -= ResourcesManager.Instance.GetSRReduction(_associatedSystem);
+            }
+            return reductedCost;
+        }   
+    }
 }

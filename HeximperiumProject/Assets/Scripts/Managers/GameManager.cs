@@ -137,7 +137,6 @@ public class GameManager : Singleton<GameManager>
                 continue;
             tile.RevealTile(true);
         }
-            
 
         //Give the player resources for the initial town 
         InfrastructureData townData = ExpansionManager.Instance.TownData;

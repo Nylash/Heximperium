@@ -45,7 +45,7 @@ public class Tile : MonoBehaviour
 
             //Set the new income
             if (value.TypeIncomeUpgrade == TypeIncomeUpgrade.Merge)
-                Incomes = Utilities.MergeResourceValues(_incomes, value.Incomes);
+                Incomes = Utilities.MergeResourceToIntMaps(_incomes, value.Incomes);
             else
                 Incomes = value.Incomes;
 

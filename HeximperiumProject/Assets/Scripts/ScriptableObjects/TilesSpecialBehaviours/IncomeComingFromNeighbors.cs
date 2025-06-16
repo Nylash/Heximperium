@@ -40,7 +40,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
                         income.Add(new ResourceToIntMap(_resource, item.value));
                 }
 
-                behaviourTile.Incomes = Utilities.MergeResourceValues(behaviourTile.Incomes, income);
+                behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, income);
             }
         }
     }
@@ -73,12 +73,12 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
         }
 
         // Apply delta (newIncome - previousIncome)
-        behaviourTile.Incomes = Utilities.MergeResourceValues(behaviourTile.Incomes, Utilities.SubtractResourceValues(newIncome, previousIncome));
+        behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, Utilities.SubtractResourceToIntMaps(newIncome, previousIncome));
     }
 
     public void AddClaimedTileIncome(Tile behaviourTile, Tile tile)
     {
-        behaviourTile.Incomes = Utilities.MergeResourceValues(behaviourTile.Incomes, tile.Incomes);
+        behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, tile.Incomes);
     }
 
     public override void HighlightImpactedTile(Tile behaviourTile, bool show)

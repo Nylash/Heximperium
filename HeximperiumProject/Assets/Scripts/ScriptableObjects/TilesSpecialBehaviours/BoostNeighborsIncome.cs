@@ -16,7 +16,7 @@ public class BoostNeighborsIncome : SpecialBehaviour
                 continue;
             if (_infrastructuresBoosted.Contains(neighbor.TileData as InfrastructureData))
             {
-                neighbor.Incomes = Utilities.MergeResourceValues(neighbor.Incomes, _incomeBoost);
+                neighbor.Incomes = Utilities.MergeResourceToIntMaps(neighbor.Incomes, _incomeBoost);
             }
         }
     }
@@ -26,7 +26,7 @@ public class BoostNeighborsIncome : SpecialBehaviour
     {
         if(_infrastructuresBoosted.Contains(specificTile.TileData as InfrastructureData))
         {
-            specificTile.Incomes = Utilities.MergeResourceValues(specificTile.Incomes, _incomeBoost);
+            specificTile.Incomes = Utilities.MergeResourceToIntMaps(specificTile.Incomes, _incomeBoost);
         }
     }
 
@@ -39,7 +39,7 @@ public class BoostNeighborsIncome : SpecialBehaviour
                 continue;
             if (_infrastructuresBoosted.Contains(neighbor.TileData as InfrastructureData))
             {
-                neighbor.Incomes = Utilities.SubtractResourceValues(neighbor.Incomes, _incomeBoost);
+                neighbor.Incomes = Utilities.SubtractResourceToIntMaps(neighbor.Incomes, _incomeBoost);
             }
         }
     }
@@ -48,7 +48,7 @@ public class BoostNeighborsIncome : SpecialBehaviour
     {
         if (_infrastructuresBoosted.Contains(specificTile.TileData as InfrastructureData))
         {
-            specificTile.Incomes = Utilities.SubtractResourceValues(specificTile.Incomes, _incomeBoost);
+            specificTile.Incomes = Utilities.SubtractResourceToIntMaps(specificTile.Incomes, _incomeBoost);
         }
     }
 
