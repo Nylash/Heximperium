@@ -41,11 +41,7 @@ public class Tile : MonoBehaviour
         get => _tileData;
         set
         {
-            //Remove previous special behaviour
-            if (_tileData.SpecialBehaviour != null)
-            {
-                _tileData.SpecialBehaviour.RollbackSpecialBehaviour(this);
-            }
+            RollbackSpecialBehaviours();
 
             //Set the new income
             if (value.TypeIncomeUpgrade == TypeIncomeUpgrade.Merge)
@@ -58,7 +54,7 @@ public class Tile : MonoBehaviour
 
             UpdateVisual();
 
-            CheckSpecialBehaviour();
+            UpdateSpecialBehaviours();
         }
     }
     public bool Claimed { get => _claimed;}
@@ -134,6 +130,22 @@ public class Tile : MonoBehaviour
             Destroy(_highlightObject);
     }
 
+    //Method used manage the scout counter of the tile (if there is several scouts on the same tile)
+    public void UpdateScoutCounter()
+    {
+        if (_scouts.Count >= 2)
+        {
+            if (_scoutCounter == null)
+                _scoutCounter = Instantiate(ExplorationManager.Instance.ScoutCounterPrefab, transform).GetComponent<TextMeshPro>();
+            _scoutCounter.text = _scouts.Count.ToString();
+        }
+        else
+        {
+            if (_scoutCounter != null)
+                Destroy(_scoutCounter.gameObject);
+        }
+    }
+
     #region NEIGHBORS LOGIC
     //Only called at the map generation
     public void SearchNeighbors()
@@ -178,25 +190,8 @@ public class Tile : MonoBehaviour
     }
     #endregion
 
-    //Method used manage the scout counter of the tile (if there is several scouts on the same tile)
-    public void UpdateScoutCounter()
-    {
-        if(_scouts.Count >= 2)
-        {
-            if(_scoutCounter == null)
-                _scoutCounter = Instantiate(ExplorationManager.Instance.ScoutCounterPrefab, transform).GetComponent<TextMeshPro>();
-            _scoutCounter.text = _scouts.Count.ToString();
-        }
-        else
-        {
-            if (_scoutCounter != null)
-                Destroy(_scoutCounter.gameObject);
-        }
-    }
-
-
     #region SPECIAL BEHAVIOUR
-    private void CheckSpecialBehaviour()
+    private void UpdateSpecialBehaviours()
     {
         //Tile special behaviour
         if (_tileData.SpecialBehaviour != null)
@@ -204,21 +199,7 @@ public class Tile : MonoBehaviour
             _tileData.SpecialBehaviour.InitializeSpecialBehaviour(this);
 
             //Special case for IncomeComingFromNeighbors
-            if (_tileData.SpecialBehaviour is IncomeComingFromNeighbors)
-            {
-                foreach (Tile neighbor in _neighbors)
-                {
-                    if (!neighbor)
-                        continue;
-                    neighbor.OnIncomeModified.RemoveListener(AdjustIncomeFromNeighbor);
-                    neighbor.OnIncomeModified.AddListener(AdjustIncomeFromNeighbor);
-                    if (!neighbor.Claimed)
-                    {
-                        neighbor.OnTileClaimed.RemoveListener(AddClaimedTileIncome);
-                        neighbor.OnTileClaimed.AddListener(AddClaimedTileIncome);
-                    } 
-                }
-            }
+            CheckIncomeComingFromneighbors();
         }
 
         //Foreach neighbors check if their special behaviour should impact the new tile
@@ -227,12 +208,50 @@ public class Tile : MonoBehaviour
             if (!item)
                 continue;
             if (item.TileData.SpecialBehaviour != null)
-                item.TileData.SpecialBehaviour.ApplySpecialBehaviour(this);
+                item.TileData.SpecialBehaviour.ApplySpecialBehaviourToSpecificTile(this);
+        }
+    }
+
+    private void RollbackSpecialBehaviours()
+    {
+        //Remove previous special behaviour
+        if (_tileData.SpecialBehaviour != null)
+        {
+            _tileData.SpecialBehaviour.RollbackSpecialBehaviour(this);
+        }
+        //Foreach neighbors check if their special behaviour should be rollbacked for this tile
+        foreach (Tile item in _neighbors)
+        {
+            if (!item)
+                continue;
+            if (item.TileData.SpecialBehaviour != null)
+                item.TileData.SpecialBehaviour.RollbackSpecialBehaviourToSpecificTile(this);
         }
     }
 
     //Region for the special behaviour IncomeComingFromNeighbors, 
     #region IncomeComingFromNeighbors
+    private void CheckIncomeComingFromneighbors()
+    {
+        if (_tileData.SpecialBehaviour is IncomeComingFromNeighbors)
+        {
+            foreach (Tile neighbor in _neighbors)
+            {
+                if (!neighbor)
+                    continue;
+                //Add a lister to adjust the income when a neighbor adjust its own income
+                neighbor.OnIncomeModified.RemoveListener(AdjustIncomeFromNeighbor);
+                neighbor.OnIncomeModified.AddListener(AdjustIncomeFromNeighbor);
+                //If the neighbor isn't claimed add a listener to add its income when he will be claimed
+                if (!neighbor.Claimed)
+                {
+                    neighbor.OnTileClaimed.RemoveListener(AddClaimedTileIncome);
+                    neighbor.OnTileClaimed.AddListener(AddClaimedTileIncome);
+                } 
+            }
+        }
+    }
+
     private void AddClaimedTileIncome(Tile tile)
     {
         if (_tileData.SpecialBehaviour is IncomeComingFromNeighbors specialBehaviour)

@@ -45,7 +45,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
         }
     }
 
-    public override void ApplySpecialBehaviour(Tile specificTile)
+    public override void ApplySpecialBehaviourToSpecificTile(Tile specificTile)
     {
         //Nothing needed, this behaviour doesn't impact others tiles
     }
@@ -53,6 +53,11 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
         //Nothing needed, replacing by previous tile will be enough (this behaviour only modify its own tile)
+    }
+
+    public override void RollbackSpecialBehaviourToSpecificTile(Tile specificTile)
+    {
+        //Nothing needed everything is handled by the event
     }
 
     public void AdjustIncomeFromNeighbor(Tile neighbor, Tile behaviourTile, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
@@ -67,11 +72,8 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
             }
         }
 
-        // Calculate delta = newIncome - previousIncome
-        List<ResourceToIntMap> delta = Utilities.SubtractResourceValues(newIncome, previousIncome);
-
-        // Apply delta
-        behaviourTile.Incomes = Utilities.MergeResourceValues(behaviourTile.Incomes, delta);
+        // Apply delta (newIncome - previousIncome)
+        behaviourTile.Incomes = Utilities.MergeResourceValues(behaviourTile.Incomes, Utilities.SubtractResourceValues(newIncome, previousIncome));
     }
 
     public void AddClaimedTileIncome(Tile behaviourTile, Tile tile)

@@ -37,7 +37,7 @@ public class Entertainer : MonoBehaviour
 
     private void CheckBoostingInfra()
     {
-        if (_tile.TileData.SpecialBehaviour is EntertainersBoosting entertainersBoosting)
+        /*if (_tile.TileData.SpecialBehaviour is EntertainersBoosting entertainersBoosting)
             entertainersBoosting.BoostingSpecificEntertainer(_tile.Entertainer);
         foreach (Tile neighbor in _tile.Neighbors)
         {
@@ -45,7 +45,7 @@ public class Entertainer : MonoBehaviour
                 continue;
             if (neighbor.TileData.SpecialBehaviour is EntertainersBoosting NeighborEntertainersBoosting)
                 NeighborEntertainersBoosting.BoostingSpecificEntertainer(_tile.Entertainer);
-        }
+        }*/
     }
 
     //Check if this new entertainer get bonuses from its neighbors and so apply it to them too (synergies are shared)
