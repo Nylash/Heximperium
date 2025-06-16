@@ -186,7 +186,8 @@ public static class Utilities
 #region ENUMS
 public enum Phase
 {
-    Explore, Expand, Exploit, Entertain
+    //None is used for infra and upgrades not tied to a phase system, this is not directly use in the game turn logic
+    Explore, Expand, Exploit, Entertain, None
 }
 
 //The int respect the neighbors order, so simply cast it to int match the good neighbor
