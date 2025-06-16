@@ -140,7 +140,7 @@ public class GameManager : Singleton<GameManager>
             
 
         //Give the player resources for the initial town 
-        InfrastructureData townData = Resources.Load<InfrastructureData>(TOWN_DATA_PATH);
+        InfrastructureData townData = ExpansionManager.Instance.TownData;
         ExploitationManager.Instance.InfraAvailableModify(townData, Transaction.Gain);
         ResourcesManager.Instance.UpdateResource(townData.Costs, Transaction.Gain);
         ExpansionManager.Instance.BuildTown(centralTile);
@@ -227,19 +227,19 @@ public class GameManager : Singleton<GameManager>
             case Interaction.Claim:
                 ExpansionManager.Instance.ClaimTile(button.AssociatedTile);
                 break;
-            case Interaction.Town:
-                ExpansionManager.Instance.BuildTown(button.AssociatedTile);
-                break;
             case Interaction.Scout:
                 ExplorationManager.Instance.SpawnScout(button.AssociatedTile, button.ScoutData);
                 break;
             case Interaction.Infrastructure:
-                ExploitationManager.Instance.BuildInfrastructure(button.AssociatedTile, button.InfrastructureData);
+                if(_currentPhase == Phase.Expand)
+                    ExpansionManager.Instance.BuildTown(button.AssociatedTile);
+                else
+                    ExploitationManager.Instance.BuildInfrastructure(button.AssociatedTile, button.InfrastructureData);
                 break;
             case Interaction.Destroy:
                 if(_currentPhase == Phase.Exploit)
                     ExploitationManager.Instance.DestroyInfrastructure(button.AssociatedTile);
-                else if (_currentPhase == Phase.Entertain)
+                else
                     EntertainementManager.Instance.DestroyEntertainer(button.AssociatedTile);
                     break;
             case Interaction.Entertainer:

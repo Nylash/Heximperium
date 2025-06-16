@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class ExplorationManager : Singleton<ExplorationManager>
 {
     #region CONFIGURATION
+    [SerializeField] private ScoutData _scoutData;
     [SerializeField] private int _baseScoutsLimit = 1;
     [SerializeField] private Transform _scoutsParent;
     [SerializeField] private GameObject _scoutPrefab;
@@ -54,6 +55,8 @@ public class ExplorationManager : Singleton<ExplorationManager>
             OnScoutsLimitModified.Invoke();
         }
     }
+
+    public ScoutData ScoutData { get => _scoutData;}
     #endregion
 
     protected override void OnAwake()

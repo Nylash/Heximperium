@@ -5,11 +5,8 @@ using UnityEngine.Events;
 
 public class ExpansionManager : Singleton<ExpansionManager>
 {
-    #region CONSTANTS
-    private const string TOWN_DATA_PATH = "Data/Infrastructures/Town";
-    #endregion
-
     #region CONFIGURATION
+    [SerializeField] private InfrastructureData _townData;
     [SerializeField] private Transform _borderParent;
     #endregion
 
@@ -24,6 +21,7 @@ public class ExpansionManager : Singleton<ExpansionManager>
     public Transform BorderParent { get => _borderParent; }
     public int BaseClaimPerTurn { get => _baseClaimPerTurn; set => _baseClaimPerTurn = value; }
     public List<Tile> ClaimedTiles { get => _claimedTiles; }
+    public InfrastructureData TownData { get => _townData;}
     #endregion
 
     #region EVENTS
@@ -107,7 +105,7 @@ public class ExpansionManager : Singleton<ExpansionManager>
 
     private void TownInteraction(Tile tile, int positionIndex)
     {
-        _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Town));
+        _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Infrastructure, _townData));
     }
 
     public void ClaimTile(Tile tile)
@@ -126,16 +124,9 @@ public class ExpansionManager : Singleton<ExpansionManager>
 
     public void BuildTown(Tile tile)
     {
-        InfrastructureData townData = Resources.Load<InfrastructureData>(TOWN_DATA_PATH);
-        if (townData == null)
+        if (ExploitationManager.Instance.IsInfraAvailable(_townData))
         {
-            Debug.LogError("Town data not found at path: " + TOWN_DATA_PATH);
-            return;
-        }
-
-        if (ExploitationManager.Instance.IsInfraAvailable(townData))
-        {
-            if (ResourcesManager.Instance.CanAfford(townData.Costs))
+            if (ResourcesManager.Instance.CanAfford(_townData.Costs))
             {
                 // Start by claiming the tile if needed
                 if (!tile.Claimed)
@@ -145,7 +136,7 @@ public class ExpansionManager : Singleton<ExpansionManager>
                     foreach (Tile t in _claimedTiles)
                         t.CheckBorder();
                 }
-                ExploitationManager.Instance.BuildInfrastructure(tile, townData);
+                ExploitationManager.Instance.BuildInfrastructure(tile, _townData);
             }
         }
     }

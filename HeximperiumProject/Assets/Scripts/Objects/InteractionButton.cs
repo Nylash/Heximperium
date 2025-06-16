@@ -71,9 +71,6 @@ public class InteractionButton : MonoBehaviour
             case Interaction.Claim:
                 InitializeClaim();
                 break;
-            case Interaction.Town:
-                InitializeTown();
-                break;
             case Interaction.Scout:
                 InitializeScout();
                 break;
@@ -98,17 +95,9 @@ public class InteractionButton : MonoBehaviour
         LoadSprite(Interaction.Claim.ToString());
     }
 
-    private void InitializeTown()
-    {
-        _infraData = Resources.Load<InfrastructureData>(PATH_DATA_INFRA + Interaction.Town.ToString());
-        if (!ResourcesManager.Instance.CanAfford(_infraData.Costs) || !ExploitationManager.Instance.IsInfraAvailable(_infraData))
-            _renderer.color = UIManager.Instance.ColorCantAfford;
-        LoadSprite(Interaction.Town.ToString());
-    }
-
     private void InitializeScout()
     {
-        _scoutData = Resources.Load<ScoutData>(PATH_DATA_UNIT + Interaction.Scout.ToString());
+        _scoutData = ExplorationManager.Instance.ScoutData;
         if (ExplorationManager.Instance.CurrentScoutsCount >= ExplorationManager.Instance.ScoutsLimit)
             _renderer.color = UIManager.Instance.ColorCantAfford;
         LoadSprite(Interaction.Scout.ToString());
@@ -152,8 +141,6 @@ public class InteractionButton : MonoBehaviour
         {
             case Interaction.Claim:
                 return _popUpClaim;
-            case Interaction.Town:
-                return _popUpInfra;
             case Interaction.Scout:
                 return _popUpScout;
             case Interaction.Infrastructure:
