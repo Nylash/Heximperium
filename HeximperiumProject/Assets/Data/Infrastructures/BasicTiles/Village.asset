@@ -23,7 +23,8 @@ MonoBehaviour:
   _availableInfrastructures:
   - {fileID: 11400000, guid: 02cb5e45f50789d488eed26fb5f8b261, type: 2}
   - {fileID: 11400000, guid: 5d7439b95eec5524397e761e5fbdea11, type: 2}
-  _specialBehaviour: {fileID: 11400000, guid: 76410f1dec70a074289e3002308e9c1d, type: 2}
+  _specialBehaviours:
+  - {fileID: 11400000, guid: 76410f1dec70a074289e3002308e9c1d, type: 2}
   _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
   _visuals:
   - {fileID: 2100000, guid: 2195a56c6c99e1145a168891e49ee914, type: 2}

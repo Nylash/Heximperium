@@ -10,7 +10,7 @@ public class TileData : ScriptableObject
     [SerializeField] private TypeIncomeUpgrade _typeIncomeUpgrade;
     [SerializeField] private List<ResourceToIntMap> _incomes = new List<ResourceToIntMap>();
     [SerializeField] private List<InfrastructureData> _availableInfrastructures = new List<InfrastructureData>();
-    [SerializeField] private SpecialBehaviour _specialBehaviour;
+    [SerializeField] private List<SpecialBehaviour> _specialBehaviours = new List<SpecialBehaviour>();
     [SerializeField] private GameObject _popUpPrefab;
     [SerializeField] private List<Material> _visuals;
 
@@ -19,7 +19,7 @@ public class TileData : ScriptableObject
     public List<ResourceToIntMap> Incomes { get => _incomes; }
     public TypeIncomeUpgrade TypeIncomeUpgrade { get => _typeIncomeUpgrade; }
     public List<InfrastructureData> AvailableInfrastructures { get => _availableInfrastructures; }
-    public SpecialBehaviour SpecialBehaviour { get => _specialBehaviour; }
+    public List<SpecialBehaviour> SpecialBehaviours { get => _specialBehaviours; }
     public GameObject PopUpPrefab { get => _popUpPrefab; }
     public string InteractionButtonPopUpText { get => _interactionButtonPopUpText; }
     public string TilePopUpText { get => _tilePopUpText; }

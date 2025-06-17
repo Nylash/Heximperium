@@ -24,9 +24,9 @@ public class PopUp_InfraEffectOnly : UI_DynamicPopUp
         _effectText.text = tile.TileData.TilePopUpText;
 
         //Show highlight impacted tiles by the special behaviour of this infra
-        if (tile.TileData.SpecialBehaviour != null)
+        foreach (SpecialBehaviour item in tile.TileData.SpecialBehaviours)
         {
-            tile.TileData.SpecialBehaviour.HighlightImpactedTile(tile, true);
+            item.HighlightImpactedTile(tile, true);
         }
 
         _associatedTile = tile;
@@ -35,9 +35,12 @@ public class PopUp_InfraEffectOnly : UI_DynamicPopUp
     public override void DestroyPopUp()
     {
         //Hide highlight impacted tiles by the special behaviour of this infra
-        if (_associatedTile.TileData.SpecialBehaviour != null)
+        if (_associatedTile.TileData.SpecialBehaviours.Count != 0)
         {
-            _associatedTile.TileData.SpecialBehaviour.HighlightImpactedTile(_associatedTile, false);
+            foreach (SpecialBehaviour item in _associatedTile.TileData.SpecialBehaviours)
+            {
+                item.HighlightImpactedTile(_associatedTile, true);
+            }
         }
 
         base.DestroyPopUp();

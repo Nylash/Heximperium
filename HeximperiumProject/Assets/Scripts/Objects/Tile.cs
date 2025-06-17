@@ -194,12 +194,15 @@ public class Tile : MonoBehaviour
     private void UpdateSpecialBehaviours()
     {
         //Tile special behaviour
-        if (_tileData.SpecialBehaviour != null)
+        if (_tileData.SpecialBehaviours.Count != 0)
         {
-            _tileData.SpecialBehaviour.InitializeSpecialBehaviour(this);
+            foreach (SpecialBehaviour item in _tileData.SpecialBehaviours)
+            {
+                item.InitializeSpecialBehaviour(this);
 
-            //Special case for IncomeComingFromNeighbors
-            CheckIncomeComingFromneighbors();
+                //Special case for IncomeComingFromNeighbors
+                CheckIncomeComingFromneighbors(item);
+            }
         }
 
         //Foreach neighbors check if their special behaviour should impact the new tile
@@ -207,33 +210,46 @@ public class Tile : MonoBehaviour
         {
             if (!item)
                 continue;
-            if (item.TileData.SpecialBehaviour != null)
-                item.TileData.SpecialBehaviour.ApplySpecialBehaviourToSpecificTile(this);
+            if (item.TileData.SpecialBehaviours.Count != 0)
+            {
+                foreach (SpecialBehaviour specialBev in item.TileData.SpecialBehaviours)
+                {
+                    specialBev.ApplySpecialBehaviourToSpecificTile(this);
+                }
+            }
         }
     }
 
     private void RollbackSpecialBehaviours()
     {
         //Remove previous special behaviour
-        if (_tileData.SpecialBehaviour != null)
+        if (_tileData.SpecialBehaviours.Count != 0)
         {
-            _tileData.SpecialBehaviour.RollbackSpecialBehaviour(this);
+            foreach (SpecialBehaviour item in _tileData.SpecialBehaviours)
+            {
+                item.RollbackSpecialBehaviour(this);
+            }
         }
         //Foreach neighbors check if their special behaviour should be rollbacked for this tile
         foreach (Tile item in _neighbors)
         {
             if (!item)
                 continue;
-            if (item.TileData.SpecialBehaviour != null)
-                item.TileData.SpecialBehaviour.RollbackSpecialBehaviourToSpecificTile(this);
+            if (item.TileData.SpecialBehaviours.Count != 0)
+            {
+                foreach (SpecialBehaviour specialBev in item.TileData.SpecialBehaviours)
+                {
+                    specialBev.RollbackSpecialBehaviourToSpecificTile(this);
+                }
+            }
         }
     }
 
     //Region for the special behaviour IncomeComingFromNeighbors, 
     #region IncomeComingFromNeighbors
-    private void CheckIncomeComingFromneighbors()
+    private void CheckIncomeComingFromneighbors(SpecialBehaviour special)
     {
-        if (_tileData.SpecialBehaviour is IncomeComingFromNeighbors)
+        if (special is IncomeComingFromNeighbors)
         {
             foreach (Tile neighbor in _neighbors)
             {
@@ -254,17 +270,29 @@ public class Tile : MonoBehaviour
 
     private void AddClaimedTileIncome(Tile tile)
     {
-        if (_tileData.SpecialBehaviour is IncomeComingFromNeighbors specialBehaviour)
+        if(_tileData.SpecialBehaviours.Count != 0)
         {
-            specialBehaviour.AddClaimedTileIncome(this, tile);
+            foreach (SpecialBehaviour item in _tileData.SpecialBehaviours)
+            {
+                if (item is IncomeComingFromNeighbors specialBehaviour)
+                {
+                    specialBehaviour.AddClaimedTileIncome(this, tile);
+                }
+            }
         }
     }
 
     private void AdjustIncomeFromNeighbor(Tile neighbor, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
     {
-        if(_tileData.SpecialBehaviour is IncomeComingFromNeighbors specialBehaviour)
+        if (_tileData.SpecialBehaviours.Count != 0)
         {
-            specialBehaviour.AdjustIncomeFromNeighbor(neighbor, this, previousIncome, newIncome);
+            foreach (SpecialBehaviour item in _tileData.SpecialBehaviours)
+            {
+                if (item is IncomeComingFromNeighbors specialBehaviour)
+                {
+                    specialBehaviour.AdjustIncomeFromNeighbor(neighbor, this, previousIncome, newIncome);
+                }
+            }
         }
     }
     #endregion

@@ -23,7 +23,8 @@ MonoBehaviour:
   - resource: 1
     value: 3
   _availableInfrastructures: []
-  _specialBehaviour: {fileID: 11400000, guid: e0122bbfaabd3b342b370a85c0cb7163, type: 2}
+  _specialBehaviours:
+  - {fileID: 11400000, guid: e0122bbfaabd3b342b370a85c0cb7163, type: 2}
   _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
   _visuals:
   - {fileID: 2100000, guid: 59b1fb8b5d9fca944806ccda642abd73, type: 2}
