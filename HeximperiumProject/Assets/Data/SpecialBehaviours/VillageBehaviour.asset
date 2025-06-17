@@ -13,5 +13,9 @@ MonoBehaviour:
   m_Name: VillageBehaviour
   m_EditorClassIdentifier: 
   _resource: 0
-  _excludedInfra:
+  _excludedTiles:
   - {fileID: 11400000, guid: 758e0bfcbc1c85b4f8d4064dfc028b50, type: 2}
+  - {fileID: 11400000, guid: 02cb5e45f50789d488eed26fb5f8b261, type: 2}
+  - {fileID: 11400000, guid: 5d7439b95eec5524397e761e5fbdea11, type: 2}
+  _useIncludedTilesList: 0
+  _includedInfra: []

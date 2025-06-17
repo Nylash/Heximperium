@@ -52,7 +52,7 @@ public class PopUp_InteractionInfra : UI_DynamicPopUp
         {
             foreach (SpecialBehaviour item in button.InfrastructureData.SpecialBehaviours)
             {
-                item.HighlightImpactedTile(button.AssociatedTile, false);
+                item.HighlightImpactedTile(button.AssociatedTile, true);
             }
         }
 

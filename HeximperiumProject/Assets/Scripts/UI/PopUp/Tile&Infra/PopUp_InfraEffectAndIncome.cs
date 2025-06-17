@@ -56,7 +56,7 @@ public class PopUp_InfraEffectAndIncome : UI_DynamicPopUp
         {
             foreach (SpecialBehaviour item in _associatedTile.TileData.SpecialBehaviours)
             {
-                item.HighlightImpactedTile(_associatedTile, true);
+                item.HighlightImpactedTile(_associatedTile, false);
             }
         }
 

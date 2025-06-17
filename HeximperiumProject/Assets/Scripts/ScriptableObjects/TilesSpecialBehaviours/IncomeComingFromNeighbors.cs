@@ -5,7 +5,7 @@ using UnityEngine;
 public class IncomeComingFromNeighbors : SpecialBehaviour
 {
     [SerializeField] private Resource _resource;
-    [SerializeField] private List<InfrastructureData> _excludedInfra = new List<InfrastructureData>();
+    [SerializeField] private List<TileData> _excludedTiles = new List<TileData>();
 
     //Subscribe to neighbors event OnIncomeModified and update its income based on their income
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
@@ -16,17 +16,15 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
                 continue;
             if (neighbor.Claimed)
             {
+
                 //Don't do the adjustement if the neighbor is excluded
                 bool exclude = false;
-                if (neighbor.TileData is InfrastructureData)
+                foreach (TileData item in _excludedTiles)
                 {
-                    foreach (InfrastructureData item in _excludedInfra)
+                    if (item == neighbor.TileData)
                     {
-                        if (item == neighbor.TileData)
-                        {
-                            exclude = true;
-                            break;
-                        }
+                        exclude = true;
+                        break;
                     }
                 }
                 if (exclude)
@@ -63,22 +61,48 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
     public void AdjustIncomeFromNeighbor(Tile neighbor, Tile behaviourTile, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
     {
         //Don't do the adjustement if the neighbor is excluded
-        if (neighbor.TileData is InfrastructureData)
+        foreach (TileData item in _excludedTiles)
         {
-            foreach (InfrastructureData item in _excludedInfra)
-            {
-                if (item == neighbor.TileData)
-                    return;
-            }
+            if (item == neighbor.TileData)
+                return;
+        }
+
+        List<ResourceToIntMap> previousInc = new List<ResourceToIntMap>();
+        foreach (ResourceToIntMap item in previousIncome)
+        {
+            if (item.resource == _resource)
+                previousInc.Add(new ResourceToIntMap(_resource, item.value));
+        }
+
+        List<ResourceToIntMap> newInc = new List<ResourceToIntMap>();
+        foreach (ResourceToIntMap item in newIncome)
+        {
+            if (item.resource == _resource)
+                newInc.Add(new ResourceToIntMap(_resource, item.value));
         }
 
         // Apply delta (newIncome - previousIncome)
-        behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, Utilities.SubtractResourceToIntMaps(newIncome, previousIncome));
+        behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, Utilities.SubtractResourceToIntMaps(newInc, previousInc));
     }
 
     public void AddClaimedTileIncome(Tile behaviourTile, Tile tile)
     {
-        behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, tile.Incomes);
+        //Don't do the adjustement if the neighbor is excluded
+        foreach (TileData item in _excludedTiles)
+        {
+            if (item == tile.TileData)
+                return;
+        }
+
+        List<ResourceToIntMap> income = new List<ResourceToIntMap>();
+
+        foreach (ResourceToIntMap item in tile.Incomes)
+        {
+            if (item.resource == _resource)
+                income.Add(new ResourceToIntMap(_resource, item.value));
+        }
+
+        behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, income);
     }
 
     public override void HighlightImpactedTile(Tile behaviourTile, bool show)
@@ -91,15 +115,12 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
             {
                 //Don't do the highlight if the neighbor is excluded
                 bool exclude = false;
-                if (neighbor.TileData is InfrastructureData)
+                foreach (TileData item in _excludedTiles)
                 {
-                    foreach (InfrastructureData item in _excludedInfra)
+                    if (item == neighbor.TileData)
                     {
-                        if (item == neighbor.TileData)
-                        {
-                            exclude = true;
-                            break;
-                        }
+                        exclude = true;
+                        break;
                     }
                 }
                 if (exclude)
