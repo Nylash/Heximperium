@@ -43,7 +43,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
         }
     }
 
-    public override void ApplySpecialBehaviourToSpecificTile(Tile specificTile)
+    public override void ApplySpecialBehaviourToSpecificTile(Tile specificTile, Tile behaviourTile)
     {
         //Nothing needed, this behaviour doesn't impact others tiles
     }
@@ -53,7 +53,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
         //Nothing needed, replacing by previous tile will be enough (this behaviour only modify its own tile)
     }
 
-    public override void RollbackSpecialBehaviourToSpecificTile(Tile specificTile)
+    public override void RollbackSpecialBehaviourToSpecificTile(Tile specificTile, Tile behaviourTile)
     {
         //Nothing needed everything is handled by the event
     }

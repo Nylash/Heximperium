@@ -10,7 +10,7 @@ public class SpecialResourcesCostReduction : SpecialBehaviour
         ResourcesManager.Instance.SetSSRReduction(_associatedSystem, 1);
     }
 
-    public override void ApplySpecialBehaviourToSpecificTile(Tile specificTile)
+    public override void ApplySpecialBehaviourToSpecificTile(Tile specificTile, Tile behaviourTile)
     {
         //Nothing needed, this behaviour doesn't impact others tiles
     }
@@ -20,7 +20,7 @@ public class SpecialResourcesCostReduction : SpecialBehaviour
         ResourcesManager.Instance.SetSSRReduction(_associatedSystem, -1);
     }
 
-    public override void RollbackSpecialBehaviourToSpecificTile(Tile specificTile)
+    public override void RollbackSpecialBehaviourToSpecificTile(Tile specificTile, Tile behaviourTile)
     {
         //Nothing needed, this behaviour doesn't impact others tiles
     }

@@ -125,8 +125,12 @@ public class Tile : MonoBehaviour
     public void Highlight(bool show)
     {
         if (show)
+        {
+            if (_highlightObject != null)
+                return;
             _highlightObject = Instantiate(_highlightPrefab, transform.position + new Vector3(0, 0.02f, 0), Quaternion.identity);
-        else
+        }
+        else if(_highlightObject != null)
             Destroy(_highlightObject);
     }
 
@@ -214,7 +218,7 @@ public class Tile : MonoBehaviour
             {
                 foreach (SpecialBehaviour specialBev in item.TileData.SpecialBehaviours)
                 {
-                    specialBev.ApplySpecialBehaviourToSpecificTile(this);
+                    specialBev.ApplySpecialBehaviourToSpecificTile(this, item);
                 }
             }
         }
@@ -239,7 +243,7 @@ public class Tile : MonoBehaviour
             {
                 foreach (SpecialBehaviour specialBev in item.TileData.SpecialBehaviours)
                 {
-                    specialBev.RollbackSpecialBehaviourToSpecificTile(this);
+                    specialBev.RollbackSpecialBehaviourToSpecificTile(this, item);
                 }
             }
         }

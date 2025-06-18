@@ -5,7 +5,7 @@ using UnityEngine;
 public class BoostNeighborsIncome : SpecialBehaviour
 {
     [SerializeField] private List<ResourceToIntMap> _incomeBoost = new List<ResourceToIntMap>();
-    [SerializeField] private List<InfrastructureData> _infrastructuresBoosted = new List<InfrastructureData>();
+    [SerializeField] private List<TileData> _infrastructuresBoosted = new List<TileData>();
 
     //Boost the neighbors if it's the right one
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
@@ -14,7 +14,7 @@ public class BoostNeighborsIncome : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
-            if (_infrastructuresBoosted.Contains(neighbor.TileData as InfrastructureData))
+            if (_infrastructuresBoosted.Contains(neighbor.TileData))
             {
                 neighbor.Incomes = Utilities.MergeResourceToIntMaps(neighbor.Incomes, _incomeBoost);
             }
@@ -22,9 +22,9 @@ public class BoostNeighborsIncome : SpecialBehaviour
     }
 
     //Check if the specific tile need the boost
-    public override void ApplySpecialBehaviourToSpecificTile(Tile specificTile)
+    public override void ApplySpecialBehaviourToSpecificTile(Tile specificTile, Tile behaviourTile)
     {
-        if(_infrastructuresBoosted.Contains(specificTile.TileData as InfrastructureData))
+        if(_infrastructuresBoosted.Contains(specificTile.TileData))
         {
             specificTile.Incomes = Utilities.MergeResourceToIntMaps(specificTile.Incomes, _incomeBoost);
         }
@@ -37,16 +37,16 @@ public class BoostNeighborsIncome : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
-            if (_infrastructuresBoosted.Contains(neighbor.TileData as InfrastructureData))
+            if (_infrastructuresBoosted.Contains(neighbor.TileData))
             {
                 neighbor.Incomes = Utilities.SubtractResourceToIntMaps(neighbor.Incomes, _incomeBoost);
             }
         }
     }
 
-    public override void RollbackSpecialBehaviourToSpecificTile(Tile specificTile)
+    public override void RollbackSpecialBehaviourToSpecificTile(Tile specificTile, Tile behaviourTile)
     {
-        if (_infrastructuresBoosted.Contains(specificTile.TileData as InfrastructureData))
+        if (_infrastructuresBoosted.Contains(specificTile.TileData))
         {
             specificTile.Incomes = Utilities.SubtractResourceToIntMaps(specificTile.Incomes, _incomeBoost);
         }
@@ -58,7 +58,7 @@ public class BoostNeighborsIncome : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
-            if (_infrastructuresBoosted.Contains(neighbor.TileData as InfrastructureData))
+            if (_infrastructuresBoosted.Contains(neighbor.TileData))
             {
                 neighbor.Highlight(show);
             }
