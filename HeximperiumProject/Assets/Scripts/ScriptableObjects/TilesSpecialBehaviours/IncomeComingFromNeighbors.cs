@@ -18,16 +18,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
             {
 
                 //Don't do the adjustement if the neighbor is excluded
-                bool exclude = false;
-                foreach (TileData item in _excludedTiles)
-                {
-                    if (item == neighbor.TileData)
-                    {
-                        exclude = true;
-                        break;
-                    }
-                }
-                if (exclude)
+                if (_excludedTiles.Contains(neighbor.TileData))
                     continue;
 
                 List<ResourceToIntMap> income = new List<ResourceToIntMap>();
@@ -61,11 +52,8 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
     public void AdjustIncomeFromNeighbor(Tile neighbor, Tile behaviourTile, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
     {
         //Don't do the adjustement if the neighbor is excluded
-        foreach (TileData item in _excludedTiles)
-        {
-            if (item == neighbor.TileData)
-                return;
-        }
+        if (_excludedTiles.Contains(neighbor.TileData))
+            return;
 
         List<ResourceToIntMap> previousInc = new List<ResourceToIntMap>();
         foreach (ResourceToIntMap item in previousIncome)
@@ -88,11 +76,8 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
     public void AddClaimedTileIncome(Tile behaviourTile, Tile tile)
     {
         //Don't do the adjustement if the neighbor is excluded
-        foreach (TileData item in _excludedTiles)
-        {
-            if (item == tile.TileData)
-                return;
-        }
+        if (_excludedTiles.Contains(tile.TileData))
+            return;
 
         List<ResourceToIntMap> income = new List<ResourceToIntMap>();
 
@@ -114,16 +99,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
             if (neighbor.Claimed)
             {
                 //Don't do the highlight if the neighbor is excluded
-                bool exclude = false;
-                foreach (TileData item in _excludedTiles)
-                {
-                    if (item == neighbor.TileData)
-                    {
-                        exclude = true;
-                        break;
-                    }
-                }
-                if (exclude)
+                if (_excludedTiles.Contains(neighbor.TileData))
                     continue;
 
                 foreach (ResourceToIntMap item in neighbor.Incomes)
