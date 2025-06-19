@@ -30,11 +30,21 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
                 }
 
                 behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, income);
+
+                //Add a lister to adjust the income when a neighbor adjust its own income
+                neighbor.OnIncomeModified.RemoveListener(behaviourTile.AdjustIncomeFromNeighbor);
+                neighbor.OnIncomeModified.AddListener(behaviourTile.AdjustIncomeFromNeighbor);
+            }
+            else
+            {
+                //If the neighbor isn't claimed add a listener to add its income when he will be claimed
+                neighbor.OnTileClaimed.RemoveListener(behaviourTile.AddClaimedTileIncome);
+                neighbor.OnTileClaimed.AddListener(behaviourTile.AddClaimedTileIncome);
             }
         }
     }
 
-    public override void ApplySpecialBehaviourToSpecificTile(Tile specificTile, Tile behaviourTile)
+    public override void InitializeSpecialBehaviourToSpecificTile(Tile specificTile, Tile behaviourTile)
     {
         //Nothing needed, this behaviour doesn't impact others tiles
     }

@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using System.Linq;
 
 public class Tile : MonoBehaviour
 {
@@ -80,15 +81,7 @@ public class Tile : MonoBehaviour
         _initialData = _tileData;
     }
 
-    //Claim the tile and spawn the territory boundaries
-    public void ClaimTile()
-    {
-        _claimed = true;
-        OnTileClaimed.Invoke(this);
-        _border = Instantiate(_borderPrefab, transform.position, Quaternion.identity).GetComponent<Border>();
-        _border.transform.parent = ExpansionManager.Instance.BorderParent;
-    }
-
+    #region BASIC METHODS
     //Reveal the tile, with or without the flipping animation
     public void RevealTile(bool skipAnim)
     {
@@ -97,6 +90,15 @@ public class Tile : MonoBehaviour
             _animator.SetTrigger("InstantReveal");
         else
             _animator.SetTrigger("Reveal");
+    }
+
+    //Claim the tile and spawn the territory boundaries
+    public void ClaimTile()
+    {
+        _claimed = true;
+        OnTileClaimed.Invoke(this);
+        _border = Instantiate(_borderPrefab, transform.position, Quaternion.identity).GetComponent<Border>();
+        _border.transform.parent = ExpansionManager.Instance.BorderParent;
     }
 
     //Called when a tile is claimed
@@ -149,6 +151,7 @@ public class Tile : MonoBehaviour
                 Destroy(_scoutCounter.gameObject);
         }
     }
+    #endregion
 
     #region NEIGHBORS LOGIC
     //Only called at the map generation
@@ -203,9 +206,6 @@ public class Tile : MonoBehaviour
             foreach (SpecialBehaviour item in _tileData.SpecialBehaviours)
             {
                 item.InitializeSpecialBehaviour(this);
-
-                //Special case for IncomeComingFromNeighbors
-                CheckIncomeComingFromneighbors(item);
             }
         }
 
@@ -218,7 +218,7 @@ public class Tile : MonoBehaviour
             {
                 foreach (SpecialBehaviour specialBev in item.TileData.SpecialBehaviours)
                 {
-                    specialBev.ApplySpecialBehaviourToSpecificTile(this, item);
+                    specialBev.InitializeSpecialBehaviourToSpecificTile(this, item);
                 }
             }
         }
@@ -249,54 +249,20 @@ public class Tile : MonoBehaviour
         }
     }
 
-    //Region for the special behaviour IncomeComingFromNeighbors, 
-    #region IncomeComingFromNeighbors
-    private void CheckIncomeComingFromneighbors(SpecialBehaviour special)
+    #region MethodsForSpecificCases
+    public void AddClaimedTileIncome(Tile tile)
     {
-        if (special is IncomeComingFromNeighbors)
+        foreach (IncomeComingFromNeighbors behaviour in _tileData.SpecialBehaviours.OfType<IncomeComingFromNeighbors>())
         {
-            foreach (Tile neighbor in _neighbors)
-            {
-                if (!neighbor)
-                    continue;
-                //Add a lister to adjust the income when a neighbor adjust its own income
-                neighbor.OnIncomeModified.RemoveListener(AdjustIncomeFromNeighbor);
-                neighbor.OnIncomeModified.AddListener(AdjustIncomeFromNeighbor);
-                //If the neighbor isn't claimed add a listener to add its income when he will be claimed
-                if (!neighbor.Claimed)
-                {
-                    neighbor.OnTileClaimed.RemoveListener(AddClaimedTileIncome);
-                    neighbor.OnTileClaimed.AddListener(AddClaimedTileIncome);
-                } 
-            }
+            behaviour.AddClaimedTileIncome(this, tile);
         }
     }
 
-    private void AddClaimedTileIncome(Tile tile)
+    public void AdjustIncomeFromNeighbor(Tile neighbor, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
     {
-        if(_tileData.SpecialBehaviours.Count != 0)
+        foreach (IncomeComingFromNeighbors behaviour in _tileData.SpecialBehaviours.OfType<IncomeComingFromNeighbors>())
         {
-            foreach (SpecialBehaviour item in _tileData.SpecialBehaviours)
-            {
-                if (item is IncomeComingFromNeighbors specialBehaviour)
-                {
-                    specialBehaviour.AddClaimedTileIncome(this, tile);
-                }
-            }
-        }
-    }
-
-    private void AdjustIncomeFromNeighbor(Tile neighbor, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
-    {
-        if (_tileData.SpecialBehaviours.Count != 0)
-        {
-            foreach (SpecialBehaviour item in _tileData.SpecialBehaviours)
-            {
-                if (item is IncomeComingFromNeighbors specialBehaviour)
-                {
-                    specialBehaviour.AdjustIncomeFromNeighbor(neighbor, this, previousIncome, newIncome);
-                }
-            }
+            behaviour.AdjustIncomeFromNeighbor(neighbor, this, previousIncome, newIncome);
         }
     }
     #endregion

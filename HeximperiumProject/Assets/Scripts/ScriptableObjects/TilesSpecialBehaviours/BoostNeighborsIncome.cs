@@ -22,7 +22,7 @@ public class BoostNeighborsIncome : SpecialBehaviour
     }
 
     //Check if the specific tile need the boost
-    public override void ApplySpecialBehaviourToSpecificTile(Tile specificTile, Tile behaviourTile)
+    public override void InitializeSpecialBehaviourToSpecificTile(Tile specificTile, Tile behaviourTile)
     {
         if(_infrastructuresBoosted.Contains(specificTile.TileData))
         {
