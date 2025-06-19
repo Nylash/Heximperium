@@ -27,6 +27,7 @@ public class Tile : MonoBehaviour
     private TextMeshPro _scoutCounter;
     private Entertainer _entertainer;
     private GameObject _highlightObject;
+    private TileData _previousData;
     #endregion
 
     #region EVENTS
@@ -37,27 +38,7 @@ public class Tile : MonoBehaviour
 
     #region ACCESSORS
     public Vector2 Coordinate { get => _coordinate; set => _coordinate = value; }
-    public TileData TileData
-    {
-        get => _tileData;
-        set
-        {
-            RollbackSpecialBehaviours();
-
-            //Set the new income
-            if (value.TypeIncomeUpgrade == TypeIncomeUpgrade.Merge)
-                Incomes = Utilities.MergeResourceToIntMaps(_incomes, value.Incomes);
-            else
-                Incomes = value.Incomes;
-
-            name = value.TileName + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
-            _tileData = value;
-
-            UpdateVisual();
-
-            UpdateSpecialBehaviours();
-        }
-    }
+    public TileData TileData { get => _tileData; set => UpdateTileData(value); }
     public bool Claimed { get => _claimed;}
     public bool Revealed { get => _revealed;}
     public Tile[] Neighbors { get => _neighbors;}
@@ -73,6 +54,7 @@ public class Tile : MonoBehaviour
     }
     public TileData InitialData { get => _initialData; set => _initialData = value; }
     public Entertainer Entertainer { get => _entertainer; set => _entertainer = value; }
+    public TileData PreviousData { get => _previousData; }
     #endregion
 
     private void Awake()
@@ -82,6 +64,26 @@ public class Tile : MonoBehaviour
     }
 
     #region BASIC METHODS
+    //Update the tile data and call every other methods that impact
+    private void UpdateTileData(TileData value)
+    {
+        RollbackSpecialBehaviours();
+
+        //Set the new income
+        if (value.TypeIncomeUpgrade == TypeIncomeUpgrade.Merge)
+            Incomes = Utilities.MergeResourceToIntMaps(_incomes, value.Incomes);
+        else
+            Incomes = value.Incomes;
+
+        name = value.TileName + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
+        _previousData = _tileData;
+        _tileData = value;
+
+        UpdateVisual();
+
+        UpdateSpecialBehaviours();
+    }
+
     //Reveal the tile, with or without the flipping animation
     public void RevealTile(bool skipAnim)
     {
@@ -249,7 +251,7 @@ public class Tile : MonoBehaviour
         }
     }
 
-    #region MethodsForSpecificCases
+    #region MethodsForSpecificBehaviours
     public void AddClaimedTileIncome(Tile tile)
     {
         foreach (IncomeComingFromNeighbors behaviour in _tileData.SpecialBehaviours.OfType<IncomeComingFromNeighbors>())
@@ -262,7 +264,23 @@ public class Tile : MonoBehaviour
     {
         foreach (IncomeComingFromNeighbors behaviour in _tileData.SpecialBehaviours.OfType<IncomeComingFromNeighbors>())
         {
-            behaviour.AdjustIncomeFromNeighbor(neighbor, this, previousIncome, newIncome);
+            behaviour.AdjustIncomeFromNeighbor(this, neighbor, previousIncome, newIncome);
+        }
+    }
+
+    public void CheckNewInfra(Tile tile)
+    {
+        foreach (BoostByInfraOccurrenceInEmpire behaviour in _tileData.SpecialBehaviours.OfType<BoostByInfraOccurrenceInEmpire>())
+        {
+            behaviour.CheckNewInfra(this, tile);
+        }
+    }
+
+    public void CheckDestroyedInfra(Tile tile)
+    {
+        foreach (BoostByInfraOccurrenceInEmpire behaviour in _tileData.SpecialBehaviours.OfType<BoostByInfraOccurrenceInEmpire>())
+        {
+            behaviour.CheckDestroyedInfra(this, tile);
         }
     }
     #endregion

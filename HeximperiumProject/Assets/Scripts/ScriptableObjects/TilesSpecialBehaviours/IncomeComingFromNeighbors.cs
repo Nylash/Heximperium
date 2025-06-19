@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Scriptable Objects/Special Behaviour/IncomeCoomingFromneighbors")]
+[CreateAssetMenu(menuName = "Scriptable Objects/Special Behaviour/IncomeComingFromneighbors")]
 public class IncomeComingFromNeighbors : SpecialBehaviour
 {
     [SerializeField] private Resource _resource;
@@ -52,6 +52,13 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
         //Nothing needed, replacing by previous tile will be enough (this behaviour only modify its own tile)
+        foreach (Tile neighbor in behaviourTile.Neighbors)
+        {
+            if (!neighbor)
+                continue;
+            neighbor.OnIncomeModified.RemoveListener(behaviourTile.AdjustIncomeFromNeighbor);
+            neighbor.OnTileClaimed.RemoveListener(behaviourTile.AddClaimedTileIncome);
+        }
     }
 
     public override void RollbackSpecialBehaviourToSpecificTile(Tile specificTile, Tile behaviourTile)
@@ -59,7 +66,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
         //Nothing needed everything is handled by the event
     }
 
-    public void AdjustIncomeFromNeighbor(Tile neighbor, Tile behaviourTile, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
+    public void AdjustIncomeFromNeighbor(Tile behaviourTile, Tile neighbor, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
     {
         //Don't do the adjustement if the neighbor is excluded
         if (_excludedTiles.Contains(neighbor.TileData))
