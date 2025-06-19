@@ -32,14 +32,14 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
                 behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, income);
 
                 //Add a lister to adjust the income when a neighbor adjust its own income
-                neighbor.OnIncomeModified.RemoveListener(behaviourTile.AdjustIncomeFromNeighbor);
-                neighbor.OnIncomeModified.AddListener(behaviourTile.AdjustIncomeFromNeighbor);
+                neighbor.OnIncomeModified.RemoveListener(behaviourTile.ListenerOnIncomeModified);
+                neighbor.OnIncomeModified.AddListener(behaviourTile.ListenerOnIncomeModified);
             }
             else
             {
                 //If the neighbor isn't claimed add a listener to add its income when he will be claimed
-                neighbor.OnTileClaimed.RemoveListener(behaviourTile.AddClaimedTileIncome);
-                neighbor.OnTileClaimed.AddListener(behaviourTile.AddClaimedTileIncome);
+                neighbor.OnTileClaimed.RemoveListener(behaviourTile.ListenerOnTileClaimed_IncomeComingFromNeighbors);
+                neighbor.OnTileClaimed.AddListener(behaviourTile.ListenerOnTileClaimed_IncomeComingFromNeighbors);
             }
         }
     }
@@ -51,12 +51,33 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
-            neighbor.OnIncomeModified.RemoveListener(behaviourTile.AdjustIncomeFromNeighbor);
-            neighbor.OnTileClaimed.RemoveListener(behaviourTile.AddClaimedTileIncome);
+            neighbor.OnIncomeModified.RemoveListener(behaviourTile.ListenerOnIncomeModified);
+            neighbor.OnTileClaimed.RemoveListener(behaviourTile.ListenerOnTileClaimed_IncomeComingFromNeighbors);
         }
     }
 
-    public void AdjustIncomeFromNeighbor(Tile behaviourTile, Tile neighbor, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
+    public override void HighlightImpactedTile(Tile behaviourTile, bool show)
+    {
+        foreach (Tile neighbor in behaviourTile.Neighbors)
+        {
+            if (!neighbor)
+                continue;
+            if (neighbor.Claimed)
+            {
+                //Don't do the highlight if the neighbor is excluded
+                if (_excludedTiles.Contains(neighbor.TileData))
+                    continue;
+
+                foreach (ResourceToIntMap item in neighbor.Incomes)
+                {
+                    if (item.resource == _resource)
+                        neighbor.Highlight(show);
+                }
+            }
+        }
+    }
+
+    public void CheckNewIncome(Tile behaviourTile, Tile neighbor, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
     {
         //Don't do the adjustement if the neighbor is excluded
         if (_excludedTiles.Contains(neighbor.TileData))
@@ -80,9 +101,9 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
         behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, Utilities.SubtractResourceToIntMaps(newInc, previousInc));
     }
 
-    public void AddClaimedTileIncome(Tile behaviourTile, Tile tile)
+    public void CheckClaimedTile(Tile behaviourTile, Tile tile)
     {
-        //Don't do the adjustement if the neighbor is excluded
+        //Don't do the adjustement if the tile is excluded
         if (_excludedTiles.Contains(tile.TileData))
             return;
 
@@ -95,26 +116,5 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
         }
 
         behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, income);
-    }
-
-    public override void HighlightImpactedTile(Tile behaviourTile, bool show)
-    {
-        foreach (Tile neighbor in behaviourTile.Neighbors)
-        {
-            if (!neighbor)
-                continue;
-            if (neighbor.Claimed)
-            {
-                //Don't do the highlight if the neighbor is excluded
-                if (_excludedTiles.Contains(neighbor.TileData))
-                    continue;
-
-                foreach (ResourceToIntMap item in neighbor.Incomes)
-                {
-                    if (item.resource == _resource)
-                        neighbor.Highlight(show);
-                }
-            }
-        }
     }
 }

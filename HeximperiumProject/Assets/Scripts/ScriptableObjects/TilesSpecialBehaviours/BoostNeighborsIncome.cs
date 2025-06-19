@@ -19,8 +19,8 @@ public class BoostNeighborsIncome : SpecialBehaviour
                 neighbor.Incomes = Utilities.MergeResourceToIntMaps(neighbor.Incomes, _incomeBoost);
             }
             //BehaviourTile is needed even if the reference isn't in the method to create a unique pair of behaviourTile and neighbor, avoiding conflict between events
-            neighbor.OnTileDataModified.RemoveListener(behaviourTile.CheckIfBoostNeeded);
-            neighbor.OnTileDataModified.AddListener(behaviourTile.CheckIfBoostNeeded);
+            neighbor.OnTileDataModified.RemoveListener(behaviourTile.ListenerOnTileDataModified_BoostNeighborsIncome);
+            neighbor.OnTileDataModified.AddListener(behaviourTile.ListenerOnTileDataModified_BoostNeighborsIncome);
         }
     }
 
@@ -35,7 +35,7 @@ public class BoostNeighborsIncome : SpecialBehaviour
             {
                 neighbor.Incomes = Utilities.SubtractResourceToIntMaps(neighbor.Incomes, _incomeBoost);
             }
-            neighbor.OnTileDataModified.RemoveListener(behaviourTile.CheckIfBoostNeeded);
+            neighbor.OnTileDataModified.RemoveListener(behaviourTile.ListenerOnTileDataModified_BoostNeighborsIncome);
         }
     }
 
@@ -52,7 +52,7 @@ public class BoostNeighborsIncome : SpecialBehaviour
         }
     }
 
-    public void CheckIfBoostNeeded(Tile tile)
+    public void CheckNewData(Tile tile)
     {
         if (_infrastructuresBoosted.Contains(tile.TileData))
         {

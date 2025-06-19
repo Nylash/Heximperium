@@ -233,24 +233,32 @@ public class Tile : MonoBehaviour
         }
     }
 
-    #region MethodsForSpecificBehaviours
-    public void AddClaimedTileIncome(Tile tile)
+    #region SPECIFIC LISTENERS FOR BEHAVIOURS
+    public void ListenerOnTileClaimed_IncomeComingFromNeighbors(Tile tile)
     {
         foreach (IncomeComingFromNeighbors behaviour in _tileData.SpecialBehaviours.OfType<IncomeComingFromNeighbors>())
         {
-            behaviour.AddClaimedTileIncome(this, tile);
+            behaviour.CheckClaimedTile(this, tile);
         }
     }
 
-    public void AdjustIncomeFromNeighbor(Tile tile, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
+    public void ListenerOnTileClaimed_BoostClaimedNeighborsIncome(Tile tile)
+    {
+        foreach (BoostClaimedNeighborsIncome behaviour in _tileData.SpecialBehaviours.OfType<BoostClaimedNeighborsIncome>())
+        {
+            behaviour.ApplyBoostToClaimedTile(this, tile);
+        }
+    }
+
+    public void ListenerOnIncomeModified(Tile tile, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
     {
         foreach (IncomeComingFromNeighbors behaviour in _tileData.SpecialBehaviours.OfType<IncomeComingFromNeighbors>())
         {
-            behaviour.AdjustIncomeFromNeighbor(this, tile, previousIncome, newIncome);
+            behaviour.CheckNewIncome(this, tile, previousIncome, newIncome);
         }
     }
 
-    public void CheckNewInfra(Tile tile)
+    public void ListenerOnInfraBuilded(Tile tile)
     {
         foreach (BoostByInfraOccurrenceInEmpire behaviour in _tileData.SpecialBehaviours.OfType<BoostByInfraOccurrenceInEmpire>())
         {
@@ -258,7 +266,7 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public void CheckDestroyedInfra(Tile tile)
+    public void ListenerOnInfraDestroyed(Tile tile)
     {
         foreach (BoostByInfraOccurrenceInEmpire behaviour in _tileData.SpecialBehaviours.OfType<BoostByInfraOccurrenceInEmpire>())
         {
@@ -266,7 +274,7 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public void CheckNewData(Tile tile)
+    public void ListenerOnTileDataModified_NeighborsBoostingIncome(Tile tile)
     {
         foreach (NeighborsBoostingIncome behaviour in _tileData.SpecialBehaviours.OfType<NeighborsBoostingIncome>())
         {
@@ -274,19 +282,11 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public void CheckIfBoostNeeded(Tile tile)
+    public void ListenerOnTileDataModified_BoostNeighborsIncome(Tile tile)
     {
         foreach (BoostNeighborsIncome behaviour in _tileData.SpecialBehaviours.OfType<BoostNeighborsIncome>())
         {
-            behaviour.CheckIfBoostNeeded(tile);
-        }
-    }
-
-    public void ApplyBoost(Tile tile)
-    {
-        foreach (BoostClaimedNeighborsIncome behaviour in _tileData.SpecialBehaviours.OfType<BoostClaimedNeighborsIncome>())
-        {
-            behaviour.ApplyBoost(this, tile);
+            behaviour.CheckNewData(tile);
         }
     }
     #endregion

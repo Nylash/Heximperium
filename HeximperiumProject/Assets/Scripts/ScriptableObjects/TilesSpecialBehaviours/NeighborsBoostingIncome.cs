@@ -18,8 +18,8 @@ public class NeighborsBoostingIncome : SpecialBehaviour
             {
                 behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, _incomeBoost);
             }
-            neighbor.OnTileDataModified.RemoveListener(behaviourTile.CheckNewData);
-            neighbor.OnTileDataModified.AddListener(behaviourTile.CheckNewData);
+            neighbor.OnTileDataModified.RemoveListener(behaviourTile.ListenerOnTileDataModified_NeighborsBoostingIncome);
+            neighbor.OnTileDataModified.AddListener(behaviourTile.ListenerOnTileDataModified_NeighborsBoostingIncome);
         }
     }
 
@@ -34,7 +34,7 @@ public class NeighborsBoostingIncome : SpecialBehaviour
             {
                 behaviourTile.Incomes = Utilities.SubtractResourceToIntMaps(behaviourTile.Incomes, _incomeBoost);
             }
-            neighbor.OnTileDataModified.RemoveListener(behaviourTile.CheckNewData);
+            neighbor.OnTileDataModified.RemoveListener(behaviourTile.ListenerOnTileDataModified_NeighborsBoostingIncome);
         }
     }
 

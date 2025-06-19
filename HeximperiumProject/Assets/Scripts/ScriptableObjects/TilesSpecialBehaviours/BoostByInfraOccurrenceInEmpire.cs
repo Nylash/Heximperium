@@ -16,15 +16,15 @@ public class BoostByInfraOccurrenceInEmpire : SpecialBehaviour
                 behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, _boost);
             }
         }
-        ExploitationManager.Instance.OnInfraBuilded.AddListener(behaviourTile.CheckNewInfra);
-        ExploitationManager.Instance.OnInfraDestroyed.AddListener(behaviourTile.CheckDestroyedInfra);
+        ExploitationManager.Instance.OnInfraBuilded.AddListener(behaviourTile.ListenerOnInfraBuilded);
+        ExploitationManager.Instance.OnInfraDestroyed.AddListener(behaviourTile.ListenerOnInfraDestroyed);
     }
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
         //Nothing needed this tile only impact itself
-        ExploitationManager.Instance.OnInfraBuilded.RemoveListener(behaviourTile.CheckNewInfra);
-        ExploitationManager.Instance.OnInfraDestroyed.RemoveListener(behaviourTile.CheckDestroyedInfra);
+        ExploitationManager.Instance.OnInfraBuilded.RemoveListener(behaviourTile.ListenerOnInfraBuilded);
+        ExploitationManager.Instance.OnInfraDestroyed.RemoveListener(behaviourTile.ListenerOnInfraDestroyed);
     }
 
     public override void HighlightImpactedTile(Tile behaviourTile, bool show)
