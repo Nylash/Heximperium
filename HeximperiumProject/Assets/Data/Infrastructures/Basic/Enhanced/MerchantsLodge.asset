@@ -16,7 +16,6 @@ MonoBehaviour:
   _claimCost: 0
   _interactionButtonPopUpText: +3 Gold per Tavern, Village and Town in the empire
   _tilePopUpText: +3 Gold per Tavern, Village and Town in the empire
-  _typeIncomeUpgrade: 0
   _incomes: []
   _availableInfrastructures: []
   _specialBehaviours:

@@ -17,7 +17,6 @@ MonoBehaviour:
   _interactionButtonPopUpText: +2 Gold per Resource tile with an infrastructure in
     the empire
   _tilePopUpText: +2 Gold per Resource tile with an infrastructure in the empire
-  _typeIncomeUpgrade: 0
   _incomes: []
   _availableInfrastructures: []
   _specialBehaviours:

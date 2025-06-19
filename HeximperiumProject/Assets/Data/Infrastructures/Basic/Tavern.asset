@@ -16,7 +16,6 @@ MonoBehaviour:
   _claimCost: 0
   _interactionButtonPopUpText: +3 Gold & Scout Starting Position
   _tilePopUpText: Scout Starting Position
-  _typeIncomeUpgrade: 0
   _incomes:
   - resource: 0
     value: 3

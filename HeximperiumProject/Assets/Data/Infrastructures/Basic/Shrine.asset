@@ -16,7 +16,6 @@ MonoBehaviour:
   _claimCost: 0
   _interactionButtonPopUpText: +1 Gold to surrounding claimed tiles
   _tilePopUpText: +1 Gold to surrounding claimed tiles
-  _typeIncomeUpgrade: 0
   _incomes: []
   _availableInfrastructures:
   - {fileID: 11400000, guid: 0da4e697cd92ec5468171ae0cf2590e3, type: 2}

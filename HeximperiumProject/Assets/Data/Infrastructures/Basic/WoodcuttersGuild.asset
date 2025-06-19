@@ -16,7 +16,6 @@ MonoBehaviour:
   _claimCost: 0
   _interactionButtonPopUpText: +2 Gold per Lumber Camp in the empire
   _tilePopUpText: +2 Gold per Lumber Camp in the empire
-  _typeIncomeUpgrade: 0
   _incomes: []
   _availableInfrastructures:
   - {fileID: 11400000, guid: b7dd9d4ec1130ba4dad2e0adc871e20a, type: 2}

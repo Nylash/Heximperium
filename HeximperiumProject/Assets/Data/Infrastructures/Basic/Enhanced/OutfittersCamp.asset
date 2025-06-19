@@ -18,12 +18,11 @@ MonoBehaviour:
     here get +1 Speed & +1 Lifespan
   _tilePopUpText: Scout starting position & Scouts starting here get +1 Speed & +1
     Lifespan
-  _typeIncomeUpgrade: 0
   _incomes:
   - resource: 0
     value: 1
   _availableInfrastructures: []
-  _specialBehaviour: {fileID: 0}
+  _specialBehaviours: []
   _popUpPrefab: {fileID: 4211441305533441537, guid: ef8dd89153ab58342bac319dd00772f5, type: 3}
   _visuals:
   - {fileID: 2100000, guid: 889357eb4b5c94b4787ab213eeafe124, type: 2}

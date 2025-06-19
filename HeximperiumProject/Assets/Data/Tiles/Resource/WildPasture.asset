@@ -17,11 +17,10 @@ MonoBehaviour:
   _interactionButtonPopUpText: 
   _tilePopUpText: Can be upgraded to produce Special Resources and bringing a reduction
     to Exploration oriented Infrastructures and Upgrades.
-  _typeIncomeUpgrade: 1
   _incomes: []
   _availableInfrastructures:
   - {fileID: 11400000, guid: 032ba4dc808964e438e5f544bce99796, type: 2}
-  _specialBehaviour: {fileID: 0}
+  _specialBehaviours: []
   _popUpPrefab: {fileID: 4713123567034353809, guid: d8f213d35ee68da42bdab236132145bb, type: 3}
   _visuals:
   - {fileID: 2100000, guid: df7c14609d10a3a478725ba1b0ebc00e, type: 2}

@@ -18,7 +18,6 @@ MonoBehaviour:
     for Upgrades and Enhancements  related to Expansion
   _tilePopUpText: -1 cost in Special Resources for Upgrades and Enhancements  related
     to Expansion
-  _typeIncomeUpgrade: 0
   _incomes:
   - resource: 1
     value: 3

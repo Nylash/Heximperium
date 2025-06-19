@@ -16,7 +16,6 @@ MonoBehaviour:
   _claimCost: 0
   _interactionButtonPopUpText: +3 Gold & +1 Scout limit
   _tilePopUpText: +1 Scout limit
-  _typeIncomeUpgrade: 0
   _incomes:
   - resource: 0
     value: 3

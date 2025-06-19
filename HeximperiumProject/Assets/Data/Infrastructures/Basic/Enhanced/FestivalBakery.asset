@@ -17,7 +17,6 @@ MonoBehaviour:
   _interactionButtonPopUpText: +2 Gold & Tasting Pavilion on this tile and around
     gain +10 Points
   _tilePopUpText: Tasting Pavilion on this tile and around gain +10 Points
-  _typeIncomeUpgrade: 0
   _incomes:
   - resource: 0
     value: 2

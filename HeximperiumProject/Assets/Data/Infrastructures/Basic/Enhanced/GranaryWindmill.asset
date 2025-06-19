@@ -18,7 +18,6 @@ MonoBehaviour:
     Gold to the Windmill
   _tilePopUpText: Each adjacent Farm (except Freehold Farm) gives +2 Gold to the
     Windmill
-  _typeIncomeUpgrade: 0
   _incomes: []
   _availableInfrastructures: []
   _specialBehaviours:
