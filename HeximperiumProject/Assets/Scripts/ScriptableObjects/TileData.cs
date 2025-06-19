@@ -24,14 +24,4 @@ public class TileData : ScriptableObject
     public string InteractionButtonPopUpText { get => _interactionButtonPopUpText; }
     public string TilePopUpText { get => _tilePopUpText; }
     public List<Material> Visuals { get => _visuals; }
-
-    public int GetSpecificIncome(Resource resource)
-    {
-        foreach (ResourceToIntMap item in _incomes)
-        {
-            if (item.resource == resource)
-                return item.value;
-        }
-        return 0;
-    }
 }
