@@ -20,7 +20,8 @@ MonoBehaviour:
   _typeIncomeUpgrade: 0
   _incomes: []
   _availableInfrastructures: []
-  _specialBehaviour: {fileID: 0}
+  _specialBehaviours:
+  - {fileID: 11400000, guid: 469bc08502af76347a388c8a26ea2b1c, type: 2}
   _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
   _visuals:
   - {fileID: 2100000, guid: 018b779632352854abb2592fc3b80569, type: 2}
