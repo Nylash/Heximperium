@@ -19,7 +19,9 @@ MonoBehaviour:
   _tilePopUpText: Minstrel Stage and Parade Route on this tile and around gain +5
     Points per Celebration Village in the empire
   _typeIncomeUpgrade: 0
-  _incomes: []
+  _incomes:
+  - resource: 0
+    value: 2
   _availableInfrastructures: []
   _specialBehaviours:
   - {fileID: 11400000, guid: 76410f1dec70a074289e3002308e9c1d, type: 2}
