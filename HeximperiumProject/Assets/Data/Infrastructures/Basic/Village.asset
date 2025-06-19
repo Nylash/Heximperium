@@ -18,7 +18,7 @@ MonoBehaviour:
     tiles, except other Villages)
   _tilePopUpText: Gold income is equal to the sum of adjacent tiles' gold income
     (except other Villages)
-  _typeIncomeUpgrade: 1
+  _typeIncomeUpgrade: 0
   _incomes: []
   _availableInfrastructures:
   - {fileID: 11400000, guid: 02cb5e45f50789d488eed26fb5f8b261, type: 2}
