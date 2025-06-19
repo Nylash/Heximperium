@@ -82,6 +82,8 @@ public class Tile : MonoBehaviour
         UpdateVisual();
 
         UpdateSpecialBehaviours();
+
+        //Invoke event here
     }
 
     //Reveal the tile, with or without the flipping animation

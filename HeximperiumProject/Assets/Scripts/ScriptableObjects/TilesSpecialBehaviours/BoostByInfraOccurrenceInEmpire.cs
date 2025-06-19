@@ -50,13 +50,18 @@ public class BoostByInfraOccurrenceInEmpire : SpecialBehaviour
 
     public void CheckNewInfra(Tile behaviourTile, Tile tile)
     {
-        //Check if the previous data didn't already applied the boost
-        if (tile.PreviousData is InfrastructureData previousData && _tilesBoosting.Contains(previousData))
-            return;
-
         if(tile.TileData is InfrastructureData data && _tilesBoosting.Contains(data))
-        {
+        {        
+            //Check if the previous data didn't already applied the boost
+            if (tile.PreviousData is InfrastructureData previousData && _tilesBoosting.Contains(previousData))
+                return;
             behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, _boost);
+        }
+        else
+        {
+            //Check if the previous data did apply a boost, then remove it if yes
+            if (tile.PreviousData is InfrastructureData previousData && _tilesBoosting.Contains(previousData))
+                behaviourTile.Incomes = Utilities.SubtractResourceToIntMaps(behaviourTile.Incomes, _boost);
         }
     }
 
