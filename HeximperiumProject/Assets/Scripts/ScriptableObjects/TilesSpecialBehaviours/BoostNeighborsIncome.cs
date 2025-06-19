@@ -18,15 +18,9 @@ public class BoostNeighborsIncome : SpecialBehaviour
             {
                 neighbor.Incomes = Utilities.MergeResourceToIntMaps(neighbor.Incomes, _incomeBoost);
             }
-        }
-    }
-
-    //Check if the specific tile need the boost
-    public override void InitializeSpecialBehaviourToSpecificTile(Tile specificTile, Tile behaviourTile)
-    {
-        if(_infrastructuresBoosted.Contains(specificTile.TileData))
-        {
-            specificTile.Incomes = Utilities.MergeResourceToIntMaps(specificTile.Incomes, _incomeBoost);
+            //BehaviourTile is needed even if the reference isn't in the method to create a unique pair of behaviourTile and neighbor, avoiding conflict between events
+            neighbor.OnTileDataModified.RemoveListener(behaviourTile.CheckIfBoostNeeded);
+            neighbor.OnTileDataModified.AddListener(behaviourTile.CheckIfBoostNeeded);
         }
     }
 
@@ -41,14 +35,7 @@ public class BoostNeighborsIncome : SpecialBehaviour
             {
                 neighbor.Incomes = Utilities.SubtractResourceToIntMaps(neighbor.Incomes, _incomeBoost);
             }
-        }
-    }
-
-    public override void RollbackSpecialBehaviourToSpecificTile(Tile specificTile, Tile behaviourTile)
-    {
-        if (_infrastructuresBoosted.Contains(specificTile.TileData))
-        {
-            specificTile.Incomes = Utilities.SubtractResourceToIntMaps(specificTile.Incomes, _incomeBoost);
+            neighbor.OnTileDataModified.RemoveListener(behaviourTile.CheckIfBoostNeeded);
         }
     }
 
@@ -62,6 +49,23 @@ public class BoostNeighborsIncome : SpecialBehaviour
             {
                 neighbor.Highlight(show);
             }
+        }
+    }
+
+    public void CheckIfBoostNeeded(Tile tile)
+    {
+        if (_infrastructuresBoosted.Contains(tile.TileData))
+        {
+            //Check if the previous data didn't already get the boost
+            if (_infrastructuresBoosted.Contains(tile.PreviousData))
+                return;
+            tile.Incomes = Utilities.MergeResourceToIntMaps(tile.Incomes, _incomeBoost);
+        }
+        else
+        {
+            //Check if the previous data did get a boost, then remove it if yes
+            if (_infrastructuresBoosted.Contains(tile.PreviousData))
+                tile.Incomes = Utilities.SubtractResourceToIntMaps(tile.Incomes, _incomeBoost);
         }
     }
 }

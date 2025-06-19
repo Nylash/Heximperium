@@ -34,6 +34,7 @@ public class Tile : MonoBehaviour
     //previous Incomes, new Incomes
     [HideInInspector] public UnityEvent<Tile, List<ResourceToIntMap>, List<ResourceToIntMap>> OnIncomeModified = new UnityEvent<Tile, List<ResourceToIntMap>, List<ResourceToIntMap>>();
     [HideInInspector] public UnityEvent<Tile> OnTileClaimed = new UnityEvent<Tile>();
+    [HideInInspector] public UnityEvent<Tile> OnTileDataModified = new UnityEvent<Tile>();
     #endregion
 
     #region ACCESSORS
@@ -70,10 +71,16 @@ public class Tile : MonoBehaviour
         RollbackSpecialBehaviours();
 
         //Set the new income
-        if (value.TypeIncomeUpgrade == TypeIncomeUpgrade.Merge)
+        if (value is InfrastructureData)
             Incomes = Utilities.MergeResourceToIntMaps(_incomes, value.Incomes);
         else
-            Incomes = value.Incomes;
+        {
+            //We are going back to the initial data (basic tile, resource tile or hazardous tile) so we reset the income
+            Incomes = Utilities.SubtractResourceToIntMaps(_incomes, _tileData.Incomes);
+            //If the preivous data is an infra we were on an enhanced infra so we need to remove the base infra income too
+            if(_previousData is InfrastructureData)
+                Incomes = Utilities.SubtractResourceToIntMaps(_incomes, _previousData.Incomes);
+        }
 
         name = value.TileName + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
         _previousData = _tileData;
@@ -83,7 +90,7 @@ public class Tile : MonoBehaviour
 
         UpdateSpecialBehaviours();
 
-        //Invoke event here
+        OnTileDataModified.Invoke(this);
     }
 
     //Reveal the tile, with or without the flipping animation
@@ -212,20 +219,6 @@ public class Tile : MonoBehaviour
                 item.InitializeSpecialBehaviour(this);
             }
         }
-
-        //Foreach neighbors check if their special behaviour should impact the new tile
-        foreach (Tile item in _neighbors)
-        {
-            if (!item)
-                continue;
-            if (item.TileData.SpecialBehaviours.Count != 0)
-            {
-                foreach (SpecialBehaviour specialBev in item.TileData.SpecialBehaviours)
-                {
-                    specialBev.InitializeSpecialBehaviourToSpecificTile(this, item);
-                }
-            }
-        }
     }
 
     private void RollbackSpecialBehaviours()
@@ -236,19 +229,6 @@ public class Tile : MonoBehaviour
             foreach (SpecialBehaviour item in _tileData.SpecialBehaviours)
             {
                 item.RollbackSpecialBehaviour(this);
-            }
-        }
-        //Foreach neighbors check if their special behaviour should be rollbacked for this tile
-        foreach (Tile item in _neighbors)
-        {
-            if (!item)
-                continue;
-            if (item.TileData.SpecialBehaviours.Count != 0)
-            {
-                foreach (SpecialBehaviour specialBev in item.TileData.SpecialBehaviours)
-                {
-                    specialBev.RollbackSpecialBehaviourToSpecificTile(this, item);
-                }
             }
         }
     }
@@ -262,11 +242,11 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public void AdjustIncomeFromNeighbor(Tile neighbor, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
+    public void AdjustIncomeFromNeighbor(Tile tile, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
     {
         foreach (IncomeComingFromNeighbors behaviour in _tileData.SpecialBehaviours.OfType<IncomeComingFromNeighbors>())
         {
-            behaviour.AdjustIncomeFromNeighbor(this, neighbor, previousIncome, newIncome);
+            behaviour.AdjustIncomeFromNeighbor(this, tile, previousIncome, newIncome);
         }
     }
 
@@ -283,6 +263,30 @@ public class Tile : MonoBehaviour
         foreach (BoostByInfraOccurrenceInEmpire behaviour in _tileData.SpecialBehaviours.OfType<BoostByInfraOccurrenceInEmpire>())
         {
             behaviour.CheckDestroyedInfra(this, tile);
+        }
+    }
+
+    public void CheckNewData(Tile tile)
+    {
+        foreach (NeighborsBoostingIncome behaviour in _tileData.SpecialBehaviours.OfType<NeighborsBoostingIncome>())
+        {
+            behaviour.CheckNewData(this, tile);
+        }
+    }
+
+    public void CheckIfBoostNeeded(Tile tile)
+    {
+        foreach (BoostNeighborsIncome behaviour in _tileData.SpecialBehaviours.OfType<BoostNeighborsIncome>())
+        {
+            behaviour.CheckIfBoostNeeded(tile);
+        }
+    }
+
+    public void ApplyBoost(Tile tile)
+    {
+        foreach (BoostClaimedNeighborsIncome behaviour in _tileData.SpecialBehaviours.OfType<BoostClaimedNeighborsIncome>())
+        {
+            behaviour.ApplyBoost(this, tile);
         }
     }
     #endregion

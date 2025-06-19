@@ -44,11 +44,6 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
         }
     }
 
-    public override void InitializeSpecialBehaviourToSpecificTile(Tile specificTile, Tile behaviourTile)
-    {
-        //Nothing needed, this behaviour doesn't impact others tiles
-    }
-
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
         //Nothing needed, replacing by previous tile will be enough (this behaviour only modify its own tile)
@@ -59,11 +54,6 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
             neighbor.OnIncomeModified.RemoveListener(behaviourTile.AdjustIncomeFromNeighbor);
             neighbor.OnTileClaimed.RemoveListener(behaviourTile.AddClaimedTileIncome);
         }
-    }
-
-    public override void RollbackSpecialBehaviourToSpecificTile(Tile specificTile, Tile behaviourTile)
-    {
-        //Nothing needed everything is handled by the event
     }
 
     public void AdjustIncomeFromNeighbor(Tile behaviourTile, Tile neighbor, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)

@@ -20,21 +20,11 @@ public class BoostByInfraOccurrenceInEmpire : SpecialBehaviour
         ExploitationManager.Instance.OnInfraDestroyed.AddListener(behaviourTile.CheckDestroyedInfra);
     }
 
-    public override void InitializeSpecialBehaviourToSpecificTile(Tile specificTile, Tile behaviourTile)
-    {
-        //Nothing needed, every tile modification pass by the empire wide event
-    }
-
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
         //Nothing needed this tile only impact itself
         ExploitationManager.Instance.OnInfraBuilded.RemoveListener(behaviourTile.CheckNewInfra);
         ExploitationManager.Instance.OnInfraDestroyed.RemoveListener(behaviourTile.CheckDestroyedInfra);
-    }
-
-    public override void RollbackSpecialBehaviourToSpecificTile(Tile specificTile, Tile behaviourTile)
-    {
-        //Nothing needed, every tile modification pass by the empire wide event
     }
 
     public override void HighlightImpactedTile(Tile behaviourTile, bool show)

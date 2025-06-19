@@ -10,19 +10,9 @@ public class SpecialResourcesCostReduction : SpecialBehaviour
         ResourcesManager.Instance.SetSSRReduction(_associatedSystem, 1);
     }
 
-    public override void InitializeSpecialBehaviourToSpecificTile(Tile specificTile, Tile behaviourTile)
-    {
-        //Nothing needed, this behaviour doesn't impact others tiles
-    }
-
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
         ResourcesManager.Instance.SetSSRReduction(_associatedSystem, -1);
-    }
-
-    public override void RollbackSpecialBehaviourToSpecificTile(Tile specificTile, Tile behaviourTile)
-    {
-        //Nothing needed, this behaviour doesn't impact others tiles
     }
 
     public override void HighlightImpactedTile(Tile behaviourTile, bool show)
