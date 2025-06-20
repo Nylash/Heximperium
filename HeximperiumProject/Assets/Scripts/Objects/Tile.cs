@@ -299,6 +299,14 @@ public class Tile : MonoBehaviour
             behaviour.CheckNewData(this);
         }
     }
+
+    public void ListenerOnTileDataModified_BoostNeighborsWithInfraIncome(Tile tile)
+    {
+        foreach (BoostNeighborsWithInfraIncome behaviour in _tileData.SpecialBehaviours.OfType<BoostNeighborsWithInfraIncome>())
+        {
+            behaviour.CheckNewData(tile);
+        }
+    }
     #endregion
     #endregion
 }
