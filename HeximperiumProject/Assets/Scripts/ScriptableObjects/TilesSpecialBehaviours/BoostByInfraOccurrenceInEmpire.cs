@@ -16,13 +16,22 @@ public class BoostByInfraOccurrenceInEmpire : SpecialBehaviour
                 behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, _boost);
             }
         }
+        ExploitationManager.Instance.OnInfraBuilded.RemoveListener(behaviourTile.ListenerOnInfraBuilded);
+        ExploitationManager.Instance.OnInfraDestroyed.RemoveListener(behaviourTile.ListenerOnInfraDestroyed);
         ExploitationManager.Instance.OnInfraBuilded.AddListener(behaviourTile.ListenerOnInfraBuilded);
         ExploitationManager.Instance.OnInfraDestroyed.AddListener(behaviourTile.ListenerOnInfraDestroyed);
     }
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
-        //Nothing needed this tile only impact itself
+        foreach (Tile tile in ExploitationManager.Instance.Infrastructures)
+        {
+            if (tile.TileData is InfrastructureData data && _tilesBoosting.Contains(data))
+            {
+                behaviourTile.Incomes = Utilities.SubtractResourceToIntMaps(behaviourTile.Incomes, _boost);
+            }
+        }
+
         ExploitationManager.Instance.OnInfraBuilded.RemoveListener(behaviourTile.ListenerOnInfraBuilded);
         ExploitationManager.Instance.OnInfraDestroyed.RemoveListener(behaviourTile.ListenerOnInfraDestroyed);
     }

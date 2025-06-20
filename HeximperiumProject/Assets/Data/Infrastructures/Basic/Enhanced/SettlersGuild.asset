@@ -18,7 +18,10 @@ MonoBehaviour:
   _tilePopUpText: +4 Gold per town in the empire & +1 Town limit
   _incomes: []
   _availableInfrastructures: []
-  _specialBehaviours: []
+  _specialBehaviours:
+  - {fileID: 11400000, guid: 2c7698df2cb4cd74a924de01fc5e65c9, type: 2}
+  - {fileID: 11400000, guid: 32f99b908599fd04d8093294c9a674aa, type: 2}
+  - {fileID: 11400000, guid: 1b866eddf1ab5dc46bb3530183ae5fe9, type: 2}
   _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
   _visuals:
   - {fileID: 2100000, guid: 2ee6dd315639e4046b2b3c03cd9aa044, type: 2}
