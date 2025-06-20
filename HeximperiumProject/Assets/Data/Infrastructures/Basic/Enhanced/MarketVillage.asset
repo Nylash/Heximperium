@@ -20,6 +20,7 @@ MonoBehaviour:
   _availableInfrastructures: []
   _specialBehaviours:
   - {fileID: 11400000, guid: 76410f1dec70a074289e3002308e9c1d, type: 2}
+  - {fileID: 11400000, guid: 1b8d1dc4f91af1b4ca61a65f977233fe, type: 2}
   _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
   _visuals:
   - {fileID: 2100000, guid: 7b679046be7ff704482a3f1301fd2fe4, type: 2}

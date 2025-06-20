@@ -28,6 +28,7 @@ public class Tile : MonoBehaviour
     private Entertainer _entertainer;
     private GameObject _highlightObject;
     private TileData _previousData;
+    private int _uniqueInfraNeighborsCount;
     #endregion
 
     #region EVENTS
@@ -56,6 +57,7 @@ public class Tile : MonoBehaviour
     public TileData InitialData { get => _initialData; set => _initialData = value; }
     public Entertainer Entertainer { get => _entertainer; set => _entertainer = value; }
     public TileData PreviousData { get => _previousData; }
+    public int UniqueInfraNeighborsCount { get => _uniqueInfraNeighborsCount; set => _uniqueInfraNeighborsCount = value; }
     #endregion
 
     private void Awake()
@@ -287,6 +289,14 @@ public class Tile : MonoBehaviour
         foreach (BoostNeighborsIncome behaviour in _tileData.SpecialBehaviours.OfType<BoostNeighborsIncome>())
         {
             behaviour.CheckNewData(tile);
+        }
+    }
+
+    public void ListenerOnTileDataModified_BoostByUniqueInfraNeighbors(Tile tile)
+    {
+        foreach (BoostByUniqueInfraNeighbors behaviour in _tileData.SpecialBehaviours.OfType<BoostByUniqueInfraNeighbors>())
+        {
+            behaviour.CheckNewData(this);
         }
     }
     #endregion

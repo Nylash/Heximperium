@@ -51,6 +51,23 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
+            if (neighbor.Claimed)
+            {
+                //Don't do the rollback if the neighbor is excluded
+                if (_excludedTiles.Contains(neighbor.TileData))
+                    continue;
+
+                List<ResourceToIntMap> income = new List<ResourceToIntMap>();
+
+                foreach (ResourceToIntMap item in neighbor.Incomes)
+                {
+                    if (item.resource == _resource)
+                        income.Add(new ResourceToIntMap(_resource, item.value));
+                }
+
+                behaviourTile.Incomes = Utilities.SubtractResourceToIntMaps(behaviourTile.Incomes, income);
+            }
+
             neighbor.OnIncomeModified.RemoveListener(behaviourTile.ListenerOnIncomeModified);
             neighbor.OnTileClaimed.RemoveListener(behaviourTile.ListenerOnTileClaimed_IncomeComingFromNeighbors);
         }
@@ -116,5 +133,9 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
         }
 
         behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, income);
+
+        //Add a listener to adjust the income when a neighbor adjust its own income
+        tile.OnIncomeModified.RemoveListener(behaviourTile.ListenerOnIncomeModified);
+        tile.OnIncomeModified.AddListener(behaviourTile.ListenerOnIncomeModified);
     }
 }
