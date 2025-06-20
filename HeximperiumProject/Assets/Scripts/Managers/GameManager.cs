@@ -154,7 +154,7 @@ public class GameManager : Singleton<GameManager>
             ExpansionManager.Instance.ClaimTile(tile);
         }
 
-        ExpansionManager.Instance.BaseClaimPerTurn = 4;
+        ExpansionManager.Instance.ClaimPerTurn = 4;
     }
     #endregion
 

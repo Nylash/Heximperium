@@ -14,12 +14,12 @@ public class ExpansionManager : Singleton<ExpansionManager>
     private List<GameObject> _buttons = new List<GameObject>();
     private List<Tile> _claimedTiles = new List<Tile>();
     private List<Vector3> _interactionPositions = new List<Vector3>();
-    private int _baseClaimPerTurn;
+    private int _claimPerTurn;
     #endregion
 
     #region ACCESSORS
     public Transform BorderParent { get => _borderParent; }
-    public int BaseClaimPerTurn { get => _baseClaimPerTurn; set => _baseClaimPerTurn = value; }
+    public int ClaimPerTurn { get => _claimPerTurn; set => _claimPerTurn = value; }
     public List<Tile> ClaimedTiles { get => _claimedTiles; }
     public InfrastructureData TownData { get => _townData;}
     #endregion
@@ -39,7 +39,7 @@ public class ExpansionManager : Singleton<ExpansionManager>
     #region PHASE LOGIC
     private void StartPhase()
     {
-        ResourcesManager.Instance.UpdateClaim(_baseClaimPerTurn, Transaction.Gain);
+        ResourcesManager.Instance.UpdateClaim(_claimPerTurn, Transaction.Gain);
     }
 
     private void ConfirmPhase()

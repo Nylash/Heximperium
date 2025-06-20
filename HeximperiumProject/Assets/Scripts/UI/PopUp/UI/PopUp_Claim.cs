@@ -9,6 +9,6 @@ public class PopUp_Claim : UI_ResourcePopUp
     public override void InitializePopUp()
     {
         _claimCount.text += ResourcesManager.Instance.Claim;
-        _claimSource.text += "+" + ExpansionManager.Instance.BaseClaimPerTurn;
+        _claimSource.text += "+" + ExpansionManager.Instance.ClaimPerTurn;
     }
 }
