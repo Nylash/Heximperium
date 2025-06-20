@@ -307,6 +307,14 @@ public class Tile : MonoBehaviour
             behaviour.CheckNewData(tile);
         }
     }
+
+    public void ListenerOnScoutSpawned(Scout scout)
+    {
+        foreach (BoostScoutOnSpawn behaviour in _tileData.SpecialBehaviours.OfType<BoostScoutOnSpawn>())
+        {
+            behaviour.CheckScoutSpawned(this, scout);
+        }
+    }
     #endregion
     #endregion
 }

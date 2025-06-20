@@ -54,7 +54,10 @@ public class Scout : MonoBehaviour
     private void Start()
     {
         _animator = GetComponent<Animator>();
+    }
 
+    public void InitializeScout()
+    {
         _speed = _data.Speed;
         _lifespan = _data.Lifespan;
         _revealRadius = _data.RevealRadius;

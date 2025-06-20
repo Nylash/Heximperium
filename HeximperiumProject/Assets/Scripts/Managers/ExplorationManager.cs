@@ -29,6 +29,7 @@ public class ExplorationManager : Singleton<ExplorationManager>
     #region EVENTS
     [HideInInspector] public UnityEvent OnPhaseFinalized = new UnityEvent();
     [HideInInspector] public UnityEvent OnScoutsLimitModified = new UnityEvent();
+    [HideInInspector] public UnityEvent<Scout> OnScoutSpawned = new UnityEvent<Scout>();
     #endregion
 
     #region ACCESSORS
@@ -173,7 +174,11 @@ public class ExplorationManager : Singleton<ExplorationManager>
             _tileRefForScoutDirection = tile;
             tile.UpdateScoutCounter();
 
+            _currentScout.InitializeScout();
+
             _choosingScoutDirection = true;
+
+            OnScoutSpawned.Invoke(_currentScout);
         }
     }
 
