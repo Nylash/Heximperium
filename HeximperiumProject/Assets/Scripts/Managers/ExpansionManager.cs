@@ -5,11 +5,8 @@ using UnityEngine.Events;
 
 public class ExpansionManager : Singleton<ExpansionManager>
 {
-    #region CONSTANTS
-    private const string TOWN_DATA_PATH = "Data/Infrastructures/Town";
-    #endregion
-
     #region CONFIGURATION
+    [SerializeField] private InfrastructureData _townData;
     [SerializeField] private Transform _borderParent;
     #endregion
 
@@ -17,17 +14,22 @@ public class ExpansionManager : Singleton<ExpansionManager>
     private List<GameObject> _buttons = new List<GameObject>();
     private List<Tile> _claimedTiles = new List<Tile>();
     private List<Vector3> _interactionPositions = new List<Vector3>();
-    private int _baseClaimPerTurn;
+    private int _claimPerTurn;
+    private int _savedClaimPerTurn;
     #endregion
 
     #region ACCESSORS
     public Transform BorderParent { get => _borderParent; }
-    public int BaseClaimPerTurn { get => _baseClaimPerTurn; set => _baseClaimPerTurn = value; }
+    public int ClaimPerTurn { get => _claimPerTurn; set => _claimPerTurn = value; }
     public List<Tile> ClaimedTiles { get => _claimedTiles; }
+    public InfrastructureData TownData { get => _townData;}
+    public int SavedClaimPerTurn { get => _savedClaimPerTurn; set => _savedClaimPerTurn = value; }
     #endregion
 
     #region EVENTS
     [HideInInspector] public UnityEvent OnPhaseFinalized = new UnityEvent();
+    [HideInInspector] public UnityEvent<Tile> OnTileClaimed = new UnityEvent<Tile>();
+    [HideInInspector] public UnityEvent<int> OnClaimSaved = new UnityEvent<int>();
     #endregion
 
     protected override void OnAwake()
@@ -41,12 +43,19 @@ public class ExpansionManager : Singleton<ExpansionManager>
     #region PHASE LOGIC
     private void StartPhase()
     {
-        ResourcesManager.Instance.UpdateClaim(_baseClaimPerTurn, Transaction.Gain);
+        ResourcesManager.Instance.UpdateClaim(_claimPerTurn, Transaction.Gain);
     }
 
     private void ConfirmPhase()
     {
-        ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim, Transaction.Spent);
+        if (_savedClaimPerTurn > 0)
+        {
+            if(ResourcesManager.Instance.Claim - _savedClaimPerTurn > 0)
+                ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim - _savedClaimPerTurn, Transaction.Spent);
+            OnClaimSaved.Invoke(ResourcesManager.Instance.Claim);
+        }
+        else
+            ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim, Transaction.Spent);
 
         StartCoroutine(PhaseFinalized());
     }
@@ -107,7 +116,7 @@ public class ExpansionManager : Singleton<ExpansionManager>
 
     private void TownInteraction(Tile tile, int positionIndex)
     {
-        _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Town));
+        _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Infrastructure, _townData));
     }
 
     public void ClaimTile(Tile tile)
@@ -121,21 +130,15 @@ public class ExpansionManager : Singleton<ExpansionManager>
             _claimedTiles.Add(tile);
             foreach (Tile t in _claimedTiles)
                 t.CheckBorder();
+            OnTileClaimed.Invoke(tile);
         }
     }
 
     public void BuildTown(Tile tile)
     {
-        InfrastructureData townData = Resources.Load<InfrastructureData>(TOWN_DATA_PATH);
-        if (townData == null)
+        if (ExploitationManager.Instance.IsInfraAvailable(_townData))
         {
-            Debug.LogError("Town data not found at path: " + TOWN_DATA_PATH);
-            return;
-        }
-
-        if (ExploitationManager.Instance.IsInfraAvailable(townData))
-        {
-            if (ResourcesManager.Instance.CanAfford(townData.Costs))
+            if (ResourcesManager.Instance.CanAfford(_townData.Costs))
             {
                 // Start by claiming the tile if needed
                 if (!tile.Claimed)
@@ -145,7 +148,7 @@ public class ExpansionManager : Singleton<ExpansionManager>
                     foreach (Tile t in _claimedTiles)
                         t.CheckBorder();
                 }
-                ExploitationManager.Instance.BuildInfrastructure(tile, townData);
+                ExploitationManager.Instance.BuildInfrastructure(tile, _townData);
             }
         }
     }

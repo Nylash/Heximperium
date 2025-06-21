@@ -38,9 +38,12 @@ public class PopUp_InfraEffectAndIncome : UI_DynamicPopUp
         }
 
         //Show highlight impacted tiles by the special behaviour of this infra
-        if (tile.TileData.SpecialBehaviour != null)
+        if (tile.TileData.SpecialBehaviours.Count != 0)
         {
-            tile.TileData.SpecialBehaviour.HighlightImpactedTile(tile, true);
+            foreach (SpecialBehaviour item in tile.TileData.SpecialBehaviours)
+            {
+                item.HighlightImpactedTile(tile, true);
+            }
         }
 
         _associatedTile = tile;
@@ -49,9 +52,12 @@ public class PopUp_InfraEffectAndIncome : UI_DynamicPopUp
     public override void DestroyPopUp()
     {
         //Hide highlight impacted tiles by the special behaviour of this infra
-        if (_associatedTile.TileData.SpecialBehaviour != null)
+        if (_associatedTile.TileData.SpecialBehaviours.Count != 0)
         {
-            _associatedTile.TileData.SpecialBehaviour.HighlightImpactedTile(_associatedTile, false);
+            foreach (SpecialBehaviour item in _associatedTile.TileData.SpecialBehaviours)
+            {
+                item.HighlightImpactedTile(_associatedTile, false);
+            }
         }
 
         base.DestroyPopUp();

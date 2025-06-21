@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
 public class Scout : MonoBehaviour
 {
@@ -42,6 +43,10 @@ public class Scout : MonoBehaviour
     public bool HasDoneMoving { get => _hasDoneMoving;}
     #endregion
 
+    #region EVENTS
+    [HideInInspector] public UnityEvent<Tile> OnScoutRevealingTile = new UnityEvent<Tile>();
+    #endregion
+
     private void Awake()
     {
         _renderers.Add(GetComponent<Renderer>());
@@ -54,7 +59,10 @@ public class Scout : MonoBehaviour
     private void Start()
     {
         _animator = GetComponent<Animator>();
+    }
 
+    public void InitializeScout()
+    {
         _speed = _data.Speed;
         _lifespan = _data.Lifespan;
         _revealRadius = _data.RevealRadius;
@@ -88,7 +96,10 @@ public class Scout : MonoBehaviour
 
             //Reveal recursively
             if (!_currentTile.Revealed)
+            {
                 _currentTile.RevealTile(false);
+                OnScoutRevealingTile.Invoke(_currentTile);
+            }    
             RevealTilesRecursively(_currentTile, _revealRadius);
 
             yield return new WaitForSeconds(ExplorationManager.Instance.AwaitTimeScoutMovement);
@@ -134,6 +145,7 @@ public class Scout : MonoBehaviour
             if (!neighbor.Revealed)
             {
                 neighbor.RevealTile(false);
+                OnScoutRevealingTile.Invoke(neighbor);
             }
             // Recursively reveal the neighbors of the current neighbor
             RevealTilesRecursively(neighbor, depth - 1);

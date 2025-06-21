@@ -40,7 +40,7 @@ public class EntertainementManager : Singleton<EntertainementManager>
         GameManager.Instance.OnNewTileSelected.AddListener(NewTileSelected);
         GameManager.Instance.OnTileUnselected.AddListener(TileUnselected);
 
-        EntertainerData[] entertainerDataArray = Resources.LoadAll<EntertainerData>(ENTERTAINERS_DATA_PATH);
+        /*EntertainerData[] entertainerDataArray = Resources.LoadAll<EntertainerData>(ENTERTAINERS_DATA_PATH);
         if (entertainerDataArray.Length == 0)
         {
             Debug.LogError("No entertainer data found at path: " + ENTERTAINERS_DATA_PATH);
@@ -48,7 +48,7 @@ public class EntertainementManager : Singleton<EntertainementManager>
         else
         {
             _entertainerDatas.AddRange(entertainerDataArray);
-        }
+        }*/
     }
 
     public int GetPointsIncome()

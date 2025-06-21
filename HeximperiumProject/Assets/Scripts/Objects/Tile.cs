@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using System.Linq;
 
 public class Tile : MonoBehaviour
 {
@@ -26,41 +27,20 @@ public class Tile : MonoBehaviour
     private TextMeshPro _scoutCounter;
     private Entertainer _entertainer;
     private GameObject _highlightObject;
+    private TileData _previousData;
+    private int _uniqueInfraNeighborsCount;
     #endregion
 
     #region EVENTS
     //previous Incomes, new Incomes
     [HideInInspector] public UnityEvent<Tile, List<ResourceToIntMap>, List<ResourceToIntMap>> OnIncomeModified = new UnityEvent<Tile, List<ResourceToIntMap>, List<ResourceToIntMap>>();
     [HideInInspector] public UnityEvent<Tile> OnTileClaimed = new UnityEvent<Tile>();
+    [HideInInspector] public UnityEvent<Tile> OnTileDataModified = new UnityEvent<Tile>();
     #endregion
 
     #region ACCESSORS
     public Vector2 Coordinate { get => _coordinate; set => _coordinate = value; }
-    public TileData TileData
-    {
-        get => _tileData;
-        set
-        {
-            //Remove previous special behaviour
-            if (_tileData.SpecialBehaviour != null)
-            {
-                _tileData.SpecialBehaviour.RollbackSpecialBehaviour(this);
-            }
-
-            //Set the new income
-            if (value.TypeIncomeUpgrade == TypeIncomeUpgrade.Merge)
-                Incomes = Utilities.MergeResourceValues(_incomes, value.Incomes);
-            else
-                Incomes = value.Incomes;
-
-            name = value.TileName + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
-            _tileData = value;
-
-            UpdateVisual();
-
-            CheckSpecialBehaviour();
-        }
-    }
+    public TileData TileData { get => _tileData; set => UpdateTileData(value); }
     public bool Claimed { get => _claimed;}
     public bool Revealed { get => _revealed;}
     public Tile[] Neighbors { get => _neighbors;}
@@ -76,6 +56,8 @@ public class Tile : MonoBehaviour
     }
     public TileData InitialData { get => _initialData; set => _initialData = value; }
     public Entertainer Entertainer { get => _entertainer; set => _entertainer = value; }
+    public TileData PreviousData { get => _previousData; }
+    public int UniqueInfraNeighborsCount { get => _uniqueInfraNeighborsCount; set => _uniqueInfraNeighborsCount = value; }
     #endregion
 
     private void Awake()
@@ -84,13 +66,33 @@ public class Tile : MonoBehaviour
         _initialData = _tileData;
     }
 
-    //Claim the tile and spawn the territory boundaries
-    public void ClaimTile()
+    #region BASIC METHODS
+    //Update the tile data and call every other methods that impact
+    private void UpdateTileData(TileData value)
     {
-        _claimed = true;
-        OnTileClaimed.Invoke(this);
-        _border = Instantiate(_borderPrefab, transform.position, Quaternion.identity).GetComponent<Border>();
-        _border.transform.parent = ExpansionManager.Instance.BorderParent;
+        RollbackSpecialBehaviours();
+
+        //Set the new income
+        if (value is InfrastructureData)
+            Incomes = Utilities.MergeResourceToIntMaps(_incomes, value.Incomes);
+        else
+        {
+            //We are going back to the initial data (basic tile, resource tile or hazardous tile) so we reset the income
+            Incomes = Utilities.SubtractResourceToIntMaps(_incomes, _tileData.Incomes);
+            //If the preivous data is an infra we were on an enhanced infra so we need to remove the base infra income too
+            if(_previousData is InfrastructureData)
+                Incomes = Utilities.SubtractResourceToIntMaps(_incomes, _previousData.Incomes);
+        }
+
+        name = value.TileName + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
+        _previousData = _tileData;
+        _tileData = value;
+
+        UpdateVisual();
+
+        UpdateSpecialBehaviours();
+
+        OnTileDataModified.Invoke(this);
     }
 
     //Reveal the tile, with or without the flipping animation
@@ -101,6 +103,15 @@ public class Tile : MonoBehaviour
             _animator.SetTrigger("InstantReveal");
         else
             _animator.SetTrigger("Reveal");
+    }
+
+    //Claim the tile and spawn the territory boundaries
+    public void ClaimTile()
+    {
+        _claimed = true;
+        OnTileClaimed.Invoke(this);
+        _border = Instantiate(_borderPrefab, transform.position, Quaternion.identity).GetComponent<Border>();
+        _border.transform.parent = ExpansionManager.Instance.BorderParent;
     }
 
     //Called when a tile is claimed
@@ -129,10 +140,31 @@ public class Tile : MonoBehaviour
     public void Highlight(bool show)
     {
         if (show)
+        {
+            if (_highlightObject != null)
+                return;
             _highlightObject = Instantiate(_highlightPrefab, transform.position + new Vector3(0, 0.02f, 0), Quaternion.identity);
-        else
+        }
+        else if(_highlightObject != null)
             Destroy(_highlightObject);
     }
+
+    //Method used manage the scout counter of the tile (if there is several scouts on the same tile)
+    public void UpdateScoutCounter()
+    {
+        if (_scouts.Count >= 2)
+        {
+            if (_scoutCounter == null)
+                _scoutCounter = Instantiate(ExplorationManager.Instance.ScoutCounterPrefab, transform).GetComponent<TextMeshPro>();
+            _scoutCounter.text = _scouts.Count.ToString();
+        }
+        else
+        {
+            if (_scoutCounter != null)
+                Destroy(_scoutCounter.gameObject);
+        }
+    }
+    #endregion
 
     #region NEIGHBORS LOGIC
     //Only called at the map generation
@@ -178,74 +210,167 @@ public class Tile : MonoBehaviour
     }
     #endregion
 
-    //Method used manage the scout counter of the tile (if there is several scouts on the same tile)
-    public void UpdateScoutCounter()
-    {
-        if(_scouts.Count >= 2)
-        {
-            if(_scoutCounter == null)
-                _scoutCounter = Instantiate(ExplorationManager.Instance.ScoutCounterPrefab, transform).GetComponent<TextMeshPro>();
-            _scoutCounter.text = _scouts.Count.ToString();
-        }
-        else
-        {
-            if (_scoutCounter != null)
-                Destroy(_scoutCounter.gameObject);
-        }
-    }
-
-
     #region SPECIAL BEHAVIOUR
-    private void CheckSpecialBehaviour()
+    private void UpdateSpecialBehaviours()
     {
         //Tile special behaviour
-        if (_tileData.SpecialBehaviour != null)
+        if (_tileData.SpecialBehaviours.Count != 0)
         {
-            _tileData.SpecialBehaviour.InitializeSpecialBehaviour(this);
-
-            //Special case for IncomeComingFromNeighbors
-            if (_tileData.SpecialBehaviour is IncomeComingFromNeighbors)
+            foreach (SpecialBehaviour item in _tileData.SpecialBehaviours)
             {
-                foreach (Tile neighbor in _neighbors)
-                {
-                    if (!neighbor)
-                        continue;
-                    neighbor.OnIncomeModified.RemoveListener(AdjustIncomeFromNeighbor);
-                    neighbor.OnIncomeModified.AddListener(AdjustIncomeFromNeighbor);
-                    if (!neighbor.Claimed)
-                    {
-                        neighbor.OnTileClaimed.RemoveListener(AddClaimedTileIncome);
-                        neighbor.OnTileClaimed.AddListener(AddClaimedTileIncome);
-                    } 
-                }
+                item.InitializeSpecialBehaviour(this);
             }
         }
+    }
 
-        //Foreach neighbors check if their special behaviour should impact the new tile
-        foreach (Tile item in _neighbors)
+    private void RollbackSpecialBehaviours()
+    {
+        //Remove previous special behaviour
+        if (_tileData.SpecialBehaviours.Count != 0)
         {
-            if (!item)
-                continue;
-            if (item.TileData.SpecialBehaviour != null)
-                item.TileData.SpecialBehaviour.ApplySpecialBehaviour(this);
+            foreach (SpecialBehaviour item in _tileData.SpecialBehaviours)
+            {
+                item.RollbackSpecialBehaviour(this);
+            }
         }
     }
 
-    //Region for the special behaviour IncomeComingFromNeighbors, 
-    #region IncomeComingFromNeighbors
-    private void AddClaimedTileIncome(Tile tile)
+    #region SPECIFIC LISTENERS FOR BEHAVIOURS
+    #region ON TILE CLAIMED
+    public void ListenerOnTileClaimed_IncomeComingFromNeighbors(Tile tile)
     {
-        if (_tileData.SpecialBehaviour is IncomeComingFromNeighbors specialBehaviour)
+        foreach (IncomeComingFromNeighbors behaviour in _tileData.SpecialBehaviours.OfType<IncomeComingFromNeighbors>())
         {
-            specialBehaviour.AddClaimedTileIncome(this, tile);
+            behaviour.CheckClaimedTile(this, tile);
         }
     }
 
-    private void AdjustIncomeFromNeighbor(Tile neighbor, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
+    public void ListenerOnTileClaimed_BoostClaimedNeighborsIncome(Tile tile)
     {
-        if(_tileData.SpecialBehaviour is IncomeComingFromNeighbors specialBehaviour)
+        foreach (BoostClaimedNeighborsIncome behaviour in _tileData.SpecialBehaviours.OfType<BoostClaimedNeighborsIncome>())
         {
-            specialBehaviour.AdjustIncomeFromNeighbor(neighbor, this, previousIncome, newIncome);
+            behaviour.ApplyBoostToClaimedTile(this, tile);
+        }
+    }
+
+    public void ListenerOnTileClaimed_IncomeWhenTileClaimed(Tile tile)
+    {
+        foreach (IncomeWhenTileClaimed behaviour in _tileData.SpecialBehaviours.OfType<IncomeWhenTileClaimed>())
+        {
+            behaviour.TileClaimed(this);
+        }
+    }
+    #endregion
+
+    #region ON TILE DATA MODIFIED
+    public void ListenerOnTileDataModified_NeighborsBoostingIncome(Tile tile)
+    {
+        foreach (NeighborsBoostingIncome behaviour in _tileData.SpecialBehaviours.OfType<NeighborsBoostingIncome>())
+        {
+            behaviour.CheckNewData(this, tile);
+        }
+    }
+
+    public void ListenerOnTileDataModified_BoostNeighborsIncome(Tile tile)
+    {
+        foreach (BoostNeighborsIncome behaviour in _tileData.SpecialBehaviours.OfType<BoostNeighborsIncome>())
+        {
+            behaviour.CheckNewData(tile);
+        }
+    }
+
+    public void ListenerOnTileDataModified_BoostByUniqueInfraNeighbors(Tile tile)
+    {
+        foreach (BoostByUniqueInfraNeighbors behaviour in _tileData.SpecialBehaviours.OfType<BoostByUniqueInfraNeighbors>())
+        {
+            behaviour.CheckNewData(this);
+        }
+    }
+
+    public void ListenerOnTileDataModified_BoostNeighborsWithInfraIncome(Tile tile)
+    {
+        foreach (BoostNeighborsWithInfraIncome behaviour in _tileData.SpecialBehaviours.OfType<BoostNeighborsWithInfraIncome>())
+        {
+            behaviour.CheckNewData(tile);
+        }
+    }
+    #endregion
+
+    #region ON SCOUT SPAWNED
+    public void ListenerOnScoutSpawned_BoostScoutOnSpawn(Scout scout)
+    {
+        foreach (BoostScoutOnSpawn behaviour in _tileData.SpecialBehaviours.OfType<BoostScoutOnSpawn>())
+        {
+            behaviour.CheckScoutSpawned(this, scout);
+        }
+    }
+
+    public void ListenerOnScoutSpawned_GainIncomeWhenScoutRevealTile(Scout scout)
+    {
+        foreach (IncomeWhenScoutRevealTile behaviour in _tileData.SpecialBehaviours.OfType<IncomeWhenScoutRevealTile>())
+        {
+            behaviour.CheckScoutSpawned(this, scout);
+        }
+    }
+    #endregion
+
+    #region ON INFRA BUILDED
+    public void ListenerOnInfraBuilded_BoostByInfraOccurrenceInEmpire(Tile tile)
+    {
+        foreach (BoostByInfraOccurrenceInEmpire behaviour in _tileData.SpecialBehaviours.OfType<BoostByInfraOccurrenceInEmpire>())
+        {
+            behaviour.CheckNewInfra(this, tile);
+        }
+    }
+
+    public void ListenerOnInfraBuilded_BoostInfraOnEmpire(Tile tile)
+    {
+        foreach (BoostInfraOnEmpire behaviour in _tileData.SpecialBehaviours.OfType<BoostInfraOnEmpire>())
+        {
+            behaviour.CheckNewInfra(this, tile);
+        }
+    }
+    #endregion
+
+    #region ON INFRA DESTROYED
+    public void ListenerOnInfraDestroyed_BoostByInfraOccurrenceInEmpire(Tile tile)
+    {
+        foreach (BoostByInfraOccurrenceInEmpire behaviour in _tileData.SpecialBehaviours.OfType<BoostByInfraOccurrenceInEmpire>())
+        {
+            behaviour.CheckDestroyedInfra(this, tile);
+        }
+    }
+
+    public void ListenerOnInfraDestroyed_BoostInfraOnEmpire(Tile tile)
+    {
+        foreach (BoostInfraOnEmpire behaviour in _tileData.SpecialBehaviours.OfType<BoostInfraOnEmpire>())
+        {
+            behaviour.CheckDestroyedInfra(this, tile);
+        }
+    }
+    #endregion
+
+    public void ListenerOnScoutRevealingTile(Tile tile)
+    {
+        foreach (IncomeWhenScoutRevealTile behaviour in _tileData.SpecialBehaviours.OfType<IncomeWhenScoutRevealTile>())
+        {
+            behaviour.TileRevealed(this);
+        }
+    }
+
+    public void ListenerOnIncomeModified(Tile tile, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
+    {
+        foreach (IncomeComingFromNeighbors behaviour in _tileData.SpecialBehaviours.OfType<IncomeComingFromNeighbors>())
+        {
+            behaviour.CheckNewIncome(this, tile, previousIncome, newIncome);
+        }
+    }
+
+    public void ListenerOnClaimSaved(int quantity)
+    {
+        foreach (IncomePerSavedClaim behaviour in _tileData.SpecialBehaviours.OfType<IncomePerSavedClaim>())
+        {
+            behaviour.IncomeForSavedClaim(this, quantity);
         }
     }
     #endregion

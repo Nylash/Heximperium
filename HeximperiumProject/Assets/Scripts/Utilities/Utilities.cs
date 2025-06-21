@@ -19,15 +19,15 @@ public static class Utilities
                 _positions.Add(new Vector3(tilePosition.x, 0.5f, tilePosition.z - 1));
                 return _positions;
             case 3:
-                _positions.Add(new Vector3(tilePosition.x, 0.5f, tilePosition.z + 1));
-                _positions.Add(new Vector3(tilePosition.x + 0.8f, 0.5f, tilePosition.z - 0.8f));
-                _positions.Add(new Vector3(tilePosition.x - 0.8f, 0.5f, tilePosition.z - 0.8f));
+                _positions.Add(new Vector3(tilePosition.x - 0.8f, 0.5f, tilePosition.z + 0.8f));
+                _positions.Add(new Vector3(tilePosition.x + 0.8f, 0.5f, tilePosition.z + 0.8f));
+                _positions.Add(new Vector3(tilePosition.x, 0.5f, tilePosition.z - 1));
                 return _positions;
             case 4:
+                _positions.Add(new Vector3(tilePosition.x - 0.8f, 0.5f, tilePosition.z + 0.8f));
                 _positions.Add(new Vector3(tilePosition.x + 0.8f, 0.5f, tilePosition.z + 0.8f));
                 _positions.Add(new Vector3(tilePosition.x + 0.8f, 0.5f, tilePosition.z - 0.8f));
                 _positions.Add(new Vector3(tilePosition.x - 0.8f, 0.5f, tilePosition.z - 0.8f));
-                _positions.Add(new Vector3(tilePosition.x - 0.8f, 0.5f, tilePosition.z + 0.8f));
                 return _positions;
             case 5:
                 _positions.Add(new Vector3(tilePosition.x + 0.55f, 0.5f, tilePosition.z + 1));
@@ -79,7 +79,7 @@ public static class Utilities
     }
 
     //Merge two List<ResourceToIntMap>
-    public static List<ResourceToIntMap> MergeResourceValues(List<ResourceToIntMap> list1, List<ResourceToIntMap> list2)
+    public static List<ResourceToIntMap> MergeResourceToIntMaps(List<ResourceToIntMap> list1, List<ResourceToIntMap> list2)
     {
         var mergedDictionary = new Dictionary<Resource, int>();
 
@@ -166,7 +166,7 @@ public static class Utilities
     }
 
     //Subtract a by b and return the resulting List<ResourceToIntMap>
-    public static List<ResourceToIntMap> SubtractResourceValues(List<ResourceToIntMap> a, List<ResourceToIntMap> b)
+    public static List<ResourceToIntMap> SubtractResourceToIntMaps(List<ResourceToIntMap> a, List<ResourceToIntMap> b)
     {
         var result = new Dictionary<Resource, int>();
 
@@ -181,12 +181,19 @@ public static class Utilities
             .Select(kvp => new ResourceToIntMap(kvp.Key, kvp.Value))
             .ToList();
     }
+
+    //Clone a List<ResourceToIntMap>
+    public static List<ResourceToIntMap> CloneResourceToIntMap(List<ResourceToIntMap> original)
+    {
+        return original.Select(item => new ResourceToIntMap(item.resource, item.value)).ToList();
+    }
 }
 
 #region ENUMS
 public enum Phase
 {
-    Explore, Expand, Exploit, Entertain
+    //None is used for infra and upgrades not tied to a phase system, this is not directly use in the game turn logic
+    Explore, Expand, Exploit, Entertain, None
 }
 
 //The int respect the neighbors order, so simply cast it to int match the good neighbor
@@ -207,13 +214,7 @@ public enum Transaction
 
 public enum Interaction
 {
-    Claim, Town, Scout, Infrastructure, Destroy, Entertainer
-}
-
-//Whereas the new income is added (merge) or replace the previous one
-public enum TypeIncomeUpgrade
-{
-    Merge, Replace
+    Claim, Scout, Infrastructure, Destroy, Entertainer
 }
 
 public enum EntertainerType

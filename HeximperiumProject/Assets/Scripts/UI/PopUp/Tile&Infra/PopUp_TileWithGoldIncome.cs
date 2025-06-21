@@ -20,7 +20,7 @@ public class PopUp_TileWithGoldIncome : UI_DynamicPopUp
     {
         _nameText.text = tile.TileData.TileName;
         _effectText.text = tile.TileData.TilePopUpText;
-        _goldText.text = tile.TileData.GetSpecificIncome(Resource.Gold).ToString();
+        _goldText.text = "Gold income: +" + tile.Incomes[0].value;
 
         if (tile.Claimed)
             _claimText.text = "Tile claimed";

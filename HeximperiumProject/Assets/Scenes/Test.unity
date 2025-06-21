@@ -776,9 +776,11 @@ MonoBehaviour:
   - infrastructure: {fileID: 11400000, guid: c09b5b1323b68174bad1aea52735ddcc, type: 2}
     availableCopy: 1
   - infrastructure: {fileID: 11400000, guid: b5e79191f4522cc4a81b4bb777d213c6, type: 2}
-    availableCopy: 2
+    availableCopy: 4
   - infrastructure: {fileID: 11400000, guid: 758e0bfcbc1c85b4f8d4064dfc028b50, type: 2}
     availableCopy: 3
+  - infrastructure: {fileID: 11400000, guid: 4ee189cb8dd9a1b4584cdd486968e6c6, type: 2}
+    availableCopy: 2
   OnPhaseFinalized:
     m_PersistentCalls:
       m_Calls: []
@@ -795,6 +797,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
+  _townData: {fileID: 11400000, guid: c09b5b1323b68174bad1aea52735ddcc, type: 2}
   _borderParent: {fileID: 1586287181}
   OnPhaseFinalized:
     m_PersistentCalls:
@@ -812,6 +815,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
+  _scoutData: {fileID: 11400000, guid: 6a1ce0d97c28e3841a7d3617eefff6a5, type: 2}
   _baseScoutsLimit: 1
   _scoutsParent: {fileID: 1914034364}
   _scoutPrefab: {fileID: 5066032661868510455, guid: 6df47c3f9f6c2a247be0ff0800c84d61, type: 3}

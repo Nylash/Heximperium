@@ -5,7 +5,7 @@ using UnityEngine;
 public class BoostNeighborsIncome : SpecialBehaviour
 {
     [SerializeField] private List<ResourceToIntMap> _incomeBoost = new List<ResourceToIntMap>();
-    [SerializeField] private InfrastructureData _infrastructureBoosted;
+    [SerializeField] private List<TileData> _infrastructuresBoosted = new List<TileData>();
 
     //Boost the neighbors if it's the right one
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
@@ -14,39 +14,28 @@ public class BoostNeighborsIncome : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
-            if (neighbor.TileData == _infrastructureBoosted)
+            if (_infrastructuresBoosted.Contains(neighbor.TileData))
             {
-                neighbor.Incomes = Utilities.MergeResourceValues(neighbor.Incomes, _incomeBoost);
+                neighbor.Incomes = Utilities.MergeResourceToIntMaps(neighbor.Incomes, _incomeBoost);
             }
+            //BehaviourTile is needed even if the reference isn't in the method to create a unique pair of behaviourTile and neighbor, avoiding conflict between events
+            neighbor.OnTileDataModified.RemoveListener(behaviourTile.ListenerOnTileDataModified_BoostNeighborsIncome);
+            neighbor.OnTileDataModified.AddListener(behaviourTile.ListenerOnTileDataModified_BoostNeighborsIncome);
         }
     }
 
-    //Check if the specific tile need the boost
-    public override void ApplySpecialBehaviour(Tile specificTile)
-    {
-        if(specificTile.TileData == _infrastructureBoosted)
-        {
-            specificTile.Incomes = Utilities.MergeResourceValues(specificTile.Incomes, _incomeBoost);
-        }
-    }
-
-    //Create a list with -boost and then merge it with the neighbors of the right type
+    //Remove the income boost from neighbors (if they are boosted)
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
-        List<ResourceToIntMap> tmpList = new List<ResourceToIntMap>();
-
-        foreach (ResourceToIntMap resourceValue in _incomeBoost)
-        {
-            tmpList.Add(new ResourceToIntMap(resourceValue.resource, -resourceValue.value));
-        }
         foreach (Tile neighbor in behaviourTile.Neighbors)
         {
             if (!neighbor)
                 continue;
-            if (neighbor.TileData == _infrastructureBoosted)
+            if (_infrastructuresBoosted.Contains(neighbor.TileData))
             {
-                neighbor.Incomes = Utilities.MergeResourceValues(neighbor.Incomes, tmpList);
+                neighbor.Incomes = Utilities.SubtractResourceToIntMaps(neighbor.Incomes, _incomeBoost);
             }
+            neighbor.OnTileDataModified.RemoveListener(behaviourTile.ListenerOnTileDataModified_BoostNeighborsIncome);
         }
     }
 
@@ -56,10 +45,27 @@ public class BoostNeighborsIncome : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
-            if (neighbor.TileData == _infrastructureBoosted)
+            if (_infrastructuresBoosted.Contains(neighbor.TileData))
             {
                 neighbor.Highlight(show);
             }
+        }
+    }
+
+    public void CheckNewData(Tile tile)
+    {
+        if (_infrastructuresBoosted.Contains(tile.TileData))
+        {
+            //Check if the previous data didn't already get the boost
+            if (_infrastructuresBoosted.Contains(tile.PreviousData))
+                return;
+            tile.Incomes = Utilities.MergeResourceToIntMaps(tile.Incomes, _incomeBoost);
+        }
+        else
+        {
+            //Check if the previous data did get a boost, then remove it if yes
+            if (_infrastructuresBoosted.Contains(tile.PreviousData))
+                tile.Incomes = Utilities.SubtractResourceToIntMaps(tile.Incomes, _incomeBoost);
         }
     }
 }

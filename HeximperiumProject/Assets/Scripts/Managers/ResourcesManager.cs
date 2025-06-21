@@ -14,11 +14,14 @@ public class ResourcesManager : Singleton<ResourcesManager>
     private int _claim;
     private int _gold;
     private int _specialResources;
+    private int _srReductionForExploration;
+    private int _srReductionForExpansion;
+    private int _srReductionForExploitation;
+    private int _srReductionForEntertainment;
     #endregion
 
     #region ACCESSORS
     public int Claim { get => _claim; }
-    #endregion
 
     public int GetResourceStock(Resource resource)
     {
@@ -32,6 +35,45 @@ public class ResourcesManager : Singleton<ResourcesManager>
                 return 0;
         }
     }
+
+    public int GetSRReduction(Phase system)
+    {
+        switch (system)
+        {
+            case Phase.Explore:
+                return _srReductionForExploration;
+            case Phase.Expand:
+                return _srReductionForExpansion;
+            case Phase.Exploit:
+                return _srReductionForExploitation;
+            case Phase.Entertain:
+                return _srReductionForEntertainment;
+            default:
+                return 0;
+        }
+    }
+
+    public void SetSSRReduction(Phase system, int value)
+    {
+        switch (system)
+        {
+            case Phase.Explore:
+                _srReductionForExploration += value;
+                break;
+            case Phase.Expand:
+                _srReductionForExpansion += value;
+                break;
+            case Phase.Exploit:
+                _srReductionForExploitation += value;
+                break;
+            case Phase.Entertain:
+                _srReductionForEntertainment += value;
+                break;
+            default:
+                break;
+        }
+    }
+    #endregion
 
     public void CHEAT_GAIN_ALL_RESOURCES()
     {
@@ -66,7 +108,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
             UpdateResource(item.resource, item.value, transaction);
 
             //Play VFX if we gain resource from a tile
-            if( tile != null && transaction == Transaction.Gain)
+            if (tile != null && transaction == Transaction.Gain)
             {
                 switch (item.resource)
                 {
@@ -86,6 +128,8 @@ public class ResourcesManager : Singleton<ResourcesManager>
         if (transaction == Transaction.Spent)
             value = -value;
         _claim += value;
+        if(_claim < 0)
+            _claim = 0;
         UIManager.Instance.UpdateClaimUI(_claim);
     }
     #endregion

@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PopUp_InteractionInfra : UI_DynamicPopUp
@@ -48,9 +49,12 @@ public class PopUp_InteractionInfra : UI_DynamicPopUp
         }
 
         //Show highlight impacted tiles by the special behaviour of this infra
-        if(button.InfrastructureData.SpecialBehaviour != null)
+        if (button.InfrastructureData.SpecialBehaviours.Count != 0)
         {
-            button.InfrastructureData.SpecialBehaviour.HighlightImpactedTile(button.AssociatedTile ,true);
+            foreach (SpecialBehaviour item in button.InfrastructureData.SpecialBehaviours)
+            {
+                item.HighlightImpactedTile(button.AssociatedTile, true);
+            }
         }
 
         //Fade out interaction buttons and spawn a clone on the tile where the interaction will be
@@ -63,9 +67,12 @@ public class PopUp_InteractionInfra : UI_DynamicPopUp
     public override void DestroyPopUp()
     {
         //Hide highlight impacted tiles by the special behaviour of this infra
-        if (_associatedButton.InfrastructureData.SpecialBehaviour != null)
+        if (_associatedButton.InfrastructureData.SpecialBehaviours.Count != 0)
         {
-            _associatedButton.InfrastructureData.SpecialBehaviour.HighlightImpactedTile(_associatedButton.AssociatedTile, false); 
+            foreach (SpecialBehaviour item in _associatedButton.InfrastructureData.SpecialBehaviours)
+            {
+                item.HighlightImpactedTile(_associatedButton.AssociatedTile, false);
+            }
         }
 
         //Fade in interaction buttons and remove the clone
