@@ -18,7 +18,9 @@ MonoBehaviour:
     to two Entertainment-oriented enhancements '
   _tilePopUpText: Entertainment tiles cost 1 less Gold
   _incomes: []
-  _availableInfrastructures: []
+  _availableInfrastructures:
+  - {fileID: 11400000, guid: a37425d56a86a9a46bcf7ece7a259a94, type: 2}
+  - {fileID: 11400000, guid: ba6454b70db9cd44cbad3fcf654ae343, type: 2}
   _specialBehaviours: []
   _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
   _visuals:

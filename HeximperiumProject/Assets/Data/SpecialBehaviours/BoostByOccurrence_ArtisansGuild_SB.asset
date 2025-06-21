@@ -16,9 +16,6 @@ MonoBehaviour:
   - resource: 0
     value: 2
   _tilesBoosting:
-  - {fileID: 11400000, guid: 946a616f3c376984ba521801c12fbee6, type: 2}
-  - {fileID: 11400000, guid: 080b9724204199b4391c063d2baf22a0, type: 2}
-  - {fileID: 11400000, guid: b37495b18e4aaa54cb318dcbfed9d94f, type: 2}
   - {fileID: 11400000, guid: 3d0ee4608b263f74aaa46646c1cf3360, type: 2}
   - {fileID: 11400000, guid: 032ba4dc808964e438e5f544bce99796, type: 2}
   - {fileID: 11400000, guid: babbdf6331d91034888b073e6c34d892, type: 2}

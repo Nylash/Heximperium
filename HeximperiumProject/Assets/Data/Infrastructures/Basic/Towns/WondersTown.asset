@@ -10,26 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e0e460f401a6ce44ad84d3534c37a05, type: 3}
-  m_Name: ArtisansGuild
+  m_Name: WondersTown
   m_EditorClassIdentifier: 
-  _name: Artisan's Guild
+  _name: Wonders Town
   _claimCost: 0
-  _interactionButtonPopUpText: +2 Gold per Resource tile with an infrastructure in
-    the empire
-  _tilePopUpText: +2 Gold per Resource tile with an infrastructure in the empire
+  _interactionButtonPopUpText: 
+  _tilePopUpText: 
   _incomes: []
   _availableInfrastructures: []
-  _specialBehaviours:
-  - {fileID: 11400000, guid: 2c7698df2cb4cd74a924de01fc5e65c9, type: 2}
-  - {fileID: 11400000, guid: 469bc08502af76347a388c8a26ea2b1c, type: 2}
+  _specialBehaviours: []
   _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
   _visuals:
-  - {fileID: 2100000, guid: 018b779632352854abb2592fc3b80569, type: 2}
-  _scoutStartingPoint: 0
+  - {fileID: 2100000, guid: cfe90704e9d88364da1b81bb3a9a1815, type: 2}
+  _scoutStartingPoint: 1
   _costs:
   - resource: 0
     value: 30
   - resource: 1
-    value: 20
-  _associatedSystem: 2
-  isTown: 0
+    value: 15
+  _associatedSystem: 3
+  isTown: 1
