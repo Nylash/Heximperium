@@ -345,6 +345,14 @@ public class Tile : MonoBehaviour
             behaviour.TileRevealed(this);
         }
     }
+
+    public void ListenerOnClaimSaved(int quantity)
+    {
+        foreach (IncomePerSavedClaim behaviour in _tileData.SpecialBehaviours.OfType<IncomePerSavedClaim>())
+        {
+            behaviour.IncomeForSavedClaim(this, quantity);
+        }
+    }
     #endregion
     #endregion
 }

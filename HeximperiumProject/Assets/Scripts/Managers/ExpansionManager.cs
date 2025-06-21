@@ -15,6 +15,7 @@ public class ExpansionManager : Singleton<ExpansionManager>
     private List<Tile> _claimedTiles = new List<Tile>();
     private List<Vector3> _interactionPositions = new List<Vector3>();
     private int _claimPerTurn;
+    private int _savedClaimPerTurn;
     #endregion
 
     #region ACCESSORS
@@ -22,11 +23,13 @@ public class ExpansionManager : Singleton<ExpansionManager>
     public int ClaimPerTurn { get => _claimPerTurn; set => _claimPerTurn = value; }
     public List<Tile> ClaimedTiles { get => _claimedTiles; }
     public InfrastructureData TownData { get => _townData;}
+    public int SavedClaimPerTurn { get => _savedClaimPerTurn; set => _savedClaimPerTurn = value; }
     #endregion
 
     #region EVENTS
     [HideInInspector] public UnityEvent OnPhaseFinalized = new UnityEvent();
     [HideInInspector] public UnityEvent<Tile> OnTileClaimed = new UnityEvent<Tile>();
+    [HideInInspector] public UnityEvent<int> OnClaimSaved = new UnityEvent<int>();
     #endregion
 
     protected override void OnAwake()
@@ -45,7 +48,14 @@ public class ExpansionManager : Singleton<ExpansionManager>
 
     private void ConfirmPhase()
     {
-        ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim, Transaction.Spent);
+        if (_savedClaimPerTurn > 0)
+        {
+            if(ResourcesManager.Instance.Claim - _savedClaimPerTurn > 0)
+                ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim - _savedClaimPerTurn, Transaction.Spent);
+            OnClaimSaved.Invoke(ResourcesManager.Instance.Claim);
+        }
+        else
+            ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim, Transaction.Spent);
 
         StartCoroutine(PhaseFinalized());
     }

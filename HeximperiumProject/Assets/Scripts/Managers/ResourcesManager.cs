@@ -128,6 +128,8 @@ public class ResourcesManager : Singleton<ResourcesManager>
         if (transaction == Transaction.Spent)
             value = -value;
         _claim += value;
+        if(_claim < 0)
+            _claim = 0;
         UIManager.Instance.UpdateClaimUI(_claim);
     }
     #endregion
