@@ -9,7 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46f4fc330c538354489ef8274c8f9134, type: 3}
-  m_Name: TerritorialTownBehaviour
+  m_Script: {fileID: 11500000, guid: 79ebe4f1c5acc6944abc58f7534e3c40, type: 3}
+  m_Name: BoostClaimedNeighbors_SB
   m_EditorClassIdentifier: 
-  _claimQuantity: 3
+  _incomeBoost:
+  - resource: 0
+    value: 1

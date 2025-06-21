@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 12cec12a736dd1d4482c674842785a98, type: 3}
-  m_Name: ArtisansGuildBehaviour
+  m_Name: BoostByOccurrence_WoodcuttersGuilds_SB
   m_EditorClassIdentifier: 
   _boost:
   - resource: 0
@@ -19,7 +19,3 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 946a616f3c376984ba521801c12fbee6, type: 2}
   - {fileID: 11400000, guid: 080b9724204199b4391c063d2baf22a0, type: 2}
   - {fileID: 11400000, guid: b37495b18e4aaa54cb318dcbfed9d94f, type: 2}
-  - {fileID: 11400000, guid: 3d0ee4608b263f74aaa46646c1cf3360, type: 2}
-  - {fileID: 11400000, guid: 032ba4dc808964e438e5f544bce99796, type: 2}
-  - {fileID: 11400000, guid: babbdf6331d91034888b073e6c34d892, type: 2}
-  - {fileID: 11400000, guid: bcf4a40fa47a6d249a8eaf3a05546f16, type: 2}

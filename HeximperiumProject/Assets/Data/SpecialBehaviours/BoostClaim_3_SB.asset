@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 46f4fc330c538354489ef8274c8f9134, type: 3}
-  m_Name: WaystoneChapelBehaviour
+  m_Name: BoostClaim_3_SB
   m_EditorClassIdentifier: 
-  _claimQuantity: 1
+  _claimQuantity: 3

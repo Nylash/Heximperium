@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8712946385b855d43bf6cabd18b88ad9, type: 3}
-  m_Name: OutfittersCampBehaviour
+  m_Name: BoostScout_OutfittersCamp_SB
   m_EditorClassIdentifier: 
   _boostSpeed: 1
   _boostLifespan: 1

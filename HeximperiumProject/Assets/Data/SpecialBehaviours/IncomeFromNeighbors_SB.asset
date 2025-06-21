@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c20349d8d616c3346a7ff03f4a174fca, type: 3}
-  m_Name: VillageBehaviour
+  m_Name: IncomeFromNeighbors_SB
   m_EditorClassIdentifier: 
   _resource: 0
   _excludedTiles:

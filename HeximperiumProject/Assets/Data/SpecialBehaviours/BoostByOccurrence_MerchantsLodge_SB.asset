@@ -10,10 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 12cec12a736dd1d4482c674842785a98, type: 3}
-  m_Name: SettlersGuildBehaviour
+  m_Name: BoostByOccurrence_MerchantsLodge_SB
   m_EditorClassIdentifier: 
   _boost:
   - resource: 0
-    value: 4
+    value: 3
   _tilesBoosting:
+  - {fileID: 11400000, guid: b5e79191f4522cc4a81b4bb777d213c6, type: 2}
+  - {fileID: 11400000, guid: e6ce2ea6787a5fa4496944c2c70da493, type: 2}
+  - {fileID: 11400000, guid: 72dbf3edd2b6d194d859b16ade1925d1, type: 2}
+  - {fileID: 11400000, guid: 758e0bfcbc1c85b4f8d4064dfc028b50, type: 2}
+  - {fileID: 11400000, guid: 02cb5e45f50789d488eed26fb5f8b261, type: 2}
+  - {fileID: 11400000, guid: 5d7439b95eec5524397e761e5fbdea11, type: 2}
   - {fileID: 11400000, guid: c09b5b1323b68174bad1aea52735ddcc, type: 2}

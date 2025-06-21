@@ -9,7 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3da63da1c00b41545a0420e04d4ae5e3, type: 3}
-  m_Name: QuarryBehaviour
+  m_Script: {fileID: 11500000, guid: 4620104273ce897418b0f71b828a3358, type: 3}
+  m_Name: IncomeOnClaim_SB
   m_EditorClassIdentifier: 
-  _associatedSystem: 2
+  _income:
+  - resource: 0
+    value: 1
