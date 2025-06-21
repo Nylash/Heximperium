@@ -10,27 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e0e460f401a6ce44ad84d3534c37a05, type: 3}
-  m_Name: FrontierTown
+  m_Name: SurveyorsTown
   m_EditorClassIdentifier: 
-  _name: Frontier Town
+  _name: Surveyors' Town
   _claimCost: 0
-  _interactionButtonPopUpText: Scouts starting from this Town generate +2 Gold per
-    tile revealed & Grants access to two Exploration-oriented enhancements
-  _tilePopUpText: Scouts starting from this Town generate +2 Gold per tile revealed
+  _interactionButtonPopUpText: +1 Scout Limit & On enhancement, spawn 1 Scout at
+    this Town (does not count toward the limit)
+  _tilePopUpText: +1 Scout Limit
   _incomes: []
-  _availableInfrastructures:
-  - {fileID: 11400000, guid: 3572fdf866caa424588aca2e05ed08bd, type: 2}
-  - {fileID: 11400000, guid: 0722aac871e0fef4880d4f748a4000b0, type: 2}
+  _availableInfrastructures: []
   _specialBehaviours:
   - {fileID: 11400000, guid: 5478d080d18e8374c9dc875b349e3d22, type: 2}
+  - {fileID: 11400000, guid: a20a937bad48d1349b06d8d770aae159, type: 2}
+  - {fileID: 11400000, guid: 9373c5ac33b23be4bb245e4e438b1630, type: 2}
   _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
   _visuals:
-  - {fileID: 2100000, guid: 1f8cc9f053c5eba4a8af564751ae951e, type: 2}
+  - {fileID: 2100000, guid: cfe90704e9d88364da1b81bb3a9a1815, type: 2}
   _scoutStartingPoint: 1
   _costs:
   - resource: 0
-    value: 20
+    value: 30
   - resource: 1
-    value: 10
+    value: 15
   _associatedSystem: 0
   isTown: 1

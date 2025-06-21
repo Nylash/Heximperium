@@ -72,12 +72,12 @@ public class ExplorationManager : Singleton<ExplorationManager>
 
     private void Update()
     {
+        //Update scout's orientation during scout spawning
+        if (ChoosingScoutDirection)
+            _currentScout.Direction = GetAngleForScout();
+
         if (GameManager.Instance.CurrentPhase != Phase.Explore)
             return;
-
-        //Update scout's orientation during scout spawning
-        if(ChoosingScoutDirection)
-            _currentScout.Direction = GetAngleForScout();
 
         //Check if scouts have finished their movement
         if (_finalizingPhase)
@@ -160,16 +160,19 @@ public class ExplorationManager : Singleton<ExplorationManager>
     #endregion
 
     #region INTERACTION
-    public void SpawnScout(Tile tile, ScoutData data)
+    public void SpawnScout(Tile tile, bool freeScout = false)
     {
-        if(_scouts.Count < _scoutsLimit)
+        if(_currentScoutsCount < _scoutsLimit)
         {
             _currentScout = Instantiate(_scoutPrefab, 
                 tile.transform.position + _scoutPrefab.transform.localPosition,
                 _scoutPrefab.transform.rotation, _scoutsParent).GetComponent<Scout>();
             _currentScout.CurrentTile = tile;
             _scouts.Add(_currentScout);
-            CurrentScoutsCount++;
+
+            if(!freeScout)
+                CurrentScoutsCount++;
+
             tile.Scouts.Add(_currentScout);
             _tileRefForScoutDirection = tile;
             tile.UpdateScoutCounter();

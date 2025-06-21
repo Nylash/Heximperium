@@ -227,7 +227,7 @@ public class GameManager : Singleton<GameManager>
                 ExpansionManager.Instance.ClaimTile(button.AssociatedTile);
                 break;
             case Interaction.Scout:
-                ExplorationManager.Instance.SpawnScout(button.AssociatedTile, button.ScoutData);
+                ExplorationManager.Instance.SpawnScout(button.AssociatedTile);
                 break;
             case Interaction.Infrastructure:
                 if(_currentPhase == Phase.Expand)
