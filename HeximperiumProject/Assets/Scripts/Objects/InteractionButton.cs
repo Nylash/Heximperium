@@ -3,8 +3,6 @@ using UnityEngine;
 public class InteractionButton : MonoBehaviour
 {
     #region CONSTANTS
-    private const string PATH_DATA_INFRA = "Data/Infrastructures/";
-    private const string PATH_DATA_UNIT = "Data/Units/";
     private const string PATH_SPRITE_INTERACTION = "InteractionButtons/";
     #endregion
 

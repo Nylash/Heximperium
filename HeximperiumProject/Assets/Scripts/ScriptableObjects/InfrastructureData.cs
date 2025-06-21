@@ -7,6 +7,7 @@ public class InfrastructureData : TileData
     [SerializeField] private bool _scoutStartingPoint;
     [SerializeField] private List<ResourceToIntMap> _costs = new List<ResourceToIntMap>();
     [SerializeField] private Phase _associatedSystem = Phase.None;
+    [SerializeField] private bool isTown;
 
     public bool ScoutStartingPoint { get => _scoutStartingPoint; }
     public List<ResourceToIntMap> Costs 
@@ -24,4 +25,5 @@ public class InfrastructureData : TileData
             return reductedCost;
         }   
     }
+    public bool IsTown { get => isTown; }
 }

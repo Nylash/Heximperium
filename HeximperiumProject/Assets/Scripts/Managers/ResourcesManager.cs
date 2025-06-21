@@ -108,7 +108,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
             UpdateResource(item.resource, item.value, transaction);
 
             //Play VFX if we gain resource from a tile
-            if( tile != null && transaction == Transaction.Gain)
+            if (tile != null && transaction == Transaction.Gain)
             {
                 switch (item.resource)
                 {

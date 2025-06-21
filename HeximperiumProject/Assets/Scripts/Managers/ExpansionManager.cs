@@ -26,6 +26,7 @@ public class ExpansionManager : Singleton<ExpansionManager>
 
     #region EVENTS
     [HideInInspector] public UnityEvent OnPhaseFinalized = new UnityEvent();
+    [HideInInspector] public UnityEvent<Tile> OnTileClaimed = new UnityEvent<Tile>();
     #endregion
 
     protected override void OnAwake()
@@ -119,6 +120,7 @@ public class ExpansionManager : Singleton<ExpansionManager>
             _claimedTiles.Add(tile);
             foreach (Tile t in _claimedTiles)
                 t.CheckBorder();
+            OnTileClaimed.Invoke(tile);
         }
     }
 

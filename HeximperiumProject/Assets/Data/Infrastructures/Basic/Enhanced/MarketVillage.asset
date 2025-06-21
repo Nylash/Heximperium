@@ -31,3 +31,4 @@ MonoBehaviour:
   - resource: 1
     value: 15
   _associatedSystem: 2
+  isTown: 0

@@ -236,6 +236,7 @@ public class Tile : MonoBehaviour
     }
 
     #region SPECIFIC LISTENERS FOR BEHAVIOURS
+    #region ON TILE CLAIMED
     public void ListenerOnTileClaimed_IncomeComingFromNeighbors(Tile tile)
     {
         foreach (IncomeComingFromNeighbors behaviour in _tileData.SpecialBehaviours.OfType<IncomeComingFromNeighbors>())
@@ -252,30 +253,16 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public void ListenerOnIncomeModified(Tile tile, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
+    public void ListenerOnTileClaimed_IncomeWhenTileClaimed(Tile tile)
     {
-        foreach (IncomeComingFromNeighbors behaviour in _tileData.SpecialBehaviours.OfType<IncomeComingFromNeighbors>())
+        foreach (IncomeWhenTileClaimed behaviour in _tileData.SpecialBehaviours.OfType<IncomeWhenTileClaimed>())
         {
-            behaviour.CheckNewIncome(this, tile, previousIncome, newIncome);
+            behaviour.TileClaimed(this);
         }
     }
+    #endregion
 
-    public void ListenerOnInfraBuilded(Tile tile)
-    {
-        foreach (BoostByInfraOccurrenceInEmpire behaviour in _tileData.SpecialBehaviours.OfType<BoostByInfraOccurrenceInEmpire>())
-        {
-            behaviour.CheckNewInfra(this, tile);
-        }
-    }
-
-    public void ListenerOnInfraDestroyed(Tile tile)
-    {
-        foreach (BoostByInfraOccurrenceInEmpire behaviour in _tileData.SpecialBehaviours.OfType<BoostByInfraOccurrenceInEmpire>())
-        {
-            behaviour.CheckDestroyedInfra(this, tile);
-        }
-    }
-
+    #region ON TILE DATA MODIFIED
     public void ListenerOnTileDataModified_NeighborsBoostingIncome(Tile tile)
     {
         foreach (NeighborsBoostingIncome behaviour in _tileData.SpecialBehaviours.OfType<NeighborsBoostingIncome>())
@@ -307,12 +294,55 @@ public class Tile : MonoBehaviour
             behaviour.CheckNewData(tile);
         }
     }
+    #endregion
 
-    public void ListenerOnScoutSpawned(Scout scout)
+    #region ON SCOUT SPAWNED
+    public void ListenerOnScoutSpawned_BoostScoutOnSpawn(Scout scout)
     {
         foreach (BoostScoutOnSpawn behaviour in _tileData.SpecialBehaviours.OfType<BoostScoutOnSpawn>())
         {
             behaviour.CheckScoutSpawned(this, scout);
+        }
+    }
+
+    public void ListenerOnScoutSpawned_GainIncomeWhenScoutRevealTile(Scout scout)
+    {
+        foreach (IncomeWhenScoutRevealTile behaviour in _tileData.SpecialBehaviours.OfType<IncomeWhenScoutRevealTile>())
+        {
+            behaviour.CheckScoutSpawned(this, scout);
+        }
+    }
+    #endregion
+
+    public void ListenerOnIncomeModified(Tile tile, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
+    {
+        foreach (IncomeComingFromNeighbors behaviour in _tileData.SpecialBehaviours.OfType<IncomeComingFromNeighbors>())
+        {
+            behaviour.CheckNewIncome(this, tile, previousIncome, newIncome);
+        }
+    }
+
+    public void ListenerOnInfraBuilded(Tile tile)
+    {
+        foreach (BoostByInfraOccurrenceInEmpire behaviour in _tileData.SpecialBehaviours.OfType<BoostByInfraOccurrenceInEmpire>())
+        {
+            behaviour.CheckNewInfra(this, tile);
+        }
+    }
+
+    public void ListenerOnInfraDestroyed(Tile tile)
+    {
+        foreach (BoostByInfraOccurrenceInEmpire behaviour in _tileData.SpecialBehaviours.OfType<BoostByInfraOccurrenceInEmpire>())
+        {
+            behaviour.CheckDestroyedInfra(this, tile);
+        }
+    }
+
+    public void ListenerOnScoutRevealingTile(Tile tile)
+    {
+        foreach (IncomeWhenScoutRevealTile behaviour in _tileData.SpecialBehaviours.OfType<IncomeWhenScoutRevealTile>())
+        {
+            behaviour.TileRevealed(this);
         }
     }
     #endregion
