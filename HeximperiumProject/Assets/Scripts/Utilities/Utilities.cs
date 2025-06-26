@@ -70,10 +70,10 @@ public static class Utilities
     }
 
     //Create a button around a tile
-    public static GameObject CreateInteractionButton(Tile tile, Vector3 position, Interaction interactionType, InfrastructureData infraData = null, EntertainerData entertainerData = null)
+    public static GameObject CreateInteractionButton(Tile tile, Vector3 position, Interaction interactionType, InfrastructureData infraData = null, EntertainmentData entertainmentData = null)
     {
         GameObject button = GameObject.Instantiate(GameManager.Instance.InteractionPrefab, position, Quaternion.identity);
-        button.GetComponent<InteractionButton>().Initialize(tile, interactionType, infraData, entertainerData);
+        button.GetComponent<InteractionButton>().Initialize(tile, interactionType, infraData, entertainmentData);
 
         return button;
     }
@@ -119,20 +119,6 @@ public static class Utilities
         {
             Resource.Gold => "Gold",
             Resource.SpecialResources => "Special Resources",
-            _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
-        };
-    }
-
-    public static string ToCustomString(this EntertainerType value)
-    {
-        return value switch
-        {
-            EntertainerType.Sculptor => "Sculptor",
-            EntertainerType.Magician => "Magician",
-            EntertainerType.Painter => "Painter",
-            EntertainerType.EquestrianDancer => "Equestrian dancer",
-            EntertainerType.FireEater => "Fire eater",
-            EntertainerType.AromaWeaver => "Aroma weaver",
             _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
         };
     }
@@ -214,16 +200,6 @@ public enum Transaction
 
 public enum Interaction
 {
-    Claim, Scout, Infrastructure, Destroy, Entertainer
-}
-
-public enum EntertainerType
-{
-    Sculptor, Painter, AromaWeaver, Magician, EquestrianDancer, FireEater
-}
-
-public enum EntertainerFamily
-{
-    Artist, Mystic, Performer
+    Claim, Scout, Infrastructure, Destroy, Entertainment
 }
 #endregion

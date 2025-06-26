@@ -2,17 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnityEditor.Progress;
 
-public class EntertainementManager : Singleton<EntertainementManager>
+public class EntertainmentManager : Singleton<EntertainmentManager>
 {
-    #region CONSTANTS
-    private const string ENTERTAINERS_DATA_PATH = "Data/Units/Entertainers/";
-    #endregion
-
     #region CONFIGURATION
-    [SerializeField] private GameObject _entertainerPrefab;
-    [SerializeField] private Transform _entertainersParent;
+    [SerializeField] private GameObject _entertainmentPrefab;
+    [SerializeField] private Transform _entertainmentsParent;
     [SerializeField] private GameObject _pointsGainPrefab;
     [SerializeField] private Material _pointVFXMat;
     [SerializeField] private float _pointForOneGold;
@@ -20,15 +15,15 @@ public class EntertainementManager : Singleton<EntertainementManager>
     #endregion
 
     #region VARIABLES
-    private List<Entertainer> _entertainers = new List<Entertainer>();
+    private List<Entertainment> _entertainments = new List<Entertainment>();
     private List<Vector3> _interactionPositions = new List<Vector3>();
     private List<GameObject> _buttons = new List<GameObject>();
-    private List<EntertainerData> _entertainerDatas = new List<EntertainerData>();
+    private List<EntertainmentData> _entertainmentsData = new List<EntertainmentData>();
     private int _score;
     #endregion
 
     #region ACCESSORS
-    public List<Entertainer> Entertainers { get => _entertainers; }
+    public List<Entertainment> Entertainments { get => _entertainments; }
     public int Score { get => _score; }
     #endregion
 
@@ -38,20 +33,10 @@ public class EntertainementManager : Singleton<EntertainementManager>
 
     protected override void OnAwake()
     {
-        GameManager.Instance.OnEntertainementPhaseStarted.AddListener(StartPhase);
-        GameManager.Instance.OnEntertainementPhaseEnded.AddListener(ConfirmPhase);
+        GameManager.Instance.OnEntertainmentPhaseStarted.AddListener(StartPhase);
+        GameManager.Instance.OnEntertainmentPhaseEnded.AddListener(ConfirmPhase);
         GameManager.Instance.OnNewTileSelected.AddListener(NewTileSelected);
         GameManager.Instance.OnTileUnselected.AddListener(TileUnselected);
-    }
-
-    public int GetPointsIncome()
-    {
-        int value = 0;
-        foreach (Entertainer item in _entertainers)
-        {
-            value += item.Points;
-        }
-        return value;
     }
 
     #region PHASE LOGIC
@@ -70,12 +55,6 @@ public class EntertainementManager : Singleton<EntertainementManager>
 
     private void ConfirmPhase()
     {
-        //Mark score for each entertainer
-        foreach (Entertainer item in _entertainers)
-        {
-            _score += item.Points;
-            Utilities.PlayResourceGainVFX(item.Tile, _pointsGainPrefab, _pointVFXMat, item.Points);
-        }
         StartCoroutine(PhaseFinalized());
     }
 
@@ -99,8 +78,8 @@ public class EntertainementManager : Singleton<EntertainementManager>
 
         if (tile.Claimed)
         {
-            //Interaction depend on if the tile got an entertainer or not
-            if(tile.Entertainer != null)
+            //Interaction depend on if the tile got an entertainment or not
+            if(tile.Entertainment != null)
             {
                 _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
                 DestroyInteraction(tile, 0);
@@ -108,10 +87,10 @@ public class EntertainementManager : Singleton<EntertainementManager>
             }
             else
             {
-                _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, _entertainerDatas.Count);
-                for (int i = 0; i < _entertainerDatas.Count; i++)
+                _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, _entertainmentsData.Count);
+                for (int i = 0; i < _entertainmentsData.Count; i++)
                 {
-                    EntertainerInteraction(tile, i, _entertainerDatas[i]);
+                    EntertainmentInteraction(tile, i, _entertainmentsData[i]);
                 }
             }
         }
@@ -128,9 +107,9 @@ public class EntertainementManager : Singleton<EntertainementManager>
     #endregion
 
     #region INTERACTION
-    private void EntertainerInteraction(Tile tile, int positionIndex, EntertainerData data)
+    private void EntertainmentInteraction(Tile tile, int positionIndex, EntertainmentData data)
     {
-        _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Entertainer, null, data));
+        _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Entertainment, null, data));
     }
 
     private void DestroyInteraction(Tile tile, int positionIndex)
@@ -138,12 +117,12 @@ public class EntertainementManager : Singleton<EntertainementManager>
         _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Destroy));
     }
 
-    public void SpawnEntertainer(Tile tile, EntertainerData data)
+    public void SpawnEntertainment(Tile tile, EntertainmentData data)
     {
-        if (tile.Entertainer != null)
+        if (tile.Entertainment != null)
             return;
 
-        if (ResourcesManager.Instance.CanAfford(data.Costs))
+        /*if (ResourcesManager.Instance.CanAfford(data.Costs))
         {
             ResourcesManager.Instance.UpdateResource(data.Costs, Transaction.Spent);
 
@@ -156,15 +135,14 @@ public class EntertainementManager : Singleton<EntertainementManager>
             tile.Entertainer = currentEntertainer;
 
             currentEntertainer.Initialize(tile, data);
-        }
+        }*/
     }
 
-    public void DestroyEntertainer(Tile tile)
+    public void DestroyEntertainment(Tile tile)
     {
-        tile.Entertainer.RemoveSynergies();
-        Destroy(tile.Entertainer.gameObject);
-        _entertainers.Remove(tile.Entertainer);
-        tile.Entertainer = null;
+        Destroy(tile.Entertainment.gameObject);
+        _entertainments.Remove(tile.Entertainment);
+        tile.Entertainment = null;
     }
 
     public void ButtonsFade(bool fade)

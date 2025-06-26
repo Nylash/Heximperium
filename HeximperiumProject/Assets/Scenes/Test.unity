@@ -595,7 +595,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1084747253}
   m_Layer: 0
-  m_Name: Entertainers
+  m_Name: Entertainments
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -750,14 +750,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1153636967}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a96ed0cb33a3be84fa883a4bdde118f7, type: 3}
+  m_Script: {fileID: 11500000, guid: c277c951515b9ba41a1eaaf913d8d792, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
-  _entertainerPrefab: {fileID: 5066032661868510455, guid: 2299a873f881c5b4d8cc7e7083bc6b38, type: 3}
-  _entertainersParent: {fileID: 1084747253}
+  _entertainmentPrefab: {fileID: 0}
+  _entertainmentsParent: {fileID: 1084747253}
   _pointsGainPrefab: {fileID: 1592618839310326476, guid: 8877b2626b274684c822c44ca64252e0, type: 3}
-  _pointVFXMat: {fileID: 2100000, guid: 37165071fda418845bd5d92d7d9da370, type: 2}
+  _pointVFXMat: {fileID: 0}
   _pointForOneGold: 0.3
   _pointForOneSR: 0.8
   OnPhaseFinalized:

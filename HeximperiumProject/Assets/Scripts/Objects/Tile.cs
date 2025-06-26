@@ -25,7 +25,7 @@ public class Tile : MonoBehaviour
     private Animator _animator;
     private List<Scout> _scouts = new List<Scout>();
     private TextMeshPro _scoutCounter;
-    private Entertainer _entertainer;
+    private Entertainment _entertainment;
     private GameObject _highlightObject;
     private TileData _previousData;
     private int _uniqueInfraNeighborsCount;
@@ -55,7 +55,7 @@ public class Tile : MonoBehaviour
         }
     }
     public TileData InitialData { get => _initialData; set => _initialData = value; }
-    public Entertainer Entertainer { get => _entertainer; set => _entertainer = value; }
+    public Entertainment Entertainment { get => _entertainment; set => _entertainment = value; }
     public TileData PreviousData { get => _previousData; }
     public int UniqueInfraNeighborsCount { get => _uniqueInfraNeighborsCount; set => _uniqueInfraNeighborsCount = value; }
     #endregion

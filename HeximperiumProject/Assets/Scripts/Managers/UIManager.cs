@@ -34,7 +34,7 @@ public class UIManager : Singleton<UIManager>
     [Header("PopUp UI")]
     [SerializeField] private float _durationHoverForUI = 2.0f;
     [SerializeField] private float _offsetBetweenPopUps = 0.5f;
-    [SerializeField] private GameObject _prefabPopUpEntertainer;
+    [SerializeField] private GameObject _prefabPopUpEntertainment;
     [SerializeField] private GameObject _prefabPopUpScout;
     [SerializeField] private float _minOffset;
     [SerializeField] private float _maxOffset;
@@ -71,7 +71,7 @@ public class UIManager : Singleton<UIManager>
         GameManager.Instance.OnExplorationPhaseStarted.AddListener(UpdatePhaseUI);
         GameManager.Instance.OnExpansionPhaseStarted.AddListener(UpdatePhaseUI);
         GameManager.Instance.OnExploitationPhaseStarted.AddListener(UpdatePhaseUI);
-        GameManager.Instance.OnEntertainementPhaseStarted.AddListener(UpdatePhaseUI);
+        GameManager.Instance.OnEntertainmentPhaseStarted.AddListener(UpdatePhaseUI);
 
         GameManager.Instance.OnExplorationPhaseStarted.AddListener(ForceScoutsToShow);
 
@@ -141,11 +141,6 @@ public class UIManager : Singleton<UIManager>
     {
         ScoutsVisibility(true);
     }
-
-    private void ForceScoutsToHide()
-    {
-        ScoutsVisibility(false);
-    }
     #endregion
 
     #region POPUP UI
@@ -191,10 +186,6 @@ public class UIManager : Singleton<UIManager>
                     if (tile.Revealed)
                     {
                         DisplayPopUp(tile);
-                        if (tile.Entertainer != null)
-                        {
-                            DisplayPopUp(tile.Entertainer);
-                        }
                         if (tile.Scouts.Count > 0) 
                         {
                             foreach (Scout item in tile.Scouts)
@@ -255,11 +246,6 @@ public class UIManager : Singleton<UIManager>
     private void DisplayPopUp(Scout scout)
     {
         DisplayPopUp(scout, _prefabPopUpScout);
-    }
-
-    private void DisplayPopUp(Entertainer entertainer)
-    {
-        DisplayPopUp(entertainer, _prefabPopUpEntertainer);
     }
 
     private void DisplayPopUp(InteractionButton button)
@@ -409,7 +395,7 @@ public class UIManager : Singleton<UIManager>
     private void GameFinished()
     {
         _endMenu.SetActive(true);
-        _endScore.text = EntertainementManager.Instance.Score.ToString();
+        _endScore.text = EntertainmentManager.Instance.Score.ToString();
     }
 
     public void OpenCloseMenu()
