@@ -132,6 +132,12 @@ public class ResourcesManager : Singleton<ResourcesManager>
             _claim = 0;
         UIManager.Instance.UpdateClaimUI(_claim);
     }
+
+    public void SpendAllResources()
+    {
+        UpdateResource(Resource.Gold, GetResourceStock(Resource.Gold), Transaction.Spent);
+        UpdateResource(Resource.SpecialResources, GetResourceStock(Resource.SpecialResources), Transaction.Spent);
+    }
     #endregion
 
     #region CHECK RESOURCES

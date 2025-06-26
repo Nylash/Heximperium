@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEditor.Progress;
 
 public class EntertainementManager : Singleton<EntertainementManager>
 {
@@ -14,6 +15,8 @@ public class EntertainementManager : Singleton<EntertainementManager>
     [SerializeField] private Transform _entertainersParent;
     [SerializeField] private GameObject _pointsGainPrefab;
     [SerializeField] private Material _pointVFXMat;
+    [SerializeField] private float _pointForOneGold;
+    [SerializeField] private float _pointForOneSR;
     #endregion
 
     #region VARIABLES
@@ -39,16 +42,6 @@ public class EntertainementManager : Singleton<EntertainementManager>
         GameManager.Instance.OnEntertainementPhaseEnded.AddListener(ConfirmPhase);
         GameManager.Instance.OnNewTileSelected.AddListener(NewTileSelected);
         GameManager.Instance.OnTileUnselected.AddListener(TileUnselected);
-
-        /*EntertainerData[] entertainerDataArray = Resources.LoadAll<EntertainerData>(ENTERTAINERS_DATA_PATH);
-        if (entertainerDataArray.Length == 0)
-        {
-            Debug.LogError("No entertainer data found at path: " + ENTERTAINERS_DATA_PATH);
-        }
-        else
-        {
-            _entertainerDatas.AddRange(entertainerDataArray);
-        }*/
     }
 
     public int GetPointsIncome()
@@ -64,7 +57,15 @@ public class EntertainementManager : Singleton<EntertainementManager>
     #region PHASE LOGIC
     private void StartPhase()
     {
+        //Convert savings into points
+        float goldIntoPoints = _pointForOneGold * ResourcesManager.Instance.GetResourceStock(Resource.Gold);
+        float srIntoPoints = _pointForOneSR * ResourcesManager.Instance.GetResourceStock(Resource.SpecialResources);
+        _score += Mathf.RoundToInt(goldIntoPoints) + Mathf.RoundToInt(srIntoPoints);
+        ResourcesManager.Instance.SpendAllResources();
 
+        //Earn incomes of every claimed tiles
+        foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
+            ResourcesManager.Instance.UpdateResource(tile.Incomes, Transaction.Gain, tile);
     }
 
     private void ConfirmPhase()
