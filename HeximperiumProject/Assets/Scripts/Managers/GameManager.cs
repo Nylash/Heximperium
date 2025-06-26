@@ -275,19 +275,27 @@ public class GameManager : Singleton<GameManager>
         _waitingPhaseFinalization = false;
 
         _currentPhase = GetNextPhase(_currentPhase);
-        InvokePhaseStartEvent(_currentPhase);
+
+        if (_currentPhase == Phase.Entertain)
+        {
+            OnGameFinished.Invoke();
+            return;
+        }
 
         //New turn logic
         if (_currentPhase == Phase.Explore)
         {
             if (_turnCounter == TURN_LIMIT)
             {
-                OnGameFinished.Invoke();
-                return;
+                _currentPhase = Phase.Entertain;
             }
-            _turnCounter++;
-            OnNewTurn.Invoke(_turnCounter);
+            else
+            {
+                _turnCounter++;
+                OnNewTurn.Invoke(_turnCounter);
+            }
         }
+        InvokePhaseStartEvent(_currentPhase);
     }
 
     private Phase GetNextPhase(Phase currentPhase)
@@ -296,8 +304,7 @@ public class GameManager : Singleton<GameManager>
         {
             Phase.Explore => Phase.Expand,
             Phase.Expand => Phase.Exploit,
-            Phase.Exploit => Phase.Entertain,
-            Phase.Entertain => Phase.Explore,
+            Phase.Exploit => Phase.Explore,
             _ => currentPhase
         };
     }
