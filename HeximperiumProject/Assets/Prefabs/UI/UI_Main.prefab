@@ -6047,6 +6047,8 @@ MonoBehaviour:
   _offsetBetweenPopUps: 1
   _prefabPopUpEntertainer: {fileID: 7317370589033109142, guid: 7977b42869768b74f82fe4ab1473b0c6, type: 3}
   _prefabPopUpScout: {fileID: 7242006630199399831, guid: a4ef471a94a74ec4cb1fb7247f7b301a, type: 3}
+  _minOffset: 80
+  _maxOffset: 275
   _colorCantAfford: {r: 0.9056604, g: 0.23495908, b: 0.23495908, a: 1}
   _scoutsImage: {fileID: 9167870654734957644}
   _scoutsVisible: {fileID: 21300000, guid: 38bb1dd92668beb468c0d559492aa710, type: 3}

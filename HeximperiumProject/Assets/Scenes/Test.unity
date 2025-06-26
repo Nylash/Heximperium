@@ -275,6 +275,8 @@ MonoBehaviour:
   _cameraZoomSpeed: 25
   _edgePanMargin: 2
   _edgePanSpeed: 3
+  _maxZoomLevel: 3.5
+  _minZoomLevel: 20
 --- !u!1 &343468651
 GameObject:
   m_ObjectHideFlags: 0
@@ -784,6 +786,12 @@ MonoBehaviour:
   OnPhaseFinalized:
     m_PersistentCalls:
       m_Calls: []
+  OnInfraBuilded:
+    m_PersistentCalls:
+      m_Calls: []
+  OnInfraDestroyed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1153636975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -800,6 +808,12 @@ MonoBehaviour:
   _townData: {fileID: 11400000, guid: c09b5b1323b68174bad1aea52735ddcc, type: 2}
   _borderParent: {fileID: 1586287181}
   OnPhaseFinalized:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTileClaimed:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClaimSaved:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &1153636976
@@ -825,6 +839,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnScoutsLimitModified:
+    m_PersistentCalls:
+      m_Calls: []
+  OnScoutSpawned:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1586287180

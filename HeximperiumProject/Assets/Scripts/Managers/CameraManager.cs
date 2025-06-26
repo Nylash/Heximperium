@@ -6,11 +6,6 @@ using UnityEngine.UI;
 
 public class CameraManager : Singleton<CameraManager>
 {
-    #region CONSTANTS
-    private const float MIN_ZOOM_LEVEL = 2.0f;
-    private const float MAX_ZOOM_LEVEL = 20.0f;
-    #endregion
-
     #region CONFIGURATION
     [SerializeField] private float _cameraMovementSpeed = 5;
     [SerializeField] private float _cameraDragSpeed = 2;
@@ -19,6 +14,8 @@ public class CameraManager : Singleton<CameraManager>
     [SerializeField] private float _edgePanMargin = 2;
     [SerializeField] private float _edgePanSpeed = 3;
 #pragma warning restore CS0414
+    [SerializeField] private float _maxZoomLevel = 20.0f; //Far
+    [SerializeField] private float _minZoomLevel = 3.5f; //Close
     #endregion
 
     #region VARIABLES
@@ -41,6 +38,9 @@ public class CameraManager : Singleton<CameraManager>
     private InteractionButton _shrinkedButton;
 
     private Vector3 _initialPos;
+
+    public float MaxZoomLevel { get => _maxZoomLevel; }
+    public float MinZoomLevel { get => _minZoomLevel; }
     #endregion
 
     private void OnEnable() => _inputActions.Player.Enable();
@@ -161,7 +161,7 @@ public class CameraManager : Singleton<CameraManager>
     {
         transform.position = new Vector3(
             transform.position.x,
-            Mathf.Clamp(Mathf.Lerp(transform.position.y, transform.position.y + _cameraZoom, _cameraZoomSpeed * Time.deltaTime), MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL),
+            Mathf.Clamp(Mathf.Lerp(transform.position.y, transform.position.y + _cameraZoom, _cameraZoomSpeed * Time.deltaTime), _maxZoomLevel, _minZoomLevel),
             transform.position.z
             );
     }

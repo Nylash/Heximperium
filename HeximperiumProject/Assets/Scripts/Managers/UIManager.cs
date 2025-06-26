@@ -36,6 +36,8 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private float _offsetBetweenPopUps = 0.5f;
     [SerializeField] private GameObject _prefabPopUpEntertainer;
     [SerializeField] private GameObject _prefabPopUpScout;
+    [SerializeField] private float _minOffset;
+    [SerializeField] private float _maxOffset;
     [Header("Radial menu")]
     [SerializeField] private Color _colorCantAfford;
     [Header("Units visibility UI")]
@@ -82,7 +84,7 @@ public class UIManager : Singleton<UIManager>
     {
         _screenWidth = Screen.width;
         _screenHeight = Screen.height;
-}
+    }
 
     #region RESOURCES BAR UI
     private void UpdateScoutLimit()
@@ -288,25 +290,48 @@ public class UIManager : Singleton<UIManager>
             verticalOffset += previousPopupRectTransform.rect.height + _offsetBetweenPopUps;
         }
 
+        // Get the current zoom level from the camera
+        float zoomLevel = CameraManager.Instance.transform.position.y;
+
+        // Calculate the dynamic offset based on the zoom level
+        float normalizedZoom = Mathf.InverseLerp(CameraManager.Instance.MinZoomLevel, CameraManager.Instance.MaxZoomLevel, zoomLevel);
+        float dynamicOffset = Mathf.Lerp(_minOffset, _maxOffset, normalizedZoom);
+
+        #if UNITY_EDITOR
+        dynamicOffset = 0;//Remove the offset in the editor (game screen is small so popup aren't visible)
+        #endif
+
         if (isLeft && isTop)
         {
-            // Top-Left Quadrant: Snap top-left corner to cursor
-            popup.position = new Vector3(mousePosition.x + popupSize.x / 2, mousePosition.y - popupSize.y / 2 - verticalOffset, 0);
+            // Top-Left Quadrant: Snap top-left corner to cursor with dynamic offset
+            popup.position = new Vector3(
+                mousePosition.x + popupSize.x / 2 + dynamicOffset,
+                mousePosition.y - popupSize.y / 2 - verticalOffset - dynamicOffset,
+                0);
         }
         else if (!isLeft && isTop)
         {
-            // Top-Right Quadrant: Snap top-right corner to cursor
-            popup.position = new Vector3(mousePosition.x - popupSize.x / 2, mousePosition.y - popupSize.y / 2 - verticalOffset, 0);
+            // Top-Right Quadrant: Snap top-right corner to cursor with dynamic offset
+            popup.position = new Vector3(
+                mousePosition.x - popupSize.x / 2 - dynamicOffset,
+                mousePosition.y - popupSize.y / 2 - verticalOffset - dynamicOffset,
+                0);
         }
         else if (isLeft && !isTop)
         {
-            // Bottom-Left Quadrant: Snap bottom-left corner to cursor
-            popup.position = new Vector3(mousePosition.x + popupSize.x / 2, mousePosition.y + popupSize.y / 2 + verticalOffset, 0);
+            // Bottom-Left Quadrant: Snap bottom-left corner to cursor with dynamic offset
+            popup.position = new Vector3(
+                mousePosition.x + popupSize.x / 2 + dynamicOffset,
+                mousePosition.y + popupSize.y / 2 + verticalOffset + dynamicOffset,
+                0);
         }
         else
         {
-            // Bottom-Right Quadrant: Snap bottom-right corner to cursor
-            popup.position = new Vector3(mousePosition.x - popupSize.x / 2, mousePosition.y + popupSize.y / 2 + verticalOffset, 0);
+            // Bottom-Right Quadrant: Snap bottom-right corner to cursor with dynamic offset
+            popup.position = new Vector3(
+                mousePosition.x - popupSize.x / 2 - dynamicOffset,
+                mousePosition.y + popupSize.y / 2 + verticalOffset + dynamicOffset,
+                0);
         }
     }
 
