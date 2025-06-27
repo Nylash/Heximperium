@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEditor.Progress;
 
 public class EntertainmentManager : Singleton<EntertainmentManager>
 {
     #region CONFIGURATION
+    [SerializeField] private List<EntertainmentData> _entertainmentsData = new List<EntertainmentData>();
     [SerializeField] private GameObject _entertainmentPrefab;
     [SerializeField] private Transform _entertainmentsParent;
     [SerializeField] private GameObject _pointsGainPrefab;
@@ -18,7 +20,6 @@ public class EntertainmentManager : Singleton<EntertainmentManager>
     private List<Entertainment> _entertainments = new List<Entertainment>();
     private List<Vector3> _interactionPositions = new List<Vector3>();
     private List<GameObject> _buttons = new List<GameObject>();
-    private List<EntertainmentData> _entertainmentsData = new List<EntertainmentData>();
     private int _score;
     #endregion
 
@@ -51,6 +52,8 @@ public class EntertainmentManager : Singleton<EntertainmentManager>
         //Earn incomes of every claimed tiles
         foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
             ResourcesManager.Instance.UpdateResource(tile.Incomes, Transaction.Gain, tile);
+
+        ResourcesManager.Instance.CHEAT_RESOURCES();
     }
 
     private void ConfirmPhase()
@@ -122,24 +125,25 @@ public class EntertainmentManager : Singleton<EntertainmentManager>
         if (tile.Entertainment != null)
             return;
 
-        /*if (ResourcesManager.Instance.CanAfford(data.Costs))
+        if (ResourcesManager.Instance.CanAfford(data.Costs))
         {
             ResourcesManager.Instance.UpdateResource(data.Costs, Transaction.Spent);
 
-            Entertainer currentEntertainer = Instantiate(_entertainerPrefab,
-                tile.transform.position + _entertainerPrefab.transform.localPosition,
-                _entertainerPrefab.transform.rotation,
-                _entertainersParent).GetComponent<Entertainer>();
+            Entertainment currentEntertainment = Instantiate(_entertainmentPrefab,
+                tile.transform.position + _entertainmentPrefab.transform.localPosition,
+                _entertainmentPrefab.transform.rotation,
+                _entertainmentsParent).GetComponent<Entertainment>();
 
-            _entertainers.Add(currentEntertainer);
-            tile.Entertainer = currentEntertainer;
+            _entertainments.Add(currentEntertainment);
+            tile.Entertainment = currentEntertainment;
 
-            currentEntertainer.Initialize(tile, data);
-        }*/
+            currentEntertainment.Initialize(tile, data);
+        }
     }
 
     public void DestroyEntertainment(Tile tile)
     {
+        tile.Entertainment.DestroyEntertainment();
         Destroy(tile.Entertainment.gameObject);
         _entertainments.Remove(tile.Entertainment);
         tile.Entertainment = null;
@@ -153,4 +157,16 @@ public class EntertainmentManager : Singleton<EntertainmentManager>
         }
     }
     #endregion
+
+    public void UpdateScore(int value, Transaction transaction, Tile tile = null)
+    {
+        if (transaction == Transaction.Spent)
+            value = -value;
+
+        _score += value;
+
+        //Play VFX if we gain score from a tile
+        if (tile != null && transaction == Transaction.Gain)
+            Utilities.PlayResourceGainVFX(tile, _pointsGainPrefab, _pointVFXMat, value);
+    }
 }

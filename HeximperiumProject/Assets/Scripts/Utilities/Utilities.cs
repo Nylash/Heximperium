@@ -202,4 +202,9 @@ public enum Interaction
 {
     Claim, Scout, Infrastructure, Destroy, Entertainment
 }
+
+public enum EntertainmentType
+{
+    MinstrelStage, TastingPavilion, ParadeRoute, MysticGarden
+}
 #endregion

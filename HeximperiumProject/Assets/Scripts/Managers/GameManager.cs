@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 public class GameManager : Singleton<GameManager>
 {
     #region CONSTANTS
-    private const int TURN_LIMIT = 20;
+    private const int TURN_LIMIT = 2;
     #endregion
 
     #region CONFIGURATION

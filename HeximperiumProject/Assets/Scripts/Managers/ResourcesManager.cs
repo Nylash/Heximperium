@@ -75,7 +75,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
     }
     #endregion
 
-    public void CHEAT_GAIN_ALL_RESOURCES()
+    public void CHEAT_RESOURCES()
     {
         Debug.LogWarning("USING CHEAT !");
         UpdateResource(Resource.Gold, 500, Transaction.Gain);

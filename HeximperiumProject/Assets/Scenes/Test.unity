@@ -675,10 +675,10 @@ MonoBehaviour:
   OnExploitationPhaseEnded:
     m_PersistentCalls:
       m_Calls: []
-  OnEntertainementPhaseStarted:
+  OnEntertainmentPhaseStarted:
     m_PersistentCalls:
       m_Calls: []
-  OnEntertainementPhaseEnded:
+  OnEntertainmentPhaseEnded:
     m_PersistentCalls:
       m_Calls: []
   OnNewTileSelected:
@@ -754,10 +754,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
-  _entertainmentPrefab: {fileID: 0}
+  _entertainmentsData:
+  - {fileID: 11400000, guid: c7c0d52522766474a97afa468b4b42c9, type: 2}
+  - {fileID: 11400000, guid: 3394aecefc4c86f4181481cb52b87e79, type: 2}
+  - {fileID: 11400000, guid: 1fa42f8e81df55d4593e8a963a2d53a7, type: 2}
+  - {fileID: 11400000, guid: 849a92dd76cb59441979aca05a80c78b, type: 2}
+  _entertainmentPrefab: {fileID: 2250239871940816137, guid: f8a7db839ca7e72408cdfe24431d42ae, type: 3}
   _entertainmentsParent: {fileID: 1084747253}
   _pointsGainPrefab: {fileID: 1592618839310326476, guid: 8877b2626b274684c822c44ca64252e0, type: 3}
-  _pointVFXMat: {fileID: 0}
+  _pointVFXMat: {fileID: 2100000, guid: 37165071fda418845bd5d92d7d9da370, type: 2}
   _pointForOneGold: 0.3
   _pointForOneSR: 0.8
   OnPhaseFinalized:

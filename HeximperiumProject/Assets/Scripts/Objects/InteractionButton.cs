@@ -3,7 +3,7 @@ using UnityEngine;
 public class InteractionButton : MonoBehaviour
 {
     #region CONSTANTS
-    private const string PATH_SPRITE_INTERACTION = "InteractionButtons/";
+    private const string PATH_SPRITES_INTERACTION = "Sprites/InteractionButtons/";
     #endregion
 
     #region CONFIGURATION
@@ -58,7 +58,7 @@ public class InteractionButton : MonoBehaviour
         
     }
 
-    public void Initialize(Tile associatedTile, Interaction action, InfrastructureData infraData = null, EntertainmentData entrainData = null)
+    public void Initialize(Tile associatedTile, Interaction action, InfrastructureData infraData = null, EntertainmentData entertainData = null)
     {
         _renderer = GetComponentInChildren<SpriteRenderer>();
         _associatedTile = associatedTile;
@@ -79,6 +79,7 @@ public class InteractionButton : MonoBehaviour
                 InitializeDestroy();
                 break;
             case Interaction.Entertainment:
+                InitializeEntertainment(entertainData);
                 break;
         }
 
@@ -113,12 +114,20 @@ public class InteractionButton : MonoBehaviour
         LoadSprite(Interaction.Destroy.ToString());
     }
 
+    private void InitializeEntertainment(EntertainmentData data)
+    {
+        _entertainData = data;
+        if (!ResourcesManager.Instance.CanAfford(_entertainData.Costs))
+            _renderer.color = UIManager.Instance.ColorCantAfford;
+        LoadSprite(_entertainData.name);
+    }
+
     private void LoadSprite(string spriteName)
     {
-        Sprite sprite = Resources.Load<Sprite>(PATH_SPRITE_INTERACTION + spriteName);
+        Sprite sprite = Resources.Load<Sprite>(PATH_SPRITES_INTERACTION + spriteName);
         if (sprite == null)
         {
-            Debug.LogError("Sprite not found at path: " + PATH_SPRITE_INTERACTION + spriteName);
+            Debug.LogError("Sprite not found at path: " + PATH_SPRITES_INTERACTION + spriteName);
             return;
         }
         _renderer.sprite = sprite;
