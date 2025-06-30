@@ -135,9 +135,8 @@ public class EntertainmentManager : Singleton<EntertainmentManager>
                 _entertainmentsParent).GetComponent<Entertainment>();
 
             _entertainments.Add(currentEntertainment);
-            tile.Entertainment = currentEntertainment;
-
             currentEntertainment.Initialize(tile, data);
+            tile.Entertainment = currentEntertainment;
         }
     }
 
@@ -165,7 +164,7 @@ public class EntertainmentManager : Singleton<EntertainmentManager>
 
         _score += value;
 
-        //Play VFX if we gain score from a tile
+        //Play VFX if we gain score
         if (tile != null && transaction == Transaction.Gain)
             Utilities.PlayResourceGainVFX(tile, _pointsGainPrefab, _pointVFXMat, value);
     }

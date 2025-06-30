@@ -26,6 +26,7 @@ public class Tile : MonoBehaviour
     private List<Scout> _scouts = new List<Scout>();
     private TextMeshPro _scoutCounter;
     private Entertainment _entertainment;
+    private EntertainmentData _previousEntertainmentData;
     private GameObject _highlightObject;
     private TileData _previousData;
     private int _uniqueInfraNeighborsCount;
@@ -36,6 +37,7 @@ public class Tile : MonoBehaviour
     [HideInInspector] public UnityEvent<Tile, List<ResourceToIntMap>, List<ResourceToIntMap>> OnIncomeModified = new UnityEvent<Tile, List<ResourceToIntMap>, List<ResourceToIntMap>>();
     [HideInInspector] public UnityEvent<Tile> OnTileClaimed = new UnityEvent<Tile>();
     [HideInInspector] public UnityEvent<Tile> OnTileDataModified = new UnityEvent<Tile>();
+    [HideInInspector] public UnityEvent<Tile> OnEntertainmentModified = new UnityEvent<Tile>();
     #endregion
 
     #region ACCESSORS
@@ -55,9 +57,20 @@ public class Tile : MonoBehaviour
         }
     }
     public TileData InitialData { get => _initialData; set => _initialData = value; }
-    public Entertainment Entertainment { get => _entertainment; set => _entertainment = value; }
+    public Entertainment Entertainment 
+    { 
+        get => _entertainment; 
+        set 
+        {
+            if (_entertainment != null)
+                _previousEntertainmentData = _entertainment.Data;
+            _entertainment = value;
+            OnEntertainmentModified.Invoke(this);
+        }  
+    }
     public TileData PreviousData { get => _previousData; }
     public int UniqueInfraNeighborsCount { get => _uniqueInfraNeighborsCount; set => _uniqueInfraNeighborsCount = value; }
+    public EntertainmentData PreviousEntertainmentData { get => _previousEntertainmentData; }
     #endregion
 
     private void Awake()

@@ -9,14 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 656676678fffb414dab68eafbd451379, type: 3}
-  m_Name: TastingPavilion
+  m_Script: {fileID: 11500000, guid: 9a521d2d5932d8647b1f71e0ec6f70dc, type: 3}
+  m_Name: TastingPavilionEffect
   m_EditorClassIdentifier: 
-  _type: 1
-  _basePoints: 3
-  _specialEffect: {fileID: 11400000, guid: 2acff5f82c07f28428264bfb9b2d7237, type: 2}
-  _costs:
-  - resource: 0
-    value: 10
-  - resource: 1
-    value: 5
+  _boost: 4
+  _boostingNeighbors:
+  - {fileID: 11400000, guid: c7c0d52522766474a97afa468b4b42c9, type: 2}
+  - {fileID: 11400000, guid: 3394aecefc4c86f4181481cb52b87e79, type: 2}
