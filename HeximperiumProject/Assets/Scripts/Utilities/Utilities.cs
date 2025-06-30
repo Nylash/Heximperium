@@ -137,6 +137,18 @@ public static class Utilities
         };
     }
 
+    public static string ToCustomString(this EntertainmentType value)
+    {
+        return value switch
+        {
+            EntertainmentType.TastingPavilion => "Tasting Pavilion",
+            EntertainmentType.MinstrelStage => "Minstrel Stage",
+            EntertainmentType.ParadeRoute => "Parade Route",
+            EntertainmentType.MysticGarden => "Mystic Garden",
+            _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
+        };
+    }
+
     //Spawn VFX for resources (and points) gain
     public static void PlayResourceGainVFX(Tile tile, GameObject prefab, Material mat, int value)
     {

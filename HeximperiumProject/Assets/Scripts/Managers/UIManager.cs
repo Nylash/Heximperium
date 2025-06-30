@@ -193,6 +193,8 @@ public class UIManager : Singleton<UIManager>
                                 DisplayPopUp(item);
                             }
                         }
+                        if(tile.Entertainment != null)
+                            DisplayPopUp(tile.Entertainment);
                     }
                 }
                 else if (obj.GetComponent<InteractionButton>() is  InteractionButton button)
@@ -246,6 +248,11 @@ public class UIManager : Singleton<UIManager>
     private void DisplayPopUp(Scout scout)
     {
         DisplayPopUp(scout, _prefabPopUpScout);
+    }
+
+    private void DisplayPopUp(Entertainment entertainment)
+    {
+        DisplayPopUp(entertainment, _prefabPopUpEntertainment);
     }
 
     private void DisplayPopUp(InteractionButton button)

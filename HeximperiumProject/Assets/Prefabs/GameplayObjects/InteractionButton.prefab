@@ -127,7 +127,7 @@ MonoBehaviour:
   _popUpClaim: {fileID: 6109029653485357546, guid: 131ab459e849bec4698fa692df1a956b, type: 3}
   _popUpScout: {fileID: 239403369862233682, guid: edda0895ea5453042b45d38a7ec6023b, type: 3}
   _popUpDestroy: {fileID: 4433154067086103077, guid: 19677e20c5dce66489edcecf5f3553ee, type: 3}
-  _popUpEntertainer: {fileID: 5900249496963352872, guid: 8ab36be6649865943a1388fb998bd726, type: 3}
+  _popUpEntertainment: {fileID: 5900249496963352872, guid: 8ab36be6649865943a1388fb998bd726, type: 3}
   _popUpInfra: {fileID: 1315491745961357309, guid: 5dc36368dee509847be230004caafd44, type: 3}
   _textureExplo: {fileID: 2800000, guid: 9020b9aabdc09ab4697d981f18b52914, type: 3}
   _textureExpand: {fileID: 2800000, guid: be16d6db9cf0c1148b4af1b282044baf, type: 3}

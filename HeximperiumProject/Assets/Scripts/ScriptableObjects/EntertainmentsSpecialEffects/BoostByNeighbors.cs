@@ -36,9 +36,17 @@ public class BoostByNeighbors : SpecialEffect
         }
     }
 
-    public override void HighlightImpactedEntertainment(Entertainment associatedEntertainment, bool show)
+    public override void HighlightImpactedEntertainment(Tile associatedTile, bool show)
     {
-        throw new System.NotImplementedException();
+        foreach (Tile neighbor in associatedTile.Neighbors)
+        {
+            if (neighbor == null)
+                continue;
+            if (neighbor.Entertainment == null)
+                continue;
+            if (_boostingNeighbors.Contains(neighbor.Entertainment.Data))
+                neighbor.Highlight(show);
+        }
     }
 
     public void CheckEntertainment(Entertainment associatedEntertainment, Tile tile)
