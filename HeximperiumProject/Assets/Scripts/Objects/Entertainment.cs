@@ -17,7 +17,7 @@ public class Entertainment : MonoBehaviour
     public EntertainmentData Data { get => _data; set => _data = value; }
     public Tile Tile { get => _tile; set => _tile = value; }
     public SpriteRenderer Renderer { get => _renderer; }
-    public int Points { get => _points; set => _points = value; }
+    public int Points { get => _points; }
     #endregion
 
     private void Awake()
@@ -31,12 +31,20 @@ public class Entertainment : MonoBehaviour
         _data = data;
         _renderer.sprite = Resources.Load<Sprite>(PATH_SPRITES_ENTERTAINMENT + data.name);
 
-        _points = data.BasePoints;
-
         if (_data.SpecialEffect != null)
             _data.SpecialEffect.InitializeSpecialEffect(this);
 
-        EntertainmentManager.Instance.UpdateScore(_points, Transaction.Gain, _tile);
+        UpdatePoints(data.BasePoints, Transaction.Gain);
+    }
+
+    public void UpdatePoints(int value, Transaction transaction)
+    {
+        EntertainmentManager.Instance.UpdateScore(value, transaction, _tile);
+
+        if (transaction == Transaction.Spent)
+            value = -value;
+
+        _points += value; 
     }
 
     public void DestroyEntertainment()
@@ -48,10 +56,16 @@ public class Entertainment : MonoBehaviour
     }
 
     #region SPECIAL EFFECTS
-    public void ListenerOnEntertainmentModified(Tile tile)
+    public void ListenerOnEntertainmentModified_BoostByNeighbors(Tile tile)
     {
         if (_data.SpecialEffect is BoostByNeighbors effect)
             effect.CheckEntertainment(this, tile);
+    }
+
+    public void ListenerOnEntertainmentModified_BoostByUniqueNeighbors(Tile tile)
+    {
+        if (_data.SpecialEffect is BoostByUniqueNeighbors effect)
+            effect.CheckEntertainment(this);
     }
     #endregion
 }

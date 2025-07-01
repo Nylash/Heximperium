@@ -11,14 +11,14 @@ public class BoostByNeighbors : SpecialEffect
     {
         foreach (Tile neighbor in associatedEntertainment.Tile.Neighbors)
         {
-            if (neighbor == null)
+            if (!neighbor)
                 continue;
-            neighbor.OnEntertainmentModified.RemoveListener(associatedEntertainment.ListenerOnEntertainmentModified);
-            neighbor.OnEntertainmentModified.AddListener(associatedEntertainment.ListenerOnEntertainmentModified);
-            if (neighbor.Entertainment == null)
+            neighbor.OnEntertainmentModified.RemoveListener(associatedEntertainment.ListenerOnEntertainmentModified_BoostByNeighbors);
+            neighbor.OnEntertainmentModified.AddListener(associatedEntertainment.ListenerOnEntertainmentModified_BoostByNeighbors);
+            if (!neighbor.Entertainment)
                 continue;
             if (_boostingNeighbors.Contains(neighbor.Entertainment.Data))
-                associatedEntertainment.Points += _boost;
+                associatedEntertainment.UpdatePoints(_boost, Transaction.Gain);
         }
     }
 
@@ -26,13 +26,11 @@ public class BoostByNeighbors : SpecialEffect
     {
         foreach (Tile neighbor in associatedEntertainment.Tile.Neighbors)
         {
-            if (neighbor == null)
+            if (!neighbor)
                 continue;
-            neighbor.OnEntertainmentModified.RemoveListener(associatedEntertainment.ListenerOnEntertainmentModified);
-            if (neighbor.Entertainment == null)
+            neighbor.OnEntertainmentModified.RemoveListener(associatedEntertainment.ListenerOnEntertainmentModified_BoostByNeighbors);
+            if (!neighbor.Entertainment)
                 continue;
-            if (_boostingNeighbors.Contains(neighbor.Entertainment.Data))
-                associatedEntertainment.Points -= _boost;
         }
     }
 
@@ -40,9 +38,9 @@ public class BoostByNeighbors : SpecialEffect
     {
         foreach (Tile neighbor in associatedTile.Neighbors)
         {
-            if (neighbor == null)
+            if (!neighbor)
                 continue;
-            if (neighbor.Entertainment == null)
+            if (!neighbor.Entertainment)
                 continue;
             if (_boostingNeighbors.Contains(neighbor.Entertainment.Data))
                 neighbor.Highlight(show);
@@ -58,14 +56,14 @@ public class BoostByNeighbors : SpecialEffect
                 //Check if the previous data didn't already applied the boost
                 if (_boostingNeighbors.Contains(tile.PreviousEntertainmentData))
                     return;
-                associatedEntertainment.Points += _boost;
+                associatedEntertainment.UpdatePoints(_boost, Transaction.Gain);
             }
         }
         else
         {
             //Check if the previous data did apply a boost, then remove it if yes
             if (_boostingNeighbors.Contains(tile.PreviousEntertainmentData))
-                associatedEntertainment.Points -= _boost;
+                associatedEntertainment.UpdatePoints(_boost, Transaction.Spent);
         }
     }
 }

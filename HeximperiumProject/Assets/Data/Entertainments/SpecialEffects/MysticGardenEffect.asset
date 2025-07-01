@@ -9,14 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 656676678fffb414dab68eafbd451379, type: 3}
-  m_Name: MysticGarden
+  m_Script: {fileID: 11500000, guid: 5208cd361e4d37b4e8cbf1c3d07f7748, type: 3}
+  m_Name: MysticGardenEffect
   m_EditorClassIdentifier: 
-  _type: 3
-  _basePoints: 5
-  _specialEffect: {fileID: 11400000, guid: 80f1f2350a4e83944bdf05c8a65a7df2, type: 2}
-  _costs:
-  - resource: 0
-    value: 15
-  - resource: 1
-    value: 10
+  _boost: 10

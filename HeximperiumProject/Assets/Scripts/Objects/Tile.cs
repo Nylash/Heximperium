@@ -30,6 +30,7 @@ public class Tile : MonoBehaviour
     private GameObject _highlightObject;
     private TileData _previousData;
     private int _uniqueInfraNeighborsCount;
+    private int _uniqueEntertainmentNeighborsCount;
     #endregion
 
     #region EVENTS
@@ -64,6 +65,8 @@ public class Tile : MonoBehaviour
         {
             if (_entertainment != null)
                 _previousEntertainmentData = _entertainment.Data;
+            else
+                _previousEntertainmentData = null;
             _entertainment = value;
             OnEntertainmentModified.Invoke(this);
         }  
@@ -71,6 +74,7 @@ public class Tile : MonoBehaviour
     public TileData PreviousData { get => _previousData; }
     public int UniqueInfraNeighborsCount { get => _uniqueInfraNeighborsCount; set => _uniqueInfraNeighborsCount = value; }
     public EntertainmentData PreviousEntertainmentData { get => _previousEntertainmentData; }
+    public int UniqueEntertainmentNeighborsCount { get => _uniqueEntertainmentNeighborsCount; set => _uniqueEntertainmentNeighborsCount = value; }
     #endregion
 
     private void Awake()
