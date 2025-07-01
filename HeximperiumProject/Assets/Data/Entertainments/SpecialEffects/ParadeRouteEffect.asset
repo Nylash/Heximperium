@@ -9,14 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 656676678fffb414dab68eafbd451379, type: 3}
-  m_Name: ParadeRoute
+  m_Script: {fileID: 11500000, guid: 20fbd8096afe1af49b818d3496d08b18, type: 3}
+  m_Name: ParadeRouteEffect
   m_EditorClassIdentifier: 
-  _type: 2
-  _basePoints: 2
-  _specialEffect: {fileID: 11400000, guid: 496c3eb9acd663a4bb4b5adfd6d63e9e, type: 2}
-  _costs:
-  - resource: 0
-    value: 10
-  - resource: 1
-    value: 10
+  _boost: 3
+  _dataBoosting: {fileID: 11400000, guid: 1fa42f8e81df55d4593e8a963a2d53a7, type: 2}
+  _dataBridge: {fileID: 11400000, guid: c7c0d52522766474a97afa468b4b42c9, type: 2}

@@ -21,11 +21,15 @@ public class EntertainmentManager : Singleton<EntertainmentManager>
     private List<Vector3> _interactionPositions = new List<Vector3>();
     private List<GameObject> _buttons = new List<GameObject>();
     private int _score;
+    private Dictionary<int, List<Entertainment>> _groupBoost = new Dictionary<int, List<Entertainment>>(); //Use for BoostByZoneSize special effect, <GroupID, Entertainments>
+    private Dictionary<int, int> _groupBoostCount = new Dictionary<int, int>(); //Use for BoostByZoneSize special effect, <GroupID, Count>
     #endregion
 
     #region ACCESSORS
     public List<Entertainment> Entertainments { get => _entertainments; }
     public int Score { get => _score; }
+    public Dictionary<int, List<Entertainment>> GroupBoost { get => _groupBoost; }
+    public Dictionary<int, int> GroupBoostCount { get => _groupBoostCount; }
     #endregion
 
     #region EVENTS
@@ -38,6 +42,31 @@ public class EntertainmentManager : Singleton<EntertainmentManager>
         GameManager.Instance.OnEntertainmentPhaseEnded.AddListener(ConfirmPhase);
         GameManager.Instance.OnNewTileSelected.AddListener(NewTileSelected);
         GameManager.Instance.OnTileUnselected.AddListener(TileUnselected);
+    }
+
+    private void Update()
+    {
+        foreach (var kvp in _groupBoost)
+        {
+            string s = $"Group {kvp.Key}: ";
+            foreach (var entertainment in kvp.Value)
+            {
+                if (!entertainment)
+                    continue;
+                s += entertainment.name + ", ";
+            }
+            Debug.Log(s);
+        }
+        /*Remove empty group, TO DO
+         * 
+         * foreach (var kvp in EntertainmentManager.Instance.GroupBoost.Keys.ToList()) // ToList avoids modifying during iteration
+        {
+            if (EntertainmentManager.Instance.GroupBoost[kvp].Count == 0)
+            {
+                EntertainmentManager.Instance.GroupBoost.Remove(kvp);
+                EntertainmentManager.Instance.GroupBoostCount.Remove(kvp);
+            }
+        }*/
     }
 
     #region PHASE LOGIC

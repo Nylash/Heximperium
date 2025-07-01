@@ -35,6 +35,8 @@ public class Entertainment : MonoBehaviour
             _data.SpecialEffect.InitializeSpecialEffect(this);
 
         UpdatePoints(data.BasePoints, Transaction.Gain);
+
+        gameObject.name = _data.name + " (" + (int)_tile.Coordinate.x + ";" + _tile.Coordinate.y + ")";
     }
 
     public void UpdatePoints(int value, Transaction transaction)
@@ -66,6 +68,12 @@ public class Entertainment : MonoBehaviour
     {
         if (_data.SpecialEffect is BoostByUniqueNeighbors effect)
             effect.CheckEntertainment(this);
+    }
+
+    public void ListenerOnEntertainmentModified_BoostByZoneSize(Tile tile)
+    {
+        if (_data.SpecialEffect is BoostByZoneSize effect)
+            effect.CheckEntertainment(this, tile);
     }
     #endregion
 }

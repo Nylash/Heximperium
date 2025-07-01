@@ -31,6 +31,8 @@ public class Tile : MonoBehaviour
     private TileData _previousData;
     private int _uniqueInfraNeighborsCount;
     private int _uniqueEntertainmentNeighborsCount;
+
+    private int _groupID;//Use for BoostByZoneSize entertainment's special effect
     #endregion
 
     #region EVENTS
@@ -75,6 +77,7 @@ public class Tile : MonoBehaviour
     public int UniqueInfraNeighborsCount { get => _uniqueInfraNeighborsCount; set => _uniqueInfraNeighborsCount = value; }
     public EntertainmentData PreviousEntertainmentData { get => _previousEntertainmentData; }
     public int UniqueEntertainmentNeighborsCount { get => _uniqueEntertainmentNeighborsCount; set => _uniqueEntertainmentNeighborsCount = value; }
+    public int GroupID { get => _groupID; set => _groupID = value; }
     #endregion
 
     private void Awake()
