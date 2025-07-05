@@ -58,13 +58,16 @@ public class BoostByZoneSize : SpecialEffect
     {
         if (!updatedTile.Entertainment)
         {
-            if (updatedTile.PreviousEntertainmentData == _dataBridge)//If it was a bridge remove it
+            if (updatedTile.PreviousEntertainmentData == _dataBridge && updatedTile.GroupID != 0)//If it was a bridge remove it (and not handled by another listener)
                 RemoveEntertainmentFromItsGroup(updatedTile, updatedTile.PreviousEntertainmentData);
         }
         else
         {
             if (updatedTile.Entertainment.Data == _dataBridge)//If it is a bridge add it
             {
+                if (updatedTile.GroupID != 0)//Already handled by another listener ?
+                    return;
+
                 HashSet<int> neighborGroups = new HashSet<int>();
 
                 foreach (Tile neighbor in updatedTile.Neighbors)
