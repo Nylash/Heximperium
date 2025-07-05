@@ -111,6 +111,20 @@ public class BoostByZoneSize : SpecialEffect
             EntertainmentManager.Instance.GroupBoostCount[newGroupId] = 0;
 
         initialEntertainment.Tile.GroupID = newGroupId;
+
+        foreach (Tile neighbor in initialEntertainment.Tile.Neighbors)
+        {
+            if (!neighbor)
+                continue;
+            if (!neighbor.Entertainment)
+                continue;
+            if(neighbor.Entertainment.Data == _dataBridge)
+            {
+                if (neighbor.GroupID > 0)
+                    Debug.LogError("Shouldn't be here, neighbor got a groupID " + neighbor + neighbor.GroupID);
+                AddEntertainmentToGroup(initialEntertainment.Tile.GroupID, neighbor.Entertainment);
+            }
+        }
     }
 
     private void AddEntertainmentToGroup(int groupID, Entertainment newEntertainment)
