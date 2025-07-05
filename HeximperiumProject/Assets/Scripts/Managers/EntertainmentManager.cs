@@ -55,7 +55,7 @@ public class EntertainmentManager : Singleton<EntertainmentManager>
                     continue;
                 s += entertainment.name + ", ";
             }
-            Debug.Log(s);
+            Debug.Log(s + " Count : " + _groupBoostCount[kvp.Key]);
         }
         /*Remove empty group, TO DO
          * 

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/SpecialEffect/BoostByZoneSize")]
@@ -10,24 +11,30 @@ public class BoostByZoneSize : SpecialEffect
 
     public override void InitializeSpecialEffect(Entertainment associatedEntertainment)
     {
+        HashSet<int> neighborGroups = new HashSet<int>();
+
         foreach (Tile neighbor in associatedEntertainment.Tile.Neighbors)
         {
             if (!neighbor)
                 continue;
             neighbor.OnEntertainmentModified.RemoveListener(associatedEntertainment.ListenerOnEntertainmentModified_BoostByZoneSize);
             neighbor.OnEntertainmentModified.AddListener(associatedEntertainment.ListenerOnEntertainmentModified_BoostByZoneSize);
-            if (!neighbor.Entertainment)
-                continue;
             if (neighbor.GroupID > 0)
-            {
-                AddEntertainmentToGroup(neighbor.GroupID, associatedEntertainment);
-                break;
-            }  
+                neighborGroups.Add(neighbor.GroupID);
         }
 
-        //No group found, we create a new one
-        if(associatedEntertainment.Tile.GroupID == 0)
+        if (neighborGroups.Count == 0)
+        {
             CreateNewGroup(associatedEntertainment);
+        }
+        else if (neighborGroups.Count == 1)
+        {
+            AddEntertainmentToGroup(neighborGroups.First(), associatedEntertainment);
+        }
+        else
+        {
+            MergeGroups(neighborGroups.ToList(), associatedEntertainment);
+        }
     }
 
     public override void RollbackSpecialEntertainment(Entertainment associatedEntertainment)
@@ -57,7 +64,30 @@ public class BoostByZoneSize : SpecialEffect
         else
         {
             if (updatedTile.Entertainment.Data == _dataBridge)//If it is a bridge add it
-                AddEntertainmentToGroup(associatedEntertainment.Tile.GroupID, updatedTile.Entertainment);
+            {
+                HashSet<int> neighborGroups = new HashSet<int>();
+
+                foreach (Tile neighbor in updatedTile.Neighbors)
+                {
+                    if (!neighbor)
+                        continue;
+                    if (neighbor.GroupID > 0)
+                        neighborGroups.Add(neighbor.GroupID);
+                }
+
+                if (neighborGroups.Count == 0)
+                {
+                    Debug.LogError("Not possible, listener not removed ? AssociatedEntertainment : " + associatedEntertainment + " UpdatedTile : " + updatedTile);
+                }
+                else if (neighborGroups.Count == 1)
+                {
+                    AddEntertainmentToGroup(neighborGroups.First(), updatedTile.Entertainment);
+                }
+                else
+                {
+                    MergeGroups(neighborGroups.ToList(), updatedTile.Entertainment);
+                }
+            }
         }
     }
 
@@ -110,7 +140,8 @@ public class BoostByZoneSize : SpecialEffect
             EntertainmentManager.Instance.GroupBoostCount[tile.GroupID]--;
         }
 
-        EntertainmentManager.Instance.GroupBoost[tile.GroupID].Remove(tile.Entertainment);
+        if (tile.Entertainment != null)
+            EntertainmentManager.Instance.GroupBoost[tile.GroupID].Remove(tile.Entertainment);
 
         if (removedData == _dataBoosting)
         {
@@ -130,5 +161,41 @@ public class BoostByZoneSize : SpecialEffect
         }  
 
         tile.GroupID = 0;
+    }
+
+    private void MergeGroups(List<int> groupIds, Entertainment newEntertainment)
+    {
+        // choose the smallest group ID as the base
+        int targetGroupId = groupIds.Min();
+
+        // merge all other groups into it
+        foreach (int sourceGroupId in groupIds)
+        {
+            if (sourceGroupId == targetGroupId)
+                continue;
+
+            List<Entertainment> sourceList = EntertainmentManager.Instance.GroupBoost[sourceGroupId].ToList(); // copy to avoid modifying during loop
+
+            foreach (Entertainment ent in sourceList)
+            {
+                ResetEntertainmentPoints(ent);
+                RemoveEntertainmentFromItsGroup(ent.Tile, ent.Data);
+                AddEntertainmentToGroup(targetGroupId, ent);
+            }
+            EntertainmentManager.Instance.GroupBoost.Remove(sourceGroupId);
+            EntertainmentManager.Instance.GroupBoostCount.Remove(sourceGroupId);
+        }
+
+        AddEntertainmentToGroup(targetGroupId, newEntertainment);
+    }
+
+    private void ResetEntertainmentPoints(Entertainment entertainment)
+    {
+        if (entertainment.Data != _dataBoosting)
+            return;
+        entertainment.UpdatePoints(
+            _boost * 
+            (EntertainmentManager.Instance.GroupBoostCount[entertainment.Tile.GroupID] -1),//subtract 1 from group count since the boost logic does not count itself
+            Transaction.Spent);
     }
 }
