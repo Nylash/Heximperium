@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnityEditor.Progress;
 
 public class EntertainmentManager : Singleton<EntertainmentManager>
 {
@@ -57,16 +56,6 @@ public class EntertainmentManager : Singleton<EntertainmentManager>
             }
             Debug.Log(s + " Count : " + _groupBoostCount[kvp.Key]);
         }
-        /*Remove empty group, TO DO
-         * 
-         * foreach (var kvp in EntertainmentManager.Instance.GroupBoost.Keys.ToList()) // ToList avoids modifying during iteration
-        {
-            if (EntertainmentManager.Instance.GroupBoost[kvp].Count == 0)
-            {
-                EntertainmentManager.Instance.GroupBoost.Remove(kvp);
-                EntertainmentManager.Instance.GroupBoostCount.Remove(kvp);
-            }
-        }*/
     }
 
     #region PHASE LOGIC
@@ -172,7 +161,7 @@ public class EntertainmentManager : Singleton<EntertainmentManager>
     public void DestroyEntertainment(Tile tile)
     {
         tile.Entertainment.DestroyEntertainment();
-        Destroy(tile.Entertainment.gameObject);
+        CheckEmptyGroup(tile);
         _entertainments.Remove(tile.Entertainment);
         tile.Entertainment = null;
     }
@@ -196,5 +185,23 @@ public class EntertainmentManager : Singleton<EntertainmentManager>
         //Play VFX if we gain score
         if (tile != null && transaction == Transaction.Gain)
             Utilities.PlayResourceGainVFX(tile, _pointsGainPrefab, _pointVFXMat, value);
+    }
+
+    //For boostByZone special effect
+    private void CheckEmptyGroup(Tile tile)
+    {
+        
+        if (tile.GroupID > 0)
+        {
+            _groupBoost[tile.GroupID].Remove(tile.Entertainment);
+
+            if (_groupBoost[tile.GroupID].Count == 0)
+            {
+                _groupBoost.Remove(tile.GroupID);
+                _groupBoostCount.Remove(tile.GroupID);
+            }
+
+            tile.GroupID = 0;
+        }
     }
 }

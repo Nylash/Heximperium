@@ -55,6 +55,8 @@ public class Entertainment : MonoBehaviour
 
         if (_data.SpecialEffect != null)
             _data.SpecialEffect.RollbackSpecialEntertainment(this);
+
+        Destroy(gameObject);
     }
 
     #region SPECIAL EFFECTS
