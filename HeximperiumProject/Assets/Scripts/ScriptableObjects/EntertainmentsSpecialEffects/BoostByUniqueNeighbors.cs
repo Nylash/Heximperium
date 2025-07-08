@@ -37,7 +37,7 @@ public class BoostByUniqueNeighbors : SpecialEffect
                 continue;
             neighbor.OnEntertainmentModified.RemoveListener(associatedEntertainment.ListenerOnEntertainmentModified_BoostByUniqueNeighbors);
         }
-        associatedEntertainment.Tile.UniqueInfraNeighborsCount = 0;
+        associatedEntertainment.Tile.UniqueEntertainmentNeighborsCount_SE = 0;
     }
 
     public override void HighlightImpactedEntertainment(Tile associatedTile, bool show)
