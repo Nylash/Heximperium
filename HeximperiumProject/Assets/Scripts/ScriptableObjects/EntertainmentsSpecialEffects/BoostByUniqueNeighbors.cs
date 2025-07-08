@@ -23,7 +23,7 @@ public class BoostByUniqueNeighbors : SpecialEffect
             uniqueData.Add(neighbor.Entertainment.Data);
         }
 
-        associatedEntertainment.Tile.UniqueEntertainmentNeighborsCount = uniqueData.Count;
+        associatedEntertainment.Tile.UniqueEntertainmentNeighborsCount_SE = uniqueData.Count;
 
         if(uniqueData.Count > 0)
             associatedEntertainment.UpdatePoints(_boost * uniqueData.Count, Transaction.Gain);
@@ -64,7 +64,7 @@ public class BoostByUniqueNeighbors : SpecialEffect
             uniqueData.Add(neighbor.Entertainment.Data);
         }
 
-        int deltaCount = uniqueData.Count - entertainment.Tile.UniqueEntertainmentNeighborsCount;
+        int deltaCount = uniqueData.Count - entertainment.Tile.UniqueEntertainmentNeighborsCount_SE;
 
         if (deltaCount == 0)
             return;//Count of unique entertainment neighbors didn't change, so nothing to do
@@ -78,6 +78,6 @@ public class BoostByUniqueNeighbors : SpecialEffect
 
         entertainment.UpdatePoints(_boost * Mathf.Abs(deltaCount), t);
 
-        entertainment.Tile.UniqueEntertainmentNeighborsCount = uniqueData.Count;
+        entertainment.Tile.UniqueEntertainmentNeighborsCount_SE = uniqueData.Count;
     }
 }

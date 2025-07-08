@@ -55,7 +55,8 @@ public class Entertainment : MonoBehaviour
 
         if (_data.SpecialEffect != null)
             _data.SpecialEffect.RollbackSpecialEntertainment(this);
-
+        _tile.UniqueEntertainmentNeighborsCount_SB = 0;
+        _tile.UniqueEntertainmentNeighborsCount_SE = 0;
         Destroy(gameObject);
     }
 

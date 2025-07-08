@@ -31,7 +31,8 @@ public class Tile : MonoBehaviour
     private GameObject _highlightObject;
     private TileData _previousData;
     private int _uniqueInfraNeighborsCount;
-    private int _uniqueEntertainmentNeighborsCount;
+    private int _uniqueEntertainmentNeighborsCount_SB;//Count for special behaviour script
+    private int _uniqueEntertainmentNeighborsCount_SE;//Count for special effect script, two count is needed if an entertainment and infra on the same tile use it
 
     private int _groupID;//Use for BoostByZoneSize entertainment's special effect
     #endregion
@@ -80,7 +81,8 @@ public class Tile : MonoBehaviour
     public TileData PreviousData { get => _previousData; }
     public int UniqueInfraNeighborsCount { get => _uniqueInfraNeighborsCount; set => _uniqueInfraNeighborsCount = value; }
     public EntertainmentData PreviousEntertainmentData { get => _previousEntertainmentData; }
-    public int UniqueEntertainmentNeighborsCount { get => _uniqueEntertainmentNeighborsCount; set => _uniqueEntertainmentNeighborsCount = value; }
+    public int UniqueEntertainmentNeighborsCount_SB { get => _uniqueEntertainmentNeighborsCount_SB; set => _uniqueEntertainmentNeighborsCount_SB = value; }
+    public int UniqueEntertainmentNeighborsCount_SE { get => _uniqueEntertainmentNeighborsCount_SE; set => _uniqueEntertainmentNeighborsCount_SE = value; }
     public int GroupID { get => _groupID; set => _groupID = value; }
     public Entertainment PreviousEntertainment { get => _previousEntertainment; }
     #endregion
@@ -267,6 +269,14 @@ public class Tile : MonoBehaviour
         foreach (BoostNeighborEntertainments behaviour in _tileData.SpecialBehaviours.OfType<BoostNeighborEntertainments>())
         {
             behaviour.CheckNewEntertainment(tile);
+        }
+    }
+
+    public void ListenerOnEntertainmentModified_BoostEntertainmentByUniqueNeighbors(Tile tile)
+    {
+        foreach (BoostEntertainmentByUniqueNeighbors behaviour in _tileData.SpecialBehaviours.OfType<BoostEntertainmentByUniqueNeighbors>())
+        {
+            behaviour.CheckNewEntertainment(this);
         }
     }
     #endregion
