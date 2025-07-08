@@ -9,6 +9,8 @@ public class BoostByZoneSize : SpecialEffect
     [SerializeField] private EntertainmentData _dataBoosting;
     [SerializeField] private EntertainmentData _dataBridge;
 
+    [SerializeField] List<List<Entertainment>> test = new List<List<Entertainment>>();
+
     public override void InitializeSpecialEffect(Entertainment associatedEntertainment)
     {
         HashSet<int> neighborGroups = new HashSet<int>();
@@ -35,6 +37,9 @@ public class BoostByZoneSize : SpecialEffect
         {
             MergeGroups(neighborGroups.ToList(), associatedEntertainment);
         }
+
+        //If this new entertainment connect with isolated bridge we connect them
+        AddUnconnectedBridge(associatedEntertainment);
     }
 
     public override void RollbackSpecialEntertainment(Entertainment associatedEntertainment)
@@ -45,6 +50,8 @@ public class BoostByZoneSize : SpecialEffect
                 continue;
             neighbor.OnEntertainmentModified.RemoveListener(associatedEntertainment.ListenerOnEntertainmentModified_BoostByZoneSize);
         }
+        foreach (Entertainment isolatedBridge in CheckIsolatedBridges(associatedEntertainment))
+            RemoveEntertainmentFromItsGroup(isolatedBridge.Tile, isolatedBridge.Data, true);
         RemoveEntertainmentFromItsGroup(associatedEntertainment.Tile, associatedEntertainment.Data);
     }
 
@@ -53,7 +60,7 @@ public class BoostByZoneSize : SpecialEffect
         //TO DO
     }
 
-    //The event logic only needs to check the bridge data, the matching data is handled by the special effect directly
+    //The event logic only needs to check the bridge data, the boosting data is handled by the special effect directly
     public void CheckEntertainment(Entertainment associatedEntertainment, Tile updatedTile)
     {
         if (!updatedTile.Entertainment)
@@ -111,20 +118,6 @@ public class BoostByZoneSize : SpecialEffect
             EntertainmentManager.Instance.GroupBoostCount[newGroupId] = 0;
 
         initialEntertainment.Tile.GroupID = newGroupId;
-
-        foreach (Tile neighbor in initialEntertainment.Tile.Neighbors)
-        {
-            if (!neighbor)
-                continue;
-            if (!neighbor.Entertainment)
-                continue;
-            if(neighbor.Entertainment.Data == _dataBridge)
-            {
-                if (neighbor.GroupID > 0)
-                    Debug.LogError("Shouldn't be here, neighbor got a groupID " + neighbor + neighbor.GroupID);
-                AddEntertainmentToGroup(initialEntertainment.Tile.GroupID, neighbor.Entertainment);
-            }
-        }
     }
 
     private void AddEntertainmentToGroup(int groupID, Entertainment newEntertainment)
@@ -150,15 +143,17 @@ public class BoostByZoneSize : SpecialEffect
         newEntertainment.Tile.GroupID = groupID;
     }
 
-    private void RemoveEntertainmentFromItsGroup(Tile tile, EntertainmentData removedData)
+    private void RemoveEntertainmentFromItsGroup(Tile tile, EntertainmentData removedData, bool isolatedBridgeRemoval = false)
     {
         if (removedData == _dataBoosting)
         {
             EntertainmentManager.Instance.GroupBoostCount[tile.GroupID]--;
         }
 
-        if (tile.Entertainment != null)
-            EntertainmentManager.Instance.GroupBoost[tile.GroupID].Remove(tile.Entertainment);
+        if(tile.Entertainment != null)
+            EntertainmentManager.Instance.GroupBoost[tile.GroupID].Remove(tile.Entertainment);//When called by Rollback
+        else
+            EntertainmentManager.Instance.GroupBoost[tile.GroupID].Remove(tile.PreviousEntertainment);//When called by the event, so after the entertainment is set to null
 
         if (removedData == _dataBoosting)
         {
@@ -175,9 +170,73 @@ public class BoostByZoneSize : SpecialEffect
         {
             EntertainmentManager.Instance.GroupBoost.Remove(tile.GroupID);
             EntertainmentManager.Instance.GroupBoostCount.Remove(tile.GroupID);
-        }  
+        }
+        else if(!isolatedBridgeRemoval)//When removing an isolated bridge no need to check for split
+        {
+            if (!CheckIfGroupStillWhole(tile.GroupID))
+            {
+                test = SplitGroup(tile.GroupID);
+                int index = 0;
+                foreach (var item in test)
+                {
+                    foreach (var i in item)
+                    {
+                        Debug.Log(index + " " + i);
+                    }
+                    index++;
+                }
+            }
+        }
 
         tile.GroupID = 0;
+    }
+
+    private void AddUnconnectedBridge(Entertainment associatedEntertainment)
+    {
+        foreach (Tile neighbor in associatedEntertainment.Tile.Neighbors)
+        {
+            if (!neighbor)
+                continue;
+            if (!neighbor.Entertainment)
+                continue;
+            if (neighbor.Entertainment.Data == _dataBridge)
+            {
+                if (neighbor.GroupID == 0)
+                    AddEntertainmentToGroup(associatedEntertainment.Tile.GroupID, neighbor.Entertainment);
+            }
+        }
+    }
+
+    private List<Entertainment> CheckIsolatedBridges(Entertainment removedEntertainment)
+    {
+        List<Entertainment> isolatedBridges = new List<Entertainment>();
+        foreach (Tile neighbor in removedEntertainment.Tile.Neighbors)
+        {
+            bool isIsolated = true;
+            if (!neighbor)
+                continue;
+            if (!neighbor.Entertainment)
+                continue;
+            if (neighbor.Entertainment.Data != _dataBridge)
+                continue;
+            foreach (Tile n in neighbor.Neighbors)
+            {
+                if (!n)
+                    continue;
+                if (!n.Entertainment)
+                    continue;
+                if (n.Entertainment == removedEntertainment)
+                    continue;
+                if (n.Entertainment.Data == _dataBoosting)
+                {
+                    isIsolated = false;
+                    break;
+                }
+            }
+            if(isIsolated)
+                isolatedBridges.Add(neighbor.Entertainment);
+        }
+        return isolatedBridges;
     }
 
     private void MergeGroups(List<int> groupIds, Entertainment newEntertainment)
@@ -214,5 +273,82 @@ public class BoostByZoneSize : SpecialEffect
             _boost * 
             (EntertainmentManager.Instance.GroupBoostCount[entertainment.Tile.GroupID] -1),//subtract 1 from group count since the boost logic does not count itself
             Transaction.Spent);
+    }
+
+    private bool CheckIfGroupStillWhole(int groupID)
+    {
+        //Breadth-first search logic
+        HashSet<Entertainment> visited = new HashSet<Entertainment>();
+        Queue<Entertainment> queue = new Queue<Entertainment>();
+        Entertainment start = EntertainmentManager.Instance.GroupBoost[groupID].First();
+
+        queue.Enqueue(start);
+        visited.Add(start);
+
+        while (queue.Count > 0)
+        {
+            Entertainment current = queue.Dequeue();
+            foreach (Tile neighbor in current.Tile.Neighbors)
+            {
+                if(!neighbor)
+                    continue;
+                if(!neighbor.Entertainment)
+                    continue;
+                if (neighbor.Entertainment.Data != _dataBoosting && neighbor.Entertainment.Data != _dataBridge)
+                    continue;
+                if (EntertainmentManager.Instance.GroupBoost[groupID].Contains(neighbor.Entertainment) && !visited.Contains(neighbor.Entertainment))
+                {
+                    visited.Add(neighbor.Entertainment);
+                    queue.Enqueue(neighbor.Entertainment);
+                }
+            }
+        }
+
+        return visited.Count == EntertainmentManager.Instance.GroupBoost[groupID].Count;
+    }
+
+    private List<List<Entertainment>> SplitGroup(int groupID)
+    {
+        // Fast lookup for remaining tiles
+        HashSet<Entertainment> remaining = new HashSet<Entertainment>(EntertainmentManager.Instance.GroupBoost[groupID]);
+        List<List<Entertainment>> result = new List<List<Entertainment>>();
+
+        // Until we have partitioned every tile
+        while (remaining.Count > 0)
+        {
+            // Start a new component from an arbitrary tile
+            List<Entertainment> component = new List<Entertainment>();
+            Queue<Entertainment> queue = new Queue<Entertainment>();
+            Entertainment start = remaining.First();
+
+            queue.Enqueue(start);
+            remaining.Remove(start);
+            component.Add(start);
+
+            // BFS to collect all connected tiles in this component
+            while (queue.Count > 0)
+            {
+                Entertainment current = queue.Dequeue();
+                foreach (Tile neighbor in current.Tile.Neighbors)
+                {
+                    if (!neighbor)
+                        continue;
+                    if (!neighbor.Entertainment)
+                        continue;
+                    if (neighbor.Entertainment.Data != _dataBoosting && neighbor.Entertainment.Data != _dataBridge)
+                        continue;
+                    // Only consider tiles still in remaining
+                    if (remaining.Remove(neighbor.Entertainment))
+                    {
+                        queue.Enqueue(neighbor.Entertainment);
+                        component.Add(neighbor.Entertainment);
+                    }
+                }
+            }
+
+            result.Add(component);
+        }
+
+        return result;
     }
 }

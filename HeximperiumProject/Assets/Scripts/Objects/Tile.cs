@@ -26,6 +26,7 @@ public class Tile : MonoBehaviour
     private List<Scout> _scouts = new List<Scout>();
     private TextMeshPro _scoutCounter;
     private Entertainment _entertainment;
+    private Entertainment _previousEntertainment;//Only stay one frame (because the ref is deleted) but needed to clean the group (BoostByZone special effect)
     private EntertainmentData _previousEntertainmentData;
     private GameObject _highlightObject;
     private TileData _previousData;
@@ -66,7 +67,10 @@ public class Tile : MonoBehaviour
         set 
         {
             if (_entertainment != null)
+            {
                 _previousEntertainmentData = _entertainment.Data;
+                _previousEntertainment = _entertainment;
+            }
             else
                 _previousEntertainmentData = null;
             _entertainment = value;
@@ -78,6 +82,7 @@ public class Tile : MonoBehaviour
     public EntertainmentData PreviousEntertainmentData { get => _previousEntertainmentData; }
     public int UniqueEntertainmentNeighborsCount { get => _uniqueEntertainmentNeighborsCount; set => _uniqueEntertainmentNeighborsCount = value; }
     public int GroupID { get => _groupID; set => _groupID = value; }
+    public Entertainment PreviousEntertainment { get => _previousEntertainment; }
     #endregion
 
     private void Awake()

@@ -161,9 +161,9 @@ public class EntertainmentManager : Singleton<EntertainmentManager>
     public void DestroyEntertainment(Tile tile)
     {
         tile.Entertainment.DestroyEntertainment();
-        CheckEmptyGroup(tile);
         _entertainments.Remove(tile.Entertainment);
         tile.Entertainment = null;
+        CheckEmptyGroup(tile);
     }
 
     public void ButtonsFade(bool fade)
@@ -187,13 +187,12 @@ public class EntertainmentManager : Singleton<EntertainmentManager>
             Utilities.PlayResourceGainVFX(tile, _pointsGainPrefab, _pointVFXMat, value);
     }
 
-    //For boostByZone special effect
+    //For boostByZone special effect, needed when the group last entry is a BridgeData, otherwise the SO handle everything
     private void CheckEmptyGroup(Tile tile)
     {
-        
         if (tile.GroupID > 0)
         {
-            _groupBoost[tile.GroupID].Remove(tile.Entertainment);
+            _groupBoost[tile.GroupID].Remove(tile.PreviousEntertainment);
 
             if (_groupBoost[tile.GroupID].Count == 0)
             {
