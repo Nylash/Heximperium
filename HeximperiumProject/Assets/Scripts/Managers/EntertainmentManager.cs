@@ -163,6 +163,7 @@ public class EntertainmentManager : Singleton<EntertainmentManager>
         tile.Entertainment.DestroyEntertainment();
         _entertainments.Remove(tile.Entertainment);
         tile.Entertainment = null;
+        //Call the check empty group after the Entertainment assignation, so the event and its listener is done before
         CheckEmptyGroup(tile);
     }
 

@@ -102,7 +102,7 @@ public class BoostByZoneSize : SpecialEffect
     }
 
 
-    private void CreateNewGroup(Entertainment initialEntertainment)
+    private int CreateNewGroup(Entertainment initialEntertainment)
     {
         int newGroupId = 1;
         while (EntertainmentManager.Instance.GroupBoost.ContainsKey(newGroupId))
@@ -118,6 +118,7 @@ public class BoostByZoneSize : SpecialEffect
             EntertainmentManager.Instance.GroupBoostCount[newGroupId] = 0;
 
         initialEntertainment.Tile.GroupID = newGroupId;
+        return newGroupId;
     }
 
     private void AddEntertainmentToGroup(int groupID, Entertainment newEntertainment)
@@ -174,18 +175,7 @@ public class BoostByZoneSize : SpecialEffect
         else if(!isolatedBridgeRemoval)//When removing an isolated bridge no need to check for split
         {
             if (!CheckIfGroupStillWhole(tile.GroupID))
-            {
-                test = SplitGroup(tile.GroupID);
-                int index = 0;
-                foreach (var item in test)
-                {
-                    foreach (var i in item)
-                    {
-                        Debug.Log(index + " " + i);
-                    }
-                    index++;
-                }
-            }
+                SplitGroup(tile.GroupID);
         }
 
         tile.GroupID = 0;
@@ -307,11 +297,11 @@ public class BoostByZoneSize : SpecialEffect
         return visited.Count == EntertainmentManager.Instance.GroupBoost[groupID].Count;
     }
 
-    private List<List<Entertainment>> SplitGroup(int groupID)
+    private void SplitGroup(int groupID)
     {
         // Fast lookup for remaining tiles
         HashSet<Entertainment> remaining = new HashSet<Entertainment>(EntertainmentManager.Instance.GroupBoost[groupID]);
-        List<List<Entertainment>> result = new List<List<Entertainment>>();
+        List<List<Entertainment>> splittedGroups = new List<List<Entertainment>>();
 
         // Until we have partitioned every tile
         while (remaining.Count > 0)
@@ -345,10 +335,33 @@ public class BoostByZoneSize : SpecialEffect
                     }
                 }
             }
-
-            result.Add(component);
+            splittedGroups.Add(component);
         }
 
-        return result;
+        if (splittedGroups.Count > 1)
+        {
+            bool isFirst;
+            int newGroupID = 0;
+            foreach (List<Entertainment> group in splittedGroups)
+            {
+                isFirst = true;
+                foreach (Entertainment ent in group)
+                {
+                    ResetEntertainmentPoints(ent);
+                    RemoveEntertainmentFromItsGroup(ent.Tile, ent.Data);
+                    if (isFirst)
+                    {
+                        newGroupID = CreateNewGroup(ent);
+                        isFirst = false;
+                    }
+                    else
+                        AddEntertainmentToGroup(newGroupID, ent);
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("CheckIfGroupStillWhole shouldn't have return false, groupID : " + groupID);
+        }
     }
 }
