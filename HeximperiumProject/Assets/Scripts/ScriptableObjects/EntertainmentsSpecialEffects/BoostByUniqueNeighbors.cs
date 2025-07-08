@@ -25,7 +25,8 @@ public class BoostByUniqueNeighbors : SpecialEffect
 
         associatedEntertainment.Tile.UniqueEntertainmentNeighborsCount = uniqueData.Count;
 
-        associatedEntertainment.UpdatePoints(_boost * uniqueData.Count, Transaction.Gain);
+        if(uniqueData.Count > 0)
+            associatedEntertainment.UpdatePoints(_boost * uniqueData.Count, Transaction.Gain);
     }
 
     public override void RollbackSpecialEntertainment(Entertainment associatedEntertainment)

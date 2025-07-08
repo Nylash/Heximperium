@@ -11,6 +11,22 @@ public class EntertainmentData : ScriptableObject
 
     public EntertainmentType Type { get => _type; }
     public int BasePoints { get => _basePoints; }
-    public List<ResourceToIntMap> Costs { get => _costs; }
+    public List<ResourceToIntMap> Costs
+    {
+        get
+        {
+            if (ResourcesManager.Instance.EntertainmentGoldReduction == 0)
+                return _costs;
+            List<ResourceToIntMap> reductedCost = Utilities.CloneResourceToIntMap(_costs);
+            foreach (ResourceToIntMap item in reductedCost)
+            {
+                if (item.resource == Resource.Gold)
+                    item.value -= ResourcesManager.Instance.EntertainmentGoldReduction;
+                if(item.value < 0)
+                    item.value = 0;
+            }
+            return reductedCost;
+        }
+    }
     public SpecialEffect SpecialEffect { get => _specialEffect; }
 }

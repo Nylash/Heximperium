@@ -33,6 +33,7 @@ public class EntertainmentManager : Singleton<EntertainmentManager>
 
     #region EVENTS
     [HideInInspector] public UnityEvent OnPhaseFinalized = new UnityEvent();
+    [HideInInspector] public UnityEvent<Entertainment> OnEntertainmentSpawned = new UnityEvent<Entertainment>();
     #endregion
 
     protected override void OnAwake()
@@ -155,6 +156,7 @@ public class EntertainmentManager : Singleton<EntertainmentManager>
             _entertainments.Add(currentEntertainment);
             currentEntertainment.Initialize(tile, data);
             tile.Entertainment = currentEntertainment;
+            OnEntertainmentSpawned.Invoke(currentEntertainment);
         }
     }
 

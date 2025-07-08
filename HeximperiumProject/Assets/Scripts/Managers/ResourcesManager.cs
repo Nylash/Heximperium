@@ -18,10 +18,12 @@ public class ResourcesManager : Singleton<ResourcesManager>
     private int _srReductionForExpansion;
     private int _srReductionForExploitation;
     private int _srReductionForEntertainment;
+    private int _entertainmentGoldReduction;
     #endregion
 
     #region ACCESSORS
     public int Claim { get => _claim; }
+    public int EntertainmentGoldReduction { get => _entertainmentGoldReduction; set => _entertainmentGoldReduction = value; }
 
     public int GetResourceStock(Resource resource)
     {

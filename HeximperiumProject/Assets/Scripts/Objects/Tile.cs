@@ -408,6 +408,14 @@ public class Tile : MonoBehaviour
             behaviour.IncomeForSavedClaim(this, quantity);
         }
     }
+
+    public void ListenerOnEntertainmentSpawned(Entertainment ent)
+    {
+        foreach (BoostEntertainmentsOnEmpire behaviour in _tileData.SpecialBehaviours.OfType<BoostEntertainmentsOnEmpire>())
+        {
+            behaviour.CheckEntertainment(ent);
+        }
+    }
     #endregion
     #endregion
 }
