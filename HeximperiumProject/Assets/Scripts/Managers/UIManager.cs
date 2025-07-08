@@ -74,6 +74,7 @@ public class UIManager : Singleton<UIManager>
         GameManager.Instance.OnEntertainmentPhaseStarted.AddListener(UpdatePhaseUI);
 
         GameManager.Instance.OnExplorationPhaseStarted.AddListener(ForceScoutsToShow);
+        GameManager.Instance.OnEntertainmentPhaseStarted.AddListener(ForceScoutsToShow);
 
         GameManager.Instance.OnGameFinished.AddListener(GameFinished);
 
@@ -140,6 +141,11 @@ public class UIManager : Singleton<UIManager>
     private void ForceScoutsToShow()
     {
         ScoutsVisibility(true);
+    }
+
+    private void ForceScoutsToHide()
+    {
+        ScoutsVisibility(false);
     }
     #endregion
 

@@ -261,6 +261,16 @@ public class Tile : MonoBehaviour
     }
 
     #region SPECIFIC LISTENERS FOR BEHAVIOURS
+    #region ON ENTERTAINMENT MODIFIED
+    public void ListenerOnEntertainmentModified_BoostNeighborEntertainments(Tile tile)
+    {
+        foreach (BoostNeighborEntertainments behaviour in _tileData.SpecialBehaviours.OfType<BoostNeighborEntertainments>())
+        {
+            behaviour.CheckNewEntertainment(tile);
+        }
+    }
+    #endregion
+
     #region ON TILE CLAIMED
     public void ListenerOnTileClaimed_IncomeComingFromNeighbors(Tile tile)
     {

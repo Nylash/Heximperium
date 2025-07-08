@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d564c43d686d64e4a94b9be4ac0f00ff, type: 3}
-  m_Name: Scout
+  m_Script: {fileID: 11500000, guid: bfa7fe0aec8dc8a4cbd504a23bd1a426, type: 3}
+  m_Name: BoostEntertainmentsNeighbors_Bakery_SB
   m_EditorClassIdentifier: 
-  _speed: 2
-  _lifespan: 2
-  _revealRadius: 1
+  _boost: 10
+  _boostedEntertainments:
+  - {fileID: 11400000, guid: 3394aecefc4c86f4181481cb52b87e79, type: 2}
+  _multiplierInfraOnEmpire: {fileID: 0}
