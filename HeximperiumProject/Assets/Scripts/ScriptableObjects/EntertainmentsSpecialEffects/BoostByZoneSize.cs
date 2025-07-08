@@ -55,7 +55,26 @@ public class BoostByZoneSize : SpecialEffect
 
     public override void HighlightImpactedEntertainment(Tile associatedTile, bool show)
     {
-        //TO DO
+        HashSet<int> groupIDs = new HashSet<int>();
+        foreach (Tile neighbor in associatedTile.Neighbors)
+        {
+            if (!neighbor)
+                continue;
+            if (!neighbor.Entertainment)
+                continue;
+            if (neighbor.GroupID > 0)
+            {
+                groupIDs.Add(neighbor.GroupID);
+                continue;
+            }
+            if (neighbor.Entertainment.Data == _dataBridge)
+                neighbor.Highlight(show);
+        }
+        foreach (int ID in groupIDs)
+        {
+            foreach (Entertainment ent in EntertainmentManager.Instance.GroupBoost[ID])
+                ent.Tile.Highlight(show);
+        }
     }
 
     //The event logic only needs to check the bridge data, the boosting data is handled by the special effect directly

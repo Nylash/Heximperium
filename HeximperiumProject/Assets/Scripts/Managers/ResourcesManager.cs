@@ -78,8 +78,8 @@ public class ResourcesManager : Singleton<ResourcesManager>
     public void CHEAT_RESOURCES()
     {
         Debug.LogWarning("USING CHEAT !");
-        UpdateResource(Resource.Gold, 500, Transaction.Gain);
-        UpdateResource(Resource.SpecialResources, 100, Transaction.Gain);
+        UpdateResource(Resource.Gold, 5000, Transaction.Gain);
+        UpdateResource(Resource.SpecialResources, 1000, Transaction.Gain);
     }
 
     #region UPDATE RESOURCES

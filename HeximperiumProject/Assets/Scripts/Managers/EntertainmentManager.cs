@@ -45,7 +45,7 @@ public class EntertainmentManager : Singleton<EntertainmentManager>
 
     private void Update()
     {
-        foreach (var kvp in _groupBoost)
+        /*foreach (var kvp in _groupBoost)
         {
             string s = $"Group {kvp.Key}: ";
             foreach (var entertainment in kvp.Value)
@@ -55,7 +55,7 @@ public class EntertainmentManager : Singleton<EntertainmentManager>
                 s += entertainment.name + ", ";
             }
             Debug.Log(s + " Count : " + _groupBoostCount[kvp.Key]);
-        }
+        }*/
     }
 
     #region PHASE LOGIC
@@ -70,8 +70,6 @@ public class EntertainmentManager : Singleton<EntertainmentManager>
         //Earn incomes of every claimed tiles
         foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
             ResourcesManager.Instance.UpdateResource(tile.Incomes, Transaction.Gain, tile);
-
-        ResourcesManager.Instance.CHEAT_RESOURCES();
     }
 
     private void ConfirmPhase()
