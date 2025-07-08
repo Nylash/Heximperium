@@ -9,8 +9,6 @@ public class BoostByZoneSize : SpecialEffect
     [SerializeField] private EntertainmentData _dataBoosting;
     [SerializeField] private EntertainmentData _dataBridge;
 
-    [SerializeField] List<List<Entertainment>> test = new List<List<Entertainment>>();
-
     public override void InitializeSpecialEffect(Entertainment associatedEntertainment)
     {
         HashSet<int> neighborGroups = new HashSet<int>();
@@ -51,7 +49,7 @@ public class BoostByZoneSize : SpecialEffect
             neighbor.OnEntertainmentModified.RemoveListener(associatedEntertainment.ListenerOnEntertainmentModified_BoostByZoneSize);
         }
         foreach (Entertainment isolatedBridge in CheckIsolatedBridges(associatedEntertainment))
-            RemoveEntertainmentFromItsGroup(isolatedBridge.Tile, isolatedBridge.Data, true);
+            RemoveEntertainmentFromItsGroup(isolatedBridge.Tile, isolatedBridge.Data, false);
         RemoveEntertainmentFromItsGroup(associatedEntertainment.Tile, associatedEntertainment.Data);
     }
 
@@ -144,7 +142,7 @@ public class BoostByZoneSize : SpecialEffect
         newEntertainment.Tile.GroupID = groupID;
     }
 
-    private void RemoveEntertainmentFromItsGroup(Tile tile, EntertainmentData removedData, bool isolatedBridgeRemoval = false)
+    private void RemoveEntertainmentFromItsGroup(Tile tile, EntertainmentData removedData, bool checkForSplit = true)
     {
         if (removedData == _dataBoosting)
         {
@@ -172,7 +170,7 @@ public class BoostByZoneSize : SpecialEffect
             EntertainmentManager.Instance.GroupBoost.Remove(tile.GroupID);
             EntertainmentManager.Instance.GroupBoostCount.Remove(tile.GroupID);
         }
-        else if(!isolatedBridgeRemoval)//When removing an isolated bridge no need to check for split
+        else if(checkForSplit)
         {
             if (!CheckIfGroupStillWhole(tile.GroupID))
                 SplitGroup(tile.GroupID);
@@ -245,7 +243,7 @@ public class BoostByZoneSize : SpecialEffect
             foreach (Entertainment ent in sourceList)
             {
                 ResetEntertainmentPoints(ent);
-                RemoveEntertainmentFromItsGroup(ent.Tile, ent.Data);
+                RemoveEntertainmentFromItsGroup(ent.Tile, ent.Data, false);
                 AddEntertainmentToGroup(targetGroupId, ent);
             }
             EntertainmentManager.Instance.GroupBoost.Remove(sourceGroupId);
@@ -348,7 +346,7 @@ public class BoostByZoneSize : SpecialEffect
                 foreach (Entertainment ent in group)
                 {
                     ResetEntertainmentPoints(ent);
-                    RemoveEntertainmentFromItsGroup(ent.Tile, ent.Data);
+                    RemoveEntertainmentFromItsGroup(ent.Tile, ent.Data, false);
                     if (isFirst)
                     {
                         newGroupID = CreateNewGroup(ent);
