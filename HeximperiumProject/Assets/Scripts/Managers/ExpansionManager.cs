@@ -8,6 +8,7 @@ public class ExpansionManager : Singleton<ExpansionManager>
     #region CONFIGURATION
     [SerializeField] private InfrastructureData _townData;
     [SerializeField] private Transform _borderParent;
+    [SerializeField] private Transform _claimedTilesParent;
     #endregion
 
     #region VARIABLES
@@ -130,6 +131,7 @@ public class ExpansionManager : Singleton<ExpansionManager>
             _claimedTiles.Add(tile);
             foreach (Tile t in _claimedTiles)
                 t.CheckBorder();
+            tile.transform.parent = _claimedTilesParent;
             OnTileClaimed.Invoke(tile);
         }
     }
@@ -147,6 +149,8 @@ public class ExpansionManager : Singleton<ExpansionManager>
                     _claimedTiles.Add(tile);
                     foreach (Tile t in _claimedTiles)
                         t.CheckBorder();
+                    tile.transform.parent = _claimedTilesParent;
+                    OnTileClaimed.Invoke(tile);
                 }
                 ExploitationManager.Instance.BuildInfrastructure(tile, _townData);
             }
