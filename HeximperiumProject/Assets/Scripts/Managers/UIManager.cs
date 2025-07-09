@@ -41,9 +41,11 @@ public class UIManager : Singleton<UIManager>
     [Header("Radial menu")]
     [SerializeField] private Color _colorCantAfford;
     [Header("Units visibility UI")]
-    [SerializeField] private Image _scoutsImage;
-    [SerializeField] private Sprite _scoutsVisible;
-    [SerializeField] private Sprite _scoutsHidden;
+    [SerializeField] private Image _visibilityImage;
+    [SerializeField] private Image _scoutImageVisibility;
+    [SerializeField] private Image _entertainmentImageVisibility;
+    [SerializeField] private Sprite _visible;
+    [SerializeField] private Sprite _hidden;
     [Header("Menu")]
     [SerializeField] private GameObject _menu;
     [SerializeField] private GameObject _endMenu;
@@ -57,7 +59,7 @@ public class UIManager : Singleton<UIManager>
     private float _screenHeight;
     private List<GameObject> _popUps = new List<GameObject>();
 
-    private bool _areScoutsVisible;
+    private bool _areUnitsVisible;
     #endregion
 
     #region ACCESSORS
@@ -72,6 +74,8 @@ public class UIManager : Singleton<UIManager>
         GameManager.Instance.OnExpansionPhaseStarted.AddListener(UpdatePhaseUI);
         GameManager.Instance.OnExploitationPhaseStarted.AddListener(UpdatePhaseUI);
         GameManager.Instance.OnEntertainmentPhaseStarted.AddListener(UpdatePhaseUI);
+
+        GameManager.Instance.OnEntertainmentPhaseStarted.AddListener(SwitchImage);
 
         GameManager.Instance.OnExplorationPhaseStarted.AddListener(ForceScoutsToShow);
 
@@ -112,24 +116,40 @@ public class UIManager : Singleton<UIManager>
     #endregion
 
     #region UNITS VISIBILITY UI
-    //OnClick for UI button
-    public void ScoutsVisibility()
+    private void SwitchImage()
     {
-        _areScoutsVisible = !_areScoutsVisible;
+        _scoutImageVisibility.enabled = false;
+        _entertainmentImageVisibility.enabled = true;
+    }
 
-        _scoutsImage.sprite = _areScoutsVisible ? _scoutsVisible : _scoutsHidden;
+    //OnClick for UI button
+    public void UnitsVisibility()
+    {
+        _areUnitsVisible = !_areUnitsVisible;
 
-        foreach (Scout item in ExplorationManager.Instance.Scouts)
+        _visibilityImage.sprite = _areUnitsVisible ? _visible : _hidden;
+
+        if (GameManager.Instance.CurrentPhase != Phase.Entertain)
         {
-            item.ScoutVisibility(_areScoutsVisible);
+            foreach (Scout item in ExplorationManager.Instance.Scouts)
+            {
+                item.ScoutVisibility(_areUnitsVisible);
+            }
+        }
+        else
+        {
+            foreach (Entertainment item in EntertainmentManager.Instance.Entertainments)
+            {
+                item.EntertainmentVisibility(_areUnitsVisible);
+            }
         }
     }
 
     private void ScoutsVisibility(bool visible)
     {
-        _areScoutsVisible = visible;
+        _areUnitsVisible = visible;
 
-        _scoutsImage.sprite = _areScoutsVisible ? _scoutsVisible : _scoutsHidden;
+        _visibilityImage.sprite = _areUnitsVisible ? _visible : _hidden;
 
         foreach (Scout item in ExplorationManager.Instance.Scouts)
         {

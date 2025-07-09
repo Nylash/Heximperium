@@ -60,6 +60,11 @@ public class Entertainment : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void EntertainmentVisibility(bool visible)
+    {
+        _renderer.enabled = visible;
+    }
+
     #region SPECIAL EFFECTS
     public void ListenerOnEntertainmentModified_BoostByNeighbors(Tile tile)
     {
