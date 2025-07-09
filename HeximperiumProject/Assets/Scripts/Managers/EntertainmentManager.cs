@@ -34,6 +34,7 @@ public class EntertainmentManager : Singleton<EntertainmentManager>
     #region EVENTS
     [HideInInspector] public UnityEvent OnPhaseFinalized = new UnityEvent();
     [HideInInspector] public UnityEvent<Entertainment> OnEntertainmentSpawned = new UnityEvent<Entertainment>();
+    [HideInInspector] public UnityEvent OnScoreUpdated = new UnityEvent();
     #endregion
 
     protected override void OnAwake()
@@ -66,6 +67,7 @@ public class EntertainmentManager : Singleton<EntertainmentManager>
         float goldIntoPoints = _pointForOneGold * ResourcesManager.Instance.GetResourceStock(Resource.Gold);
         float srIntoPoints = _pointForOneSR * ResourcesManager.Instance.GetResourceStock(Resource.SpecialResources);
         _score += Mathf.RoundToInt(goldIntoPoints) + Mathf.RoundToInt(srIntoPoints);
+        OnScoreUpdated.Invoke();
         ResourcesManager.Instance.SpendAllResources();
 
         //Earn incomes of every claimed tiles
@@ -188,6 +190,8 @@ public class EntertainmentManager : Singleton<EntertainmentManager>
         //Play VFX if we gain score
         if (tile != null && transaction == Transaction.Gain)
             Utilities.PlayResourceGainVFX(tile, _pointsGainPrefab, _pointVFXMat, value);
+
+        OnScoreUpdated.Invoke();
     }
 
     //For boostByZone special effect, needed when the group last entry is a BridgeData, otherwise the SO handle everything

@@ -771,6 +771,9 @@ MonoBehaviour:
   OnEntertainmentSpawned:
     m_PersistentCalls:
       m_Calls: []
+  OnScoreUpdated:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1153636974
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -50,6 +50,9 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject _menu;
     [SerializeField] private GameObject _endMenu;
     [SerializeField] private TextMeshProUGUI _endScore;
+    [Header("Score")]
+    [SerializeField] private GameObject _scoreUI;
+    [SerializeField] private TextMeshProUGUI _scoreText;
     #endregion
 
     #region VARIABLES
@@ -75,13 +78,15 @@ public class UIManager : Singleton<UIManager>
         GameManager.Instance.OnExploitationPhaseStarted.AddListener(UpdatePhaseUI);
         GameManager.Instance.OnEntertainmentPhaseStarted.AddListener(UpdatePhaseUI);
 
-        GameManager.Instance.OnEntertainmentPhaseStarted.AddListener(SwitchImage);
+        GameManager.Instance.OnEntertainmentPhaseStarted.AddListener(UpdateUIForEntertainment);
 
         GameManager.Instance.OnExplorationPhaseStarted.AddListener(ForceScoutsToShow);
 
         GameManager.Instance.OnGameFinished.AddListener(GameFinished);
 
         ExplorationManager.Instance.OnScoutsLimitModified.AddListener(UpdateScoutLimit);
+
+        EntertainmentManager.Instance.OnScoreUpdated.AddListener(UpdateScoreText);
     }
 
     private void Start()
@@ -90,7 +95,20 @@ public class UIManager : Singleton<UIManager>
         _screenHeight = Screen.height;
     }
 
+    private void UpdateUIForEntertainment()
+    {
+        _scoutImageVisibility.enabled = false;
+        _entertainmentImageVisibility.enabled = true;
+
+        _scoreUI.SetActive(true);
+    }
+
     #region RESOURCES BAR UI
+    private void UpdateScoreText()
+    {
+        _scoreText.text = EntertainmentManager.Instance.Score.ToString();
+    }
+
     private void UpdateScoutLimit()
     {
         _scoutsLimitText.text = ExplorationManager.Instance.CurrentScoutsCount + "/" + ExplorationManager.Instance.ScoutsLimit;
@@ -116,12 +134,6 @@ public class UIManager : Singleton<UIManager>
     #endregion
 
     #region UNITS VISIBILITY UI
-    private void SwitchImage()
-    {
-        _scoutImageVisibility.enabled = false;
-        _entertainmentImageVisibility.enabled = true;
-    }
-
     //OnClick for UI button
     public void UnitsVisibility()
     {
