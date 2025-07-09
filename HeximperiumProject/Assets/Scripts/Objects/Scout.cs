@@ -54,6 +54,7 @@ public class Scout : MonoBehaviour
             _renderers.Add(renderer);
 
         ExplorationManager.Instance.OnPhaseFinalized.AddListener(CheckLifeSpan);
+        GameManager.Instance.OnEntertainmentPhaseStarted.AddListener(KillScout);
     }
 
     private void Start()
@@ -126,8 +127,16 @@ public class Scout : MonoBehaviour
                 _currentTile.UpdateScoutCounter();
             }
             ExplorationManager.Instance.OnPhaseFinalized.RemoveListener(CheckLifeSpan);
+            GameManager.Instance.OnEntertainmentPhaseStarted.RemoveListener(KillScout);
             Destroy(gameObject);
         }
+    }
+
+    private void KillScout()
+    {
+        //Kill the scout (used when reaching EntertainmentPhase)
+        _lifespan = 0;
+        CheckLifeSpan();
     }
 
     //Method to reveal the tiles, depending on the scout reveal radius
