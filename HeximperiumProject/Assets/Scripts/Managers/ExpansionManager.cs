@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ExpansionManager : Singleton<ExpansionManager>
+public class ExpansionManager : PhaseManager<ExpansionManager>
 {
     #region CONFIGURATION
     [SerializeField] private InfrastructureData _townData;
@@ -12,9 +11,7 @@ public class ExpansionManager : Singleton<ExpansionManager>
     #endregion
 
     #region VARIABLES
-    private List<GameObject> _buttons = new List<GameObject>();
     private List<Tile> _claimedTiles = new List<Tile>();
-    private List<Vector3> _interactionPositions = new List<Vector3>();
     private int _claimPerTurn;
     private int _savedClaimPerTurn;
     #endregion
@@ -28,7 +25,6 @@ public class ExpansionManager : Singleton<ExpansionManager>
     #endregion
 
     #region EVENTS
-    [HideInInspector] public UnityEvent OnPhaseFinalized = new UnityEvent();
     [HideInInspector] public UnityEvent<Tile> OnTileClaimed = new UnityEvent<Tile>();
     [HideInInspector] public UnityEvent<int> OnClaimSaved = new UnityEvent<int>();
     #endregion
@@ -42,12 +38,12 @@ public class ExpansionManager : Singleton<ExpansionManager>
     }
 
     #region PHASE LOGIC
-    private void StartPhase()
+    protected override void StartPhase()
     {
         ResourcesManager.Instance.UpdateClaim(_claimPerTurn, Transaction.Gain);
     }
 
-    private void ConfirmPhase()
+    protected override void ConfirmPhase()
     {
         if (_savedClaimPerTurn > 0)
         {
@@ -60,18 +56,9 @@ public class ExpansionManager : Singleton<ExpansionManager>
 
         StartCoroutine(PhaseFinalized());
     }
-
-    private IEnumerator PhaseFinalized()
-    {
-        // Wait for one frame
-        yield return null;
-
-        OnPhaseFinalized.Invoke();
-    }
     #endregion
 
-    #region TILE SELECTION
-    private void NewTileSelected(Tile tile)
+    protected override void NewTileSelected(Tile tile)
     {
         if (GameManager.Instance.CurrentPhase != Phase.Expand)
             return;
@@ -98,16 +85,6 @@ public class ExpansionManager : Singleton<ExpansionManager>
         if (tile.IsOneNeighborClaimed())
             ClaimInteraction(tile, 1);
     }
-
-    private void TileUnselected()
-    {
-        foreach (GameObject button in _buttons)
-        {
-            Destroy(button);
-        }
-        _buttons.Clear();
-    }
-    #endregion
 
     #region INTERACTION
     private void ClaimInteraction(Tile tile, int positionIndex)
@@ -154,14 +131,6 @@ public class ExpansionManager : Singleton<ExpansionManager>
                 }
                 ExploitationManager.Instance.BuildInfrastructure(tile, _townData);
             }
-        }
-    }
-
-    public void ButtonsFade(bool fade)
-    {
-        foreach (GameObject item in _buttons)
-        {
-            item.GetComponent<InteractionButton>().FadeAnimation(fade);
         }
     }
     #endregion

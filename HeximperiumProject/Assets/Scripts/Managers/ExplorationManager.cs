@@ -1,9 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ExplorationManager : Singleton<ExplorationManager>
+public class ExplorationManager : PhaseManager<ExplorationManager>
 {
     #region CONFIGURATION
     [SerializeField] private ScoutData _scoutData;
@@ -16,8 +15,6 @@ public class ExplorationManager : Singleton<ExplorationManager>
 
     #region VARIABLES
     private List<Scout> _scouts = new List<Scout>();
-    private List<GameObject> _buttons = new List<GameObject>();
-    private List<Vector3> _interactionPositions = new List<Vector3>();
     private bool _finalizingPhase;
     private int _scoutsLimit;
     private int _currentScoutsCount;
@@ -27,7 +24,6 @@ public class ExplorationManager : Singleton<ExplorationManager>
     #endregion
 
     #region EVENTS
-    [HideInInspector] public UnityEvent OnPhaseFinalized = new UnityEvent();
     [HideInInspector] public UnityEvent OnScoutsLimitModified = new UnityEvent();
     [HideInInspector] public UnityEvent<Scout> OnScoutSpawned = new UnityEvent<Scout>();
     #endregion
@@ -93,7 +89,7 @@ public class ExplorationManager : Singleton<ExplorationManager>
     }
 
     #region PHASE LOGIC
-    private void StartPhase()
+    protected override void StartPhase()
     {
         foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
         {
@@ -105,7 +101,7 @@ public class ExplorationManager : Singleton<ExplorationManager>
         }
     }
 
-    private void ConfirmPhase()
+    protected override void ConfirmPhase()
     {
         _finalizingPhase = true;
 
@@ -123,18 +119,9 @@ public class ExplorationManager : Singleton<ExplorationManager>
             StartCoroutine(scout.Move());
         }
     }
-
-    private IEnumerator PhaseFinalized()
-    {
-        // Wait for one frame
-        yield return null;
-
-        OnPhaseFinalized.Invoke();
-    }
     #endregion
 
-    #region TILE SELECTION
-    private void NewTileSelected(Tile tile)
+    protected override void NewTileSelected(Tile tile)
     {
         if (GameManager.Instance.CurrentPhase != Phase.Explore)
             return;
@@ -147,16 +134,6 @@ public class ExplorationManager : Singleton<ExplorationManager>
             ScoutInteraction(tile, 0);
         }
     }
-
-    private void TileUnselected()
-    {
-        foreach (GameObject button in _buttons)
-        {
-            Destroy(button);
-        }
-        _buttons.Clear();
-    }
-    #endregion
 
     #region INTERACTION
     public void SpawnScout(Tile tile, bool freeScout = false)
@@ -187,14 +164,6 @@ public class ExplorationManager : Singleton<ExplorationManager>
     private void ScoutInteraction(Tile tile, int positionIndex)
     {
         _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Scout));
-    }
-
-    public void ButtonsFade(bool fade)
-    {
-        foreach (GameObject item in _buttons)
-        {
-            item.GetComponent<InteractionButton>().FadeAnimation(fade);
-        }
     }
     #endregion
 
