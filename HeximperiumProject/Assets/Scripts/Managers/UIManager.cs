@@ -384,7 +384,7 @@ public class UIManager : Singleton<UIManager>
                 break;
             case Phase.Exploit:
                 _currentPhaseText.text = "Exploit";
-                _confirmPhaseButtonText.text = "End Phase";
+                _confirmPhaseButtonText.text = "End Turn";
                 _materialBack.SetColor("_ColorTop", _colorTopExploit);
                 _materialBack.SetColor("_ColorBottom", _colorBotExploit);
                 EnableRenderers(_popUpExpandPhase.gameObject, false);
@@ -393,7 +393,7 @@ public class UIManager : Singleton<UIManager>
                 break;
             case Phase.Entertain:
                 _currentPhaseText.text = "Entertain";
-                _confirmPhaseButtonText.text = "End Turn";
+                _confirmPhaseButtonText.text = "End Game";
                 _materialBack.SetColor("_ColorTop", _colorTopEntertain);
                 _materialBack.SetColor("_ColorBottom", _colorBotEntertain);
                 EnableRenderers(_popUpExploitPhase.gameObject, false);
