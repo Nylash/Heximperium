@@ -21,6 +21,8 @@ public class InfrastructureData : TileData
             {
                 if (item.resource == Resource.SpecialResources)
                     item.value -= ResourcesManager.Instance.GetSRReduction(_associatedSystem);
+                if (item.value < 0)
+                    item.value = 0;
             }
             return reductedCost;
         }   

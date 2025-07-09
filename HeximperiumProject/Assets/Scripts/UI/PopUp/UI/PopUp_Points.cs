@@ -8,7 +8,7 @@ public class PopUp_Points : UI_ResourcePopUp
 
     public override void InitializePopUp()
     {
-        _pointsCount.text += EntertainementManager.Instance.Score;
-        _pointsIncome.text += "+" + EntertainementManager.Instance.GetPointsIncome();
+        _pointsCount.text += EntertainmentManager.Instance.Score;
+        _pointsIncome.text += "+" + EntertainmentManager.Instance.Score;
     }
 }

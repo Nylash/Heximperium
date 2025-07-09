@@ -70,10 +70,10 @@ public static class Utilities
     }
 
     //Create a button around a tile
-    public static GameObject CreateInteractionButton(Tile tile, Vector3 position, Interaction interactionType, InfrastructureData infraData = null, EntertainerData entertainerData = null)
+    public static GameObject CreateInteractionButton(Tile tile, Vector3 position, Interaction interactionType, InfrastructureData infraData = null, EntertainmentData entertainmentData = null)
     {
         GameObject button = GameObject.Instantiate(GameManager.Instance.InteractionPrefab, position, Quaternion.identity);
-        button.GetComponent<InteractionButton>().Initialize(tile, interactionType, infraData, entertainerData);
+        button.GetComponent<InteractionButton>().Initialize(tile, interactionType, infraData, entertainmentData);
 
         return button;
     }
@@ -123,20 +123,6 @@ public static class Utilities
         };
     }
 
-    public static string ToCustomString(this EntertainerType value)
-    {
-        return value switch
-        {
-            EntertainerType.Sculptor => "Sculptor",
-            EntertainerType.Magician => "Magician",
-            EntertainerType.Painter => "Painter",
-            EntertainerType.EquestrianDancer => "Equestrian dancer",
-            EntertainerType.FireEater => "Fire eater",
-            EntertainerType.AromaWeaver => "Aroma weaver",
-            _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
-        };
-    }
-
     public static string ToCustomString(this Direction value)
     {
         return value switch
@@ -147,6 +133,18 @@ public static class Utilities
             Direction.Right => "East",
             Direction.BottomRight => "Southeast",
             Direction.BottomLeft => "Southwest",
+            _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
+        };
+    }
+
+    public static string ToCustomString(this EntertainmentType value)
+    {
+        return value switch
+        {
+            EntertainmentType.TastingPavilion => "Tasting Pavilion",
+            EntertainmentType.MinstrelStage => "Minstrel Stage",
+            EntertainmentType.ParadeRoute => "Parade Route",
+            EntertainmentType.MysticGarden => "Mystic Garden",
             _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
         };
     }
@@ -214,16 +212,11 @@ public enum Transaction
 
 public enum Interaction
 {
-    Claim, Scout, Infrastructure, Destroy, Entertainer
+    Claim, Scout, Infrastructure, Destroy, Entertainment
 }
 
-public enum EntertainerType
+public enum EntertainmentType
 {
-    Sculptor, Painter, AromaWeaver, Magician, EquestrianDancer, FireEater
-}
-
-public enum EntertainerFamily
-{
-    Artist, Mystic, Performer
+    MinstrelStage, TastingPavilion, ParadeRoute, MysticGarden
 }
 #endregion

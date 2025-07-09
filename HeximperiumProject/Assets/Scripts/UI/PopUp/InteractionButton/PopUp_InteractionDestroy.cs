@@ -29,7 +29,7 @@ public class PopUp_InteractionDestroy : UI_DynamicPopUp
                 _effectText.text = "Destroy the infrastructure";
                 break;
             case Phase.Entertain:
-                _effectText.text = "Destroy the entertainer";
+                _effectText.text = "Destroy the entertainment";
                 break;
         }
 

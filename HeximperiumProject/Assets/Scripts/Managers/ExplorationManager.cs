@@ -46,7 +46,6 @@ public class ExplorationManager : Singleton<ExplorationManager>
             OnScoutsLimitModified.Invoke();
         }
     }
-
     public int CurrentScoutsCount
     {
         get => _currentScoutsCount;

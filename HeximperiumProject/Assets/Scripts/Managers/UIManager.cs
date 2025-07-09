@@ -34,20 +34,25 @@ public class UIManager : Singleton<UIManager>
     [Header("PopUp UI")]
     [SerializeField] private float _durationHoverForUI = 2.0f;
     [SerializeField] private float _offsetBetweenPopUps = 0.5f;
-    [SerializeField] private GameObject _prefabPopUpEntertainer;
+    [SerializeField] private GameObject _prefabPopUpEntertainment;
     [SerializeField] private GameObject _prefabPopUpScout;
     [SerializeField] private float _minOffset;
     [SerializeField] private float _maxOffset;
     [Header("Radial menu")]
     [SerializeField] private Color _colorCantAfford;
     [Header("Units visibility UI")]
-    [SerializeField] private Image _scoutsImage;
-    [SerializeField] private Sprite _scoutsVisible;
-    [SerializeField] private Sprite _scoutsHidden;
+    [SerializeField] private Image _visibilityImage;
+    [SerializeField] private Image _scoutImageVisibility;
+    [SerializeField] private Image _entertainmentImageVisibility;
+    [SerializeField] private Sprite _visible;
+    [SerializeField] private Sprite _hidden;
     [Header("Menu")]
     [SerializeField] private GameObject _menu;
     [SerializeField] private GameObject _endMenu;
     [SerializeField] private TextMeshProUGUI _endScore;
+    [Header("Score")]
+    [SerializeField] private GameObject _scoreUI;
+    [SerializeField] private TextMeshProUGUI _scoreText;
     #endregion
 
     #region VARIABLES
@@ -57,7 +62,7 @@ public class UIManager : Singleton<UIManager>
     private float _screenHeight;
     private List<GameObject> _popUps = new List<GameObject>();
 
-    private bool _areScoutsVisible;
+    private bool _areUnitsVisible;
     #endregion
 
     #region ACCESSORS
@@ -71,13 +76,17 @@ public class UIManager : Singleton<UIManager>
         GameManager.Instance.OnExplorationPhaseStarted.AddListener(UpdatePhaseUI);
         GameManager.Instance.OnExpansionPhaseStarted.AddListener(UpdatePhaseUI);
         GameManager.Instance.OnExploitationPhaseStarted.AddListener(UpdatePhaseUI);
-        GameManager.Instance.OnEntertainementPhaseStarted.AddListener(UpdatePhaseUI);
+        GameManager.Instance.OnEntertainmentPhaseStarted.AddListener(UpdatePhaseUI);
+
+        GameManager.Instance.OnEntertainmentPhaseStarted.AddListener(UpdateUIForEntertainment);
 
         GameManager.Instance.OnExplorationPhaseStarted.AddListener(ForceScoutsToShow);
 
         GameManager.Instance.OnGameFinished.AddListener(GameFinished);
 
         ExplorationManager.Instance.OnScoutsLimitModified.AddListener(UpdateScoutLimit);
+
+        EntertainmentManager.Instance.OnScoreUpdated.AddListener(UpdateScoreText);
     }
 
     private void Start()
@@ -86,7 +95,20 @@ public class UIManager : Singleton<UIManager>
         _screenHeight = Screen.height;
     }
 
+    private void UpdateUIForEntertainment()
+    {
+        _scoutImageVisibility.enabled = false;
+        _entertainmentImageVisibility.enabled = true;
+
+        _scoreUI.SetActive(true);
+    }
+
     #region RESOURCES BAR UI
+    private void UpdateScoreText()
+    {
+        _scoreText.text = EntertainmentManager.Instance.Score.ToString();
+    }
+
     private void UpdateScoutLimit()
     {
         _scoutsLimitText.text = ExplorationManager.Instance.CurrentScoutsCount + "/" + ExplorationManager.Instance.ScoutsLimit;
@@ -113,23 +135,33 @@ public class UIManager : Singleton<UIManager>
 
     #region UNITS VISIBILITY UI
     //OnClick for UI button
-    public void ScoutsVisibility()
+    public void UnitsVisibility()
     {
-        _areScoutsVisible = !_areScoutsVisible;
+        _areUnitsVisible = !_areUnitsVisible;
 
-        _scoutsImage.sprite = _areScoutsVisible ? _scoutsVisible : _scoutsHidden;
+        _visibilityImage.sprite = _areUnitsVisible ? _visible : _hidden;
 
-        foreach (Scout item in ExplorationManager.Instance.Scouts)
+        if (GameManager.Instance.CurrentPhase != Phase.Entertain)
         {
-            item.ScoutVisibility(_areScoutsVisible);
+            foreach (Scout item in ExplorationManager.Instance.Scouts)
+            {
+                item.ScoutVisibility(_areUnitsVisible);
+            }
+        }
+        else
+        {
+            foreach (Entertainment item in EntertainmentManager.Instance.Entertainments)
+            {
+                item.EntertainmentVisibility(_areUnitsVisible);
+            }
         }
     }
 
     private void ScoutsVisibility(bool visible)
     {
-        _areScoutsVisible = visible;
+        _areUnitsVisible = visible;
 
-        _scoutsImage.sprite = _areScoutsVisible ? _scoutsVisible : _scoutsHidden;
+        _visibilityImage.sprite = _areUnitsVisible ? _visible : _hidden;
 
         foreach (Scout item in ExplorationManager.Instance.Scouts)
         {
@@ -140,11 +172,6 @@ public class UIManager : Singleton<UIManager>
     private void ForceScoutsToShow()
     {
         ScoutsVisibility(true);
-    }
-
-    private void ForceScoutsToHide()
-    {
-        ScoutsVisibility(false);
     }
     #endregion
 
@@ -191,10 +218,6 @@ public class UIManager : Singleton<UIManager>
                     if (tile.Revealed)
                     {
                         DisplayPopUp(tile);
-                        if (tile.Entertainer != null)
-                        {
-                            DisplayPopUp(tile.Entertainer);
-                        }
                         if (tile.Scouts.Count > 0) 
                         {
                             foreach (Scout item in tile.Scouts)
@@ -202,6 +225,8 @@ public class UIManager : Singleton<UIManager>
                                 DisplayPopUp(item);
                             }
                         }
+                        if(tile.Entertainment != null)
+                            DisplayPopUp(tile.Entertainment);
                     }
                 }
                 else if (obj.GetComponent<InteractionButton>() is  InteractionButton button)
@@ -257,9 +282,9 @@ public class UIManager : Singleton<UIManager>
         DisplayPopUp(scout, _prefabPopUpScout);
     }
 
-    private void DisplayPopUp(Entertainer entertainer)
+    private void DisplayPopUp(Entertainment entertainment)
     {
-        DisplayPopUp(entertainer, _prefabPopUpEntertainer);
+        DisplayPopUp(entertainment, _prefabPopUpEntertainment);
     }
 
     private void DisplayPopUp(InteractionButton button)
@@ -371,7 +396,7 @@ public class UIManager : Singleton<UIManager>
                 break;
             case Phase.Exploit:
                 _currentPhaseText.text = "Exploit";
-                _confirmPhaseButtonText.text = "End Phase";
+                _confirmPhaseButtonText.text = "End Turn";
                 _materialBack.SetColor("_ColorTop", _colorTopExploit);
                 _materialBack.SetColor("_ColorBottom", _colorBotExploit);
                 EnableRenderers(_popUpExpandPhase.gameObject, false);
@@ -380,7 +405,7 @@ public class UIManager : Singleton<UIManager>
                 break;
             case Phase.Entertain:
                 _currentPhaseText.text = "Entertain";
-                _confirmPhaseButtonText.text = "End Turn";
+                _confirmPhaseButtonText.text = "End Game";
                 _materialBack.SetColor("_ColorTop", _colorTopEntertain);
                 _materialBack.SetColor("_ColorBottom", _colorBotEntertain);
                 EnableRenderers(_popUpExploitPhase.gameObject, false);
@@ -409,7 +434,7 @@ public class UIManager : Singleton<UIManager>
     private void GameFinished()
     {
         _endMenu.SetActive(true);
-        _endScore.text = EntertainementManager.Instance.Score.ToString();
+        _endScore.text = EntertainmentManager.Instance.Score.ToString();
     }
 
     public void OpenCloseMenu()

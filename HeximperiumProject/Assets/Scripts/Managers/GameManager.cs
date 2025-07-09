@@ -5,8 +5,7 @@ using UnityEngine.EventSystems;
 public class GameManager : Singleton<GameManager>
 {
     #region CONSTANTS
-    private const string TOWN_DATA_PATH = "Data/Infrastructures/Town";
-    private const int TURN_LIMIT = 20;
+    private const int TURN_LIMIT = 2;
     #endregion
 
     #region CONFIGURATION
@@ -40,8 +39,8 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public UnityEvent OnExpansionPhaseEnded = new UnityEvent();
     [HideInInspector] public UnityEvent OnExploitationPhaseStarted = new UnityEvent();
     [HideInInspector] public UnityEvent OnExploitationPhaseEnded = new UnityEvent();
-    [HideInInspector] public UnityEvent OnEntertainementPhaseStarted = new UnityEvent();
-    [HideInInspector] public UnityEvent OnEntertainementPhaseEnded = new UnityEvent();
+    [HideInInspector] public UnityEvent OnEntertainmentPhaseStarted = new UnityEvent();
+    [HideInInspector] public UnityEvent OnEntertainmentPhaseEnded = new UnityEvent();
     [HideInInspector] public UnityEvent<Tile> OnNewTileSelected = new UnityEvent<Tile>();
     [HideInInspector] public UnityEvent OnTileUnselected = new UnityEvent();
     [HideInInspector] public UnityEvent OnGameFinished = new UnityEvent();
@@ -70,7 +69,7 @@ public class GameManager : Singleton<GameManager>
         ExplorationManager.Instance.OnPhaseFinalized.AddListener(PhaseFinalized);
         ExpansionManager.Instance.OnPhaseFinalized.AddListener(PhaseFinalized);
         ExploitationManager.Instance.OnPhaseFinalized.AddListener(PhaseFinalized);
-        EntertainementManager.Instance.OnPhaseFinalized.AddListener(PhaseFinalized);
+        EntertainmentManager.Instance.OnPhaseFinalized.AddListener(PhaseFinalized);
     }
 
     private void Start()
@@ -98,7 +97,7 @@ public class GameManager : Singleton<GameManager>
                 ExploitationManager.Instance.ButtonsFade(fade);
                 break;
             case Phase.Entertain:
-                EntertainementManager.Instance.ButtonsFade(fade);
+                EntertainmentManager.Instance.ButtonsFade(fade);
                 break;
         }
     }
@@ -239,10 +238,10 @@ public class GameManager : Singleton<GameManager>
                 if(_currentPhase == Phase.Exploit)
                     ExploitationManager.Instance.DestroyInfrastructure(button.AssociatedTile);
                 else
-                    EntertainementManager.Instance.DestroyEntertainer(button.AssociatedTile);
+                    EntertainmentManager.Instance.DestroyEntertainment(button.AssociatedTile);
                     break;
-            case Interaction.Entertainer:
-                EntertainementManager.Instance.SpawnEntertainer(button.AssociatedTile, button.UnitData);
+            case Interaction.Entertainment:
+                EntertainmentManager.Instance.SpawnEntertainment(button.AssociatedTile, button.EntertainData);
                 break;
             default: 
                 Debug.LogError("This interaction is not handle : " +  button.Interaction);
@@ -275,19 +274,27 @@ public class GameManager : Singleton<GameManager>
         _waitingPhaseFinalization = false;
 
         _currentPhase = GetNextPhase(_currentPhase);
-        InvokePhaseStartEvent(_currentPhase);
+
+        if (_currentPhase == Phase.Entertain)
+        {
+            OnGameFinished.Invoke();
+            return;
+        }
 
         //New turn logic
         if (_currentPhase == Phase.Explore)
         {
             if (_turnCounter == TURN_LIMIT)
             {
-                OnGameFinished.Invoke();
-                return;
+                _currentPhase = Phase.Entertain;
             }
-            _turnCounter++;
-            OnNewTurn.Invoke(_turnCounter);
+            else
+            {
+                _turnCounter++;
+                OnNewTurn.Invoke(_turnCounter);
+            }
         }
+        InvokePhaseStartEvent(_currentPhase);
     }
 
     private Phase GetNextPhase(Phase currentPhase)
@@ -296,8 +303,7 @@ public class GameManager : Singleton<GameManager>
         {
             Phase.Explore => Phase.Expand,
             Phase.Expand => Phase.Exploit,
-            Phase.Exploit => Phase.Entertain,
-            Phase.Entertain => Phase.Explore,
+            Phase.Exploit => Phase.Explore,
             _ => currentPhase
         };
     }
@@ -316,7 +322,7 @@ public class GameManager : Singleton<GameManager>
                 OnExploitationPhaseStarted.Invoke();
                 break;
             case Phase.Entertain:
-                OnEntertainementPhaseStarted.Invoke();
+                OnEntertainmentPhaseStarted.Invoke();
                 break;
         }
     }
@@ -335,7 +341,7 @@ public class GameManager : Singleton<GameManager>
                 OnExploitationPhaseEnded.Invoke();
                 break;
             case Phase.Entertain:
-                OnEntertainementPhaseEnded.Invoke();
+                OnEntertainmentPhaseEnded.Invoke();
                 break;
         }
     }

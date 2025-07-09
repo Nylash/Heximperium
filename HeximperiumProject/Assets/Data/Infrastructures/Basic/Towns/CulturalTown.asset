@@ -14,11 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Cultural Town
   _claimCost: 0
-  _interactionButtonPopUpText: 
-  _tilePopUpText: 
+  _interactionButtonPopUpText: Entertainment on this tile gains +50 Points for each
+    unique Entertainment type adjacent to this Town
+  _tilePopUpText: Entertainment on this tile gains +50 Points for each unique Entertainment
+    type adjacent to this Town
   _incomes: []
   _availableInfrastructures: []
-  _specialBehaviours: []
+  _specialBehaviours:
+  - {fileID: 11400000, guid: 6c91aa21531956c4497c4feddc4eda04, type: 2}
+  - {fileID: 11400000, guid: bddb259476dd25940a99e3d9d8256bb7, type: 2}
   _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
   _visuals:
   - {fileID: 2100000, guid: cfe90704e9d88364da1b81bb3a9a1815, type: 2}

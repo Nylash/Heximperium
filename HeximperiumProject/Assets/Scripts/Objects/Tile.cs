@@ -25,10 +25,16 @@ public class Tile : MonoBehaviour
     private Animator _animator;
     private List<Scout> _scouts = new List<Scout>();
     private TextMeshPro _scoutCounter;
-    private Entertainer _entertainer;
+    private Entertainment _entertainment;
+    private Entertainment _previousEntertainment;//Only stay one frame (because the ref is deleted) but needed to clean the group (BoostByZone special effect)
+    private EntertainmentData _previousEntertainmentData;
     private GameObject _highlightObject;
     private TileData _previousData;
     private int _uniqueInfraNeighborsCount;
+    private int _uniqueEntertainmentNeighborsCount_SB;//Count for special behaviour script
+    private int _uniqueEntertainmentNeighborsCount_SE;//Count for special effect script, two count is needed if an entertainment and infra on the same tile use it
+
+    private int _groupID;//Use for BoostByZoneSize entertainment's special effect
     #endregion
 
     #region EVENTS
@@ -36,6 +42,7 @@ public class Tile : MonoBehaviour
     [HideInInspector] public UnityEvent<Tile, List<ResourceToIntMap>, List<ResourceToIntMap>> OnIncomeModified = new UnityEvent<Tile, List<ResourceToIntMap>, List<ResourceToIntMap>>();
     [HideInInspector] public UnityEvent<Tile> OnTileClaimed = new UnityEvent<Tile>();
     [HideInInspector] public UnityEvent<Tile> OnTileDataModified = new UnityEvent<Tile>();
+    [HideInInspector] public UnityEvent<Tile> OnEntertainmentModified = new UnityEvent<Tile>();
     #endregion
 
     #region ACCESSORS
@@ -55,9 +62,29 @@ public class Tile : MonoBehaviour
         }
     }
     public TileData InitialData { get => _initialData; set => _initialData = value; }
-    public Entertainer Entertainer { get => _entertainer; set => _entertainer = value; }
+    public Entertainment Entertainment 
+    { 
+        get => _entertainment; 
+        set 
+        {
+            if (_entertainment != null)
+            {
+                _previousEntertainmentData = _entertainment.Data;
+                _previousEntertainment = _entertainment;
+            }
+            else
+                _previousEntertainmentData = null;
+            _entertainment = value;
+            OnEntertainmentModified.Invoke(this);
+        }  
+    }
     public TileData PreviousData { get => _previousData; }
     public int UniqueInfraNeighborsCount { get => _uniqueInfraNeighborsCount; set => _uniqueInfraNeighborsCount = value; }
+    public EntertainmentData PreviousEntertainmentData { get => _previousEntertainmentData; }
+    public int UniqueEntertainmentNeighborsCount_SB { get => _uniqueEntertainmentNeighborsCount_SB; set => _uniqueEntertainmentNeighborsCount_SB = value; }
+    public int UniqueEntertainmentNeighborsCount_SE { get => _uniqueEntertainmentNeighborsCount_SE; set => _uniqueEntertainmentNeighborsCount_SE = value; }
+    public int GroupID { get => _groupID; set => _groupID = value; }
+    public Entertainment PreviousEntertainment { get => _previousEntertainment; }
     #endregion
 
     private void Awake()
@@ -236,6 +263,24 @@ public class Tile : MonoBehaviour
     }
 
     #region SPECIFIC LISTENERS FOR BEHAVIOURS
+    #region ON ENTERTAINMENT MODIFIED
+    public void ListenerOnEntertainmentModified_BoostNeighborEntertainments(Tile tile)
+    {
+        foreach (BoostNeighborEntertainments behaviour in _tileData.SpecialBehaviours.OfType<BoostNeighborEntertainments>())
+        {
+            behaviour.CheckNewEntertainment(tile);
+        }
+    }
+
+    public void ListenerOnEntertainmentModified_BoostEntertainmentByUniqueNeighbors(Tile tile)
+    {
+        foreach (BoostEntertainmentByUniqueNeighbors behaviour in _tileData.SpecialBehaviours.OfType<BoostEntertainmentByUniqueNeighbors>())
+        {
+            behaviour.CheckNewEntertainment(this);
+        }
+    }
+    #endregion
+
     #region ON TILE CLAIMED
     public void ListenerOnTileClaimed_IncomeComingFromNeighbors(Tile tile)
     {
@@ -371,6 +416,14 @@ public class Tile : MonoBehaviour
         foreach (IncomePerSavedClaim behaviour in _tileData.SpecialBehaviours.OfType<IncomePerSavedClaim>())
         {
             behaviour.IncomeForSavedClaim(this, quantity);
+        }
+    }
+
+    public void ListenerOnEntertainmentSpawned(Entertainment ent)
+    {
+        foreach (BoostEntertainmentsOnEmpire behaviour in _tileData.SpecialBehaviours.OfType<BoostEntertainmentsOnEmpire>())
+        {
+            behaviour.CheckEntertainment(ent);
         }
     }
     #endregion

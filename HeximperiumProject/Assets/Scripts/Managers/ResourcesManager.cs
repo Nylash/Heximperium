@@ -18,10 +18,12 @@ public class ResourcesManager : Singleton<ResourcesManager>
     private int _srReductionForExpansion;
     private int _srReductionForExploitation;
     private int _srReductionForEntertainment;
+    private int _entertainmentGoldReduction;
     #endregion
 
     #region ACCESSORS
     public int Claim { get => _claim; }
+    public int EntertainmentGoldReduction { get => _entertainmentGoldReduction; set => _entertainmentGoldReduction = value; }
 
     public int GetResourceStock(Resource resource)
     {
@@ -75,11 +77,11 @@ public class ResourcesManager : Singleton<ResourcesManager>
     }
     #endregion
 
-    public void CHEAT_GAIN_ALL_RESOURCES()
+    public void CHEAT_RESOURCES()
     {
         Debug.LogWarning("USING CHEAT !");
-        UpdateResource(Resource.Gold, 500, Transaction.Gain);
-        UpdateResource(Resource.SpecialResources, 100, Transaction.Gain);
+        UpdateResource(Resource.Gold, 5000, Transaction.Gain);
+        UpdateResource(Resource.SpecialResources, 1000, Transaction.Gain);
     }
 
     #region UPDATE RESOURCES
@@ -131,6 +133,12 @@ public class ResourcesManager : Singleton<ResourcesManager>
         if(_claim < 0)
             _claim = 0;
         UIManager.Instance.UpdateClaimUI(_claim);
+    }
+
+    public void SpendAllResources()
+    {
+        UpdateResource(Resource.Gold, GetResourceStock(Resource.Gold), Transaction.Spent);
+        UpdateResource(Resource.SpecialResources, GetResourceStock(Resource.SpecialResources), Transaction.Spent);
     }
     #endregion
 
