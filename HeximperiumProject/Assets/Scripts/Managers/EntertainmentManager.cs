@@ -75,6 +75,8 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
 
     protected override void ConfirmPhase()
     {
+        GameManager.Instance.UnselectTile();
+
         StartCoroutine(PhaseFinalized());
     }
     #endregion

@@ -170,8 +170,7 @@ public class GameManager : Singleton<GameManager>
         //If a tile was selected we unselect it
         if (_selectedTile)
         {
-            Destroy(_selectionObject);
-            OnTileUnselected.Invoke();
+            UnselectTile();
         }
 
         _previousSelectedTile = _selectedTile;
@@ -215,6 +214,12 @@ public class GameManager : Singleton<GameManager>
         //Spawn highlight and call event
         _selectionObject = Instantiate(_selectionPrefab, _selectedTile.transform.position + new Vector3(0, 0.01f, 0), Quaternion.identity);
         OnNewTileSelected.Invoke(_selectedTile);
+    }
+
+    public void UnselectTile()
+    {
+        Destroy(_selectionObject);
+        OnTileUnselected.Invoke();
     }
 
     private void InteractWithButton(InteractionButton button)

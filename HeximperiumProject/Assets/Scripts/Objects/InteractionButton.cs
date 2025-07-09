@@ -176,4 +176,9 @@ public class InteractionButton : MonoBehaviour
     {
         _highlightedClone.GetComponent<Animator>().SetTrigger("Destroy");
     }
+
+    public void DestroyButton()
+    {
+        _animator.SetTrigger("Death");
+    }
 }

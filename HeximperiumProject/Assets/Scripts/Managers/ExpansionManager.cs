@@ -54,6 +54,8 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
         else
             ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim, Transaction.Spent);
 
+        GameManager.Instance.UnselectTile();
+
         StartCoroutine(PhaseFinalized());
     }
     #endregion

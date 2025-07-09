@@ -118,6 +118,8 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         {
             StartCoroutine(scout.Move());
         }
+
+        GameManager.Instance.UnselectTile();
     }
     #endregion
 
