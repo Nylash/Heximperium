@@ -21,6 +21,10 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     private Scout _currentScout;
     private bool _choosingScoutDirection;
     private Tile _tileRefForScoutDirection;
+    //Upgrades variables
+    private int _boostScoutLifespan;
+    private int _boostScoutSpeed;
+    private int _boostScoutRevealRadius;
     #endregion
 
     #region EVENTS
@@ -53,6 +57,9 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     }
 
     public ScoutData ScoutData { get => _scoutData;}
+    public int BoostScoutLifespan { get => _boostScoutLifespan; set => _boostScoutLifespan = value; }
+    public int BoostScoutSpeed { get => _boostScoutSpeed; set => _boostScoutSpeed = value; }
+    public int BoostScoutRevealRadius { get => _boostScoutRevealRadius; set => _boostScoutRevealRadius = value; }
     #endregion
 
     protected override void OnAwake()
@@ -155,7 +162,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
             _tileRefForScoutDirection = tile;
             tile.UpdateScoutCounter();
 
-            _currentScout.InitializeScout();
+            _currentScout.InitializeScout(_boostScoutSpeed, _boostScoutLifespan, _boostScoutRevealRadius);
 
             _choosingScoutDirection = true;
 

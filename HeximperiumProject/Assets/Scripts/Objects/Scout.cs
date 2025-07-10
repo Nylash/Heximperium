@@ -62,11 +62,11 @@ public class Scout : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
-    public void InitializeScout()
+    public void InitializeScout(int boostSpeed, int boostLifespan, int boostRadius)
     {
-        _speed = _data.Speed;
-        _lifespan = _data.Lifespan;
-        _revealRadius = _data.RevealRadius;
+        _speed = _data.Speed + boostSpeed;
+        _lifespan = _data.Lifespan + boostLifespan;
+        _revealRadius = _data.RevealRadius + boostRadius;
 
         _yOffset = transform.position.y;
     }

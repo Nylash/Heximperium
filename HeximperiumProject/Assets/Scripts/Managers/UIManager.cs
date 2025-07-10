@@ -55,6 +55,8 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TextMeshProUGUI _scoreText;
     [Header("TradeMenu")]
     [SerializeField] private GameObject _tradeMenu;
+    [Header("UpgradesMenu")]
+    [SerializeField] private GameObject _upgradesMenu;
     #endregion
 
     #region VARIABLES
@@ -63,7 +65,6 @@ public class UIManager : Singleton<UIManager>
     private float _screenWidth;
     private float _screenHeight;
     private List<GameObject> _popUps = new List<GameObject>();
-
     private bool _areUnitsVisible;
     #endregion
 
@@ -156,7 +157,11 @@ public class UIManager : Singleton<UIManager>
         if (_tradeMenu.activeSelf)
             _tradeMenu.GetComponent<Animator>().SetTrigger("Fold");
         else
+        {
+            if (_upgradesMenu.activeSelf)
+                UpgradesMenu();
             _tradeMenu.SetActive(true);
+        }
     }
 
     public void TradeBuy()
@@ -497,6 +502,24 @@ public class UIManager : Singleton<UIManager>
     public void QuitGame()
     {
         Application.Quit();
+    }
+    #endregion
+
+    #region UPGRADES MENU
+    public void UpgradesMenu()
+    {
+        if (_upgradesMenu.activeSelf)
+        {
+            _upgradesMenu.GetComponent<Animator>().SetTrigger("Fold");
+            GameManager.Instance.GamePaused = false;
+        }
+        else
+        {
+            if (_tradeMenu.activeSelf)
+                TradeMenu();
+            _upgradesMenu.SetActive(true);
+            GameManager.Instance.GamePaused = true;
+        }
     }
     #endregion
 }
