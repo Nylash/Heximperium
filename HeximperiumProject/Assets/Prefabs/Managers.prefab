@@ -222,6 +222,18 @@ MonoBehaviour:
   _resourceGainPrefab: {fileID: 1592618839310326476, guid: 8877b2626b274684c822c44ca64252e0, type: 3}
   _goldVFXMat: {fileID: 2100000, guid: 4494af5224e05ff45bd6a3182b886f8e, type: 2}
   _srVFXMat: {fileID: 2100000, guid: a6d2a5f51d41f094e86302fc07fae9ad, type: 2}
+  _tradeBuyCost:
+  - resource: 0
+    value: 10
+  _tradeBuyGain:
+  - resource: 1
+    value: 2
+  _tradeSellCost:
+  - resource: 1
+    value: 2
+  _tradeSellGain:
+  - resource: 0
+    value: 5
 --- !u!114 &5267516574475156646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,15 +247,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
+  OnPhaseFinalized:
+    m_PersistentCalls:
+      m_Calls: []
   _scoutData: {fileID: 11400000, guid: 6a1ce0d97c28e3841a7d3617eefff6a5, type: 2}
   _baseScoutsLimit: 1
   _scoutsParent: {fileID: 6909736567104162395}
   _scoutPrefab: {fileID: 5066032661868510455, guid: 6df47c3f9f6c2a247be0ff0800c84d61, type: 3}
   _scoutCounterPrefab: {fileID: 1835970567070459480, guid: 53d981b0fda10094ca17866fb80ecf99, type: 3}
   _awaitTimeScoutMovement: 1
-  OnPhaseFinalized:
-    m_PersistentCalls:
-      m_Calls: []
   OnScoutsLimitModified:
     m_PersistentCalls:
       m_Calls: []
@@ -263,12 +275,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
-  _townData: {fileID: 11400000, guid: c09b5b1323b68174bad1aea52735ddcc, type: 2}
-  _borderParent: {fileID: 2400562190098371313}
-  _claimedTilesParent: {fileID: 525905276182878219}
   OnPhaseFinalized:
     m_PersistentCalls:
       m_Calls: []
+  _townData: {fileID: 11400000, guid: c09b5b1323b68174bad1aea52735ddcc, type: 2}
+  _borderParent: {fileID: 2400562190098371313}
+  _claimedTilesParent: {fileID: 525905276182878219}
   OnTileClaimed:
     m_PersistentCalls:
       m_Calls: []
@@ -288,6 +300,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
+  OnPhaseFinalized:
+    m_PersistentCalls:
+      m_Calls: []
   _infraAvailableCopies:
   - infrastructure: {fileID: 11400000, guid: c09b5b1323b68174bad1aea52735ddcc, type: 2}
     availableCopy: 1
@@ -297,9 +312,6 @@ MonoBehaviour:
     availableCopy: 3
   - infrastructure: {fileID: 11400000, guid: 4ee189cb8dd9a1b4584cdd486968e6c6, type: 2}
     availableCopy: 2
-  OnPhaseFinalized:
-    m_PersistentCalls:
-      m_Calls: []
   OnInfraBuilded:
     m_PersistentCalls:
       m_Calls: []
@@ -319,6 +331,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
+  OnPhaseFinalized:
+    m_PersistentCalls:
+      m_Calls: []
   _entertainmentsData:
   - {fileID: 11400000, guid: c7c0d52522766474a97afa468b4b42c9, type: 2}
   - {fileID: 11400000, guid: 3394aecefc4c86f4181481cb52b87e79, type: 2}
@@ -330,9 +345,6 @@ MonoBehaviour:
   _pointVFXMat: {fileID: 2100000, guid: 37165071fda418845bd5d92d7d9da370, type: 2}
   _pointForOneGold: 0.3
   _pointForOneSR: 0.8
-  OnPhaseFinalized:
-    m_PersistentCalls:
-      m_Calls: []
   OnEntertainmentSpawned:
     m_PersistentCalls:
       m_Calls: []

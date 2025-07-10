@@ -53,6 +53,8 @@ public class UIManager : Singleton<UIManager>
     [Header("Score")]
     [SerializeField] private GameObject _scoreUI;
     [SerializeField] private TextMeshProUGUI _scoreText;
+    [Header("TradeMenu")]
+    [SerializeField] private GameObject _tradeMenu;
     #endregion
 
     #region VARIABLES
@@ -93,6 +95,8 @@ public class UIManager : Singleton<UIManager>
     {
         _screenWidth = Screen.width;
         _screenHeight = Screen.height;
+
+        InitializeUI();
     }
 
     private void UpdateUIForEntertainment()
@@ -101,6 +105,15 @@ public class UIManager : Singleton<UIManager>
         _entertainmentImageVisibility.enabled = true;
 
         _scoreUI.SetActive(true);
+    }
+
+    private void InitializeUI()
+    {
+        UpdateScoutLimit();
+        UpdateClaimUI(ResourcesManager.Instance.Claim);
+        UpdateResourceUI(Resource.Gold, ResourcesManager.Instance.GetResourceStock(Resource.Gold));
+        UpdateResourceUI(Resource.SpecialResources, ResourcesManager.Instance.GetResourceStock(Resource.SpecialResources));
+        UpdateTownLimit();
     }
 
     #region RESOURCES BAR UI
@@ -129,6 +142,38 @@ public class UIManager : Singleton<UIManager>
             case Resource.SpecialResources:
                 _srText.text = value.ToString();
                 break;
+        }
+    }
+
+    public void UpdateTownLimit()
+    {
+        _townsLimitText.text = ExploitationManager.Instance.GetTownCount() + "/" + 
+            (ExploitationManager.Instance.GetTownLimit() + ExploitationManager.Instance.GetTownCount());
+    }
+
+    public void TradeMenu()
+    {
+        if (_tradeMenu.activeSelf)
+            _tradeMenu.GetComponent<Animator>().SetTrigger("Fold");
+        else
+            _tradeMenu.SetActive(true);
+    }
+
+    public void TradeBuy()
+    {
+        if (ResourcesManager.Instance.CanAfford(ResourcesManager.Instance.TradeBuyCost))
+        {
+            ResourcesManager.Instance.UpdateResource(ResourcesManager.Instance.TradeBuyCost, Transaction.Spent);
+            ResourcesManager.Instance.UpdateResource(ResourcesManager.Instance.TradeBuyGain, Transaction.Gain);
+        }
+    }
+
+    public void TradeSell()
+    {
+        if (ResourcesManager.Instance.CanAfford(ResourcesManager.Instance.TradeSellCost))
+        {
+            ResourcesManager.Instance.UpdateResource(ResourcesManager.Instance.TradeSellCost, Transaction.Spent);
+            ResourcesManager.Instance.UpdateResource(ResourcesManager.Instance.TradeSellGain, Transaction.Gain);
         }
     }
     #endregion

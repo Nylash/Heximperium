@@ -8,6 +8,10 @@ public class ResourcesManager : Singleton<ResourcesManager>
     [SerializeField] private GameObject _resourceGainPrefab;
     [SerializeField] private Material _goldVFXMat;
     [SerializeField] private Material _srVFXMat;
+    [SerializeField] private List<ResourceToIntMap> _tradeBuyCost;
+    [SerializeField] private List<ResourceToIntMap> _tradeBuyGain;
+    [SerializeField] private List<ResourceToIntMap> _tradeSellCost;
+    [SerializeField] private List<ResourceToIntMap> _tradeSellGain;
     #endregion
 
     #region VARIABLES
@@ -24,6 +28,10 @@ public class ResourcesManager : Singleton<ResourcesManager>
     #region ACCESSORS
     public int Claim { get => _claim; }
     public int EntertainmentGoldReduction { get => _entertainmentGoldReduction; set => _entertainmentGoldReduction = value; }
+    public List<ResourceToIntMap> TradeBuyCost { get => _tradeBuyCost; }
+    public List<ResourceToIntMap> TradeBuyGain { get => _tradeBuyGain; }
+    public List<ResourceToIntMap> TradeSellCost { get => _tradeSellCost; }
+    public List<ResourceToIntMap> TradeSellGain { get => _tradeSellGain; }
 
     public int GetResourceStock(Resource resource)
     {

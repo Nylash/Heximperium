@@ -132,6 +132,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
                     OnTileClaimed.Invoke(tile);
                 }
                 ExploitationManager.Instance.BuildInfrastructure(tile, _townData);
+                UIManager.Instance.UpdateTownLimit();
             }
         }
     }
