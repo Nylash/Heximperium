@@ -93,6 +93,8 @@ public class UIManager : Singleton<UIManager>
     {
         _screenWidth = Screen.width;
         _screenHeight = Screen.height;
+
+        InitializeUI();
     }
 
     private void UpdateUIForEntertainment()
@@ -101,6 +103,15 @@ public class UIManager : Singleton<UIManager>
         _entertainmentImageVisibility.enabled = true;
 
         _scoreUI.SetActive(true);
+    }
+
+    private void InitializeUI()
+    {
+        UpdateScoutLimit();
+        UpdateClaimUI(ResourcesManager.Instance.Claim);
+        UpdateResourceUI(Resource.Gold, ResourcesManager.Instance.GetResourceStock(Resource.Gold));
+        UpdateResourceUI(Resource.SpecialResources, ResourcesManager.Instance.GetResourceStock(Resource.SpecialResources));
+        UpdateTownLimit();
     }
 
     #region RESOURCES BAR UI
@@ -130,6 +141,11 @@ public class UIManager : Singleton<UIManager>
                 _srText.text = value.ToString();
                 break;
         }
+    }
+
+    public void UpdateTownLimit()
+    {
+        _townsLimitText.text = ExploitationManager.Instance.GetTownCount() + "/" + ExploitationManager.Instance.GetTownLimit();
     }
     #endregion
 
