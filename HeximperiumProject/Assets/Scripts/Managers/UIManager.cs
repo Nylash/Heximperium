@@ -53,6 +53,8 @@ public class UIManager : Singleton<UIManager>
     [Header("Score")]
     [SerializeField] private GameObject _scoreUI;
     [SerializeField] private TextMeshProUGUI _scoreText;
+    [Header("TradeMenu")]
+    [SerializeField] private GameObject _tradeMenu;
     #endregion
 
     #region VARIABLES
@@ -145,7 +147,34 @@ public class UIManager : Singleton<UIManager>
 
     public void UpdateTownLimit()
     {
-        _townsLimitText.text = ExploitationManager.Instance.GetTownCount() + "/" + ExploitationManager.Instance.GetTownLimit();
+        _townsLimitText.text = ExploitationManager.Instance.GetTownCount() + "/" + 
+            (ExploitationManager.Instance.GetTownLimit() + ExploitationManager.Instance.GetTownCount());
+    }
+
+    public void TradeMenu()
+    {
+        if (_tradeMenu.activeSelf)
+            _tradeMenu.GetComponent<Animator>().SetTrigger("Fold");
+        else
+            _tradeMenu.SetActive(true);
+    }
+
+    public void TradeBuy()
+    {
+        if (ResourcesManager.Instance.CanAfford(ResourcesManager.Instance.TradeBuyCost))
+        {
+            ResourcesManager.Instance.UpdateResource(ResourcesManager.Instance.TradeBuyCost, Transaction.Spent);
+            ResourcesManager.Instance.UpdateResource(ResourcesManager.Instance.TradeBuyGain, Transaction.Gain);
+        }
+    }
+
+    public void TradeSell()
+    {
+        if (ResourcesManager.Instance.CanAfford(ResourcesManager.Instance.TradeSellCost))
+        {
+            ResourcesManager.Instance.UpdateResource(ResourcesManager.Instance.TradeSellCost, Transaction.Spent);
+            ResourcesManager.Instance.UpdateResource(ResourcesManager.Instance.TradeSellGain, Transaction.Gain);
+        }
     }
     #endregion
 
