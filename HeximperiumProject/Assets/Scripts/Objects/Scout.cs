@@ -92,7 +92,7 @@ public class Scout : MonoBehaviour
             _currentTile.Scouts.Add(this);
             transform.position = _currentTile.transform.position + new Vector3(0,_yOffset,0);
 
-            if (_currentTile.TileData is HazardousTileData && !_currentTile.Claimed) 
+            if (_currentTile.TileData is HazardousTileData && !_currentTile.Claimed && !ExplorationManager.Instance.UpgradeScoutIgnoreHazard) 
                i++;              
 
             //Reveal recursively
@@ -128,6 +128,10 @@ public class Scout : MonoBehaviour
             }
             ExplorationManager.Instance.OnPhaseFinalized.RemoveListener(CheckLifeSpan);
             GameManager.Instance.OnEntertainmentPhaseStarted.RemoveListener(KillScout);
+
+            if(ExplorationManager.Instance.UpgradeScoutRevealOnDeathRadius != 0)
+                RevealTilesRecursively(_currentTile, ExplorationManager.Instance.UpgradeScoutRevealOnDeathRadius);
+
             Destroy(gameObject);
         }
     }

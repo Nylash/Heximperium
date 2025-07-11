@@ -5,6 +5,6 @@ public class UnlockScoutIgnoreHazard : UpgradeEffect
 {
     public override void ApplyEffect()
     {
-        Debug.Log("Unlocking Scout Ignore Hazard");
+        ExplorationManager.Instance.UpgradeScoutIgnoreHazard = true;
     }
 }

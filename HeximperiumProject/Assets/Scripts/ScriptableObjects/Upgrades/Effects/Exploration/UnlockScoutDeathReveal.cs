@@ -3,8 +3,10 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Scriptable Objects/Upgrades Tree/Exploration/UnlockScoutDeathReveal")]
 public class UnlockScoutDeathReveal : UpgradeEffect
 {
+    [SerializeField] private int _deathRevealRadius;
+
     public override void ApplyEffect()
     {
-        Debug.Log("Unlocking Scout Death Reveal");
+        ExplorationManager.Instance.UpgradeScoutRevealOnDeathRadius = _deathRevealRadius;
     }
 }

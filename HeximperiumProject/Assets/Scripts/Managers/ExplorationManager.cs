@@ -25,6 +25,8 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     private int _boostScoutLifespan;
     private int _boostScoutSpeed;
     private int _boostScoutRevealRadius;
+    private int _upgradeScoutRevealOnDeathRadius;
+    private bool _upgradeScoutIgnoreHazard;
     #endregion
 
     #region EVENTS
@@ -57,9 +59,37 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     }
 
     public ScoutData ScoutData { get => _scoutData;}
-    public int BoostScoutLifespan { get => _boostScoutLifespan; set => _boostScoutLifespan = value; }
-    public int BoostScoutSpeed { get => _boostScoutSpeed; set => _boostScoutSpeed = value; }
-    public int BoostScoutRevealRadius { get => _boostScoutRevealRadius; set => _boostScoutRevealRadius = value; }
+    public int BoostScoutLifespan 
+    { 
+        get => _boostScoutLifespan; 
+        set
+        {
+            foreach (Scout scout in _scouts)
+                scout.Lifespan += (value - _boostScoutLifespan);
+            _boostScoutLifespan = value;
+        } 
+    }
+    public int BoostScoutSpeed { 
+        get => _boostScoutSpeed; 
+        set
+        {
+            foreach (Scout scout in _scouts)
+                scout.Speed += (value - _boostScoutSpeed);
+            _boostScoutSpeed = value;
+
+        }
+    }
+    public int BoostScoutRevealRadius { 
+        get => _boostScoutRevealRadius; 
+        set
+        {
+            foreach (Scout scout in _scouts)
+                scout.RevealRadius += (value - _boostScoutRevealRadius);
+            _boostScoutRevealRadius = value;
+        }
+    }
+    public int UpgradeScoutRevealOnDeathRadius { get => _upgradeScoutRevealOnDeathRadius; set => _upgradeScoutRevealOnDeathRadius = value; }
+    public bool UpgradeScoutIgnoreHazard { get => _upgradeScoutIgnoreHazard; set => _upgradeScoutIgnoreHazard = value; }
     #endregion
 
     protected override void OnAwake()
