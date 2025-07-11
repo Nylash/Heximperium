@@ -19,21 +19,23 @@ public class Tile : MonoBehaviour
 
     private Tile[] _neighbors = new Tile[6];
     private TileData _initialData;
+    private TileData _previousData;
     private bool _revealed;
     private bool _claimed;
     private Border _border;
     private Animator _animator;
+    private GameObject _highlightObject;
+    //Scouts
     private List<Scout> _scouts = new List<Scout>();
     private TextMeshPro _scoutCounter;
+    //Entertainment variables
     private Entertainment _entertainment;
     private Entertainment _previousEntertainment;//Only stay one frame (because the ref is deleted) but needed to clean the group (BoostByZone special effect)
     private EntertainmentData _previousEntertainmentData;
-    private GameObject _highlightObject;
-    private TileData _previousData;
+
     private int _uniqueInfraNeighborsCount;
     private int _uniqueEntertainmentNeighborsCount_SB;//Count for special behaviour script
     private int _uniqueEntertainmentNeighborsCount_SE;//Count for special effect script, two count is needed if an entertainment and infra on the same tile use it
-
     private int _groupID;//Use for BoostByZoneSize entertainment's special effect
     #endregion
 
@@ -262,6 +264,7 @@ public class Tile : MonoBehaviour
         }
     }
 
+    // Call the specific listeners for each special behaviour, this is used to create a pair between the tile and the event inkover
     #region SPECIFIC LISTENERS FOR BEHAVIOURS
     #region ON ENTERTAINMENT MODIFIED
     public void ListenerOnEntertainmentModified_BoostNeighborEntertainments(Tile tile)

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8276069307506680906}
   m_Layer: 0
-  m_Name: Map
+  m_Name: EmptyMap
   m_TagString: Grid
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

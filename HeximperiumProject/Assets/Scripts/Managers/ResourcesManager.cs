@@ -5,19 +5,26 @@ using UnityEngine;
 public class ResourcesManager : Singleton<ResourcesManager>
 {
     #region CONFIGURATION
+    [Header("_________________________________________________________")]
+    [Header("Trade values")]
+    [Header("-Buy")]
+    [SerializeField] private List<ResourceToIntMap> _tradeBuyCost;
+    [SerializeField] private List<ResourceToIntMap> _tradeBuyGain;
+    [Header("-Sell")]
+    [SerializeField] private List<ResourceToIntMap> _tradeSellCost;
+    [SerializeField] private List<ResourceToIntMap> _tradeSellGain;
+    [Header("_________________________________________________________")]
+    [Header("VFX")]
     [SerializeField] private GameObject _resourceGainPrefab;
     [SerializeField] private Material _goldVFXMat;
     [SerializeField] private Material _srVFXMat;
-    [SerializeField] private List<ResourceToIntMap> _tradeBuyCost;
-    [SerializeField] private List<ResourceToIntMap> _tradeBuyGain;
-    [SerializeField] private List<ResourceToIntMap> _tradeSellCost;
-    [SerializeField] private List<ResourceToIntMap> _tradeSellGain;
     #endregion
 
     #region VARIABLES
     private int _claim;
     private int _gold;
     private int _specialResources;
+    //Reduction variables
     private int _srReductionForExploration;
     private int _srReductionForExpansion;
     private int _srReductionForExploitation;
@@ -101,10 +108,14 @@ public class ResourcesManager : Singleton<ResourcesManager>
         {
             case Resource.Gold:
                 _gold += value;
+                if (_gold < 0)
+                    _gold = 0;
                 UIManager.Instance.UpdateResourceUI(Resource.Gold, _gold);
                 break;
             case Resource.SpecialResources:
                 _specialResources += value;
+                if (_specialResources < 0)
+                    _specialResources = 0;
                 UIManager.Instance.UpdateResourceUI(Resource.SpecialResources, _specialResources);
                 break;
         }
@@ -164,9 +175,15 @@ public class ResourcesManager : Singleton<ResourcesManager>
         switch (resource)
         {
             case Resource.Gold:
-                return CanAffordUnspecified(_gold, cost);
+                if (_gold - cost >= 0)
+                    return true;
+                else
+                    return false;
             case Resource.SpecialResources:
-                return CanAffordUnspecified(_specialResources, cost);
+                if (_specialResources - cost >= 0)
+                    return true;
+                else
+                    return false;
         }
         return false;
     }
@@ -175,14 +192,6 @@ public class ResourcesManager : Singleton<ResourcesManager>
     {
         if(costs.Count == 0) return true;
         return costs.All(cost => CanAfford(cost.resource, cost.value));
-    }
-
-    private bool CanAffordUnspecified(int stock, int cost)
-    {
-        if (stock - cost >= 0)
-            return true;
-        else
-            return false;
     }
     #endregion
 }

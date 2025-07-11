@@ -7,15 +7,20 @@ public class InteractionButton : MonoBehaviour
     #endregion
 
     #region CONFIGURATION
+    [Header("_________________________________________________________")]
+    [Header("PopUp Objects")]
     [SerializeField] private GameObject _popUpClaim;
     [SerializeField] private GameObject _popUpScout;
     [SerializeField] private GameObject _popUpDestroy;
     [SerializeField] private GameObject _popUpEntertainment;
     [SerializeField] private GameObject _popUpInfra;
+    [Header("_________________________________________________________")]
+    [Header("Back Textures")]
     [SerializeField] private Texture _textureExplo;
     [SerializeField] private Texture _textureExpand;
     [SerializeField] private Texture _textureExploit;
     [SerializeField] private Texture _textureEntertain;
+    [Header("_________________________________________________________")]
     [SerializeField] private GameObject _highlightedInteractionPrefab;
     #endregion
 
@@ -177,7 +182,7 @@ public class InteractionButton : MonoBehaviour
         _highlightedClone.GetComponent<Animator>().SetTrigger("Destroy");
     }
 
-    public void DestroyButton()
+    public void DestroyInteractionButton()
     {
         _animator.SetTrigger("Death");
     }

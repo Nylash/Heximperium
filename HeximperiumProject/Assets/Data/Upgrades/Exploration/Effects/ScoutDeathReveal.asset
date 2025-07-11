@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: ScoutDeathReveal
   m_EditorClassIdentifier: 
   _effectText: When a Scout reaches the end of its lifespan, he reveals all tiles
-    in a 6-tiles radius
+    in a 3-tiles radius
+  _deathRevealRadius: 3

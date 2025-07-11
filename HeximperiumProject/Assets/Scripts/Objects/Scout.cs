@@ -15,7 +15,7 @@ public class Scout : MonoBehaviour
     private Tile _currentTile;
     private bool _hasDoneMoving;
     private float _yOffset;
-
+    //Gameplay variables
     private int _speed;
     private int _lifespan;
     private int _revealRadius;
@@ -62,11 +62,11 @@ public class Scout : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
-    public void InitializeScout(int boostSpeed, int boostLifespan, int boostRadius)
+    public void InitializeScout()
     {
-        _speed = _data.Speed + boostSpeed;
-        _lifespan = _data.Lifespan + boostLifespan;
-        _revealRadius = _data.RevealRadius + boostRadius;
+        _speed = _data.Speed + ExplorationManager.Instance.BoostScoutSpeed;
+        _lifespan = _data.Lifespan + ExplorationManager.Instance.BoostScoutLifespan;
+        _revealRadius = _data.RevealRadius + ExplorationManager.Instance.BoostScoutRevealRadius;
 
         _yOffset = transform.position.y;
     }
@@ -129,7 +129,7 @@ public class Scout : MonoBehaviour
             ExplorationManager.Instance.OnPhaseFinalized.RemoveListener(CheckLifeSpan);
             GameManager.Instance.OnEntertainmentPhaseStarted.RemoveListener(KillScout);
 
-            if(ExplorationManager.Instance.UpgradeScoutRevealOnDeathRadius != 0)
+            if(ExplorationManager.Instance.UpgradeScoutRevealOnDeathRadius != 0 && GameManager.Instance.CurrentPhase != Phase.Entertain)//Don't do the reveal if we are in Entertainment phase
                 RevealTilesRecursively(_currentTile, ExplorationManager.Instance.UpgradeScoutRevealOnDeathRadius);
 
             Destroy(gameObject);

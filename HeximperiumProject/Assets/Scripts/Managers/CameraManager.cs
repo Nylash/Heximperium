@@ -7,13 +7,19 @@ using UnityEngine.UI;
 public class CameraManager : Singleton<CameraManager>
 {
     #region CONFIGURATION
+    [Header("_________________________________________________________")]
+    [Header("Camera Movement Settings")]
     [SerializeField] private float _cameraMovementSpeed = 5;
     [SerializeField] private float _cameraDragSpeed = 2;
-    [SerializeField] private float _cameraZoomSpeed = 10;
+    [Header("_________________________________________________________")]
+    [Header("Edge Pan Settings")]
 #pragma warning disable CS0414
     [SerializeField] private float _edgePanMargin = 2;
     [SerializeField] private float _edgePanSpeed = 3;
 #pragma warning restore CS0414
+    [Header("_________________________________________________________")]
+    [Header("Zoom Settings")]
+    [SerializeField] private float _cameraZoomSpeed = 10;
     [SerializeField] private float _maxZoomLevel = 20.0f; //Far
     [SerializeField] private float _minZoomLevel = 3.5f; //Close
     #endregion
@@ -23,6 +29,7 @@ public class CameraManager : Singleton<CameraManager>
     //Camera
     private Vector2 _cameraMovement;
     private float _cameraZoom;
+    private Vector3 _initialPos;
     //Drag
     private bool _isMouseDragging;
     private Vector2 _lastMousePosition;
@@ -36,9 +43,9 @@ public class CameraManager : Singleton<CameraManager>
     private Ray _mouseRay;
     private RaycastHit _mouseRayHit;
     private InteractionButton _shrinkedButton;
+    #endregion
 
-    private Vector3 _initialPos;
-
+    #region ACCESSORS
     public float MaxZoomLevel { get => _maxZoomLevel; }
     public float MinZoomLevel { get => _minZoomLevel; }
     #endregion

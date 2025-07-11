@@ -5,6 +5,7 @@ using UnityEngine.Events;
 public class ExpansionManager : PhaseManager<ExpansionManager>
 {
     #region CONFIGURATION
+    [Header("_________________________________________________________")]
     [SerializeField] private InfrastructureData _townData;
     [SerializeField] private Transform _borderParent;
     [SerializeField] private Transform _claimedTilesParent;
@@ -47,7 +48,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     {
         if (_savedClaimPerTurn > 0)
         {
-            if(ResourcesManager.Instance.Claim - _savedClaimPerTurn > 0)
+            if(ResourcesManager.Instance.Claim > _savedClaimPerTurn)
                 ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim - _savedClaimPerTurn, Transaction.Spent);
             OnClaimSaved.Invoke(ResourcesManager.Instance.Claim);
         }

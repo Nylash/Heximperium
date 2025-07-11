@@ -27,7 +27,7 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
     {
         foreach (GameObject button in _buttons)
         {
-            button.GetComponent<InteractionButton>().DestroyButton();
+            button.GetComponent<InteractionButton>().DestroyInteractionButton();
         }
         _buttons.Clear();
     }

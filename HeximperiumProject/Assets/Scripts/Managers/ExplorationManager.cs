@@ -5,20 +5,26 @@ using UnityEngine.Events;
 public class ExplorationManager : PhaseManager<ExplorationManager>
 {
     #region CONFIGURATION
+    [Header("_________________________________________________________")]
+    [Header("Scouts Configuration")]
     [SerializeField] private ScoutData _scoutData;
     [SerializeField] private int _baseScoutsLimit = 1;
+    [SerializeField] private float _awaitTimeScoutMovement = 0.25f;
+    [Header("_________________________________________________________")]
+    [Header("Scouts Related Objects")]
     [SerializeField] private Transform _scoutsParent;
     [SerializeField] private GameObject _scoutPrefab;
     [SerializeField] private GameObject _scoutCounterPrefab;
-    [SerializeField] private float _awaitTimeScoutMovement = 0.25f;
     #endregion
 
     #region VARIABLES
-    private List<Scout> _scouts = new List<Scout>();
     private bool _finalizingPhase;
+    //Scouts variables
+    private List<Scout> _scouts = new List<Scout>();
     private int _scoutsLimit;
     private int _currentScoutsCount;
     private Scout _currentScout;
+    //Scout direction variables
     private bool _choosingScoutDirection;
     private Tile _tileRefForScoutDirection;
     //Upgrades variables
@@ -128,6 +134,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     #region PHASE LOGIC
     protected override void StartPhase()
     {
+        //Highlight all tiles that are starting points for scouts
         foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
         {
             if(tile.TileData is InfrastructureData data)
@@ -142,6 +149,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     {
         _finalizingPhase = true;
 
+        //Unhighlight all tiles that were starting points for scouts
         foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
         {
             if (tile.TileData is InfrastructureData data)
@@ -192,7 +200,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
             _tileRefForScoutDirection = tile;
             tile.UpdateScoutCounter();
 
-            _currentScout.InitializeScout(_boostScoutSpeed, _boostScoutLifespan, _boostScoutRevealRadius);
+            _currentScout.InitializeScout();
 
             _choosingScoutDirection = true;
 

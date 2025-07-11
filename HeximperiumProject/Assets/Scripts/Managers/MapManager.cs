@@ -5,6 +5,8 @@ using UnityEngine.Events;
 public class MapManager : Singleton<MapManager>
 {
     #region CONFIGURATION
+    [Header("_________________________________________________________")]
+    [Header("Map Configuration")]
     [SerializeField] private GameObject _tilePrefab;
     [SerializeField] private GameObject _emptyMap;
     //Tmp until game configuration menu
@@ -13,8 +15,10 @@ public class MapManager : Singleton<MapManager>
     #endregion
 
     #region VARIABLES
+    //Offset for grid generation
     private float _deltaX = 1f;
     private float _deltaZ = 0.91f;
+
     private Transform _grid;
     private Dictionary<Vector2, Tile> _tiles = new Dictionary<Vector2, Tile>();
     #endregion

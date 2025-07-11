@@ -5,11 +5,17 @@ using UnityEngine.Events;
 public class EntertainmentManager : PhaseManager<EntertainmentManager>
 {
     #region CONFIGURATION
+    [Header("_________________________________________________________")]
+    [Header("Entertainment Data")]
     [SerializeField] private List<EntertainmentData> _entertainmentsData = new List<EntertainmentData>();
     [SerializeField] private GameObject _entertainmentPrefab;
     [SerializeField] private Transform _entertainmentsParent;
+    [Header("_________________________________________________________")]
+    [Header("VFX")]
     [SerializeField] private GameObject _pointsGainPrefab;
     [SerializeField] private Material _pointVFXMat;
+    [Header("_________________________________________________________")]
+    [Header("Resources Conversion")]
     [SerializeField] private float _pointForOneGold;
     [SerializeField] private float _pointForOneSR;
     #endregion
