@@ -4,9 +4,9 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Scriptable Objects/Infrastructure")]
 public class InfrastructureData : TileData
 {
-    [SerializeField] private bool _scoutStartingPoint;
     [SerializeField] private List<ResourceToIntMap> _costs = new List<ResourceToIntMap>();
     [SerializeField] private Phase _associatedSystem = Phase.None;
+    [SerializeField] private bool _scoutStartingPoint;
     [SerializeField] private bool isTown;
 
     public bool ScoutStartingPoint { get => _scoutStartingPoint; }

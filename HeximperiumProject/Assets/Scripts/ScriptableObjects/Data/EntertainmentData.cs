@@ -4,10 +4,14 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Scriptable Objects/Entertainment")]
 public class EntertainmentData : ScriptableObject
 {
+    [Header("_________________________________________________________")]
+    [Header("Mandatory Settings")]
     [SerializeField] private EntertainmentType _type;
     [SerializeField] private int _basePoints;
-    [SerializeField] private SpecialEffect _specialEffect;
     [SerializeField] private List<ResourceToIntMap> _costs = new List<ResourceToIntMap>();
+    [Header("_________________________________________________________")]
+    [Header("Optionnal Settings")]
+    [SerializeField] private SpecialEffect _specialEffect;
 
     public EntertainmentType Type { get => _type; }
     public int BasePoints { get => _basePoints; }

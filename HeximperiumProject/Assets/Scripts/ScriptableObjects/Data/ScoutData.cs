@@ -3,6 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Scriptable Objects/Scout")]
 public class ScoutData : ScriptableObject
 {
+    [Header("_________________________________________________________")]
+    [Header("Scout gameplay values")]
     [SerializeField] private int _speed;
     [SerializeField] private int _lifespan;
     [SerializeField] private int _revealRadius;
