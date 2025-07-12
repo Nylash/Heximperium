@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: CrystalVein
   m_EditorClassIdentifier: 
   _name: Crystal vein
+  _visuals:
+  - {fileID: 2100000, guid: d86f58de5cb2caa49b77da0b1d341087, type: 2}
   _claimCost: 1
-  _interactionButtonPopUpText: 
-  _tilePopUpText: Can be upgraded to produce Special Resources and bringing a reduction
-    to Entertain oriented Infrastructures and Upgrades.
   _incomes: []
   _availableInfrastructures:
   - {fileID: 11400000, guid: 3d0ee4608b263f74aaa46646c1cf3360, type: 2}
-  _specialBehaviours: []
   _popUpPrefab: {fileID: 4713123567034353809, guid: d8f213d35ee68da42bdab236132145bb, type: 3}
-  _visuals:
-  - {fileID: 2100000, guid: d86f58de5cb2caa49b77da0b1d341087, type: 2}
+  _interactionButtonPopUpText: 
+  _tilePopUpText: Can be upgraded to produce Special Resources and bringing a reduction
+    to Entertain oriented Infrastructures and Upgrades.
+  _specialBehaviours: []

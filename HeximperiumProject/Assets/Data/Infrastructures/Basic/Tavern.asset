@@ -13,22 +13,22 @@ MonoBehaviour:
   m_Name: Tavern
   m_EditorClassIdentifier: 
   _name: Tavern
+  _visuals:
+  - {fileID: 2100000, guid: 12d9c27e9d004cc47ae489ea8e01ddb1, type: 2}
   _claimCost: 0
-  _interactionButtonPopUpText: +3 Gold & Scout Starting Position
-  _tilePopUpText: Scout Starting Position
   _incomes:
   - resource: 0
     value: 3
   _availableInfrastructures:
   - {fileID: 11400000, guid: e6ce2ea6787a5fa4496944c2c70da493, type: 2}
   - {fileID: 11400000, guid: 72dbf3edd2b6d194d859b16ade1925d1, type: 2}
-  _specialBehaviours: []
   _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
-  _visuals:
-  - {fileID: 2100000, guid: 12d9c27e9d004cc47ae489ea8e01ddb1, type: 2}
-  _scoutStartingPoint: 1
+  _interactionButtonPopUpText: +3 Gold & Scout Starting Position
+  _tilePopUpText: Scout Starting Position
+  _specialBehaviours: []
   _costs:
   - resource: 0
     value: 15
   _associatedSystem: 4
+  _scoutStartingPoint: 1
   isTown: 0

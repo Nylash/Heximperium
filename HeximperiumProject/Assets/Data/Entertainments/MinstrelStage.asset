@@ -17,3 +17,4 @@ MonoBehaviour:
   _costs:
   - resource: 0
     value: 10
+  _specialEffect: {fileID: 0}

@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Meadow
   m_EditorClassIdentifier: 
   _name: Meadow
+  _visuals:
+  - {fileID: 2100000, guid: 3cfe066665d98054f99e6fe27dc97d2e, type: 2}
   _claimCost: 1
-  _interactionButtonPopUpText: 
-  _tilePopUpText: Can be upgraded with various infrastructures
   _incomes:
   - resource: 0
     value: 1
@@ -24,7 +24,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ab6dee53a8e596b40ae96f77c15d9d33, type: 2}
   - {fileID: 11400000, guid: b5e79191f4522cc4a81b4bb777d213c6, type: 2}
   - {fileID: 11400000, guid: 758e0bfcbc1c85b4f8d4064dfc028b50, type: 2}
-  _specialBehaviours: []
   _popUpPrefab: {fileID: 4604967413891682696, guid: 8a2a6ee03e8ce0142be608694ce4402e, type: 3}
-  _visuals:
-  - {fileID: 2100000, guid: 3cfe066665d98054f99e6fe27dc97d2e, type: 2}
+  _interactionButtonPopUpText: 
+  _tilePopUpText: Can be upgraded with various infrastructures
+  _specialBehaviours: []

@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Desert
   m_EditorClassIdentifier: 
   _name: Desert
+  _visuals:
+  - {fileID: 2100000, guid: b32ab3d85f55de34898b768a0b08af42, type: 2}
   _claimCost: 2
-  _interactionButtonPopUpText: 
-  _tilePopUpText: Can be enhanced only with a basic infrastructure.
   _incomes: []
   _availableInfrastructures:
   - {fileID: 11400000, guid: e44c1dda52ebbb840a23266de7f454ff, type: 2}
-  _specialBehaviours: []
   _popUpPrefab: {fileID: 9159292565962417168, guid: 787935b1706731845ae4313f79f42b96, type: 3}
-  _visuals:
-  - {fileID: 2100000, guid: b32ab3d85f55de34898b768a0b08af42, type: 2}
+  _interactionButtonPopUpText: 
+  _tilePopUpText: Can be enhanced only with a basic infrastructure.
+  _specialBehaviours: []

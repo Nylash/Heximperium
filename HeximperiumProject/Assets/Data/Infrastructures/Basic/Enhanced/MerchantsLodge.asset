@@ -13,21 +13,21 @@ MonoBehaviour:
   m_Name: MerchantsLodge
   m_EditorClassIdentifier: 
   _name: Merchant's Lodge
-  _claimCost: 0
-  _interactionButtonPopUpText: +3 Gold per Tavern, Village and Town in the empire
-  _tilePopUpText: +3 Gold per Tavern, Village and Town in the empire
-  _incomes: []
-  _availableInfrastructures: []
-  _specialBehaviours:
-  - {fileID: 11400000, guid: 9f090d230cd54f147ab9062e67dffc7c, type: 2}
-  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
   _visuals:
   - {fileID: 2100000, guid: d214c5239ee4ee8408948c5f67b7742c, type: 2}
-  _scoutStartingPoint: 1
+  _claimCost: 0
+  _incomes: []
+  _availableInfrastructures: []
+  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
+  _interactionButtonPopUpText: +3 Gold per Tavern, Village and Town in the empire
+  _tilePopUpText: +3 Gold per Tavern, Village and Town in the empire
+  _specialBehaviours:
+  - {fileID: 11400000, guid: 9f090d230cd54f147ab9062e67dffc7c, type: 2}
   _costs:
   - resource: 0
     value: 15
   - resource: 1
     value: 5
   _associatedSystem: 2
+  _scoutStartingPoint: 1
   isTown: 0

@@ -13,22 +13,22 @@ MonoBehaviour:
   m_Name: Farm
   m_EditorClassIdentifier: 
   _name: Farm
+  _visuals:
+  - {fileID: 2100000, guid: 03239661f465b8d499e4e85aa1565a72, type: 2}
   _claimCost: 0
-  _interactionButtonPopUpText: +2 Gold
-  _tilePopUpText: 
   _incomes:
   - resource: 0
     value: 2
   _availableInfrastructures:
   - {fileID: 11400000, guid: 4e8ee20a776700a43b1e6df15478b4cc, type: 2}
   - {fileID: 11400000, guid: aaef9a2cdbf4922458d685f80add1a47, type: 2}
-  _specialBehaviours: []
   _popUpPrefab: {fileID: 4211441305533441537, guid: ef8dd89153ab58342bac319dd00772f5, type: 3}
-  _visuals:
-  - {fileID: 2100000, guid: 03239661f465b8d499e4e85aa1565a72, type: 2}
-  _scoutStartingPoint: 0
+  _interactionButtonPopUpText: +2 Gold
+  _tilePopUpText: 
+  _specialBehaviours: []
   _costs:
   - resource: 0
     value: 5
   _associatedSystem: 4
+  _scoutStartingPoint: 0
   isTown: 0

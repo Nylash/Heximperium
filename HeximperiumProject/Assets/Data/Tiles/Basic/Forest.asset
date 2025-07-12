@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Forest
   m_EditorClassIdentifier: 
   _name: Forest
+  _visuals:
+  - {fileID: 2100000, guid: e6b96fa77398b29419670ed5197c8598, type: 2}
   _claimCost: 1
-  _interactionButtonPopUpText: 
-  _tilePopUpText: Can be upgraded with various infrastructures
   _incomes:
   - resource: 0
     value: 2
@@ -24,7 +24,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5ca3036386a9b6c4b9854d3dd28b2275, type: 2}
   - {fileID: 11400000, guid: 758e0bfcbc1c85b4f8d4064dfc028b50, type: 2}
   - {fileID: 11400000, guid: 4ee189cb8dd9a1b4584cdd486968e6c6, type: 2}
-  _specialBehaviours: []
   _popUpPrefab: {fileID: 4604967413891682696, guid: 8a2a6ee03e8ce0142be608694ce4402e, type: 3}
-  _visuals:
-  - {fileID: 2100000, guid: e6b96fa77398b29419670ed5197c8598, type: 2}
+  _interactionButtonPopUpText: 
+  _tilePopUpText: Can be upgraded with various infrastructures
+  _specialBehaviours: []

@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 2
   _basePoints: 2
-  _specialEffect: {fileID: 11400000, guid: 496c3eb9acd663a4bb4b5adfd6d63e9e, type: 2}
   _costs:
   - resource: 0
     value: 10
   - resource: 1
     value: 10
+  _specialEffect: {fileID: 11400000, guid: 496c3eb9acd663a4bb4b5adfd6d63e9e, type: 2}

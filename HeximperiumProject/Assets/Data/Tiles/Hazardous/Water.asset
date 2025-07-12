@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Water
   m_EditorClassIdentifier: 
   _name: Water
+  _visuals:
+  - {fileID: 2100000, guid: 0ca2f32323c98a949aa45fbf6b47d03e, type: 2}
   _claimCost: 2
-  _interactionButtonPopUpText: 
-  _tilePopUpText: Can be enhanced only with a basic infrastructure.
   _incomes: []
   _availableInfrastructures:
   - {fileID: 11400000, guid: fb5a95d0d24473e428959d7d1ca2f553, type: 2}
-  _specialBehaviours: []
   _popUpPrefab: {fileID: 9159292565962417168, guid: 787935b1706731845ae4313f79f42b96, type: 3}
-  _visuals:
-  - {fileID: 2100000, guid: 0ca2f32323c98a949aa45fbf6b47d03e, type: 2}
+  _interactionButtonPopUpText: 
+  _tilePopUpText: Can be enhanced only with a basic infrastructure.
+  _specialBehaviours: []

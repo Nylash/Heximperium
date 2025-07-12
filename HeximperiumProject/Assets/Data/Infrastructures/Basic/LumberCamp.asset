@@ -13,22 +13,22 @@ MonoBehaviour:
   m_Name: LumberCamp
   m_EditorClassIdentifier: 
   _name: Lumber Camp
+  _visuals:
+  - {fileID: 2100000, guid: daad9f8ad86d848408302c9a5e1bf049, type: 2}
   _claimCost: 0
-  _interactionButtonPopUpText: +4 Gold
-  _tilePopUpText: 
   _incomes:
   - resource: 0
     value: 4
   _availableInfrastructures:
   - {fileID: 11400000, guid: 080b9724204199b4391c063d2baf22a0, type: 2}
   - {fileID: 11400000, guid: b37495b18e4aaa54cb318dcbfed9d94f, type: 2}
-  _specialBehaviours: []
   _popUpPrefab: {fileID: 4211441305533441537, guid: ef8dd89153ab58342bac319dd00772f5, type: 3}
-  _visuals:
-  - {fileID: 2100000, guid: daad9f8ad86d848408302c9a5e1bf049, type: 2}
-  _scoutStartingPoint: 0
+  _interactionButtonPopUpText: +4 Gold
+  _tilePopUpText: 
+  _specialBehaviours: []
   _costs:
   - resource: 0
     value: 10
   _associatedSystem: 4
+  _scoutStartingPoint: 0
   isTown: 0
