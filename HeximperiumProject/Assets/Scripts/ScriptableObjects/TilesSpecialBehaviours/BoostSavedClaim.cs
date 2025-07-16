@@ -7,14 +7,12 @@ public class BoostSavedClaim : SpecialBehaviour
 
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
     {
-        for (int i = 0; i < _savedClaim; i++)
-            ExpansionManager.Instance.SavedClaimPerTurn++;
+        ExpansionManager.Instance.SavedClaimPerTurn += _savedClaim;
     }
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
-        for (int i = 0; i < _savedClaim; i++)
-            ExpansionManager.Instance.SavedClaimPerTurn--;
+        ExpansionManager.Instance.SavedClaimPerTurn -= _savedClaim;
     }
 
     public override void HighlightImpactedTile(Tile behaviourTile, bool show)

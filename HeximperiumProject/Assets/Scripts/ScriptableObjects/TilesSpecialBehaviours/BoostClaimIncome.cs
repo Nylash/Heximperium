@@ -7,14 +7,12 @@ public class BoostClaimIncome : SpecialBehaviour
 
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
     {
-        for (int i = 0; i < _claimQuantity; i++)
-            ExpansionManager.Instance.ClaimPerTurn++;
+        ExpansionManager.Instance.ClaimPerTurn += _claimQuantity;
     }
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
-        for (int i = 0; i < _claimQuantity; i++)
-            ExpansionManager.Instance.ClaimPerTurn--;
+        ExpansionManager.Instance.ClaimPerTurn -= _claimQuantity;
     }
 
     public override void HighlightImpactedTile(Tile behaviourTile, bool show)
