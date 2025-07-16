@@ -5,6 +5,6 @@ public class UnlockTownGenerateClaim : UpgradeEffect
 {
     public override void ApplyEffect()
     {
-        ExpansionManager.Instance.UpgradeTownGenerateClaim = true;
+        ExpansionManager.Instance.UpgradeTownsGenerateClaim = true;
     }
 }

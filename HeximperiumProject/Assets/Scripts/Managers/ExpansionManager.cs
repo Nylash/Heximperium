@@ -17,7 +17,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     private int _savedClaimPerTurn;
     //Upgrades variables
     private bool _upgradeTownAutoClaim;
-    private bool _upgradeTownGenerateClaim;
+    private bool _upgradeTownsGenerateClaim;
     private bool _upgradeHazardClaimReduction;
     private bool _upgradeClaimRange;
     #endregion
@@ -29,7 +29,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     public InfrastructureData TownData { get => _townData;}
     public int SavedClaimPerTurn { get => _savedClaimPerTurn; set => _savedClaimPerTurn = value; }
     public bool UpgradeTownAutoClaim { get => _upgradeTownAutoClaim; set => _upgradeTownAutoClaim = value; }
-    public bool UpgradeTownGenerateClaim { get => _upgradeTownGenerateClaim; set => _upgradeTownGenerateClaim = value; }
+    public bool UpgradeTownsGenerateClaim { get => _upgradeTownsGenerateClaim; set => _upgradeTownsGenerateClaim = value; }
     public bool UpgradeHazardClaimReduction { get => _upgradeHazardClaimReduction; set => _upgradeHazardClaimReduction = value; }
     public bool UpgradeClaimRange { get => _upgradeClaimRange; set => _upgradeClaimRange = value; }
     #endregion
@@ -52,16 +52,19 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     {
         ResourcesManager.Instance.UpdateClaim(_claimPerTurn, Transaction.Gain);
 
-        foreach (Tile tile in ExploitationManager.Instance.Infrastructures)
+        if (_upgradeTownsGenerateClaim)
         {
-            if(tile.TileData is InfrastructureData infra)
+            foreach (Tile tile in ExploitationManager.Instance.Infrastructures)
             {
-                if (infra.IsTown)
-                    ResourcesManager.Instance.UpdateClaim(1, Transaction.Gain, tile);
-            }
-            else
-            {
-                Debug.LogError("TileData is not an InfrastructureData on tile: " + tile.name + " and yet it is in the Infrastructures list.");
+                if (tile.TileData is InfrastructureData infra)
+                {
+                    if (infra.IsTown)
+                        ResourcesManager.Instance.UpdateClaim(1, Transaction.Gain, tile);
+                }
+                else
+                {
+                    Debug.LogError("TileData is not an InfrastructureData on tile: " + tile.name + " and yet it is in the Infrastructures list.");
+                }
             }
         }
     }
