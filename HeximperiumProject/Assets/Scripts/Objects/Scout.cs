@@ -15,6 +15,7 @@ public class Scout : MonoBehaviour
     private Tile _currentTile;
     private bool _hasDoneMoving;
     private float _yOffset;
+    private bool _hasRedirected;
     //Gameplay variables
     private int _speed;
     private int _lifespan;
@@ -41,6 +42,7 @@ public class Scout : MonoBehaviour
     public int RevealRadius { get => _revealRadius; set => _revealRadius = value; }
     public Tile CurrentTile { get => _currentTile; set => _currentTile = value; }
     public bool HasDoneMoving { get => _hasDoneMoving;}
+    public bool HasRedirected { get => _hasRedirected; set => _hasRedirected = value; }
     #endregion
 
     #region EVENTS
@@ -108,6 +110,7 @@ public class Scout : MonoBehaviour
         _currentTile.UpdateScoutCounter();
 
         _hasDoneMoving = true;
+        _hasRedirected = false;
     }
 
     //Check if the scout must stay alive

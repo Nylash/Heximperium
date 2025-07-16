@@ -33,6 +33,7 @@ public class InteractionButton : MonoBehaviour
     private EntertainmentData _entertainData;
     private Animator _animator;
     private GameObject _highlightedClone;
+    private Scout _associatedScout;
     #endregion
 
     #region ACCESSORS
@@ -41,6 +42,7 @@ public class InteractionButton : MonoBehaviour
     public InfrastructureData InfrastructureData { get => _infraData;}
     public EntertainmentData EntertainData { get => _entertainData;}
     public ScoutData ScoutData { get => _scoutData;}
+    public Scout AssociatedScout { get => _associatedScout; }
     #endregion
 
     private void Awake()
@@ -63,7 +65,7 @@ public class InteractionButton : MonoBehaviour
         
     }
 
-    public void Initialize(Tile associatedTile, Interaction action, InfrastructureData infraData = null, EntertainmentData entertainData = null)
+    public void Initialize(Tile associatedTile, Interaction action, InfrastructureData infraData = null, EntertainmentData entertainData = null, Scout scout = null)
     {
         _renderer = GetComponentInChildren<SpriteRenderer>();
         _associatedTile = associatedTile;
@@ -85,6 +87,9 @@ public class InteractionButton : MonoBehaviour
                 break;
             case Interaction.Entertainment:
                 InitializeEntertainment(entertainData);
+                break;
+            case Interaction.RedirectScout:
+                InitializeRedirectScout(scout);
                 break;
         }
 
@@ -125,6 +130,12 @@ public class InteractionButton : MonoBehaviour
         if (!ResourcesManager.Instance.CanAfford(_entertainData.Costs))
             _renderer.color = UIManager.Instance.ColorCantAfford;
         LoadSprite(_entertainData.name);
+    }
+
+    private void InitializeRedirectScout(Scout scout)
+    {
+        _associatedScout = scout;
+        LoadSprite(Interaction.RedirectScout.ToString());
     }
 
     private void LoadSprite(string spriteName)

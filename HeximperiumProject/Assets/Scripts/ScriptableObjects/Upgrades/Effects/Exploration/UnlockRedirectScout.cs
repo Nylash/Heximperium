@@ -5,6 +5,6 @@ public class UnlockRedirectScout : UpgradeEffect
 {
     public override void ApplyEffect()
     {
-        Debug.Log("Unlocking Redirect Scout");
+        ExplorationManager.Instance.UpgradeScoutRedirectable = true;
     }
 }

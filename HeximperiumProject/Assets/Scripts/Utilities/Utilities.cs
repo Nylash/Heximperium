@@ -70,10 +70,10 @@ public static class Utilities
     }
 
     //Create a button around a tile
-    public static GameObject CreateInteractionButton(Tile tile, Vector3 position, Interaction interactionType, InfrastructureData infraData = null, EntertainmentData entertainmentData = null)
+    public static GameObject CreateInteractionButton(Tile tile, Vector3 position, Interaction interactionType, InfrastructureData infraData = null, EntertainmentData entertainmentData = null, Scout scout = null)
     {
         GameObject button = GameObject.Instantiate(GameManager.Instance.InteractionPrefab, position, Quaternion.identity);
-        button.GetComponent<InteractionButton>().Initialize(tile, interactionType, infraData, entertainmentData);
+        button.GetComponent<InteractionButton>().Initialize(tile, interactionType, infraData, entertainmentData, scout);
 
         return button;
     }
@@ -212,7 +212,7 @@ public enum Transaction
 
 public enum Interaction
 {
-    Claim, Scout, Infrastructure, Destroy, Entertainment
+    Claim, Scout, Infrastructure, Destroy, Entertainment, RedirectScout
 }
 
 public enum EntertainmentType

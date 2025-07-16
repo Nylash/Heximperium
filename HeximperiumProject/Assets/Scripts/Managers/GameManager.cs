@@ -244,6 +244,9 @@ public class GameManager : Singleton<GameManager>
             case Interaction.Entertainment:
                 EntertainmentManager.Instance.SpawnEntertainment(button.AssociatedTile, button.EntertainData);
                 break;
+            case Interaction.RedirectScout:
+                ExplorationManager.Instance.RedirectScout(button.AssociatedTile, button.AssociatedScout);
+                break;
             default: 
                 Debug.LogError("This interaction is not handle : " +  button.Interaction);
                 break;

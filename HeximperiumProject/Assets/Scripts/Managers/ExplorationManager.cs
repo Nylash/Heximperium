@@ -33,6 +33,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     private int _boostScoutRevealRadius;
     private int _upgradeScoutRevealOnDeathRadius;
     private bool _upgradeScoutIgnoreHazard;
+    private bool _upgradeScoutRedirectable;
     #endregion
 
     #region EVENTS
@@ -96,6 +97,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     }
     public int UpgradeScoutRevealOnDeathRadius { get => _upgradeScoutRevealOnDeathRadius; set => _upgradeScoutRevealOnDeathRadius = value; }
     public bool UpgradeScoutIgnoreHazard { get => _upgradeScoutIgnoreHazard; set => _upgradeScoutIgnoreHazard = value; }
+    public bool UpgradeScoutRedirectable { get => _upgradeScoutRedirectable; set => _upgradeScoutRedirectable = value; }
     #endregion
 
     protected override void OnAwake()
@@ -143,6 +145,8 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
                     tile.Highlight(true);
             }
         }
+
+        ResourcesManager.Instance.CHEAT_RESOURCES();
     }
 
     protected override void ConfirmPhase()
@@ -174,6 +178,31 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
             return;
 
         _interactionPositions.Clear();
+
+        if (_upgradeScoutRedirectable)
+        {
+            if(tile.Scouts.Count > 0)
+            {
+                foreach (Scout scout in tile.Scouts)
+                {
+                    if (!scout.HasRedirected)
+                    {
+                        if(tile.TileData is InfrastructureData data && data.ScoutStartingPoint)
+                        {
+                            _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 2);
+                            ScoutInteraction(tile, 0);
+                            RedirectScoutInteraction(tile, 1, scout);
+                        }
+                        else
+                        {
+                            _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
+                            RedirectScoutInteraction(tile, 0, scout);
+                        }
+                        return;
+                    }
+                }
+            }
+        }
 
         if (tile.TileData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
         {
@@ -208,9 +237,22 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         }
     }
 
+    public void RedirectScout(Tile tile, Scout scout)
+    {
+        _currentScout = scout;
+        _currentScout.HasRedirected = true;
+        _tileRefForScoutDirection = tile;
+        _choosingScoutDirection = true;
+    }
+
     private void ScoutInteraction(Tile tile, int positionIndex)
     {
         _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Scout));
+    }
+
+    private void RedirectScoutInteraction(Tile tile, int positionIndex, Scout scout)
+    {
+        _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.RedirectScout, null, null, scout));
     }
     #endregion
 
