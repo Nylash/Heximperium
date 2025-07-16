@@ -15,6 +15,8 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     private List<Tile> _claimedTiles = new List<Tile>();
     private int _claimPerTurn;
     private int _savedClaimPerTurn;
+    //Upgrades variables
+    private bool _upgradeTownAutoClaim;
     #endregion
 
     #region ACCESSORS
@@ -23,6 +25,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     public List<Tile> ClaimedTiles { get => _claimedTiles; }
     public InfrastructureData TownData { get => _townData;}
     public int SavedClaimPerTurn { get => _savedClaimPerTurn; set => _savedClaimPerTurn = value; }
+    public bool UpgradeTownAutoClaim { get => _upgradeTownAutoClaim; set => _upgradeTownAutoClaim = value; }
     #endregion
 
     #region EVENTS
@@ -100,13 +103,14 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
         _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Infrastructure, _townData));
     }
 
-    public void ClaimTile(Tile tile)
+    public void ClaimTile(Tile tile, bool freeClaim)
     {
         if (tile.Claimed)
             return;
-        if (ResourcesManager.Instance.CanAffordClaim(tile.TileData.ClaimCost))
+        if (ResourcesManager.Instance.CanAffordClaim(tile.TileData.ClaimCost) || freeClaim)
         {
-            ResourcesManager.Instance.UpdateClaim(tile.TileData.ClaimCost, Transaction.Spent);
+            if (!freeClaim)
+                ResourcesManager.Instance.UpdateClaim(tile.TileData.ClaimCost, Transaction.Spent);
             tile.ClaimTile();
             _claimedTiles.Add(tile);
             foreach (Tile t in _claimedTiles)
@@ -134,6 +138,16 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
                 }
                 ExploitationManager.Instance.BuildInfrastructure(tile, _townData);
                 UIManager.Instance.UpdateTownLimit();
+
+                if (_upgradeTownAutoClaim)
+                {
+                    foreach (Tile neighbor in tile.Neighbors)
+                    {
+                        if (!neighbor)
+                            continue;
+                        ClaimTile(neighbor, true);
+                    }
+                }
             }
         }
     }

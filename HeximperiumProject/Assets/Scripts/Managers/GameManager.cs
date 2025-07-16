@@ -144,9 +144,7 @@ public class GameManager : Singleton<GameManager>
         {
             if (!tile)
                 continue;
-            //Give the player claim for the tile
-            ResourcesManager.Instance.UpdateClaim(tile.TileData.ClaimCost, Transaction.Gain);
-            ExpansionManager.Instance.ClaimTile(tile);
+            ExpansionManager.Instance.ClaimTile(tile, true);
         }
 
         ExpansionManager.Instance.ClaimPerTurn = _baseClaimPerTurn;
@@ -224,7 +222,7 @@ public class GameManager : Singleton<GameManager>
         switch (button.Interaction)
         {
             case Interaction.Claim:
-                ExpansionManager.Instance.ClaimTile(button.AssociatedTile);
+                ExpansionManager.Instance.ClaimTile(button.AssociatedTile, false);
                 break;
             case Interaction.Scout:
                 ExplorationManager.Instance.SpawnScout(button.AssociatedTile);

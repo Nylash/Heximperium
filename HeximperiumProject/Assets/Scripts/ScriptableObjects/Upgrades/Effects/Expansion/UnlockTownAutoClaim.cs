@@ -5,6 +5,6 @@ public class UnlockTownAutoClaim : UpgradeEffect
 {
     public override void ApplyEffect()
     {
-
+        ExpansionManager.Instance.UpgradeTownAutoClaim = true;
     }
 }

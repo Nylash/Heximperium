@@ -137,6 +137,9 @@ public class Tile : MonoBehaviour
     //Claim the tile and spawn the territory boundaries
     public void ClaimTile()
     {
+        if (!_revealed)
+            RevealTile(false);
+
         _claimed = true;
         OnTileClaimed.Invoke(this);
         _border = Instantiate(_borderPrefab, transform.position, Quaternion.identity).GetComponent<Border>();
