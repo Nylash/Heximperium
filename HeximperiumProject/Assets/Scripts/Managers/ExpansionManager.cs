@@ -18,6 +18,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     //Upgrades variables
     private bool _upgradeTownAutoClaim;
     private bool _upgradeTownGenerateClaim;
+    private bool _upgradeHazardClaimReduction;
     #endregion
 
     #region ACCESSORS
@@ -28,6 +29,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     public int SavedClaimPerTurn { get => _savedClaimPerTurn; set => _savedClaimPerTurn = value; }
     public bool UpgradeTownAutoClaim { get => _upgradeTownAutoClaim; set => _upgradeTownAutoClaim = value; }
     public bool UpgradeTownGenerateClaim { get => _upgradeTownGenerateClaim; set => _upgradeTownGenerateClaim = value; }
+    public bool UpgradeHazardClaimReduction { get => _upgradeHazardClaimReduction; set => _upgradeHazardClaimReduction = value; }
     #endregion
 
     #region EVENTS
@@ -122,6 +124,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     {
         if (tile.Claimed)
             return;
+
         if (ResourcesManager.Instance.CanAffordClaim(tile.TileData.ClaimCost) || freeClaim)
         {
             if (!freeClaim)
@@ -143,14 +146,8 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
             {
                 // Start by claiming the tile if needed
                 if (!tile.Claimed)
-                {
-                    tile.ClaimTile();
-                    _claimedTiles.Add(tile);
-                    foreach (Tile t in _claimedTiles)
-                        t.CheckBorder();
-                    tile.transform.parent = _claimedTilesParent;
-                    OnTileClaimed.Invoke(tile);
-                }
+                    ClaimTile(tile, true);
+
                 ExploitationManager.Instance.BuildInfrastructure(tile, _townData);
                 UIManager.Instance.UpdateTownLimit();
 

@@ -20,7 +20,7 @@ public class TileData : ScriptableObject
     [SerializeField] private List<SpecialBehaviour> _specialBehaviours = new List<SpecialBehaviour>();
 
     public string TileName { get => _name; }
-    public int ClaimCost { get => _claimCost; }
+    public virtual int ClaimCost { get => _claimCost; }
     public List<ResourceToIntMap> Incomes { get => _incomes; }
     public List<InfrastructureData> AvailableInfrastructures { get => _availableInfrastructures; }
     public List<SpecialBehaviour> SpecialBehaviours { get => _specialBehaviours; }

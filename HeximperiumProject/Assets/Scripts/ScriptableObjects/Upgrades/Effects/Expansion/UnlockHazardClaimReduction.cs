@@ -5,6 +5,6 @@ public class UnlockHazardClaimReduction : UpgradeEffect
 {
     public override void ApplyEffect()
     {
-
+        ExpansionManager.Instance.UpgradeHazardClaimReduction = true;
     }
 }
