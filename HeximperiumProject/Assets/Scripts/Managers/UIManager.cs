@@ -499,6 +499,14 @@ public class UIManager : Singleton<UIManager>
 
     public void OpenCloseMenu()
     {
+        //Close the upgrades menu if it's open instead of opening the main menu
+        if (_upgradesMenu.activeSelf)
+        {
+            _upgradesMenu.GetComponent<Animator>().SetTrigger("Fold");
+            GameManager.Instance.GamePaused = false;
+            return;
+        }
+
         _menu.SetActive(!_menu.activeSelf);
         GameManager.Instance.GamePaused = _menu.activeSelf;
         ResetPopUps(null);

@@ -272,9 +272,9 @@ MonoBehaviour:
   _persistentSingleton: 0
   _cameraMovementSpeed: 5
   _cameraDragSpeed: 2
-  _cameraZoomSpeed: 25
   _edgePanMargin: 2
   _edgePanSpeed: 3
+  _cameraZoomSpeed: 25
   _maxZoomLevel: 3.5
   _minZoomLevel: 20
 --- !u!1 &343468651
