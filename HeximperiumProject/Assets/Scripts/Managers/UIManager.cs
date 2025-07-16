@@ -61,6 +61,7 @@ public class UIManager : Singleton<UIManager>
     [Header("_________________________________________________________")]
     [Header("UpgradesMenu")]
     [SerializeField] private GameObject _upgradesMenu;
+    [SerializeField] private List<GameObject> _upgradeTrees;
     #endregion
 
     #region VARIABLES
@@ -537,6 +538,16 @@ public class UIManager : Singleton<UIManager>
                 TradeMenu();
             _upgradesMenu.SetActive(true);
             GameManager.Instance.GamePaused = true;
+        }
+    }
+
+    public void ShowUpgradeTree(GameObject associatedTree)
+    {
+        associatedTree.SetActive(true);
+        foreach (GameObject tree in _upgradeTrees)
+        {
+            if (tree != associatedTree)
+                tree.SetActive(false);
         }
     }
     #endregion
