@@ -19,6 +19,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     private bool _upgradeTownAutoClaim;
     private bool _upgradeTownGenerateClaim;
     private bool _upgradeHazardClaimReduction;
+    private bool _upgradeClaimRange;
     #endregion
 
     #region ACCESSORS
@@ -30,6 +31,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     public bool UpgradeTownAutoClaim { get => _upgradeTownAutoClaim; set => _upgradeTownAutoClaim = value; }
     public bool UpgradeTownGenerateClaim { get => _upgradeTownGenerateClaim; set => _upgradeTownGenerateClaim = value; }
     public bool UpgradeHazardClaimReduction { get => _upgradeHazardClaimReduction; set => _upgradeHazardClaimReduction = value; }
+    public bool UpgradeClaimRange { get => _upgradeClaimRange; set => _upgradeClaimRange = value; }
     #endregion
 
     #region EVENTS
@@ -104,9 +106,14 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
         //We can only build town on basic tile
         if (tile.TileData is BasicTileData)
             TownInteraction(tile, 0);
-        //We can only claimed tiles adjacent to already claimed tiles
+        //We can only claimed tiles adjacent to already claimed tiles (except if we got the upgrade)
         if (tile.IsOneNeighborClaimed())
             ClaimInteraction(tile, 1);
+        else if (_upgradeClaimRange)
+        {
+            if (tile.IsOneNeighborOfNeighborClaimed())
+                ClaimInteraction(tile, 1);
+        }
     }
 
     #region INTERACTION

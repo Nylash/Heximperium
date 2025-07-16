@@ -240,6 +240,18 @@ public class Tile : MonoBehaviour
         }
         return false;
     }
+
+    public bool IsOneNeighborOfNeighborClaimed()
+    {
+        foreach (Tile neighbor in _neighbors)
+        {
+            if (!neighbor)
+                continue;
+            if(neighbor.IsOneNeighborClaimed())
+                return true;
+        }
+        return false;
+    }
     #endregion
 
     #region SPECIAL BEHAVIOUR

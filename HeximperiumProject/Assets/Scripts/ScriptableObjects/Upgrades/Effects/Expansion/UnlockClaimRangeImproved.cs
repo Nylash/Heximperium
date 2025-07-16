@@ -5,6 +5,6 @@ public class UnlockClaimRangeImproved : UpgradeEffect
 {
     public override void ApplyEffect()
     {
-
+        ExpansionManager.Instance.UpgradeClaimRange = true;
     }
 }
