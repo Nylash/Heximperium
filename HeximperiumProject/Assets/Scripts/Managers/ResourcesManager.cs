@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class ResourcesManager : Singleton<ResourcesManager>
 {
@@ -18,6 +19,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
     [SerializeField] private GameObject _resourceGainPrefab;
     [SerializeField] private Material _goldVFXMat;
     [SerializeField] private Material _srVFXMat;
+    [SerializeField] private Material _claimVFXMat;
     #endregion
 
     #region VARIABLES
@@ -144,7 +146,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
         }
     }
 
-    public void UpdateClaim(int value, Transaction transaction)
+    public void UpdateClaim(int value, Transaction transaction, Tile tile = null)
     {
         if (transaction == Transaction.Spent)
             value = -value;
@@ -152,6 +154,12 @@ public class ResourcesManager : Singleton<ResourcesManager>
         if(_claim < 0)
             _claim = 0;
         UIManager.Instance.UpdateClaimUI(_claim);
+
+        //Play VFX if we gain claim from a tile
+        if (tile != null && transaction == Transaction.Gain)
+        {
+            Utilities.PlayResourceGainVFX(tile, _resourceGainPrefab, _claimVFXMat, value);
+        }
     }
 
     public void SpendAllResources()

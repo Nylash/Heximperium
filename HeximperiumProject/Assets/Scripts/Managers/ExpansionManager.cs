@@ -17,6 +17,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     private int _savedClaimPerTurn;
     //Upgrades variables
     private bool _upgradeTownAutoClaim;
+    private bool _upgradeTownGenerateClaim;
     #endregion
 
     #region ACCESSORS
@@ -26,6 +27,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     public InfrastructureData TownData { get => _townData;}
     public int SavedClaimPerTurn { get => _savedClaimPerTurn; set => _savedClaimPerTurn = value; }
     public bool UpgradeTownAutoClaim { get => _upgradeTownAutoClaim; set => _upgradeTownAutoClaim = value; }
+    public bool UpgradeTownGenerateClaim { get => _upgradeTownGenerateClaim; set => _upgradeTownGenerateClaim = value; }
     #endregion
 
     #region EVENTS
@@ -45,6 +47,19 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     protected override void StartPhase()
     {
         ResourcesManager.Instance.UpdateClaim(_claimPerTurn, Transaction.Gain);
+
+        foreach (Tile tile in ExploitationManager.Instance.Infrastructures)
+        {
+            if(tile.TileData is InfrastructureData infra)
+            {
+                if (infra.IsTown)
+                    ResourcesManager.Instance.UpdateClaim(1, Transaction.Gain, tile);
+            }
+            else
+            {
+                Debug.LogError("TileData is not an InfrastructureData on tile: " + tile.name + " and yet it is in the Infrastructures list.");
+            }
+        }
     }
 
     protected override void ConfirmPhase()

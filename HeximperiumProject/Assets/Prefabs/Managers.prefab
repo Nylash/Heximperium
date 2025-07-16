@@ -237,6 +237,7 @@ MonoBehaviour:
   _resourceGainPrefab: {fileID: 1592618839310326476, guid: 8877b2626b274684c822c44ca64252e0, type: 3}
   _goldVFXMat: {fileID: 2100000, guid: 4494af5224e05ff45bd6a3182b886f8e, type: 2}
   _srVFXMat: {fileID: 2100000, guid: a6d2a5f51d41f094e86302fc07fae9ad, type: 2}
+  _claimVFXMat: {fileID: 2100000, guid: b2d161b0d703fe947a81431024d07306, type: 2}
 --- !u!114 &5267516574475156646
 MonoBehaviour:
   m_ObjectHideFlags: 0
