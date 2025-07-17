@@ -62,6 +62,7 @@ public class UIManager : Singleton<UIManager>
     [Header("UpgradesMenu")]
     [SerializeField] private GameObject _upgradesMenu;
     [SerializeField] private List<GameObject> _upgradeTrees;
+    [SerializeField] private GameObject _lineRendererPrefab;
     #endregion
 
     #region VARIABLES
@@ -78,6 +79,7 @@ public class UIManager : Singleton<UIManager>
 
     #region ACCESSORS
     public Color ColorCantAfford { get => _colorCantAfford;}
+    public GameObject LineRendererPrefab { get => _lineRendererPrefab; }
     #endregion
 
     protected override void OnAwake()
