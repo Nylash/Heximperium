@@ -14,12 +14,10 @@ public class UI_UpgradeNode : MonoBehaviour
     private Button _btn;
     private List<UILineRenderer> _connectors = new List<UILineRenderer>();
 
-    void Awake()
+    private void Awake()
     {
         _btn = GetComponent<Button>();
         _btn.onClick.AddListener(() => UpgradesManager.Instance.UnlockNode(_nodeData));
-
-        CreateConnectors();
     }
 
     public void UpdateVisual()
@@ -27,7 +25,8 @@ public class UI_UpgradeNode : MonoBehaviour
         //Update the button's interactable state and connectors' state based on the node's cost, prerequisites and exclusivity
     }
 
-    private void CreateConnectors()
+    //[ContextMenu("Create Connectors")] Right click in the inspector to create connectors manually
+    public void CreateConnectors()
     {
         //Create connectors to previous nodes
         foreach (UI_UpgradeNode previousNode in _previousNodes)
