@@ -67,7 +67,9 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject _lineRendererPrefab;
     [SerializeField] private Color _colorLocked;
     [SerializeField] private Color _colorUnlocked;
-    [SerializeField] private Sprite _spriteUnlocked;
+    [SerializeField] private Sprite _spriteButtonUnlocked;
+    [SerializeField] private GameObject _markerExclusiveUpgrade;
+    [SerializeField] private Sprite _markerExclusiveUpgradeLocked;
     #endregion
 
     #region VARIABLES
@@ -88,7 +90,9 @@ public class UIManager : Singleton<UIManager>
     public Color ColorLocked { get => _colorLocked; }
     public Color ColorUnlocked { get => _colorUnlocked; }
     public UpgradeTree ActivatedTree { get => _activatedTree; }
-    public Sprite SpriteUnlocked { get => _spriteUnlocked; }
+    public Sprite SpriteUnlocked { get => _spriteButtonUnlocked; }
+    public GameObject MarkerExclusiveUpgrade { get => _markerExclusiveUpgrade; }
+    public Sprite MarkerExclusiveUpgradeLocked { get => _markerExclusiveUpgradeLocked; }
     #endregion
 
     protected override void OnAwake()

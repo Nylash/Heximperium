@@ -1,21 +1,25 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public class UpgradesManager : Singleton<UpgradesManager>
 {
     private List<UpgradeNodeData> _unlockedNodes = new List<UpgradeNodeData>();
 
-    public void UnlockNode(UpgradeNodeData node)
+    public Action<UI_UpgradeNode> OnNodeUnlocked;
+
+    public void UnlockNode(UI_UpgradeNode node)
     {
-        if (CanUnlockNode(node) == UpgradeStatus.Unlockable)
+        if (CanUnlockNode(node.NodeData) == UpgradeStatus.Unlockable)
         {
-            ResourcesManager.Instance.UpdateResource(node.Costs, Transaction.Spent);
-            _unlockedNodes.Add(node);
-            node.Effect.ApplyEffect();
+            ResourcesManager.Instance.UpdateResource(node.NodeData.Costs, Transaction.Spent);
+            _unlockedNodes.Add(node.NodeData);
+            node.NodeData.Effect.ApplyEffect();
 
             foreach (UI_UpgradeNode n in UIManager.Instance.ActivatedTree.nodes)
                 n.UpdateVisual();
+
+            OnNodeUnlocked?.Invoke(node);
         }
     }
 

@@ -14,6 +14,7 @@ public class UI_UpgradeNode : MonoBehaviour
 
     private Button _btn;
     private Image _img;
+    private Image _imageExclusiveMarker;
 
     public UpgradeNodeData NodeData { get => _nodeData; }
 
@@ -21,9 +22,19 @@ public class UI_UpgradeNode : MonoBehaviour
     {
         _btn = GetComponent<Button>();
         _img = GetComponent<Image>();
-        _btn.onClick.AddListener(() => UpgradesManager.Instance.UnlockNode(_nodeData));
+        _btn.onClick.AddListener(() => UpgradesManager.Instance.UnlockNode(this));
 
         UpdateVisual();
+
+        if(_nodeData.ExclusiveNode != null)
+        {
+            AddExclusiveMarker();
+            UpgradesManager.Instance.OnNodeUnlocked += node =>
+            {
+                if (node.NodeData != _nodeData.ExclusiveNode) return;
+                _imageExclusiveMarker.sprite = UIManager.Instance.MarkerExclusiveUpgradeLocked;
+            };
+        }
     }
 
     public void UpdateVisual()
@@ -50,6 +61,8 @@ public class UI_UpgradeNode : MonoBehaviour
                 _img.color = UIManager.Instance.ColorUnlocked;
                 _img.sprite = UIManager.Instance.SpriteUnlocked;
                 UpdateLinesColor(UIManager.Instance.ColorUnlocked);
+                if(_imageExclusiveMarker != null)
+                    Destroy(_imageExclusiveMarker.gameObject);
                 break;
             case UpgradeStatus.Unlockable:
                 _btn.interactable = true;
@@ -108,6 +121,40 @@ public class UI_UpgradeNode : MonoBehaviour
             line.gameObject.name = $"Line_{previousNode.gameObject.name}_to_{gameObject.name}";
             _connectors.Add(line);
         }
+    }
+
+    private void AddExclusiveMarker()
+    {
+        // 1. Get your RectTransform and its parent
+        RectTransform rt = GetComponent<RectTransform>();
+        RectTransform parent = rt.parent as RectTransform;
+
+        // normalized between bottom‑left and top‑left
+        Vector2 normAnchor = new Vector2(
+            rt.anchorMin.x,
+            (rt.anchorMin.y + rt.anchorMax.y) * 0.5f
+        );
+
+        // 3. Compute that point in the parent’s local space
+        Vector2 localPoint = Vector2.Scale(parent.rect.size, normAnchor) + parent.rect.min;
+
+        // 4. Transform to world space
+        Vector3 worldPoint = parent.TransformPoint(localPoint);
+
+        // 5. Convert to screen‐space (pixels) respecting your Canvas mode
+        Canvas canvas = rt.GetComponentInParent<Canvas>();
+        Camera cam = canvas.renderMode == RenderMode.ScreenSpaceOverlay
+                     ? null
+                     : canvas.worldCamera;
+        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(cam, worldPoint);
+
+        // screenPos now holds the anchor’s position in screen pixels
+        GameObject marker = Instantiate(UIManager.Instance.MarkerExclusiveUpgrade, rt.parent, false);
+        marker.transform.position = screenPos;
+
+        _imageExclusiveMarker = marker.GetComponent<Image>();
+
+        Utilities.ReanchorToCurrentRect(marker.GetComponent<RectTransform>());
     }
 
     private void UpdateLinesColor(Color targetColor)

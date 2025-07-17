@@ -20366,7 +20366,9 @@ MonoBehaviour:
   _lineRendererPrefab: {fileID: 7532355823851283849, guid: 401ee96745712584cb3f732ba08b21e1, type: 3}
   _colorLocked: {r: 0.5566038, g: 0.5566038, b: 0.5566038, a: 1}
   _colorUnlocked: {r: 0.8, g: 1, b: 0.6, a: 1}
-  _spriteUnlocked: {fileID: 21300000, guid: 4221f322073c2cd46bf0b61f41c34eb4, type: 3}
+  _spriteButtonUnlocked: {fileID: 21300000, guid: 4221f322073c2cd46bf0b61f41c34eb4, type: 3}
+  _markerExclusiveUpgrade: {fileID: 3134378323844459527, guid: ee4ea0b9a274faa47b3731d071d082fd, type: 3}
+  _markerExclusiveUpgradeLocked: {fileID: 21300000, guid: c0e3bf5e79d1ae8428a78c5a80e6d424, type: 3}
 --- !u!223 &6794449871484859327
 Canvas:
   m_ObjectHideFlags: 0
