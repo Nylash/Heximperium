@@ -13,24 +13,24 @@ MonoBehaviour:
   m_Name: FrontierTown
   m_EditorClassIdentifier: 
   _name: Frontier Town
+  _visuals:
+  - {fileID: 2100000, guid: 1f8cc9f053c5eba4a8af564751ae951e, type: 2}
   _claimCost: 0
-  _interactionButtonPopUpText: Scouts starting from this Town generate +2 Gold per
-    tile revealed & Grants access to two Exploration-oriented enhancements
-  _tilePopUpText: Scouts starting from this Town generate +2 Gold per tile revealed
   _incomes: []
   _availableInfrastructures:
   - {fileID: 11400000, guid: 3572fdf866caa424588aca2e05ed08bd, type: 2}
   - {fileID: 11400000, guid: 0722aac871e0fef4880d4f748a4000b0, type: 2}
+  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
+  _interactionButtonPopUpText: Scouts starting from this Town generate +2 Gold per
+    tile revealed & Grants access to two Exploration-oriented enhancements
+  _tilePopUpText: Scouts starting from this Town generate +2 Gold per tile revealed
   _specialBehaviours:
   - {fileID: 11400000, guid: 5478d080d18e8374c9dc875b349e3d22, type: 2}
-  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
-  _visuals:
-  - {fileID: 2100000, guid: 1f8cc9f053c5eba4a8af564751ae951e, type: 2}
-  _scoutStartingPoint: 1
   _costs:
   - resource: 0
     value: 20
   - resource: 1
     value: 10
   _associatedSystem: 0
+  _scoutStartingPoint: 1
   isTown: 1

@@ -109,6 +109,7 @@ GameObject:
   - component: {fileID: 5152465035945284524}
   - component: {fileID: 4571123148290906319}
   - component: {fileID: 1793441645777705967}
+  - component: {fileID: 5058650393401128906}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -148,6 +149,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
+  _turnLimit: 20
+  _baseClaimPerTurn: 4
   _selectionPrefab: {fileID: 5751803865783233614, guid: e580acc5ac7c8134c89770f42897a51d, type: 3}
   _interactionPrefab: {fileID: 4147331800932434178, guid: 2d0a51e95c38cdf408da2ba934e55be2, type: 3}
   OnNewTurn:
@@ -219,9 +222,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
-  _resourceGainPrefab: {fileID: 1592618839310326476, guid: 8877b2626b274684c822c44ca64252e0, type: 3}
-  _goldVFXMat: {fileID: 2100000, guid: 4494af5224e05ff45bd6a3182b886f8e, type: 2}
-  _srVFXMat: {fileID: 2100000, guid: a6d2a5f51d41f094e86302fc07fae9ad, type: 2}
   _tradeBuyCost:
   - resource: 0
     value: 10
@@ -234,6 +234,10 @@ MonoBehaviour:
   _tradeSellGain:
   - resource: 0
     value: 5
+  _resourceGainPrefab: {fileID: 1592618839310326476, guid: 8877b2626b274684c822c44ca64252e0, type: 3}
+  _goldVFXMat: {fileID: 2100000, guid: 4494af5224e05ff45bd6a3182b886f8e, type: 2}
+  _srVFXMat: {fileID: 2100000, guid: a6d2a5f51d41f094e86302fc07fae9ad, type: 2}
+  _claimVFXMat: {fileID: 2100000, guid: b2d161b0d703fe947a81431024d07306, type: 2}
 --- !u!114 &5267516574475156646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -252,10 +256,10 @@ MonoBehaviour:
       m_Calls: []
   _scoutData: {fileID: 11400000, guid: 6a1ce0d97c28e3841a7d3617eefff6a5, type: 2}
   _baseScoutsLimit: 1
+  _awaitTimeScoutMovement: 1
   _scoutsParent: {fileID: 6909736567104162395}
   _scoutPrefab: {fileID: 5066032661868510455, guid: 6df47c3f9f6c2a247be0ff0800c84d61, type: 3}
   _scoutCounterPrefab: {fileID: 1835970567070459480, guid: 53d981b0fda10094ca17866fb80ecf99, type: 3}
-  _awaitTimeScoutMovement: 1
   OnScoutsLimitModified:
     m_PersistentCalls:
       m_Calls: []
@@ -351,6 +355,19 @@ MonoBehaviour:
   OnScoreUpdated:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5058650393401128906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8076696492868688798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d962d9babdac0b468e87f0d9dfbe5fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _persistentSingleton: 0
 --- !u!1 &9076202116189138285
 GameObject:
   m_ObjectHideFlags: 0

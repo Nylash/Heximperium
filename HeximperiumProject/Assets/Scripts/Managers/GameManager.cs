@@ -4,18 +4,19 @@ using UnityEngine.EventSystems;
 
 public class GameManager : Singleton<GameManager>
 {
-    #region CONSTANTS
-    private const int TURN_LIMIT = 2;
-    #endregion
-
     #region CONFIGURATION
+    [Header("_________________________________________________________")]
+    [Header("Game Settings")]
+    [SerializeField] private int _turnLimit = 2;
+    [SerializeField] private int _baseClaimPerTurn = 4;
+    [Header("_________________________________________________________")]
+    [Header("Interaction Prefabs")]
     [SerializeField] private GameObject _selectionPrefab;
     [SerializeField] private GameObject _interactionPrefab;
     #endregion
 
     #region VARIABLES
     private InputSystem_Actions _inputActions;
-
     //Interaction with tiles
     private Ray _mouseRay;
     private RaycastHit _mouseRayHit;
@@ -23,7 +24,7 @@ public class GameManager : Singleton<GameManager>
     private Tile _previousSelectedTile;
     private bool _isPointerOverUI;
     private GameObject _selectionObject;
-
+    //Phase variables
     private bool _waitingPhaseFinalization;
     private Phase _currentPhase;
     private int _turnCounter = 1;
@@ -70,11 +71,6 @@ public class GameManager : Singleton<GameManager>
         ExpansionManager.Instance.OnPhaseFinalized.AddListener(PhaseFinalized);
         ExploitationManager.Instance.OnPhaseFinalized.AddListener(PhaseFinalized);
         EntertainmentManager.Instance.OnPhaseFinalized.AddListener(PhaseFinalized);
-    }
-
-    private void Start()
-    {
-
     }
 
     private void Update()
@@ -148,12 +144,10 @@ public class GameManager : Singleton<GameManager>
         {
             if (!tile)
                 continue;
-            //Give the player claim for the tile
-            ResourcesManager.Instance.UpdateClaim(tile.TileData.ClaimCost, Transaction.Gain);
-            ExpansionManager.Instance.ClaimTile(tile);
+            ExpansionManager.Instance.ClaimTile(tile, true);
         }
 
-        ExpansionManager.Instance.ClaimPerTurn = 4;
+        ExpansionManager.Instance.ClaimPerTurn = _baseClaimPerTurn;
     }
     #endregion
 
@@ -228,7 +222,7 @@ public class GameManager : Singleton<GameManager>
         switch (button.Interaction)
         {
             case Interaction.Claim:
-                ExpansionManager.Instance.ClaimTile(button.AssociatedTile);
+                ExpansionManager.Instance.ClaimTile(button.AssociatedTile, false);
                 break;
             case Interaction.Scout:
                 ExplorationManager.Instance.SpawnScout(button.AssociatedTile);
@@ -247,6 +241,9 @@ public class GameManager : Singleton<GameManager>
                     break;
             case Interaction.Entertainment:
                 EntertainmentManager.Instance.SpawnEntertainment(button.AssociatedTile, button.EntertainData);
+                break;
+            case Interaction.RedirectScout:
+                ExplorationManager.Instance.RedirectScout(button.AssociatedTile, button.AssociatedScout);
                 break;
             default: 
                 Debug.LogError("This interaction is not handle : " +  button.Interaction);
@@ -289,7 +286,7 @@ public class GameManager : Singleton<GameManager>
         //New turn logic
         if (_currentPhase == Phase.Explore)
         {
-            if (_turnCounter == TURN_LIMIT)
+            if (_turnCounter == _turnLimit)
             {
                 _currentPhase = Phase.Entertain;
             }

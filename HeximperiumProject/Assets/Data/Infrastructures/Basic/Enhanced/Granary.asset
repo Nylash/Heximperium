@@ -13,24 +13,24 @@ MonoBehaviour:
   m_Name: Granary
   m_EditorClassIdentifier: 
   _name: Granary
+  _visuals:
+  - {fileID: 2100000, guid: 0ef428988f14c604c96c393972d739a0, type: 2}
   _claimCost: 0
+  _incomes: []
+  _availableInfrastructures: []
+  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
   _interactionButtonPopUpText: Each adjacent Farm (except Freehold Farm) gives +2
     Gold to the Windmill
   _tilePopUpText: Each adjacent Farm (except Freehold Farm) gives +2 Gold to the
     Windmill
-  _incomes: []
-  _availableInfrastructures: []
   _specialBehaviours:
   - {fileID: 11400000, guid: 7ca701c08f762dd4fa86300725250759, type: 2}
   - {fileID: 11400000, guid: 002a356b595a8424ca88080815330aec, type: 2}
-  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
-  _visuals:
-  - {fileID: 2100000, guid: 0ef428988f14c604c96c393972d739a0, type: 2}
-  _scoutStartingPoint: 0
   _costs:
   - resource: 0
     value: 10
   - resource: 1
     value: 5
   _associatedSystem: 2
+  _scoutStartingPoint: 0
   isTown: 0

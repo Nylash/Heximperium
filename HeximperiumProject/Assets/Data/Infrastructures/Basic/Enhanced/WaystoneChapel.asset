@@ -13,24 +13,24 @@ MonoBehaviour:
   m_Name: WaystoneChapel
   m_EditorClassIdentifier: 
   _name: Waystone Chapel
+  _visuals:
+  - {fileID: 2100000, guid: 00f5aa32342ba2f498dae07f783318d5, type: 2}
   _claimCost: 0
-  _interactionButtonPopUpText: +2 Gold & +1 Claim
-  _tilePopUpText: +1 Claim
   _incomes:
   - resource: 0
     value: 2
   _availableInfrastructures: []
+  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
+  _interactionButtonPopUpText: +2 Gold & +1 Claim
+  _tilePopUpText: +1 Claim
   _specialBehaviours:
   - {fileID: 11400000, guid: a7ca7da112cd65742bed2cdf85e79f8a, type: 2}
   - {fileID: 11400000, guid: 2437ee6e79a80c44db85dcccff4eedcf, type: 2}
-  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
-  _visuals:
-  - {fileID: 2100000, guid: 00f5aa32342ba2f498dae07f783318d5, type: 2}
-  _scoutStartingPoint: 0
   _costs:
   - resource: 0
     value: 10
   - resource: 1
     value: 10
   _associatedSystem: 1
+  _scoutStartingPoint: 0
   isTown: 0

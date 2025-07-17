@@ -13,24 +13,24 @@ MonoBehaviour:
   m_Name: Sawmill
   m_EditorClassIdentifier: 
   _name: Sawmill
+  _visuals:
+  - {fileID: 2100000, guid: 91dcfa347f053064384c0f56b0e2a503, type: 2}
   _claimCost: 0
-  _interactionButtonPopUpText: +2 Gold & +3 Special Resources
-  _tilePopUpText: 
   _incomes:
   - resource: 0
     value: 2
   - resource: 1
     value: 3
   _availableInfrastructures: []
-  _specialBehaviours: []
   _popUpPrefab: {fileID: 4211441305533441537, guid: ef8dd89153ab58342bac319dd00772f5, type: 3}
-  _visuals:
-  - {fileID: 2100000, guid: 91dcfa347f053064384c0f56b0e2a503, type: 2}
-  _scoutStartingPoint: 0
+  _interactionButtonPopUpText: +2 Gold & +3 Special Resources
+  _tilePopUpText: 
+  _specialBehaviours: []
   _costs:
   - resource: 0
     value: 5
   - resource: 1
     value: 10
   _associatedSystem: 2
+  _scoutStartingPoint: 0
   isTown: 0

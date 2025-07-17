@@ -13,21 +13,21 @@ MonoBehaviour:
   m_Name: Shrine
   m_EditorClassIdentifier: 
   _name: Shrine
+  _visuals:
+  - {fileID: 2100000, guid: 649b93ed111fa8646a9dfed0d552cb29, type: 2}
   _claimCost: 0
-  _interactionButtonPopUpText: +1 Gold to surrounding claimed tiles
-  _tilePopUpText: +1 Gold to surrounding claimed tiles
   _incomes: []
   _availableInfrastructures:
   - {fileID: 11400000, guid: 0da4e697cd92ec5468171ae0cf2590e3, type: 2}
   - {fileID: 11400000, guid: 08209c03bce374449941d042d6de6197, type: 2}
+  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
+  _interactionButtonPopUpText: +1 Gold to surrounding claimed tiles
+  _tilePopUpText: +1 Gold to surrounding claimed tiles
   _specialBehaviours:
   - {fileID: 11400000, guid: a7ca7da112cd65742bed2cdf85e79f8a, type: 2}
-  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
-  _visuals:
-  - {fileID: 2100000, guid: 649b93ed111fa8646a9dfed0d552cb29, type: 2}
-  _scoutStartingPoint: 0
   _costs:
   - resource: 0
     value: 15
   _associatedSystem: 4
+  _scoutStartingPoint: 0
   isTown: 0

@@ -6,6 +6,7 @@ public class BoostNeighborEntertainments : SpecialBehaviour
 {
     [SerializeField] int _boost;
     [SerializeField] List<EntertainmentData> _boostedEntertainments;
+    [Tooltip("Infrastructure that boosts the entertainment points, if null, the boost is applied directly")]
     [SerializeField] InfrastructureData _multiplierInfraOnEmpire;
 
     //Init and rollback only need to suscribe to the event, Entertainment are only added at the end, when we cannot build/destroy anymore

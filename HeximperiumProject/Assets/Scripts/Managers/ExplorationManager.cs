@@ -5,22 +5,35 @@ using UnityEngine.Events;
 public class ExplorationManager : PhaseManager<ExplorationManager>
 {
     #region CONFIGURATION
+    [Header("_________________________________________________________")]
+    [Header("Scouts Configuration")]
     [SerializeField] private ScoutData _scoutData;
     [SerializeField] private int _baseScoutsLimit = 1;
+    [SerializeField] private float _awaitTimeScoutMovement = 0.25f;
+    [Header("_________________________________________________________")]
+    [Header("Scouts Related Objects")]
     [SerializeField] private Transform _scoutsParent;
     [SerializeField] private GameObject _scoutPrefab;
     [SerializeField] private GameObject _scoutCounterPrefab;
-    [SerializeField] private float _awaitTimeScoutMovement = 0.25f;
     #endregion
 
     #region VARIABLES
-    private List<Scout> _scouts = new List<Scout>();
     private bool _finalizingPhase;
+    //Scouts variables
+    private List<Scout> _scouts = new List<Scout>();
     private int _scoutsLimit;
     private int _currentScoutsCount;
     private Scout _currentScout;
+    //Scout direction variables
     private bool _choosingScoutDirection;
     private Tile _tileRefForScoutDirection;
+    //Upgrades variables
+    private int _boostScoutLifespan;
+    private int _boostScoutSpeed;
+    private int _boostScoutRevealRadius;
+    private int _upgradeScoutRevealOnDeathRadius;
+    private bool _upgradeScoutIgnoreHazard;
+    private bool _upgradeScoutRedirectable;
     #endregion
 
     #region EVENTS
@@ -53,6 +66,38 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     }
 
     public ScoutData ScoutData { get => _scoutData;}
+    public int BoostScoutLifespan 
+    { 
+        get => _boostScoutLifespan; 
+        set
+        {
+            foreach (Scout scout in _scouts)
+                scout.Lifespan += (value - _boostScoutLifespan);
+            _boostScoutLifespan = value;
+        } 
+    }
+    public int BoostScoutSpeed { 
+        get => _boostScoutSpeed; 
+        set
+        {
+            foreach (Scout scout in _scouts)
+                scout.Speed += (value - _boostScoutSpeed);
+            _boostScoutSpeed = value;
+
+        }
+    }
+    public int BoostScoutRevealRadius { 
+        get => _boostScoutRevealRadius; 
+        set
+        {
+            foreach (Scout scout in _scouts)
+                scout.RevealRadius += (value - _boostScoutRevealRadius);
+            _boostScoutRevealRadius = value;
+        }
+    }
+    public int UpgradeScoutRevealOnDeathRadius { get => _upgradeScoutRevealOnDeathRadius; set => _upgradeScoutRevealOnDeathRadius = value; }
+    public bool UpgradeScoutIgnoreHazard { get => _upgradeScoutIgnoreHazard; set => _upgradeScoutIgnoreHazard = value; }
+    public bool UpgradeScoutRedirectable { get => _upgradeScoutRedirectable; set => _upgradeScoutRedirectable = value; }
     #endregion
 
     protected override void OnAwake()
@@ -91,6 +136,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     #region PHASE LOGIC
     protected override void StartPhase()
     {
+        //Highlight all tiles that are starting points for scouts
         foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
         {
             if(tile.TileData is InfrastructureData data)
@@ -105,6 +151,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     {
         _finalizingPhase = true;
 
+        //Unhighlight all tiles that were starting points for scouts
         foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
         {
             if (tile.TileData is InfrastructureData data)
@@ -129,6 +176,31 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
             return;
 
         _interactionPositions.Clear();
+
+        if (_upgradeScoutRedirectable)
+        {
+            if(tile.Scouts.Count > 0)
+            {
+                foreach (Scout scout in tile.Scouts)
+                {
+                    if (!scout.HasRedirected)
+                    {
+                        if(tile.TileData is InfrastructureData data && data.ScoutStartingPoint)
+                        {
+                            _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 2);
+                            ScoutInteraction(tile, 0);
+                            RedirectScoutInteraction(tile, 1, scout);
+                        }
+                        else
+                        {
+                            _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
+                            RedirectScoutInteraction(tile, 0, scout);
+                        }
+                        return;
+                    }
+                }
+            }
+        }
 
         if (tile.TileData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
         {
@@ -163,9 +235,22 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         }
     }
 
+    public void RedirectScout(Tile tile, Scout scout)
+    {
+        _currentScout = scout;
+        _currentScout.HasRedirected = true;
+        _tileRefForScoutDirection = tile;
+        _choosingScoutDirection = true;
+    }
+
     private void ScoutInteraction(Tile tile, int positionIndex)
     {
         _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Scout));
+    }
+
+    private void RedirectScoutInteraction(Tile tile, int positionIndex, Scout scout)
+    {
+        _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.RedirectScout, null, null, scout));
     }
     #endregion
 

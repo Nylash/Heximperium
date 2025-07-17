@@ -13,22 +13,22 @@ MonoBehaviour:
   m_Name: WondersTown
   m_EditorClassIdentifier: 
   _name: Wonders Town
+  _visuals:
+  - {fileID: 2100000, guid: cfe90704e9d88364da1b81bb3a9a1815, type: 2}
   _claimCost: 0
-  _interactionButtonPopUpText: All Mystic Gardens gain +10 Points
-  _tilePopUpText: All Mystic Gardens gain +10 Points
   _incomes: []
   _availableInfrastructures: []
+  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
+  _interactionButtonPopUpText: All Mystic Gardens gain +10 Points
+  _tilePopUpText: All Mystic Gardens gain +10 Points
   _specialBehaviours:
   - {fileID: 11400000, guid: 6c91aa21531956c4497c4feddc4eda04, type: 2}
   - {fileID: 11400000, guid: 7d6c156174ea87b40aa71552e8de041c, type: 2}
-  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
-  _visuals:
-  - {fileID: 2100000, guid: cfe90704e9d88364da1b81bb3a9a1815, type: 2}
-  _scoutStartingPoint: 1
   _costs:
   - resource: 0
     value: 30
   - resource: 1
     value: 15
   _associatedSystem: 3
+  _scoutStartingPoint: 1
   isTown: 1

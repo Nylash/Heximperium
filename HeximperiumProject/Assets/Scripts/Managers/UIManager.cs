@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,13 +8,14 @@ using UnityEngine.UI;
 public class UIManager : Singleton<UIManager>
 {
     #region CONFIGURATION
-    [SerializeField] private Transform _mainCanvas;
+    [Header("_________________________________________________________")]
     [Header("Resources Bar")]
     [SerializeField] private TextMeshProUGUI _scoutsLimitText;
     [SerializeField] private TextMeshProUGUI _claimText;
     [SerializeField] private TextMeshProUGUI _townsLimitText;
     [SerializeField] private TextMeshProUGUI _goldText;
     [SerializeField] private TextMeshProUGUI _srText;
+    [Header("_________________________________________________________")]
     [Header("Phase UI")]
     [SerializeField] private TextMeshProUGUI _currentPhaseText;
     [SerializeField] private TextMeshProUGUI _confirmPhaseButtonText;
@@ -31,6 +33,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Animator _popUpExpandPhase;
     [SerializeField] private Animator _popUpExploitPhase;
     [SerializeField] private Animator _popUpEntertainPhase;
+    [Header("_________________________________________________________")]
     [Header("PopUp UI")]
     [SerializeField] private float _durationHoverForUI = 2.0f;
     [SerializeField] private float _offsetBetweenPopUps = 0.5f;
@@ -38,26 +41,40 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject _prefabPopUpScout;
     [SerializeField] private float _minOffset;
     [SerializeField] private float _maxOffset;
-    [Header("Radial menu")]
     [SerializeField] private Color _colorCantAfford;
+    [Header("_________________________________________________________")]
     [Header("Units visibility UI")]
     [SerializeField] private Image _visibilityImage;
     [SerializeField] private Image _scoutImageVisibility;
     [SerializeField] private Image _entertainmentImageVisibility;
     [SerializeField] private Sprite _visible;
     [SerializeField] private Sprite _hidden;
+    [Header("_________________________________________________________")]
     [Header("Menu")]
     [SerializeField] private GameObject _menu;
     [SerializeField] private GameObject _endMenu;
     [SerializeField] private TextMeshProUGUI _endScore;
+    [SerializeField] private GameObject _tradeMenu;
+    [Header("_________________________________________________________")]
     [Header("Score")]
     [SerializeField] private GameObject _scoreUI;
     [SerializeField] private TextMeshProUGUI _scoreText;
-    [Header("TradeMenu")]
-    [SerializeField] private GameObject _tradeMenu;
+    [Header("_________________________________________________________")]
+    [Header("UpgradesMenu")]
+    [SerializeField] private GameObject _upgradesMenu;
+    [SerializeField] private List<UpgradeTree> _upgradeTrees = new List<UpgradeTree>();
+    [SerializeField] private UpgradeTree _activatedTree;
+    [SerializeField] private GameObject _lineRendererPrefab;
+    [SerializeField] private Color _colorLocked;
+    [SerializeField] private Color _colorUnlocked;
+    [SerializeField] private Sprite _spriteButtonUnlocked;
+    [SerializeField] private GameObject _markerExclusiveUpgrade;
+    [SerializeField] private Sprite _markerExclusiveUpgradeLocked;
     #endregion
 
     #region VARIABLES
+    private Transform _mainCanvas;
+    //PopUp variables
     private GameObject _objectUnderMouse;
     private float _hoverTimer;
     private float _screenWidth;
@@ -69,10 +86,19 @@ public class UIManager : Singleton<UIManager>
 
     #region ACCESSORS
     public Color ColorCantAfford { get => _colorCantAfford;}
+    public GameObject LineRendererPrefab { get => _lineRendererPrefab; }
+    public Color ColorLocked { get => _colorLocked; }
+    public Color ColorUnlocked { get => _colorUnlocked; }
+    public UpgradeTree ActivatedTree { get => _activatedTree; }
+    public Sprite SpriteUnlocked { get => _spriteButtonUnlocked; }
+    public GameObject MarkerExclusiveUpgrade { get => _markerExclusiveUpgrade; }
+    public Sprite MarkerExclusiveUpgradeLocked { get => _markerExclusiveUpgradeLocked; }
     #endregion
 
     protected override void OnAwake()
     {
+        _mainCanvas = GetComponent<Transform>();
+
         GameManager.Instance.OnNewTurn.AddListener(UpdateTurnCounterText);
 
         GameManager.Instance.OnExplorationPhaseStarted.AddListener(UpdatePhaseUI);
@@ -103,6 +129,7 @@ public class UIManager : Singleton<UIManager>
     {
         _scoutImageVisibility.enabled = false;
         _entertainmentImageVisibility.enabled = true;
+        _visibilityImage.sprite = _visible;
 
         _scoreUI.SetActive(true);
     }
@@ -156,7 +183,11 @@ public class UIManager : Singleton<UIManager>
         if (_tradeMenu.activeSelf)
             _tradeMenu.GetComponent<Animator>().SetTrigger("Fold");
         else
+        {
+            if (_upgradesMenu.activeSelf)
+                UpgradesMenu();
             _tradeMenu.SetActive(true);
+        }
     }
 
     public void TradeBuy()
@@ -484,6 +515,14 @@ public class UIManager : Singleton<UIManager>
 
     public void OpenCloseMenu()
     {
+        //Close the upgrades menu if it's open instead of opening the main menu
+        if (_upgradesMenu.activeSelf)
+        {
+            _upgradesMenu.GetComponent<Animator>().SetTrigger("Fold");
+            GameManager.Instance.GamePaused = false;
+            return;
+        }
+
         _menu.SetActive(!_menu.activeSelf);
         GameManager.Instance.GamePaused = _menu.activeSelf;
         ResetPopUps(null);
@@ -497,6 +536,56 @@ public class UIManager : Singleton<UIManager>
     public void QuitGame()
     {
         Application.Quit();
+    }
+    #endregion
+
+    #region UPGRADES MENU
+    public void UpgradesMenu()
+    {
+        if (_upgradesMenu.activeSelf)
+        {
+            _upgradesMenu.GetComponent<Animator>().SetTrigger("Fold");
+            GameManager.Instance.GamePaused = false;
+        }
+        else
+        {
+            if (_tradeMenu.activeSelf)
+                TradeMenu();
+            _upgradesMenu.SetActive(true);
+            GameManager.Instance.GamePaused = true;
+            foreach (UpgradeTree tree in _upgradeTrees)
+            {
+                if (tree.treeObject.activeSelf)
+                {
+                    _activatedTree = tree;
+                    tree.nodes.ForEach(node => node.UpdateVisual());
+                    break;
+                }
+            }
+        }
+    }
+
+    public void ShowUpgradeTree(GameObject associatedTree)
+    {
+        associatedTree.SetActive(true);
+
+        foreach (UpgradeTree tree in _upgradeTrees)
+        {
+            if (tree.treeObject == associatedTree)
+            {
+                _activatedTree = tree;
+                tree.nodes.ForEach(node => node.UpdateVisual());
+            }
+            if (tree.treeObject != associatedTree)
+                tree.treeObject.SetActive(false);
+        }
+    }
+
+    [ContextMenu("Fill Trees List")]
+    private void FillTreesList()
+    {
+        foreach (UpgradeTree tree in _upgradeTrees)
+            tree.nodes = tree.treeObject.GetComponentsInChildren<UI_UpgradeNode>().ToList();
     }
     #endregion
 }

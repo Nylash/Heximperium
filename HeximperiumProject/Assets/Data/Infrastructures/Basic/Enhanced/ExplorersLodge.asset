@@ -13,23 +13,23 @@ MonoBehaviour:
   m_Name: ExplorersLodge
   m_EditorClassIdentifier: 
   _name: Explorer's Lodge
+  _visuals:
+  - {fileID: 2100000, guid: 4d61b2e3a8f20e14da6f3daa37a5460d, type: 2}
   _claimCost: 0
-  _interactionButtonPopUpText: +3 Gold & +1 Scout limit
-  _tilePopUpText: +1 Scout limit
   _incomes:
   - resource: 0
     value: 3
   _availableInfrastructures: []
+  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
+  _interactionButtonPopUpText: +3 Gold & +1 Scout limit
+  _tilePopUpText: +1 Scout limit
   _specialBehaviours:
   - {fileID: 11400000, guid: a20a937bad48d1349b06d8d770aae159, type: 2}
-  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
-  _visuals:
-  - {fileID: 2100000, guid: 4d61b2e3a8f20e14da6f3daa37a5460d, type: 2}
-  _scoutStartingPoint: 1
   _costs:
   - resource: 0
     value: 15
   - resource: 1
     value: 5
   _associatedSystem: 0
+  _scoutStartingPoint: 1
   isTown: 0

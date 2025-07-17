@@ -70,10 +70,10 @@ public static class Utilities
     }
 
     //Create a button around a tile
-    public static GameObject CreateInteractionButton(Tile tile, Vector3 position, Interaction interactionType, InfrastructureData infraData = null, EntertainmentData entertainmentData = null)
+    public static GameObject CreateInteractionButton(Tile tile, Vector3 position, Interaction interactionType, InfrastructureData infraData = null, EntertainmentData entertainmentData = null, Scout scout = null)
     {
         GameObject button = GameObject.Instantiate(GameManager.Instance.InteractionPrefab, position, Quaternion.identity);
-        button.GetComponent<InteractionButton>().Initialize(tile, interactionType, infraData, entertainmentData);
+        button.GetComponent<InteractionButton>().Initialize(tile, interactionType, infraData, entertainmentData, scout);
 
         return button;
     }
@@ -185,6 +185,23 @@ public static class Utilities
     {
         return original.Select(item => new ResourceToIntMap(item.resource, item.value)).ToList();
     }
+
+    //Reanchor a RectTransform to its current position and size
+    public static void ReanchorToCurrentRect(RectTransform rt)
+    {
+        var parent = rt.parent as RectTransform;
+        var ps = parent.rect.size;
+
+        // compute new normalized anchors
+        Vector2 aMin = rt.anchorMin + rt.offsetMin / ps;
+        Vector2 aMax = rt.anchorMax + rt.offsetMax / ps;
+
+        // apply
+        rt.anchorMin = aMin;
+        rt.anchorMax = aMax;
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+    }
 }
 
 #region ENUMS
@@ -212,11 +229,16 @@ public enum Transaction
 
 public enum Interaction
 {
-    Claim, Scout, Infrastructure, Destroy, Entertainment
+    Claim, Scout, Infrastructure, Destroy, Entertainment, RedirectScout
 }
 
 public enum EntertainmentType
 {
     MinstrelStage, TastingPavilion, ParadeRoute, MysticGarden
+}
+
+public enum UpgradeStatus
+{
+    LockedByPrerequisites, LockedByExclusive, CantAfford, Unlocked, Unlockable
 }
 #endregion

@@ -13,25 +13,25 @@ MonoBehaviour:
   m_Name: TradeTown
   m_EditorClassIdentifier: 
   _name: Trade Town
+  _visuals:
+  - {fileID: 2100000, guid: 1f8cc9f053c5eba4a8af564751ae951e, type: 2}
   _claimCost: 0
-  _interactionButtonPopUpText: +6 Gold per turn & Grants access to two Exploitation-oriented
-    enhancements
-  _tilePopUpText: 
   _incomes:
   - resource: 0
     value: 6
   _availableInfrastructures:
   - {fileID: 11400000, guid: 1800d8cb0ef44b84b983fb48fbf59fe3, type: 2}
   - {fileID: 11400000, guid: c2c7e8b398a278848afc8e7953b35c02, type: 2}
-  _specialBehaviours: []
   _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
-  _visuals:
-  - {fileID: 2100000, guid: 1f8cc9f053c5eba4a8af564751ae951e, type: 2}
-  _scoutStartingPoint: 1
+  _interactionButtonPopUpText: +6 Gold per turn & Grants access to two Exploitation-oriented
+    enhancements
+  _tilePopUpText: 
+  _specialBehaviours: []
   _costs:
   - resource: 0
     value: 20
   - resource: 1
     value: 10
   _associatedSystem: 2
+  _scoutStartingPoint: 1
   isTown: 1
