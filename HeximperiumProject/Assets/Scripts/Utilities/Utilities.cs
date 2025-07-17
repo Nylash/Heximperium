@@ -219,4 +219,9 @@ public enum EntertainmentType
 {
     MinstrelStage, TastingPavilion, ParadeRoute, MysticGarden
 }
+
+public enum UpgradeStatus
+{
+    LockedByPrerequisites, LockedByExclusive, CantAfford, Unlocked, Unlockable
+}
 #endregion

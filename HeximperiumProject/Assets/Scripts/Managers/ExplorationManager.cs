@@ -145,8 +145,6 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
                     tile.Highlight(true);
             }
         }
-
-        ResourcesManager.Instance.CHEAT_RESOURCES();
     }
 
     protected override void ConfirmPhase()

@@ -5,29 +5,71 @@ using UnityEngine.UI;
 public class UI_UpgradeNode : MonoBehaviour
 {
     [SerializeField] private UpgradeNodeData _nodeData;
+    [Tooltip("Let empty if this node is the first.")]
     [SerializeField] private List<UI_UpgradeNode> _previousNodes;
     [SerializeField] private RectTransform _parent;
     [Tooltip("If false, the line will be drawn horizontally from the start point to the mid point, then vertically to the end point.")]
     [SerializeField] private bool _stepOnMid = true;
-
+    [SerializeField] private List<UILineRenderer> _connectors = new List<UILineRenderer>();
 
     private Button _btn;
-    private List<UILineRenderer> _connectors = new List<UILineRenderer>();
+    private Image _img;
+
+    public UpgradeNodeData NodeData { get => _nodeData; }
 
     private void Awake()
     {
         _btn = GetComponent<Button>();
+        _img = GetComponent<Image>();
         _btn.onClick.AddListener(() => UpgradesManager.Instance.UnlockNode(_nodeData));
+
+        UpdateVisual();
     }
 
     public void UpdateVisual()
     {
-        //Update the button's interactable state and connectors' state based on the node's cost, prerequisites and exclusivity
+        switch (UpgradesManager.Instance.CanUnlockNode(_nodeData))
+        {
+            case UpgradeStatus.LockedByPrerequisites:
+                _btn.interactable = false;
+                _img.color = UIManager.Instance.ColorLocked;
+                UpdateLinesColor(UIManager.Instance.ColorLocked);
+                break;
+            case UpgradeStatus.LockedByExclusive:
+                _btn.interactable = false;
+                _img.color = UIManager.Instance.ColorLocked;
+                UpdateLinesColor(UIManager.Instance.ColorLocked);
+                break;
+            case UpgradeStatus.CantAfford:
+                _btn.interactable = false;
+                _img.color = UIManager.Instance.ColorCantAfford;
+                UpdateLinesColor(UIManager.Instance.ColorCantAfford);
+                break;
+            case UpgradeStatus.Unlocked:
+                _btn.interactable = false;
+                _img.color = UIManager.Instance.ColorUnlocked;
+                _img.sprite = UIManager.Instance.SpriteUnlocked;
+                UpdateLinesColor(UIManager.Instance.ColorUnlocked);
+                break;
+            case UpgradeStatus.Unlockable:
+                _btn.interactable = true;
+                _img.color = Color.white;
+                UpdateLinesColor(Color.white);
+                break;
+            default:
+                break;
+        }
     }
 
-    //[ContextMenu("Create Connectors")] Right click in the inspector to create connectors manually
     public void CreateConnectors()
     {
+        foreach (UILineRenderer line in _connectors)
+        {
+            if (line != null)
+                DestroyImmediate(line.gameObject);
+        }
+        _connectors.Clear();
+
         //Create connectors to previous nodes
         foreach (UI_UpgradeNode previousNode in _previousNodes)
         {
@@ -65,6 +107,26 @@ public class UI_UpgradeNode : MonoBehaviour
 
             line.gameObject.name = $"Line_{previousNode.gameObject.name}_to_{gameObject.name}";
             _connectors.Add(line);
+        }
+    }
+
+    private void UpdateLinesColor(Color targetColor)
+    {
+        if (_connectors.Count < 2)
+        {
+            foreach (UILineRenderer line in _connectors)
+                    line.color = targetColor;
+        }
+        else//If there are multiple connectors it means that the node is connected to multiple previous nodes
+        {
+            for (int i = 0; i < _connectors.Count; i++)
+            {
+                //If the previous node is locked by exclusive, the line should be colored as locked, otherwise the target color is coherent with the node status
+                if (UpgradesManager.Instance.CanUnlockNode(_previousNodes[i].NodeData) == UpgradeStatus.LockedByExclusive)
+                    _connectors[i].color = UIManager.Instance.ColorLocked;
+                else
+                    _connectors[i].color = targetColor;
+            }
         }
     }
 }

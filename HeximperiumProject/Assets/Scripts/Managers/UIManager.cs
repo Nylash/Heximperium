@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -61,8 +62,12 @@ public class UIManager : Singleton<UIManager>
     [Header("_________________________________________________________")]
     [Header("UpgradesMenu")]
     [SerializeField] private GameObject _upgradesMenu;
-    [SerializeField] private List<GameObject> _upgradeTrees;
+    [SerializeField] private List<UpgradeTree> _upgradeTrees = new List<UpgradeTree>();
+    [SerializeField] private UpgradeTree _activatedTree;
     [SerializeField] private GameObject _lineRendererPrefab;
+    [SerializeField] private Color _colorLocked;
+    [SerializeField] private Color _colorUnlocked;
+    [SerializeField] private Sprite _spriteUnlocked;
     #endregion
 
     #region VARIABLES
@@ -80,6 +85,10 @@ public class UIManager : Singleton<UIManager>
     #region ACCESSORS
     public Color ColorCantAfford { get => _colorCantAfford;}
     public GameObject LineRendererPrefab { get => _lineRendererPrefab; }
+    public Color ColorLocked { get => _colorLocked; }
+    public Color ColorUnlocked { get => _colorUnlocked; }
+    public UpgradeTree ActivatedTree { get => _activatedTree; }
+    public Sprite SpriteUnlocked { get => _spriteUnlocked; }
     #endregion
 
     protected override void OnAwake()
@@ -540,17 +549,39 @@ public class UIManager : Singleton<UIManager>
                 TradeMenu();
             _upgradesMenu.SetActive(true);
             GameManager.Instance.GamePaused = true;
+            foreach (UpgradeTree tree in _upgradeTrees)
+            {
+                if (tree.treeObject.activeSelf)
+                {
+                    _activatedTree = tree;
+                    tree.nodes.ForEach(node => node.UpdateVisual());
+                    break;
+                }
+            }
         }
     }
 
     public void ShowUpgradeTree(GameObject associatedTree)
     {
         associatedTree.SetActive(true);
-        foreach (GameObject tree in _upgradeTrees)
+
+        foreach (UpgradeTree tree in _upgradeTrees)
         {
-            if (tree != associatedTree)
-                tree.SetActive(false);
+            if (tree.treeObject == associatedTree)
+            {
+                _activatedTree = tree;
+                tree.nodes.ForEach(node => node.UpdateVisual());
+            }
+            if (tree.treeObject != associatedTree)
+                tree.treeObject.SetActive(false);
         }
+    }
+
+    [ContextMenu("Fill Trees List")]
+    private void FillTreesList()
+    {
+        foreach (UpgradeTree tree in _upgradeTrees)
+            tree.nodes = tree.treeObject.GetComponentsInChildren<UI_UpgradeNode>().ToList();
     }
     #endregion
 }

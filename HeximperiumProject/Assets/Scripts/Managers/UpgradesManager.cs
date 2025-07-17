@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using UnityEngine;
 
 public class UpgradesManager : Singleton<UpgradesManager>
 {
@@ -8,41 +8,31 @@ public class UpgradesManager : Singleton<UpgradesManager>
 
     public void UnlockNode(UpgradeNodeData node)
     {
-        if (CanUnlockNode(node))
+        if (CanUnlockNode(node) == UpgradeStatus.Unlockable)
         {
             ResourcesManager.Instance.UpdateResource(node.Costs, Transaction.Spent);
             _unlockedNodes.Add(node);
             node.Effect.ApplyEffect();
+
+            foreach (UI_UpgradeNode n in UIManager.Instance.ActivatedTree.nodes)
+                n.UpdateVisual();
         }
     }
 
-    public bool CanUnlockNode(UpgradeNodeData node)
+    public UpgradeStatus CanUnlockNode(UpgradeNodeData node)
     {
         if (_unlockedNodes.Contains(node))
-        {
-            print($"Node {node.name} is already unlocked.");
-            return false;
-        }
+            return UpgradeStatus.Unlocked;
 
         if (node.Prerequisites.Count > 0 && !_unlockedNodes.Any(item => node.Prerequisites.Contains(item)))
-        {
-            print($"Node {node.name} cannot be unlocked because its prerequisites are not met.");
-            return false;
-        }
+            return UpgradeStatus.LockedByPrerequisites;
 
         if (_unlockedNodes.Contains(node.ExclusiveNode))
-        {
-            print($"Node {node.name} cannot be unlocked because its exclusive node {_unlockedNodes.First(item => item == node.ExclusiveNode).name} is already unlocked.");
-            return false;
-        }
+            return UpgradeStatus.LockedByExclusive;
+
         if (ResourcesManager.Instance.CanAfford(node.Costs))
-        {
-            return true;
-        }
+            return UpgradeStatus.Unlockable;
         else
-        {
-            print($"Node {node.name} cannot be unlocked because the player does not have enough resources.");
-            return false;
-        }
+            return UpgradeStatus.CantAfford;
     }
 }
