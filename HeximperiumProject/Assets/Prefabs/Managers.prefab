@@ -110,6 +110,7 @@ GameObject:
   - component: {fileID: 4571123148290906319}
   - component: {fileID: 1793441645777705967}
   - component: {fileID: 5058650393401128906}
+  - component: {fileID: 8672858755679527012}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -263,9 +264,6 @@ MonoBehaviour:
   OnScoutsLimitModified:
     m_PersistentCalls:
       m_Calls: []
-  OnScoutSpawned:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &5152465035945284524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -368,6 +366,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
+--- !u!114 &8672858755679527012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8076696492868688798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1991c1ecad1074b44b4fc100eaaa6e75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _persistentSingleton: 0
+  _spawnUnitVFX: {fileID: 1592618839310326476, guid: 91faeb109bc204f45b656d329dbce236, type: 3}
 --- !u!1 &9076202116189138285
 GameObject:
   m_ObjectHideFlags: 0

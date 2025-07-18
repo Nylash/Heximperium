@@ -9,13 +9,13 @@ public class BoostEntertainmentsOnEmpire : SpecialBehaviour
 
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
     {
-        EntertainmentManager.Instance.OnEntertainmentSpawned.RemoveListener(behaviourTile.ListenerOnEntertainmentSpawned);
-        EntertainmentManager.Instance.OnEntertainmentSpawned.AddListener(behaviourTile.ListenerOnEntertainmentSpawned);
+        EntertainmentManager.Instance.OnEntertainmentSpawned -= behaviourTile.ListenerOnEntertainmentSpawned;
+        EntertainmentManager.Instance.OnEntertainmentSpawned += behaviourTile.ListenerOnEntertainmentSpawned;
     }
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
-        EntertainmentManager.Instance.OnEntertainmentSpawned.RemoveListener(behaviourTile.ListenerOnEntertainmentSpawned);
+        EntertainmentManager.Instance.OnEntertainmentSpawned += behaviourTile.ListenerOnEntertainmentSpawned;
     }
 
     public override void HighlightImpactedTile(Tile behaviourTile, bool show)

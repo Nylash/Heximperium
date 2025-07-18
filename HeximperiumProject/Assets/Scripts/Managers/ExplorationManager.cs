@@ -39,7 +39,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
 
     #region EVENTS
     [HideInInspector] public UnityEvent OnScoutsLimitModified = new UnityEvent();
-    public Action<Scout> OnScoutSpawned;
+    public event Action<Scout> OnScoutSpawned;
     #endregion
 
     #region ACCESSORS

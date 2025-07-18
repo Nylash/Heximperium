@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -35,7 +36,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     #endregion
 
     #region EVENTS
-    [HideInInspector] public UnityEvent<Entertainment> OnEntertainmentSpawned = new UnityEvent<Entertainment>();
+    public event Action<Entertainment> OnEntertainmentSpawned;
     [HideInInspector] public UnityEvent OnScoreUpdated = new UnityEvent();
     #endregion
 
@@ -143,7 +144,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
             _entertainments.Add(currentEntertainment);
             currentEntertainment.Initialize(tile, data);
             tile.Entertainment = currentEntertainment;
-            OnEntertainmentSpawned.Invoke(currentEntertainment);
+            OnEntertainmentSpawned?.Invoke(currentEntertainment);
         }
     }
 
