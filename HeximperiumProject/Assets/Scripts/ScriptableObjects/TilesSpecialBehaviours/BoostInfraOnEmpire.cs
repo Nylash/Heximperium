@@ -16,10 +16,10 @@ public class BoostInfraOnEmpire : SpecialBehaviour
                 tile.Incomes = Utilities.MergeResourceToIntMaps(tile.Incomes, _incomeBoost);
             }
         }
-        ExploitationManager.Instance.OnInfraBuilded.RemoveListener(behaviourTile.ListenerOnInfraBuilded_BoostInfraOnEmpire);
-        ExploitationManager.Instance.OnInfraDestroyed.RemoveListener(behaviourTile.ListenerOnInfraDestroyed_BoostInfraOnEmpire);
-        ExploitationManager.Instance.OnInfraBuilded.AddListener(behaviourTile.ListenerOnInfraBuilded_BoostInfraOnEmpire);
-        ExploitationManager.Instance.OnInfraDestroyed.AddListener(behaviourTile.ListenerOnInfraDestroyed_BoostInfraOnEmpire);
+        ExploitationManager.Instance.OnInfraBuilded -= behaviourTile.ListenerOnInfraBuilded_BoostInfraOnEmpire;
+        ExploitationManager.Instance.OnInfraDestroyed -= behaviourTile.ListenerOnInfraDestroyed_BoostInfraOnEmpire;
+        ExploitationManager.Instance.OnInfraBuilded += behaviourTile.ListenerOnInfraBuilded_BoostInfraOnEmpire;
+        ExploitationManager.Instance.OnInfraDestroyed += behaviourTile.ListenerOnInfraDestroyed_BoostInfraOnEmpire;
     }
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
@@ -32,8 +32,8 @@ public class BoostInfraOnEmpire : SpecialBehaviour
             }
         }
 
-        ExploitationManager.Instance.OnInfraBuilded.RemoveListener(behaviourTile.ListenerOnInfraBuilded_BoostInfraOnEmpire);
-        ExploitationManager.Instance.OnInfraDestroyed.RemoveListener(behaviourTile.ListenerOnInfraDestroyed_BoostInfraOnEmpire);
+        ExploitationManager.Instance.OnInfraBuilded -= behaviourTile.ListenerOnInfraBuilded_BoostInfraOnEmpire;
+        ExploitationManager.Instance.OnInfraDestroyed -= behaviourTile.ListenerOnInfraDestroyed_BoostInfraOnEmpire;
     }
 
     public override void HighlightImpactedTile(Tile behaviourTile, bool show)
