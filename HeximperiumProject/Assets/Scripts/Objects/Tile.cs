@@ -3,6 +3,7 @@ using TMPro;
 using System.Collections.Generic;
 using UnityEngine.Events;
 using System.Linq;
+using System;
 
 public class Tile : MonoBehaviour
 {
@@ -45,6 +46,7 @@ public class Tile : MonoBehaviour
     [HideInInspector] public UnityEvent<Tile> OnTileClaimed = new UnityEvent<Tile>();
     [HideInInspector] public UnityEvent<Tile> OnTileDataModified = new UnityEvent<Tile>();
     [HideInInspector] public UnityEvent<Tile> OnEntertainmentModified = new UnityEvent<Tile>();
+    public Action OnClaimBorderAnimationDone;
     #endregion
 
     #region ACCESSORS
@@ -93,6 +95,16 @@ public class Tile : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         _initialData = _tileData;
+
+        MapManager.Instance.OnMapGenerated += () =>
+        {
+            foreach (Tile neighbor in _neighbors)
+            {
+                if (!neighbor)
+                    continue;
+                neighbor.OnClaimBorderAnimationDone += CheckBorder;
+            }
+        };
     }
 
     #region BASIC METHODS
@@ -144,12 +156,16 @@ public class Tile : MonoBehaviour
         OnTileClaimed.Invoke(this);
         _border = Instantiate(_borderPrefab, transform.position, Quaternion.identity).GetComponent<Border>();
         _border.transform.parent = ExpansionManager.Instance.BorderParent;
+        _border.GetComponent<Border>().associatedTile = this;
+        _border.name = "Border" + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
     }
+
 
     //Called when a tile is claimed
     public void CheckBorder()
     {
-        _border.CheckBorderVisibility(_neighbors);
+        if(_border)
+            _border.CheckBorderVisibility();
     }
 
     //Change tile's visual based on the tile data

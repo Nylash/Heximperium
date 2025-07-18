@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -24,7 +25,7 @@ public class MapManager : Singleton<MapManager>
     #endregion
 
     #region EVENTS
-    [HideInInspector] public UnityEvent OnMapGenerated = new UnityEvent();
+    public event Action OnMapGenerated;
     #endregion
 
     #region ACCESSORS
@@ -56,7 +57,7 @@ public class MapManager : Singleton<MapManager>
             tile.SearchNeighbors();
         }
 
-        OnMapGenerated.Invoke();
+        OnMapGenerated?.Invoke();
     }
 
     void GenerateHexagonalGrid()

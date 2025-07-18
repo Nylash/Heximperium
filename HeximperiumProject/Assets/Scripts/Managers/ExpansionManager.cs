@@ -141,8 +141,6 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
                 ResourcesManager.Instance.UpdateClaim(tile.TileData.ClaimCost, Transaction.Spent);
             tile.ClaimTile();
             _claimedTiles.Add(tile);
-            foreach (Tile t in _claimedTiles)
-                t.CheckBorder();
             tile.transform.parent = _claimedTilesParent;
             OnTileClaimed.Invoke(tile);
         }

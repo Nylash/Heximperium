@@ -66,7 +66,7 @@ public class GameManager : Singleton<GameManager>
         _inputActions.Player.ConfirmPhase.performed += ctx => ConfirmPhase();
         _inputActions.Player.Menu.performed += ctx => UIManager.Instance.OpenCloseMenu();
 
-        MapManager.Instance.OnMapGenerated.AddListener(InitializeGame);
+        MapManager.Instance.OnMapGenerated += InitializeGame;
         ExplorationManager.Instance.OnPhaseFinalized.AddListener(PhaseFinalized);
         ExpansionManager.Instance.OnPhaseFinalized.AddListener(PhaseFinalized);
         ExploitationManager.Instance.OnPhaseFinalized.AddListener(PhaseFinalized);
