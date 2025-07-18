@@ -154,6 +154,9 @@ public class GameManager : Singleton<GameManager>
     #region ACTIONS
     private void LeftClickAction()
     {
+        if(_gamePaused)
+            return;
+
         //Specific behaviour with scouts instancing
         if (ExplorationManager.Instance.ChoosingScoutDirection)
         {
@@ -280,6 +283,7 @@ public class GameManager : Singleton<GameManager>
         if (_currentPhase == Phase.Entertain)
         {
             OnGameFinished.Invoke();
+            GameManager.Instance.GamePaused = true;
             return;
         }
 
