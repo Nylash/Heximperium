@@ -60,9 +60,11 @@ public class UI_UpgradeNode : MonoBehaviour
                 _btn.interactable = false;
                 _img.color = UIManager.Instance.ColorUnlocked;
                 _img.sprite = UIManager.Instance.SpriteUnlocked;
-                UpdateLinesColor(UIManager.Instance.ColorUnlocked);
                 if(_imageExclusiveMarker != null)
                     Destroy(_imageExclusiveMarker.gameObject);
+                foreach (UILineRenderer line in _connectors)
+                    line.transform.SetAsLastSibling();
+                UpdateLinesColor(UIManager.Instance.ColorUnlocked);
                 break;
             case UpgradeStatus.Unlockable:
                 _btn.interactable = true;
@@ -170,7 +172,10 @@ public class UI_UpgradeNode : MonoBehaviour
             {
                 //If the previous node is locked by exclusive, the line should be colored as locked, otherwise the target color is coherent with the node status
                 if (UpgradesManager.Instance.CanUnlockNode(_previousNodes[i].NodeData) == UpgradeStatus.LockedByExclusive)
+                {
                     _connectors[i].color = UIManager.Instance.ColorLocked;
+                    _connectors[i].transform.SetAsFirstSibling();
+                }
                 else
                     _connectors[i].color = targetColor;
             }
