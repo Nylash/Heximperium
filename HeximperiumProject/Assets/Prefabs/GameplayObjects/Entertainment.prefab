@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2747791251706281701}
   - component: {fileID: 1026794437683529586}
   - component: {fileID: 7314169313803631550}
+  - component: {fileID: 5601446069295009408}
   m_Layer: 0
   m_Name: Entertainment
   m_TagString: Untagged
@@ -82,7 +83,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 6.4, y: 6.4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
@@ -100,3 +101,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40aab7bc28ca01f499e54593e2d22504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &5601446069295009408
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2250239871940816137}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d3f0832d95adf6048afe39f75c5fd346, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
