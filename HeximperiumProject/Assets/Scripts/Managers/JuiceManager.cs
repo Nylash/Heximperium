@@ -2,12 +2,18 @@ using UnityEngine;
 
 public class JuiceManager : Singleton<JuiceManager>
 {
+    [Header("_________________________________________________________")]
+    [Header("VFX data")]
     [SerializeField] private GameObject _resourceVFX;
     [SerializeField] private Material _goldMat;
     [SerializeField] private Material _srMat;
     [SerializeField] private Material _claimMat;
     [SerializeField] private Material _scoreMat;
     [SerializeField] private GameObject _spawnUnitVFX;
+    [Header("_________________________________________________________")]
+    [Header("UI VFX data")]
+    [SerializeField] private Camera _renderTextureCam;
+    [SerializeField] private GameObject _protoUIVFX;
 
     protected override void OnAwake()
     {
@@ -37,4 +43,22 @@ public class JuiceManager : Singleton<JuiceManager>
 
         particleSystem.Play();
     }
+
+    #region UI VFX
+    private void Update()
+    {
+        if ( Input.GetKey(KeyCode.J))
+        {
+            Instantiate(_protoUIVFX, PlaceAtViewport(UIManager.Instance.GoldText.transform as RectTransform), Quaternion.identity);
+        }
+    }
+
+    private Vector3 PlaceAtViewport(RectTransform uiElement)
+    {
+        Vector2 screenPt = RectTransformUtility.WorldToScreenPoint(null, uiElement.position);
+        Vector2 targetPos = new Vector2(screenPt.x / Screen.width, screenPt.y / Screen.height);
+        Vector3 vp = new Vector3(targetPos.x, targetPos.y, 1);
+        return _renderTextureCam.ViewportToWorldPoint(vp);
+    }
+    #endregion
 }

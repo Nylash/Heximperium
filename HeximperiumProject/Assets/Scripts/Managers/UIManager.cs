@@ -93,6 +93,8 @@ public class UIManager : Singleton<UIManager>
     public Sprite SpriteUnlocked { get => _spriteButtonUnlocked; }
     public GameObject MarkerExclusiveUpgrade { get => _markerExclusiveUpgrade; }
     public Sprite MarkerExclusiveUpgradeLocked { get => _markerExclusiveUpgradeLocked; }
+    public Transform MainCanvas { get => _mainCanvas; }
+    public TextMeshProUGUI GoldText { get => _goldText; }
     #endregion
 
     protected override void OnAwake()
