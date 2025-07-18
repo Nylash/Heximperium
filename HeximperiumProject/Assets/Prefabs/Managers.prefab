@@ -235,10 +235,6 @@ MonoBehaviour:
   _tradeSellGain:
   - resource: 0
     value: 5
-  _resourceGainPrefab: {fileID: 1592618839310326476, guid: 8877b2626b274684c822c44ca64252e0, type: 3}
-  _goldVFXMat: {fileID: 2100000, guid: 4494af5224e05ff45bd6a3182b886f8e, type: 2}
-  _srVFXMat: {fileID: 2100000, guid: a6d2a5f51d41f094e86302fc07fae9ad, type: 2}
-  _claimVFXMat: {fileID: 2100000, guid: b2d161b0d703fe947a81431024d07306, type: 2}
 --- !u!114 &5267516574475156646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,13 +339,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 849a92dd76cb59441979aca05a80c78b, type: 2}
   _entertainmentPrefab: {fileID: 2250239871940816137, guid: f8a7db839ca7e72408cdfe24431d42ae, type: 3}
   _entertainmentsParent: {fileID: 4984853090335579157}
-  _pointsGainPrefab: {fileID: 1592618839310326476, guid: 8877b2626b274684c822c44ca64252e0, type: 3}
-  _pointVFXMat: {fileID: 2100000, guid: 37165071fda418845bd5d92d7d9da370, type: 2}
   _pointForOneGold: 0.3
   _pointForOneSR: 0.8
-  OnEntertainmentSpawned:
-    m_PersistentCalls:
-      m_Calls: []
   OnScoreUpdated:
     m_PersistentCalls:
       m_Calls: []
@@ -379,6 +370,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
+  _resourceVFX: {fileID: 1592618839310326476, guid: 8877b2626b274684c822c44ca64252e0, type: 3}
+  _goldMat: {fileID: 2100000, guid: 4494af5224e05ff45bd6a3182b886f8e, type: 2}
+  _srMat: {fileID: 2100000, guid: a6d2a5f51d41f094e86302fc07fae9ad, type: 2}
+  _claimMat: {fileID: 2100000, guid: b2d161b0d703fe947a81431024d07306, type: 2}
+  _scoreMat: {fileID: 2100000, guid: 37165071fda418845bd5d92d7d9da370, type: 2}
   _spawnUnitVFX: {fileID: 1592618839310326476, guid: 91faeb109bc204f45b656d329dbce236, type: 3}
 --- !u!1 &9076202116189138285
 GameObject:

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,12 +15,6 @@ public class ResourcesManager : Singleton<ResourcesManager>
     [Header("-Sell")]
     [SerializeField] private List<ResourceToIntMap> _tradeSellCost;
     [SerializeField] private List<ResourceToIntMap> _tradeSellGain;
-    [Header("_________________________________________________________")]
-    [Header("VFX")]
-    [SerializeField] private GameObject _resourceGainPrefab;
-    [SerializeField] private Material _goldVFXMat;
-    [SerializeField] private Material _srVFXMat;
-    [SerializeField] private Material _claimVFXMat;
     #endregion
 
     #region VARIABLES
@@ -94,6 +89,12 @@ public class ResourcesManager : Singleton<ResourcesManager>
     }
     #endregion
 
+    #region EVENTS
+    public event Action<Tile, int> OnGoldGained;
+    public event Action<Tile, int> OnSpecialResourcesGained;
+    public event Action<Tile, int> OnClaimGained;
+    #endregion
+
     public void CHEAT_RESOURCES()
     {
         Debug.LogWarning("USING CHEAT !");
@@ -136,10 +137,10 @@ public class ResourcesManager : Singleton<ResourcesManager>
                 switch (item.resource)
                 {
                     case Resource.Gold:
-                        Utilities.PlayResourceGainVFX(tile, _resourceGainPrefab, _goldVFXMat, item.value);
+                        OnGoldGained?.Invoke(tile, item.value);
                         break;
                     case Resource.SpecialResources:
-                        Utilities.PlayResourceGainVFX(tile, _resourceGainPrefab, _srVFXMat, item.value);
+                        OnSpecialResourcesGained?.Invoke(tile, item.value);
                         break;
                 }
             }
@@ -157,9 +158,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
 
         //Play VFX if we gain claim from a tile
         if (tile != null && transaction == Transaction.Gain)
-        {
-            Utilities.PlayResourceGainVFX(tile, _resourceGainPrefab, _claimVFXMat, value);
-        }
+            OnClaimGained?.Invoke(tile, value);
     }
 
     public void SpendAllResources()

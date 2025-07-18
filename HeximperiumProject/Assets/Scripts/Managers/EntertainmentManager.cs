@@ -12,10 +12,6 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     [SerializeField] private GameObject _entertainmentPrefab;
     [SerializeField] private Transform _entertainmentsParent;
     [Header("_________________________________________________________")]
-    [Header("VFX")]
-    [SerializeField] private GameObject _pointsGainPrefab;
-    [SerializeField] private Material _pointVFXMat;
-    [Header("_________________________________________________________")]
     [Header("Resources Conversion")]
     [SerializeField] private float _pointForOneGold;
     [SerializeField] private float _pointForOneSR;
@@ -38,6 +34,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     #region EVENTS
     public event Action<Entertainment> OnEntertainmentSpawned;
     [HideInInspector] public UnityEvent OnScoreUpdated = new UnityEvent();
+    public event Action<Tile, int> OnScoreGained;
     #endregion
 
     protected override void OnAwake()
@@ -167,8 +164,8 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
 
         //Play VFX if we gain score
         if (tile != null && transaction == Transaction.Gain)
-            Utilities.PlayResourceGainVFX(tile, _pointsGainPrefab, _pointVFXMat, value);
-
+            OnScoreGained?.Invoke(tile, value);
+        //TO DO merge those two events when VFX for loss will be implemented
         OnScoreUpdated.Invoke();
     }
 
