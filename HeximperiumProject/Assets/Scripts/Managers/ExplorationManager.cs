@@ -242,6 +242,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         _currentScout.HasRedirected = true;
         _tileRefForScoutDirection = tile;
         _choosingScoutDirection = true;
+        scout.Animator.SetTrigger("Redirecting");
     }
 
     private void ScoutInteraction(Tile tile, int positionIndex)

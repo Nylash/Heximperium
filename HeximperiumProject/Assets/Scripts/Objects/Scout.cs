@@ -43,6 +43,7 @@ public class Scout : MonoBehaviour
     public Tile CurrentTile { get => _currentTile; set => _currentTile = value; }
     public bool HasDoneMoving { get => _hasDoneMoving;}
     public bool HasRedirected { get => _hasRedirected; set => _hasRedirected = value; }
+    public Animator Animator { get => _animator; }
     #endregion
 
     #region EVENTS
