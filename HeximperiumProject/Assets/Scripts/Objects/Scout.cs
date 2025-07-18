@@ -1,7 +1,7 @@
-using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine.Events;
+using UnityEngine;
 
 public class Scout : MonoBehaviour
 {
@@ -47,7 +47,7 @@ public class Scout : MonoBehaviour
     #endregion
 
     #region EVENTS
-    [HideInInspector] public UnityEvent<Tile> OnScoutRevealingTile = new UnityEvent<Tile>();
+    public event Action<Tile> OnScoutRevealingTile;
     #endregion
 
     private void Awake()
@@ -56,8 +56,8 @@ public class Scout : MonoBehaviour
         foreach (Renderer renderer in GetComponentsInChildren<Renderer>(true)) 
             _renderers.Add(renderer);
 
-        ExplorationManager.Instance.OnPhaseFinalized.AddListener(CheckLifeSpan);
-        GameManager.Instance.OnEntertainmentPhaseStarted.AddListener(KillScout);
+        ExplorationManager.Instance.OnPhaseFinalized += CheckLifeSpan;
+        GameManager.Instance.OnEntertainmentPhaseStarted += KillScout;
     }
 
     private void Start()
@@ -102,7 +102,7 @@ public class Scout : MonoBehaviour
             if (!_currentTile.Revealed)
             {
                 _currentTile.RevealTile(false);
-                OnScoutRevealingTile.Invoke(_currentTile);
+                OnScoutRevealingTile?.Invoke(_currentTile);
             }    
             RevealTilesRecursively(_currentTile, _revealRadius);
 
@@ -130,11 +130,15 @@ public class Scout : MonoBehaviour
                 _currentTile.Scouts.Remove(this);
                 _currentTile.UpdateScoutCounter();
             }
-            ExplorationManager.Instance.OnPhaseFinalized.RemoveListener(CheckLifeSpan);
-            GameManager.Instance.OnEntertainmentPhaseStarted.RemoveListener(KillScout);
+            ExplorationManager.Instance.OnPhaseFinalized -= CheckLifeSpan;
+            GameManager.Instance.OnEntertainmentPhaseStarted -= KillScout;
 
             if(ExplorationManager.Instance.UpgradeScoutRevealOnDeathRadius != 0 && GameManager.Instance.CurrentPhase != Phase.Entertain)//Don't do the reveal if we are in Entertainment phase
                 RevealTilesRecursively(_currentTile, ExplorationManager.Instance.UpgradeScoutRevealOnDeathRadius);
+
+            if (OnScoutRevealingTile != null)
+                foreach (var d in OnScoutRevealingTile.GetInvocationList())
+                    OnScoutRevealingTile -= (Action<Tile>)d;
 
             Destroy(gameObject);
         }
@@ -162,7 +166,7 @@ public class Scout : MonoBehaviour
             if (!neighbor.Revealed)
             {
                 neighbor.RevealTile(false);
-                OnScoutRevealingTile.Invoke(neighbor);
+                OnScoutRevealingTile?.Invoke(neighbor);
             }
             // Recursively reveal the neighbors of the current neighbor
             RevealTilesRecursively(neighbor, depth - 1);

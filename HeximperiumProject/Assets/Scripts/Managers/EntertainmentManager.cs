@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class EntertainmentManager : PhaseManager<EntertainmentManager>
 {
@@ -33,16 +32,16 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
 
     #region EVENTS
     public event Action<Entertainment> OnEntertainmentSpawned;
-    [HideInInspector] public UnityEvent OnScoreUpdated = new UnityEvent();
+    public event Action OnScoreUpdated;
     public event Action<Tile, int> OnScoreGained;
     #endregion
 
     protected override void OnAwake()
     {
-        GameManager.Instance.OnEntertainmentPhaseStarted.AddListener(StartPhase);
-        GameManager.Instance.OnEntertainmentPhaseEnded.AddListener(ConfirmPhase);
-        GameManager.Instance.OnNewTileSelected.AddListener(NewTileSelected);
-        GameManager.Instance.OnTileUnselected.AddListener(TileUnselected);
+        GameManager.Instance.OnEntertainmentPhaseStarted += StartPhase;
+        GameManager.Instance.OnEntertainmentPhaseEnded += ConfirmPhase;
+        GameManager.Instance.OnNewTileSelected += NewTileSelected;
+        GameManager.Instance.OnTileUnselected += TileUnselected;
     }
 
     private void Update()
@@ -67,7 +66,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         float goldIntoPoints = _pointForOneGold * ResourcesManager.Instance.GetResourceStock(Resource.Gold);
         float srIntoPoints = _pointForOneSR * ResourcesManager.Instance.GetResourceStock(Resource.SpecialResources);
         _score += Mathf.RoundToInt(goldIntoPoints) + Mathf.RoundToInt(srIntoPoints);
-        OnScoreUpdated.Invoke();
+        OnScoreUpdated?.Invoke();
         ResourcesManager.Instance.SpendAllResources();
 
         //Earn incomes of every claimed tiles
@@ -166,7 +165,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         if (tile != null && transaction == Transaction.Gain)
             OnScoreGained?.Invoke(tile, value);
         //TO DO merge those two events when VFX for loss will be implemented
-        OnScoreUpdated.Invoke();
+        OnScoreUpdated?.Invoke();
     }
 
     //For boostByZone special effect, needed when the group last entry is a BridgeData, otherwise the SO handle everything

@@ -101,22 +101,22 @@ public class UIManager : Singleton<UIManager>
     {
         _mainCanvas = GetComponent<Transform>();
 
-        GameManager.Instance.OnNewTurn.AddListener(UpdateTurnCounterText);
+        GameManager.Instance.OnNewTurn += UpdateTurnCounterText;
 
-        GameManager.Instance.OnExplorationPhaseStarted.AddListener(UpdatePhaseUI);
-        GameManager.Instance.OnExpansionPhaseStarted.AddListener(UpdatePhaseUI);
-        GameManager.Instance.OnExploitationPhaseStarted.AddListener(UpdatePhaseUI);
-        GameManager.Instance.OnEntertainmentPhaseStarted.AddListener(UpdatePhaseUI);
+        GameManager.Instance.OnExplorationPhaseStarted += UpdatePhaseUI;
+        GameManager.Instance.OnExpansionPhaseStarted += UpdatePhaseUI;
+        GameManager.Instance.OnExploitationPhaseStarted += UpdatePhaseUI;
+        GameManager.Instance.OnEntertainmentPhaseStarted += UpdatePhaseUI;
 
-        GameManager.Instance.OnEntertainmentPhaseStarted.AddListener(UpdateUIForEntertainment);
+        GameManager.Instance.OnEntertainmentPhaseStarted += UpdateUIForEntertainment;
 
-        GameManager.Instance.OnExplorationPhaseStarted.AddListener(ForceScoutsToShow);
+        GameManager.Instance.OnExplorationPhaseStarted += ForceScoutsToShow;
 
-        GameManager.Instance.OnGameFinished.AddListener(GameFinished);
+        GameManager.Instance.OnGameFinished += GameFinished;
 
-        ExplorationManager.Instance.OnScoutsLimitModified.AddListener(UpdateScoutLimit);
+        ExplorationManager.Instance.OnScoutsLimitModified += UpdateScoutLimit;
 
-        EntertainmentManager.Instance.OnScoreUpdated.AddListener(UpdateScoreText);
+        EntertainmentManager.Instance.OnScoreUpdated += () => _scoreText.text = EntertainmentManager.Instance.Score.ToString(); ;
     }
 
     private void Start()
@@ -146,11 +146,6 @@ public class UIManager : Singleton<UIManager>
     }
 
     #region RESOURCES BAR UI
-    private void UpdateScoreText()
-    {
-        _scoreText.text = EntertainmentManager.Instance.Score.ToString();
-    }
-
     private void UpdateScoutLimit()
     {
         _scoutsLimitText.text = ExplorationManager.Instance.CurrentScoutsCount + "/" + ExplorationManager.Instance.ScoutsLimit;

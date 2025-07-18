@@ -32,14 +32,14 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
                 behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, income);
 
                 //Add a lister to adjust the income when a neighbor adjust its own income
-                neighbor.OnIncomeModified.RemoveListener(behaviourTile.ListenerOnIncomeModified);
-                neighbor.OnIncomeModified.AddListener(behaviourTile.ListenerOnIncomeModified);
+                neighbor.OnIncomeModified -= behaviourTile.ListenerOnIncomeModified;
+                neighbor.OnIncomeModified += behaviourTile.ListenerOnIncomeModified;
             }
             else
             {
                 //If the neighbor isn't claimed add a listener to add its income when he will be claimed
-                neighbor.OnTileClaimed.RemoveListener(behaviourTile.ListenerOnTileClaimed_IncomeComingFromNeighbors);
-                neighbor.OnTileClaimed.AddListener(behaviourTile.ListenerOnTileClaimed_IncomeComingFromNeighbors);
+                neighbor.OnTileClaimed -= behaviourTile.ListenerOnTileClaimed_IncomeComingFromNeighbors;
+                neighbor.OnTileClaimed += behaviourTile.ListenerOnTileClaimed_IncomeComingFromNeighbors;
             }
         }
     }
@@ -68,8 +68,8 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
                 behaviourTile.Incomes = Utilities.SubtractResourceToIntMaps(behaviourTile.Incomes, income);
             }
 
-            neighbor.OnIncomeModified.RemoveListener(behaviourTile.ListenerOnIncomeModified);
-            neighbor.OnTileClaimed.RemoveListener(behaviourTile.ListenerOnTileClaimed_IncomeComingFromNeighbors);
+            neighbor.OnIncomeModified -= behaviourTile.ListenerOnIncomeModified;
+            neighbor.OnTileClaimed -= behaviourTile.ListenerOnTileClaimed_IncomeComingFromNeighbors;
         }
     }
 
@@ -135,7 +135,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
         behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, income);
 
         //Add a listener to adjust the income when a neighbor adjust its own income
-        tile.OnIncomeModified.RemoveListener(behaviourTile.ListenerOnIncomeModified);
-        tile.OnIncomeModified.AddListener(behaviourTile.ListenerOnIncomeModified);
+        tile.OnIncomeModified -= behaviourTile.ListenerOnIncomeModified;
+        tile.OnIncomeModified += behaviourTile.ListenerOnIncomeModified;
     }
 }

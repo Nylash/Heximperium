@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class ExplorationManager : PhaseManager<ExplorationManager>
 {
@@ -38,7 +37,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     #endregion
 
     #region EVENTS
-    [HideInInspector] public UnityEvent OnScoutsLimitModified = new UnityEvent();
+    public event Action OnScoutsLimitModified;
     public event Action<Scout> OnScoutSpawned;
     #endregion
 
@@ -53,7 +52,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         set
         {
             _scoutsLimit = value;
-            OnScoutsLimitModified.Invoke();
+            OnScoutsLimitModified?.Invoke();
         }
     }
     public int CurrentScoutsCount
@@ -62,7 +61,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         set
         {
             _currentScoutsCount = value;
-            OnScoutsLimitModified.Invoke();
+            OnScoutsLimitModified?.Invoke();
         }
     }
 
@@ -103,10 +102,10 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
 
     protected override void OnAwake()
     {
-        GameManager.Instance.OnExplorationPhaseStarted.AddListener(StartPhase);
-        GameManager.Instance.OnExplorationPhaseEnded.AddListener(ConfirmPhase);
-        GameManager.Instance.OnNewTileSelected.AddListener(NewTileSelected);
-        GameManager.Instance.OnTileUnselected.AddListener(TileUnselected);
+        GameManager.Instance.OnExplorationPhaseStarted += StartPhase;
+        GameManager.Instance.OnExplorationPhaseEnded += ConfirmPhase;
+        GameManager.Instance.OnNewTileSelected += NewTileSelected;
+        GameManager.Instance.OnTileUnselected += TileUnselected;
 
         ScoutsLimit = _baseScoutsLimit;
     }

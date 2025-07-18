@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class ExpansionManager : PhaseManager<ExpansionManager>
 {
@@ -35,16 +35,16 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     #endregion
 
     #region EVENTS
-    [HideInInspector] public UnityEvent<Tile> OnTileClaimed = new UnityEvent<Tile>();
-    [HideInInspector] public UnityEvent<int> OnClaimSaved = new UnityEvent<int>();
+    public event Action<Tile> OnTileClaimed;
+    public event Action<int> OnClaimSaved;
     #endregion
 
     protected override void OnAwake()
     {
-        GameManager.Instance.OnExpansionPhaseStarted.AddListener(StartPhase);
-        GameManager.Instance.OnExpansionPhaseEnded.AddListener(ConfirmPhase);
-        GameManager.Instance.OnNewTileSelected.AddListener(NewTileSelected);
-        GameManager.Instance.OnTileUnselected.AddListener(TileUnselected);
+        GameManager.Instance.OnExpansionPhaseStarted += StartPhase;
+        GameManager.Instance.OnExpansionPhaseEnded += ConfirmPhase;
+        GameManager.Instance.OnNewTileSelected += NewTileSelected;
+        GameManager.Instance.OnTileUnselected += TileUnselected;
     }
 
     #region PHASE LOGIC
@@ -75,7 +75,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
         {
             if(ResourcesManager.Instance.Claim > _savedClaimPerTurn)
                 ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim - _savedClaimPerTurn, Transaction.Spent);
-            OnClaimSaved.Invoke(ResourcesManager.Instance.Claim);
+            OnClaimSaved?.Invoke(ResourcesManager.Instance.Claim);
         }
         else
             ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim, Transaction.Spent);
@@ -142,7 +142,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
             tile.ClaimTile();
             _claimedTiles.Add(tile);
             tile.transform.parent = _claimedTilesParent;
-            OnTileClaimed.Invoke(tile);
+            OnTileClaimed?.Invoke(tile);
         }
     }
 

@@ -26,7 +26,7 @@ public class IncomeWhenScoutRevealTile : SpecialBehaviour
     {
         if (scout.CurrentTile == behaviourTile)
         {
-            scout.OnScoutRevealingTile.AddListener(behaviourTile.ListenerOnScoutRevealingTile);
+            scout.OnScoutRevealingTile += behaviourTile.ListenerOnScoutRevealingTile;
         }
     }
 

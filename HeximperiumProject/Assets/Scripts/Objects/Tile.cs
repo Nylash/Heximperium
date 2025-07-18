@@ -1,7 +1,6 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
-using UnityEngine.Events;
 using System.Linq;
 using System;
 
@@ -42,11 +41,11 @@ public class Tile : MonoBehaviour
 
     #region EVENTS
     //previous Incomes, new Incomes
-    [HideInInspector] public UnityEvent<Tile, List<ResourceToIntMap>, List<ResourceToIntMap>> OnIncomeModified = new UnityEvent<Tile, List<ResourceToIntMap>, List<ResourceToIntMap>>();
-    [HideInInspector] public UnityEvent<Tile> OnTileClaimed = new UnityEvent<Tile>();
-    [HideInInspector] public UnityEvent<Tile> OnTileDataModified = new UnityEvent<Tile>();
-    [HideInInspector] public UnityEvent<Tile> OnEntertainmentModified = new UnityEvent<Tile>();
-    public Action OnClaimBorderAnimationDone;
+    public event Action<Tile, List<ResourceToIntMap>, List<ResourceToIntMap>> OnIncomeModified;
+    public event Action<Tile> OnTileClaimed;
+    public event Action<Tile> OnTileDataModified;
+    public event Action<Tile> OnEntertainmentModified;
+    public Action OnClaimBorderAnimationDone;//No event keyword because it is Invoked in the Border script
     #endregion
 
     #region ACCESSORS
@@ -61,7 +60,7 @@ public class Tile : MonoBehaviour
         get => _incomes;
         set
         {
-            OnIncomeModified.Invoke(this, _incomes, value);
+            OnIncomeModified?.Invoke(this, _incomes, value);
             _incomes = value;
         }
     }
@@ -79,7 +78,7 @@ public class Tile : MonoBehaviour
             else
                 _previousEntertainmentData = null;
             _entertainment = value;
-            OnEntertainmentModified.Invoke(this);
+            OnEntertainmentModified?.Invoke(this);
         }  
     }
     public TileData PreviousData { get => _previousData; }
@@ -133,7 +132,7 @@ public class Tile : MonoBehaviour
 
         UpdateSpecialBehaviours();
 
-        OnTileDataModified.Invoke(this);
+        OnTileDataModified?.Invoke(this);
     }
 
     //Reveal the tile, with or without the flipping animation
@@ -153,7 +152,7 @@ public class Tile : MonoBehaviour
             RevealTile(false);
 
         _claimed = true;
-        OnTileClaimed.Invoke(this);
+        OnTileClaimed?.Invoke(this);
         _border = Instantiate(_borderPrefab, transform.position, Quaternion.identity).GetComponent<Border>();
         _border.transform.parent = ExpansionManager.Instance.BorderParent;
         _border.GetComponent<Border>().associatedTile = this;

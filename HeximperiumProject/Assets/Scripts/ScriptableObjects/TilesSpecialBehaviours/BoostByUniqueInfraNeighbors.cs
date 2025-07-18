@@ -17,8 +17,8 @@ public class BoostByUniqueInfraNeighbors : SpecialBehaviour
             if( neighbor.TileData is InfrastructureData data)
                 uniqueData.Add(data);
 
-            neighbor.OnTileDataModified.RemoveListener(behaviourTile.ListenerOnTileDataModified_BoostByUniqueInfraNeighbors);
-            neighbor.OnTileDataModified.AddListener(behaviourTile.ListenerOnTileDataModified_BoostByUniqueInfraNeighbors);
+            neighbor.OnTileDataModified -= behaviourTile.ListenerOnTileDataModified_BoostByUniqueInfraNeighbors;
+            neighbor.OnTileDataModified += behaviourTile.ListenerOnTileDataModified_BoostByUniqueInfraNeighbors;
         }
 
         behaviourTile.UniqueInfraNeighborsCount = uniqueData.Count;
@@ -34,7 +34,7 @@ public class BoostByUniqueInfraNeighbors : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
-            neighbor.OnTileDataModified.RemoveListener(behaviourTile.ListenerOnTileDataModified_BoostByUniqueInfraNeighbors);
+            neighbor.OnTileDataModified -= behaviourTile.ListenerOnTileDataModified_BoostByUniqueInfraNeighbors;
         }
 
         //Remove boost for each unique infra
