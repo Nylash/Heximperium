@@ -41,10 +41,10 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
 
     protected override void OnAwake()
     {
-        GameManager.Instance.OnExpansionPhaseStarted.AddListener(StartPhase);
-        GameManager.Instance.OnExpansionPhaseEnded.AddListener(ConfirmPhase);
-        GameManager.Instance.OnNewTileSelected.AddListener(NewTileSelected);
-        GameManager.Instance.OnTileUnselected.AddListener(TileUnselected);
+        GameManager.Instance.OnExpansionPhaseStarted += StartPhase;
+        GameManager.Instance.OnExpansionPhaseEnded += ConfirmPhase;
+        GameManager.Instance.OnNewTileSelected += NewTileSelected;
+        GameManager.Instance.OnTileUnselected += TileUnselected;
     }
 
     #region PHASE LOGIC

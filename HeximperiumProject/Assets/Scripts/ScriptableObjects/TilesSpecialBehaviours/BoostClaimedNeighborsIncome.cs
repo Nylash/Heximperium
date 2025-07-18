@@ -20,8 +20,8 @@ public class BoostClaimedNeighborsIncome : SpecialBehaviour
             {
                 //If the neighbor isn't claimed add a listener to boost it when it will be claimed
                 //BehaviourTile is needed even if the reference isn't in the method to create a unique pair of behaviourTile and neighbor, avoiding conflict between events
-                neighbor.OnTileClaimed.RemoveListener(behaviourTile.ListenerOnTileClaimed_BoostClaimedNeighborsIncome);
-                neighbor.OnTileClaimed.AddListener(behaviourTile.ListenerOnTileClaimed_BoostClaimedNeighborsIncome);
+                neighbor.OnTileClaimed -= behaviourTile.ListenerOnTileClaimed_BoostClaimedNeighborsIncome;
+                neighbor.OnTileClaimed += behaviourTile.ListenerOnTileClaimed_BoostClaimedNeighborsIncome;
             }
         }
     }
@@ -38,7 +38,7 @@ public class BoostClaimedNeighborsIncome : SpecialBehaviour
             }
             else
             {
-                neighbor.OnTileClaimed.RemoveListener(behaviourTile.ListenerOnTileClaimed_BoostClaimedNeighborsIncome);
+                neighbor.OnTileClaimed -= behaviourTile.ListenerOnTileClaimed_BoostClaimedNeighborsIncome;
             }
         }
     }
@@ -59,6 +59,6 @@ public class BoostClaimedNeighborsIncome : SpecialBehaviour
     public void ApplyBoostToClaimedTile(Tile behaviourTile, Tile boostedTile)
     {
         boostedTile.Incomes = Utilities.MergeResourceToIntMaps(boostedTile.Incomes, _incomeBoost);
-        boostedTile.OnTileClaimed.RemoveListener(behaviourTile.ListenerOnTileClaimed_BoostClaimedNeighborsIncome);
+        boostedTile.OnTileClaimed -= behaviourTile.ListenerOnTileClaimed_BoostClaimedNeighborsIncome;
     }
 }

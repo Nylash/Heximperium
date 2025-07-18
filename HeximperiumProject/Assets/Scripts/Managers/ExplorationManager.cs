@@ -102,10 +102,10 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
 
     protected override void OnAwake()
     {
-        GameManager.Instance.OnExplorationPhaseStarted.AddListener(StartPhase);
-        GameManager.Instance.OnExplorationPhaseEnded.AddListener(ConfirmPhase);
-        GameManager.Instance.OnNewTileSelected.AddListener(NewTileSelected);
-        GameManager.Instance.OnTileUnselected.AddListener(TileUnselected);
+        GameManager.Instance.OnExplorationPhaseStarted += StartPhase;
+        GameManager.Instance.OnExplorationPhaseEnded += ConfirmPhase;
+        GameManager.Instance.OnNewTileSelected += NewTileSelected;
+        GameManager.Instance.OnTileUnselected += TileUnselected;
 
         ScoutsLimit = _baseScoutsLimit;
     }

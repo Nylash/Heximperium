@@ -17,8 +17,8 @@ public class BoostByZoneSize : SpecialEffect
         {
             if (!neighbor)
                 continue;
-            neighbor.OnEntertainmentModified.RemoveListener(associatedEntertainment.ListenerOnEntertainmentModified_BoostByZoneSize);
-            neighbor.OnEntertainmentModified.AddListener(associatedEntertainment.ListenerOnEntertainmentModified_BoostByZoneSize);
+            neighbor.OnEntertainmentModified -= associatedEntertainment.ListenerOnEntertainmentModified_BoostByZoneSize;
+            neighbor.OnEntertainmentModified += associatedEntertainment.ListenerOnEntertainmentModified_BoostByZoneSize;
             if (neighbor.GroupID > 0)
                 neighborGroups.Add(neighbor.GroupID);
         }
@@ -46,7 +46,7 @@ public class BoostByZoneSize : SpecialEffect
         {
             if (!neighbor)
                 continue;
-            neighbor.OnEntertainmentModified.RemoveListener(associatedEntertainment.ListenerOnEntertainmentModified_BoostByZoneSize);
+            neighbor.OnEntertainmentModified -= associatedEntertainment.ListenerOnEntertainmentModified_BoostByZoneSize;
         }
         foreach (Entertainment isolatedBridge in CheckIsolatedBridges(associatedEntertainment))
             RemoveEntertainmentFromItsGroup(isolatedBridge.Tile, isolatedBridge.Data, false);

@@ -38,10 +38,10 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
 
     protected override void OnAwake()
     {
-        GameManager.Instance.OnEntertainmentPhaseStarted.AddListener(StartPhase);
-        GameManager.Instance.OnEntertainmentPhaseEnded.AddListener(ConfirmPhase);
-        GameManager.Instance.OnNewTileSelected.AddListener(NewTileSelected);
-        GameManager.Instance.OnTileUnselected.AddListener(TileUnselected);
+        GameManager.Instance.OnEntertainmentPhaseStarted += StartPhase;
+        GameManager.Instance.OnEntertainmentPhaseEnded += ConfirmPhase;
+        GameManager.Instance.OnNewTileSelected += NewTileSelected;
+        GameManager.Instance.OnTileUnselected += TileUnselected;
     }
 
     private void Update()

@@ -15,8 +15,8 @@ public class BoostByUniqueNeighbors : SpecialEffect
             if (!neighbor)
                 continue;
 
-            neighbor.OnEntertainmentModified.RemoveListener(associatedEntertainment.ListenerOnEntertainmentModified_BoostByUniqueNeighbors);
-            neighbor.OnEntertainmentModified.AddListener(associatedEntertainment.ListenerOnEntertainmentModified_BoostByUniqueNeighbors);
+            neighbor.OnEntertainmentModified -= associatedEntertainment.ListenerOnEntertainmentModified_BoostByUniqueNeighbors;
+            neighbor.OnEntertainmentModified += associatedEntertainment.ListenerOnEntertainmentModified_BoostByUniqueNeighbors;
 
             if (!neighbor.Entertainment)
                 continue;
@@ -35,7 +35,7 @@ public class BoostByUniqueNeighbors : SpecialEffect
         {
             if (!neighbor)
                 continue;
-            neighbor.OnEntertainmentModified.RemoveListener(associatedEntertainment.ListenerOnEntertainmentModified_BoostByUniqueNeighbors);
+            neighbor.OnEntertainmentModified -= associatedEntertainment.ListenerOnEntertainmentModified_BoostByUniqueNeighbors;
         }
         associatedEntertainment.Tile.UniqueEntertainmentNeighborsCount_SE = 0;
     }
