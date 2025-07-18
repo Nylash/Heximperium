@@ -53,7 +53,7 @@ public class Scout : MonoBehaviour
     private void Awake()
     {
         _renderers.Add(GetComponent<Renderer>());
-        foreach (Renderer renderer in GetComponentsInChildren<Renderer>()) 
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>(true)) 
             _renderers.Add(renderer);
 
         ExplorationManager.Instance.OnPhaseFinalized.AddListener(CheckLifeSpan);
