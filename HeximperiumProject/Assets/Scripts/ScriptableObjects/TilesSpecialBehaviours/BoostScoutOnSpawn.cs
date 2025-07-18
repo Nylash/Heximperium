@@ -9,13 +9,13 @@ public class BoostScoutOnSpawn : SpecialBehaviour
 
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
     {
-        ExplorationManager.Instance.OnScoutSpawned.RemoveListener(behaviourTile.ListenerOnScoutSpawned_BoostScoutOnSpawn);
-        ExplorationManager.Instance.OnScoutSpawned.AddListener(behaviourTile.ListenerOnScoutSpawned_BoostScoutOnSpawn);
+        ExplorationManager.Instance.OnScoutSpawned -= behaviourTile.ListenerOnScoutSpawned_BoostScoutOnSpawn;
+        ExplorationManager.Instance.OnScoutSpawned += behaviourTile.ListenerOnScoutSpawned_BoostScoutOnSpawn;
     }
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
-        ExplorationManager.Instance.OnScoutSpawned.RemoveListener(behaviourTile.ListenerOnScoutSpawned_BoostScoutOnSpawn);
+        ExplorationManager.Instance.OnScoutSpawned -= behaviourTile.ListenerOnScoutSpawned_BoostScoutOnSpawn;
     }
 
     public override void HighlightImpactedTile(Tile behaviourTile, bool show)

@@ -8,13 +8,13 @@ public class IncomeWhenScoutRevealTile : SpecialBehaviour
 
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
     {
-        ExplorationManager.Instance.OnScoutSpawned.RemoveListener(behaviourTile.ListenerOnScoutSpawned_GainIncomeWhenScoutRevealTile);
-        ExplorationManager.Instance.OnScoutSpawned.AddListener(behaviourTile.ListenerOnScoutSpawned_GainIncomeWhenScoutRevealTile);
+        ExplorationManager.Instance.OnScoutSpawned -= behaviourTile.ListenerOnScoutSpawned_GainIncomeWhenScoutRevealTile;
+        ExplorationManager.Instance.OnScoutSpawned += behaviourTile.ListenerOnScoutSpawned_GainIncomeWhenScoutRevealTile;
     }
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
-        ExplorationManager.Instance.OnScoutSpawned.RemoveListener(behaviourTile.ListenerOnScoutSpawned_GainIncomeWhenScoutRevealTile);
+        ExplorationManager.Instance.OnScoutSpawned -= behaviourTile.ListenerOnScoutSpawned_GainIncomeWhenScoutRevealTile;
     }
 
     public override void HighlightImpactedTile(Tile behaviourTile, bool show)

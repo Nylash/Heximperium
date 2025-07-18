@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -38,7 +39,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
 
     #region EVENTS
     [HideInInspector] public UnityEvent OnScoutsLimitModified = new UnityEvent();
-    [HideInInspector] public UnityEvent<Scout> OnScoutSpawned = new UnityEvent<Scout>();
+    public Action<Scout> OnScoutSpawned;
     #endregion
 
     #region ACCESSORS
@@ -231,7 +232,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
 
             _choosingScoutDirection = true;
 
-            OnScoutSpawned.Invoke(_currentScout);
+            OnScoutSpawned?.Invoke(_currentScout);
         }
     }
 
