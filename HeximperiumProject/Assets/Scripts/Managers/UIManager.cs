@@ -70,6 +70,12 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Sprite _spriteButtonUnlocked;
     [SerializeField] private GameObject _markerExclusiveUpgrade;
     [SerializeField] private Sprite _markerExclusiveUpgradeLocked;
+    [Header("_________________________________________________________")]
+    [Header("VFX Anchors")]
+    [SerializeField] private RectTransform _vfxAnchorEndConfetti1;
+    [SerializeField] private RectTransform _vfxAnchorEndConfetti2;
+    [SerializeField] private RectTransform _vfxAnchorEndFirework1;
+    [SerializeField] private RectTransform _vfxAnchorEndFirework2;
     #endregion
 
     #region VARIABLES
@@ -95,6 +101,10 @@ public class UIManager : Singleton<UIManager>
     public Sprite MarkerExclusiveUpgradeLocked { get => _markerExclusiveUpgradeLocked; }
     public Transform MainCanvas { get => _mainCanvas; }
     public TextMeshProUGUI GoldText { get => _goldText; }
+    public RectTransform VfxAnchorEndConfetti1 { get => _vfxAnchorEndConfetti1; }
+    public RectTransform VfxAnchorEndConfetti2 { get => _vfxAnchorEndConfetti2; }
+    public RectTransform VfxAnchorEndFirework1 { get => _vfxAnchorEndFirework1; }
+    public RectTransform VfxAnchorEndFirework2 { get => _vfxAnchorEndFirework2; }
     #endregion
 
     protected override void OnAwake()

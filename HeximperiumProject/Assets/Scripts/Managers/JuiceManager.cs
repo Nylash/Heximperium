@@ -13,7 +13,9 @@ public class JuiceManager : Singleton<JuiceManager>
     [Header("_________________________________________________________")]
     [Header("UI VFX data")]
     [SerializeField] private Camera _renderTextureCam;
-    [SerializeField] private GameObject _protoUIVFX;
+    [SerializeField] private GameObject _endGameConfettiVFX;
+    [SerializeField] private float _endGameFirstConfettiTilt = 15f;
+    [SerializeField] private GameObject _endGameFireworkVFX;
 
     protected override void OnAwake()
     {
@@ -47,9 +49,12 @@ public class JuiceManager : Singleton<JuiceManager>
     #region UI VFX
     private void Update()
     {
-        if ( Input.GetKey(KeyCode.J))
+        if ( Input.GetKeyDown(KeyCode.J))
         {
-            Instantiate(_protoUIVFX, PlaceAtViewport(UIManager.Instance.GoldText.transform as RectTransform), Quaternion.identity);
+            Instantiate(_endGameConfettiVFX, PlaceAtViewport(UIManager.Instance.VfxAnchorEndConfetti1), _endGameConfettiVFX.transform.rotation * Quaternion.Euler(0f, 0f, _endGameFirstConfettiTilt));
+            Instantiate(_endGameConfettiVFX, PlaceAtViewport(UIManager.Instance.VfxAnchorEndConfetti2), _endGameConfettiVFX.transform.rotation);
+            Instantiate(_endGameFireworkVFX, PlaceAtViewport(UIManager.Instance.VfxAnchorEndFirework1), _endGameFireworkVFX.transform.rotation);
+            Instantiate(_endGameFireworkVFX, PlaceAtViewport(UIManager.Instance.VfxAnchorEndFirework2), _endGameFireworkVFX.transform.rotation);
         }
     }
 
