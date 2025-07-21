@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class JuiceManager : Singleton<JuiceManager>
 {
@@ -16,6 +16,8 @@ public class JuiceManager : Singleton<JuiceManager>
     [SerializeField] private GameObject _endGameConfettiVFX;
     [SerializeField] private float _endGameFirstConfettiTilt = 15f;
     [SerializeField] private GameObject _endGameFireworkVFX;
+    [SerializeField] private float _endGameFireworkPosMaxOffset;
+    [SerializeField] private int _endGameFireworkQuantity = 3;
 
     protected override void OnAwake()
     {
@@ -26,6 +28,8 @@ public class JuiceManager : Singleton<JuiceManager>
         ResourcesManager.Instance.OnGoldGained += (tile, value) => PlayResourceVFX(tile, value, _goldMat);
         ResourcesManager.Instance.OnSpecialResourcesGained += (tile, value) => PlayResourceVFX(tile, value, _srMat);
         ResourcesManager.Instance.OnClaimGained += (tile, value) => PlayResourceVFX(tile, value, _claimMat);
+
+        GameManager.Instance.OnGameFinished += EndGameVFX;
     }
 
     private void SpawnUnitVFX(Tile tile)
@@ -49,21 +53,39 @@ public class JuiceManager : Singleton<JuiceManager>
     #region UI VFX
     private void Update()
     {
-        if ( Input.GetKeyDown(KeyCode.J))
+        if(Input.GetKeyDown(KeyCode.J))
         {
-            Instantiate(_endGameConfettiVFX, PlaceAtViewport(UIManager.Instance.VfxAnchorEndConfetti1), _endGameConfettiVFX.transform.rotation * Quaternion.Euler(0f, 0f, _endGameFirstConfettiTilt));
-            Instantiate(_endGameConfettiVFX, PlaceAtViewport(UIManager.Instance.VfxAnchorEndConfetti2), _endGameConfettiVFX.transform.rotation);
-            Instantiate(_endGameFireworkVFX, PlaceAtViewport(UIManager.Instance.VfxAnchorEndFirework1), _endGameFireworkVFX.transform.rotation);
-            Instantiate(_endGameFireworkVFX, PlaceAtViewport(UIManager.Instance.VfxAnchorEndFirework2), _endGameFireworkVFX.transform.rotation);
+            
         }
     }
 
-    private Vector3 PlaceAtViewport(RectTransform uiElement)
+    private void EndGameVFX()
     {
+        Instantiate(_endGameConfettiVFX, PlaceAtViewport(UIManager.Instance.VfxAnchorEndConfetti1), _endGameConfettiVFX.transform.rotation * Quaternion.Euler(0f, 0f, _endGameFirstConfettiTilt));
+        Instantiate(_endGameConfettiVFX, PlaceAtViewport(UIManager.Instance.VfxAnchorEndConfetti2), _endGameConfettiVFX.transform.rotation);
+
+        for (int i = 0; i < _endGameFireworkQuantity; i++)
+        {
+            Instantiate(_endGameFireworkVFX, PlaceAtViewport(UIManager.Instance.VfxAnchorEndFirework1, _endGameFireworkPosMaxOffset), _endGameFireworkVFX.transform.rotation);
+            Instantiate(_endGameFireworkVFX, PlaceAtViewport(UIManager.Instance.VfxAnchorEndFirework2, _endGameFireworkPosMaxOffset), _endGameFireworkVFX.transform.rotation);
+        }
+    }
+
+    private Vector3 PlaceAtViewport(RectTransform uiElement, float maxOffset = 0f)
+    {
+        // convert UI position to viewport
         Vector2 screenPt = RectTransformUtility.WorldToScreenPoint(null, uiElement.position);
         Vector2 targetPos = new Vector2(screenPt.x / Screen.width, screenPt.y / Screen.height);
-        Vector3 vp = new Vector3(targetPos.x, targetPos.y, 1);
-        return _renderTextureCam.ViewportToWorldPoint(vp);
+        Vector3 vp = new Vector3(targetPos.x, targetPos.y, 1f);
+
+        // base world‐space position
+        Vector3 worldPos = _renderTextureCam.ViewportToWorldPoint(vp);
+
+        // random offset between 0 and maxOffset on X/Y axes
+        float dx = Random.Range(0f, maxOffset);
+        float dy = Random.Range(0f, maxOffset);
+
+        return worldPos + new Vector3(dx, dy, 0f);
     }
     #endregion
 }

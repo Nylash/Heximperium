@@ -440,6 +440,8 @@ MonoBehaviour:
   _endGameConfettiVFX: {fileID: 6583538239177147575, guid: 0cdbfeb4e2a321540835de198ee6b0d0, type: 3}
   _endGameFirstConfettiTilt: 15
   _endGameFireworkVFX: {fileID: 5445069053781343791, guid: 203ad3c60e691f649b2afebfe03d6044, type: 3}
+  _endGameFireworkPosMaxOffset: 1.5
+  _endGameFireworkQuantity: 5
 --- !u!1 &9076202116189138285
 GameObject:
   m_ObjectHideFlags: 0

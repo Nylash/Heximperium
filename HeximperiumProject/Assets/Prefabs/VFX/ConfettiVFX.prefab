@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1363743511169137897}
   - component: {fileID: 667050642460468340}
   m_Layer: 5
-  m_Name: EndConfettiVFX
+  m_Name: ConfettiVFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -169,8 +169,8 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 10
-      minScalar: 5
+      scalar: 8
+      minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -980,7 +980,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 400
+        scalar: 600
         minScalar: 300
         maxCurve:
           serializedVersion: 2
