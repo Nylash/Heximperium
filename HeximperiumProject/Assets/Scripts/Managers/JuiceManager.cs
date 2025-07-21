@@ -10,6 +10,7 @@ public class JuiceManager : Singleton<JuiceManager>
     [SerializeField] private Material _claimMat;
     [SerializeField] private Material _scoreMat;
     [SerializeField] private GameObject _spawnUnitVFX;
+    [SerializeField] private GameObject _dustInfraVFX;
     [Header("_________________________________________________________")]
     [Header("UI VFX data")]
     [SerializeField] private Camera _renderTextureCam;
@@ -30,6 +31,9 @@ public class JuiceManager : Singleton<JuiceManager>
         ResourcesManager.Instance.OnClaimGained += (tile, value) => PlayResourceVFX(tile, value, _claimMat);
 
         GameManager.Instance.OnGameFinished += EndGameVFX;
+
+        ExploitationManager.Instance.OnInfraBuilded += tile => DustVFX(tile);
+        ExploitationManager.Instance.OnInfraDestroyed += tile => DustVFX(tile);
     }
 
     private void SpawnUnitVFX(Tile tile)
@@ -48,6 +52,11 @@ public class JuiceManager : Singleton<JuiceManager>
         vfx.GetComponent<ParticleSystemRenderer>().material = mat;
 
         particleSystem.Play();
+    }
+
+    private void DustVFX(Tile tile)
+    {
+        Instantiate(_dustInfraVFX, _dustInfraVFX.transform.position + tile.transform.position, _dustInfraVFX.transform.rotation);
     }
 
     #region UI VFX
