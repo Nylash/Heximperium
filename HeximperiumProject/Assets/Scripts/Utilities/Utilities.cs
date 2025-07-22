@@ -5,6 +5,8 @@ using System;
 
 public static class Utilities
 {
+    public static Action OnGameInitialized;
+
     //Return a list of world position around the tile, depending on how many buttons is needed
     public static List<Vector3> GetInteractionButtonsPosition(Vector3 tilePosition, int buttonsNumber)
     {

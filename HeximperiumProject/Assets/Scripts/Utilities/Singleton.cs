@@ -43,9 +43,9 @@ public abstract class Singleton<T> : Singleton where T : MonoBehaviour
                     return _instance = instances[0];
                 }
 
-                Debug.Log($"[{nameof(Singleton)}<{typeof(T)}>] An instance is needed in the scene and no existing instances were found, so a new instance will be created.");
-                return _instance = new GameObject($"({nameof(Singleton)}){typeof(T)}")
-                           .AddComponent<T>();
+                Debug.Log($"[{nameof(Singleton)}<{typeof(T)}>] An instance is needed in the scene and no existing instances were found.");
+                return null;
+                //return _instance = new GameObject($"({nameof(Singleton)}){typeof(T)}").AddComponent<T>();
             }
         }
     }
