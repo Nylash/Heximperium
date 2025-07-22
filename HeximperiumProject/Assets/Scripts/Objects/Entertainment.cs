@@ -11,6 +11,7 @@ public class Entertainment : MonoBehaviour
     private Tile _tile;
     private SpriteRenderer _renderer;
     private int _points;
+    private int _pointsBuffer;
     #endregion
 
     #region ACCESSORS
@@ -23,6 +24,21 @@ public class Entertainment : MonoBehaviour
     private void Awake()
     {
         _renderer = GetComponent<SpriteRenderer>();
+    }
+
+    private void FixedUpdate()
+    {
+        _pointsBuffer = _points;
+    }
+
+    private void LateUpdate()
+    {
+        if (_pointsBuffer > _points)//We lost points during the frame
+        {
+            EntertainmentManager.Instance.OnScoreLost?.Invoke(_tile, _pointsBuffer - _points);
+            // Reset the buffer so we don't fire again until the next FixedUpdate
+            _pointsBuffer = _points;
+        }
     }
 
     public void Initialize(Tile tile, EntertainmentData data)
@@ -39,9 +55,9 @@ public class Entertainment : MonoBehaviour
         gameObject.name = _data.name + " (" + (int)_tile.Coordinate.x + ";" + _tile.Coordinate.y + ")";
     }
 
-    public void UpdatePoints(int value, Transaction transaction)
+    public void UpdatePoints(int value, Transaction transaction, bool skipVFX = false)
     {
-        EntertainmentManager.Instance.UpdateScore(value, transaction, _tile);
+        EntertainmentManager.Instance.UpdateScore(value, transaction, _tile, skipVFX);
 
         if (transaction == Transaction.Spent)
             value = -value;

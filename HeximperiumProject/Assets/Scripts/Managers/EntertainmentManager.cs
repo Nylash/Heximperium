@@ -34,6 +34,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     public event Action<Entertainment> OnEntertainmentSpawned;
     public event Action OnScoreUpdated;
     public event Action<Tile, int> OnScoreGained;
+    public Action<Tile, int> OnScoreLost;//Directly called by Entertainment when it lose points (or by the manager on destroy)
     #endregion
 
     protected override void OnAwake()
@@ -146,6 +147,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
 
     public void DestroyEntertainment(Tile tile)
     {
+        OnScoreLost?.Invoke(tile, tile.Entertainment.Points);
         tile.Entertainment.DestroyEntertainment();
         _entertainments.Remove(tile.Entertainment);
         tile.Entertainment = null;
@@ -154,17 +156,20 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     }
     #endregion
 
-    public void UpdateScore(int value, Transaction transaction, Tile tile = null)
+    public void UpdateScore(int value, Transaction transaction, Tile tile = null, bool skipVFX = false)
     {
         if (transaction == Transaction.Spent)
             value = -value;
 
         _score += value;
 
-        //Play VFX if we gain score
-        if (tile != null && transaction == Transaction.Gain)
-            OnScoreGained?.Invoke(tile, value);
-        //TO DO merge those two events when VFX for loss will be implemented
+        if(!skipVFX)
+        {
+            //Play VFX if we gain score
+            if (tile != null && transaction == Transaction.Gain)
+                OnScoreGained?.Invoke(tile, value);
+        }
+
         OnScoreUpdated?.Invoke();
     }
 

@@ -99,8 +99,6 @@ public class UIManager : Singleton<UIManager>
     public Sprite SpriteUnlocked { get => _spriteButtonUnlocked; }
     public GameObject MarkerExclusiveUpgrade { get => _markerExclusiveUpgrade; }
     public Sprite MarkerExclusiveUpgradeLocked { get => _markerExclusiveUpgradeLocked; }
-    public Transform MainCanvas { get => _mainCanvas; }
-    public TextMeshProUGUI GoldText { get => _goldText; }
     public RectTransform VfxAnchorEndConfetti1 { get => _vfxAnchorEndConfetti1; }
     public RectTransform VfxAnchorEndConfetti2 { get => _vfxAnchorEndConfetti2; }
     public RectTransform VfxAnchorEndFirework1 { get => _vfxAnchorEndFirework1; }

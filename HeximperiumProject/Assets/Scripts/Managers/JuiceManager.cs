@@ -2,6 +2,7 @@
 
 public class JuiceManager : Singleton<JuiceManager>
 {
+    #region CONFIGURATION
     [Header("_________________________________________________________")]
     [Header("VFX data")]
     [SerializeField] private GameObject _resourceVFX;
@@ -9,6 +10,8 @@ public class JuiceManager : Singleton<JuiceManager>
     [SerializeField] private Material _srMat;
     [SerializeField] private Material _claimMat;
     [SerializeField] private Material _scoreMat;
+    [SerializeField] private Color _gainColorGoldScore;
+    [SerializeField] private Color _gainClaimScore;
     [SerializeField] private GameObject _spawnUnitVFX;
     [SerializeField] private GameObject _dustInfraVFX;
     [Header("_________________________________________________________")]
@@ -19,29 +22,37 @@ public class JuiceManager : Singleton<JuiceManager>
     [SerializeField] private GameObject _endGameFireworkVFX;
     [SerializeField] private float _endGameFireworkPosMaxOffset;
     [SerializeField] private int _endGameFireworkQuantity = 3;
+    [SerializeField] private GameObject _resourceVFXforUI;
+    #endregion
+
+    #region VARIABLES
+    private int _scoreBuffer;
+    #endregion
 
     protected override void OnAwake()
     {
         ExplorationManager.Instance.OnScoutSpawned += scout => SpawnUnitVFX(scout.CurrentTile);
         EntertainmentManager.Instance.OnEntertainmentSpawned += ent => SpawnUnitVFX(ent.Tile);
 
-        EntertainmentManager.Instance.OnScoreGained += (tile, value) => PlayResourceVFX(tile, value, _scoreMat);
-        ResourcesManager.Instance.OnGoldGained += (tile, value) => PlayResourceVFX(tile, value, _goldMat);
-        ResourcesManager.Instance.OnSpecialResourcesGained += (tile, value) => PlayResourceVFX(tile, value, _srMat);
-        ResourcesManager.Instance.OnClaimGained += (tile, value) => PlayResourceVFX(tile, value, _claimMat);
+        EntertainmentManager.Instance.OnScoreGained += (tile, value) => PlayResourceVFX(tile, value, _scoreMat, _gainColorGoldScore);
+        EntertainmentManager.Instance.OnScoreLost += (tile, value) => PlayResourceVFX(tile, value, _scoreMat, UIManager.Instance.ColorCantAfford);
+        ResourcesManager.Instance.OnGoldGained += (tile, value) => PlayResourceVFX(tile, value, _goldMat, _gainColorGoldScore);
+        ResourcesManager.Instance.OnSpecialResourcesGained += (tile, value) => PlayResourceVFX(tile, value, _srMat, Color.white);
+        ResourcesManager.Instance.OnClaimGained += (tile, value) => PlayResourceVFX(tile, value, _claimMat, _gainClaimScore);
 
         GameManager.Instance.OnGameFinished += EndGameVFX;
 
-        ExploitationManager.Instance.OnInfraBuilded += tile => DustVFX(tile);
-        ExploitationManager.Instance.OnInfraDestroyed += tile => DustVFX(tile);
+        //ExploitationManager.Instance.OnInfraBuilded += tile => DustVFX(tile); Not convinced by the visual effect of this
+        //ExploitationManager.Instance.OnInfraDestroyed += tile => DustVFX(tile);
     }
 
+    #region GAMEPLAY VFX
     private void SpawnUnitVFX(Tile tile)
     {
         Instantiate(_spawnUnitVFX, _spawnUnitVFX.transform.position + tile.transform.position, _spawnUnitVFX.transform.rotation);
     }
 
-    private void PlayResourceVFX(Tile tile, int value, Material mat)
+    private void PlayResourceVFX(Tile tile, int value, Material mat, Color color)
     {
         GameObject vfx = GameObject.Instantiate(_resourceVFX, _resourceVFX.transform.position + tile.transform.position, _resourceVFX.transform.rotation);
 
@@ -51,6 +62,9 @@ public class JuiceManager : Singleton<JuiceManager>
 
         vfx.GetComponent<ParticleSystemRenderer>().material = mat;
 
+        ParticleSystem.MainModule main = particleSystem.main;
+        main.startColor = new ParticleSystem.MinMaxGradient(color);
+
         particleSystem.Play();
     }
 
@@ -58,6 +72,7 @@ public class JuiceManager : Singleton<JuiceManager>
     {
         Instantiate(_dustInfraVFX, _dustInfraVFX.transform.position + tile.transform.position, _dustInfraVFX.transform.rotation);
     }
+    #endregion
 
     #region UI VFX
     private void Update()
@@ -95,6 +110,22 @@ public class JuiceManager : Singleton<JuiceManager>
         float dy = Random.Range(0f, maxOffset);
 
         return worldPos + new Vector3(dx, dy, 0f);
+    }
+
+    private void PlayUIResourceVFX(int value, Material mat, RectTransform uiElement, Color color)
+    {
+        GameObject vfx = GameObject.Instantiate(_resourceVFXforUI, PlaceAtViewport(uiElement), _resourceVFX.transform.rotation);
+
+        ParticleSystem particleSystem = vfx.GetComponent<ParticleSystem>();
+
+        particleSystem.emission.SetBurst(0, new ParticleSystem.Burst(0, value));
+
+        vfx.GetComponent<ParticleSystemRenderer>().material = mat;
+
+        ParticleSystem.MainModule main = particleSystem.main;
+        main.startColor = new ParticleSystem.MinMaxGradient(color);
+
+        particleSystem.Play();
     }
     #endregion
 }
