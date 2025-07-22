@@ -76,6 +76,9 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private RectTransform _vfxAnchorEndConfetti2;
     [SerializeField] private RectTransform _vfxAnchorEndFirework1;
     [SerializeField] private RectTransform _vfxAnchorEndFirework2;
+    [SerializeField] private RectTransform _vfxAnchorClaim;
+    [SerializeField] private RectTransform _vfxAnchorGold;
+    [SerializeField] private RectTransform _vfxAnchorSR;
     #endregion
 
     #region VARIABLES
@@ -103,6 +106,9 @@ public class UIManager : Singleton<UIManager>
     public RectTransform VfxAnchorEndConfetti2 { get => _vfxAnchorEndConfetti2; }
     public RectTransform VfxAnchorEndFirework1 { get => _vfxAnchorEndFirework1; }
     public RectTransform VfxAnchorEndFirework2 { get => _vfxAnchorEndFirework2; }
+    public RectTransform VfxAnchorClaim { get => _vfxAnchorClaim; }
+    public RectTransform VfxAnchorGold { get => _vfxAnchorGold; }
+    public RectTransform VfxAnchorSR { get => _vfxAnchorSR; }
     #endregion
 
     protected override void OnAwake()

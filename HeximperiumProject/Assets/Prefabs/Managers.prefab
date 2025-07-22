@@ -445,8 +445,7 @@ MonoBehaviour:
   _endGameFireworkVFX: {fileID: 5445069053781343791, guid: 203ad3c60e691f649b2afebfe03d6044, type: 3}
   _endGameFireworkPosMaxOffset: 1.5
   _endGameFireworkQuantity: 5
-  _resourceVFXforUI: {fileID: 3141513736289399742, guid: ee7f32208e8962f4b92867d6596b85f4, type: 3}
-  _scoreLossMat: {fileID: 0}
+  _resourceVFXforUI: {fileID: 5963754222799164501, guid: dc2605811fc8e944e90229e09b7eb3c3, type: 3}
 --- !u!1 &9076202116189138285
 GameObject:
   m_ObjectHideFlags: 0

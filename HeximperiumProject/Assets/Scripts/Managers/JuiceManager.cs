@@ -36,9 +36,13 @@ public class JuiceManager : Singleton<JuiceManager>
 
         EntertainmentManager.Instance.OnScoreGained += (tile, value) => PlayResourceVFX(tile, value, _scoreMat, _gainColorGoldScore);
         EntertainmentManager.Instance.OnScoreLost += (tile, value) => PlayResourceVFX(tile, value, _scoreMat, UIManager.Instance.ColorCantAfford);
+
         ResourcesManager.Instance.OnGoldGained += (tile, value) => PlayResourceVFX(tile, value, _goldMat, _gainColorGoldScore);
+        ResourcesManager.Instance.OnGoldSpent += (value) => PlayUIResourceVFX(value, _goldMat, UIManager.Instance.VfxAnchorGold, UIManager.Instance.ColorCantAfford);
         ResourcesManager.Instance.OnSpecialResourcesGained += (tile, value) => PlayResourceVFX(tile, value, _srMat, Color.white);
+        ResourcesManager.Instance.OnSpecialResourcesSpent += (value) => PlayUIResourceVFX(value, _srMat, UIManager.Instance.VfxAnchorSR, UIManager.Instance.ColorCantAfford);
         ResourcesManager.Instance.OnClaimGained += (tile, value) => PlayResourceVFX(tile, value, _claimMat, _gainClaimScore);
+        ResourcesManager.Instance.OnClaimSpent += (value) => PlayUIResourceVFX(value, _claimMat, UIManager.Instance.VfxAnchorClaim, UIManager.Instance.ColorCantAfford);
 
         GameManager.Instance.OnGameFinished += EndGameVFX;
 
@@ -79,7 +83,7 @@ public class JuiceManager : Singleton<JuiceManager>
     {
         if(Input.GetKeyDown(KeyCode.J))
         {
-            
+
         }
     }
 
@@ -114,7 +118,7 @@ public class JuiceManager : Singleton<JuiceManager>
 
     private void PlayUIResourceVFX(int value, Material mat, RectTransform uiElement, Color color)
     {
-        GameObject vfx = GameObject.Instantiate(_resourceVFXforUI, PlaceAtViewport(uiElement), _resourceVFX.transform.rotation);
+        GameObject vfx = GameObject.Instantiate(_resourceVFXforUI, PlaceAtViewport(uiElement), _resourceVFXforUI.transform.rotation);
 
         ParticleSystem particleSystem = vfx.GetComponent<ParticleSystem>();
 

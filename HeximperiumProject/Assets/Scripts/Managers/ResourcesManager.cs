@@ -93,6 +93,9 @@ public class ResourcesManager : Singleton<ResourcesManager>
     public event Action<Tile, int> OnGoldGained;
     public event Action<Tile, int> OnSpecialResourcesGained;
     public event Action<Tile, int> OnClaimGained;
+    public event Action<int> OnGoldSpent;
+    public event Action<int> OnSpecialResourcesSpent;
+    public event Action<int> OnClaimSpent;
     #endregion
 
     public void CHEAT_RESOURCES()
@@ -131,18 +134,33 @@ public class ResourcesManager : Singleton<ResourcesManager>
         {
             UpdateResource(item.resource, item.value, transaction);
 
-            //Play VFX if we gain resource from a tile
-            if (tile != null && transaction == Transaction.Gain)
+            switch (transaction)
             {
-                switch (item.resource)
-                {
-                    case Resource.Gold:
-                        OnGoldGained?.Invoke(tile, item.value);
-                        break;
-                    case Resource.SpecialResources:
-                        OnSpecialResourcesGained?.Invoke(tile, item.value);
-                        break;
-                }
+                case Transaction.Gain:
+                    if (tile != null)
+                    {
+                        switch (item.resource)
+                        {
+                            case Resource.Gold:
+                                OnGoldGained?.Invoke(tile, item.value);
+                                break;
+                            case Resource.SpecialResources:
+                                OnSpecialResourcesGained?.Invoke(tile, item.value);
+                                break;
+                        }
+                    }
+                    break;
+                case Transaction.Spent:
+                    switch (item.resource)
+                    {
+                        case Resource.Gold:
+                            OnGoldSpent?.Invoke(item.value);
+                            break;
+                        case Resource.SpecialResources:
+                            OnSpecialResourcesSpent?.Invoke(item.value);
+                            break;
+                    }
+                    break;
             }
         }
     }
@@ -156,9 +174,16 @@ public class ResourcesManager : Singleton<ResourcesManager>
             _claim = 0;
         UIManager.Instance.UpdateClaimUI(_claim);
 
-        //Play VFX if we gain claim from a tile
-        if (tile != null && transaction == Transaction.Gain)
-            OnClaimGained?.Invoke(tile, value);
+        switch (transaction)
+        {
+            case Transaction.Gain:
+                if (tile != null)
+                    OnClaimGained?.Invoke(tile, value);
+                break;
+            case Transaction.Spent:
+                OnClaimSpent?.Invoke(Mathf.Abs(value));
+                break;
+        }
     }
 
     public void SpendAllResources()
