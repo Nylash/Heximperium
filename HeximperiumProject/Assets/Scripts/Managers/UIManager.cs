@@ -54,7 +54,11 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject _menu;
     [SerializeField] private GameObject _endMenu;
     [SerializeField] private TextMeshProUGUI _endScore;
+    [Header("_________________________________________________________")]
+    [Header("Trade Menu")]
     [SerializeField] private GameObject _tradeMenu;
+    [SerializeField] private GameObject _buyButton;
+    [SerializeField] private GameObject _sellButton;
     [Header("_________________________________________________________")]
     [Header("Score")]
     [SerializeField] private GameObject _scoreUI;
@@ -181,6 +185,8 @@ public class UIManager : Singleton<UIManager>
                 _srText.text = value.ToString();
                 break;
         }
+        if(_tradeMenu.activeSelf)
+            UpdateTradeTextsColors();
     }
 
     public void UpdateTownLimit()
@@ -198,6 +204,7 @@ public class UIManager : Singleton<UIManager>
             if (_upgradesMenu.activeSelf)
                 UpgradesMenu();
             _tradeMenu.SetActive(true);
+            UpdateTradeTextsColors();
         }
     }
 
@@ -216,6 +223,30 @@ public class UIManager : Singleton<UIManager>
         {
             ResourcesManager.Instance.UpdateResource(ResourcesManager.Instance.TradeSellCost, Transaction.Spent);
             ResourcesManager.Instance.UpdateResource(ResourcesManager.Instance.TradeSellGain, Transaction.Gain);
+        }
+    }
+
+    private void UpdateTradeTextsColors()
+    {
+        if (!ResourcesManager.Instance.CanAfford(ResourcesManager.Instance.TradeBuyCost))
+        {
+            foreach (TextMeshProUGUI text in _buyButton.GetComponentsInChildren<TextMeshProUGUI>())
+                text.color = _colorCantAfford;
+        }
+        else
+        {
+            foreach (TextMeshProUGUI text in _buyButton.GetComponentsInChildren<TextMeshProUGUI>())
+                text.color = Color.white;
+        }
+        if (!ResourcesManager.Instance.CanAfford(ResourcesManager.Instance.TradeSellCost))
+        {
+            foreach (TextMeshProUGUI text in _sellButton.GetComponentsInChildren<TextMeshProUGUI>())
+                text.color = _colorCantAfford;
+        }
+        else
+        {
+            foreach (TextMeshProUGUI text in _sellButton.GetComponentsInChildren<TextMeshProUGUI>())
+                text.color = Color.white;
         }
     }
     #endregion

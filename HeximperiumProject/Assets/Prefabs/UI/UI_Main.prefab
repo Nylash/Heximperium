@@ -5838,7 +5838,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9372549, g: 0.7490196, b: 0.015686275, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -12745,7 +12745,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9372549, g: 0.7490196, b: 0.015686275, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -20684,6 +20684,8 @@ MonoBehaviour:
   _endMenu: {fileID: 7241879601813748829}
   _endScore: {fileID: 4270489205323450312}
   _tradeMenu: {fileID: 3004278509888641597}
+  _buyButton: {fileID: 8159433260962236379}
+  _sellButton: {fileID: 5698359097496889589}
   _scoreUI: {fileID: 1762184193661873927}
   _scoreText: {fileID: 309545220694066425}
   _upgradesMenu: {fileID: 1091653452127817214}
