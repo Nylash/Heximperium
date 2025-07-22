@@ -29,7 +29,7 @@ public class GameManager : Singleton<GameManager>
     private Phase _currentPhase;
     private int _turnCounter = 1;
 
-    private bool _gamePaused;
+    private bool _gamePaused = true;
     #endregion
 
     #region EVENTS
@@ -66,11 +66,16 @@ public class GameManager : Singleton<GameManager>
         _inputActions.Player.ConfirmPhase.performed += ctx => ConfirmPhase();
         _inputActions.Player.Menu.performed += ctx => UIManager.Instance.OpenCloseMenu();
 
-        MapManager.Instance.OnMapGenerated += InitializeGame;
+        MapManager.Instance.OnMapGenerated += Initializer;
         ExplorationManager.Instance.OnPhaseFinalized += PhaseFinalized;
         ExpansionManager.Instance.OnPhaseFinalized += PhaseFinalized;
         ExploitationManager.Instance.OnPhaseFinalized += PhaseFinalized;
         EntertainmentManager.Instance.OnPhaseFinalized += PhaseFinalized;
+
+        if (LoadingManager.Instance != null)
+            LoadingManager.Instance.OnLoadingDone += InitializeGame;
+        else
+            Utilities.OnGameInitialized += InitializeGame;
     }
 
     private void Update()
@@ -102,7 +107,7 @@ public class GameManager : Singleton<GameManager>
     //Tmp until save and game setting logic
     private void InitializeGame()
     {
-        Initializer();
+        _gamePaused = false;
 
         if (_currentPhase != Phase.Explore)
         {
@@ -148,6 +153,8 @@ public class GameManager : Singleton<GameManager>
         }
 
         ExpansionManager.Instance.ClaimPerTurn = _baseClaimPerTurn;
+
+        Utilities.OnGameInitialized?.Invoke();
     }
     #endregion
 

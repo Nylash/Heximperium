@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MapManager : Singleton<MapManager>
 {
@@ -55,6 +56,8 @@ public class MapManager : Singleton<MapManager>
         {
             tile.SearchNeighbors();
         }
+
+        SceneManager.MoveGameObjectToScene(_grid.gameObject, gameObject.scene);
 
         OnMapGenerated?.Invoke();
     }
