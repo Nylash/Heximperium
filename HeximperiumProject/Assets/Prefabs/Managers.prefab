@@ -435,8 +435,8 @@ MonoBehaviour:
   _srMat: {fileID: 2100000, guid: a6d2a5f51d41f094e86302fc07fae9ad, type: 2}
   _claimMat: {fileID: 2100000, guid: b2d161b0d703fe947a81431024d07306, type: 2}
   _scoreMat: {fileID: 2100000, guid: 37165071fda418845bd5d92d7d9da370, type: 2}
-  _gainColorGoldScore: {r: 0.9372549, g: 0.7490196, b: 0.015686275, a: 1}
-  _gainClaimScore: {r: 0.6431373, g: 0.3529412, b: 0.32156864, a: 1}
+  _gainGoldScoreColor: {r: 0.9372549, g: 0.7490196, b: 0.015686275, a: 1}
+  _gainClaimColor: {r: 0.6431373, g: 0.3529412, b: 0.32156864, a: 1}
   _spawnUnitVFX: {fileID: 1592618839310326476, guid: 91faeb109bc204f45b656d329dbce236, type: 3}
   _dustInfraVFX: {fileID: 3743465127758528429, guid: fe4b6116ce3efab45aa756b24719f49e, type: 3}
   _renderTextureCam: {fileID: 31148369443907448}

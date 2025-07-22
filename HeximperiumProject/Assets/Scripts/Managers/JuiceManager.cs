@@ -10,8 +10,8 @@ public class JuiceManager : Singleton<JuiceManager>
     [SerializeField] private Material _srMat;
     [SerializeField] private Material _claimMat;
     [SerializeField] private Material _scoreMat;
-    [SerializeField] private Color _gainColorGoldScore;
-    [SerializeField] private Color _gainClaimScore;
+    [SerializeField] private Color _gainGoldScoreColor;
+    [SerializeField] private Color _gainClaimColor;
     [SerializeField] private GameObject _spawnUnitVFX;
     [SerializeField] private GameObject _dustInfraVFX;
     [Header("_________________________________________________________")]
@@ -25,23 +25,19 @@ public class JuiceManager : Singleton<JuiceManager>
     [SerializeField] private GameObject _resourceVFXforUI;
     #endregion
 
-    #region VARIABLES
-    private int _scoreBuffer;
-    #endregion
-
     protected override void OnAwake()
     {
         ExplorationManager.Instance.OnScoutSpawned += scout => SpawnUnitVFX(scout.CurrentTile);
         EntertainmentManager.Instance.OnEntertainmentSpawned += ent => SpawnUnitVFX(ent.Tile);
 
-        EntertainmentManager.Instance.OnScoreGained += (tile, value) => PlayResourceVFX(tile, value, _scoreMat, _gainColorGoldScore);
+        EntertainmentManager.Instance.OnScoreGained += (tile, value) => PlayResourceVFX(tile, value, _scoreMat, _gainGoldScoreColor);
         EntertainmentManager.Instance.OnScoreLost += (tile, value) => PlayResourceVFX(tile, value, _scoreMat, UIManager.Instance.ColorCantAfford);
 
-        ResourcesManager.Instance.OnGoldGained += (tile, value) => PlayResourceVFX(tile, value, _goldMat, _gainColorGoldScore);
+        ResourcesManager.Instance.OnGoldGained += (tile, value) => ResourceGain(tile, value, Resource.Gold);
         ResourcesManager.Instance.OnGoldSpent += (value) => PlayUIResourceVFX(value, _goldMat, UIManager.Instance.VfxAnchorGold, UIManager.Instance.ColorCantAfford);
-        ResourcesManager.Instance.OnSpecialResourcesGained += (tile, value) => PlayResourceVFX(tile, value, _srMat, Color.white);
+        ResourcesManager.Instance.OnSpecialResourcesGained += (tile, value) => ResourceGain(tile, value, Resource.SpecialResources);
         ResourcesManager.Instance.OnSpecialResourcesSpent += (value) => PlayUIResourceVFX(value, _srMat, UIManager.Instance.VfxAnchorSR, UIManager.Instance.ColorCantAfford);
-        ResourcesManager.Instance.OnClaimGained += (tile, value) => PlayResourceVFX(tile, value, _claimMat, _gainClaimScore);
+        ResourcesManager.Instance.OnClaimGained += (tile, value) => ResourceGain(tile, value, (Resource)999);//Call with 999 to land on the default case and avoiding doing a method just for Claims
         ResourcesManager.Instance.OnClaimSpent += (value) => PlayUIResourceVFX(value, _claimMat, UIManager.Instance.VfxAnchorClaim, UIManager.Instance.ColorCantAfford);
 
         GameManager.Instance.OnGameFinished += EndGameVFX;
@@ -51,6 +47,31 @@ public class JuiceManager : Singleton<JuiceManager>
     }
 
     #region GAMEPLAY VFX
+    private void ResourceGain(Tile tile, int value, Resource resource)
+    {
+        switch (resource)
+        {
+            case Resource.Gold:
+                if (tile)
+                    PlayResourceVFX(tile, value, _goldMat, _gainGoldScoreColor);
+                else
+                    PlayUIResourceVFX(value, _goldMat, UIManager.Instance.VfxAnchorGold, _gainGoldScoreColor);
+                break;
+            case Resource.SpecialResources:
+                if (tile)
+                    PlayResourceVFX(tile, value, _srMat, Color.white);
+                else
+                    PlayUIResourceVFX(value, _srMat, UIManager.Instance.VfxAnchorSR, Color.white);
+                break;
+            default:
+                if (tile)
+                    PlayResourceVFX(tile, value, _claimMat, _gainClaimColor);
+                else
+                    PlayUIResourceVFX(value, _claimMat, UIManager.Instance.VfxAnchorClaim, _gainClaimColor);
+                break;
+        }
+    }
+
     private void SpawnUnitVFX(Tile tile)
     {
         Instantiate(_spawnUnitVFX, _spawnUnitVFX.transform.position + tile.transform.position, _spawnUnitVFX.transform.rotation);
@@ -79,14 +100,6 @@ public class JuiceManager : Singleton<JuiceManager>
     #endregion
 
     #region UI VFX
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.J))
-        {
-
-        }
-    }
-
     private void EndGameVFX()
     {
         Instantiate(_endGameConfettiVFX, PlaceAtViewport(UIManager.Instance.VfxAnchorEndConfetti1), _endGameConfettiVFX.transform.rotation * Quaternion.Euler(0f, 0f, _endGameFirstConfettiTilt));

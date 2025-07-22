@@ -137,17 +137,14 @@ public class ResourcesManager : Singleton<ResourcesManager>
             switch (transaction)
             {
                 case Transaction.Gain:
-                    if (tile != null)
+                    switch (item.resource)
                     {
-                        switch (item.resource)
-                        {
-                            case Resource.Gold:
-                                OnGoldGained?.Invoke(tile, item.value);
-                                break;
-                            case Resource.SpecialResources:
-                                OnSpecialResourcesGained?.Invoke(tile, item.value);
-                                break;
-                        }
+                        case Resource.Gold:
+                            OnGoldGained?.Invoke(tile, item.value);
+                            break;
+                        case Resource.SpecialResources:
+                            OnSpecialResourcesGained?.Invoke(tile, item.value);
+                            break;
                     }
                     break;
                 case Transaction.Spent:
@@ -177,8 +174,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
         switch (transaction)
         {
             case Transaction.Gain:
-                if (tile != null)
-                    OnClaimGained?.Invoke(tile, value);
+                OnClaimGained?.Invoke(tile, value);
                 break;
             case Transaction.Spent:
                 OnClaimSpent?.Invoke(Mathf.Abs(value));
