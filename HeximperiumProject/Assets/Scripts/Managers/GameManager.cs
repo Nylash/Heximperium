@@ -1,4 +1,4 @@
-using UnityEngine.Events;
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -33,18 +33,18 @@ public class GameManager : Singleton<GameManager>
     #endregion
 
     #region EVENTS
-    [HideInInspector] public UnityEvent<int> OnNewTurn = new UnityEvent<int>();
-    [HideInInspector] public UnityEvent OnExplorationPhaseStarted = new UnityEvent();
-    [HideInInspector] public UnityEvent OnExplorationPhaseEnded = new UnityEvent();
-    [HideInInspector] public UnityEvent OnExpansionPhaseStarted = new UnityEvent();
-    [HideInInspector] public UnityEvent OnExpansionPhaseEnded = new UnityEvent();
-    [HideInInspector] public UnityEvent OnExploitationPhaseStarted = new UnityEvent();
-    [HideInInspector] public UnityEvent OnExploitationPhaseEnded = new UnityEvent();
-    [HideInInspector] public UnityEvent OnEntertainmentPhaseStarted = new UnityEvent();
-    [HideInInspector] public UnityEvent OnEntertainmentPhaseEnded = new UnityEvent();
-    [HideInInspector] public UnityEvent<Tile> OnNewTileSelected = new UnityEvent<Tile>();
-    [HideInInspector] public UnityEvent OnTileUnselected = new UnityEvent();
-    [HideInInspector] public UnityEvent OnGameFinished = new UnityEvent();
+    public event Action<int> OnNewTurn;
+    public event Action OnExplorationPhaseStarted;
+    public event Action OnExplorationPhaseEnded;
+    public event Action OnExpansionPhaseStarted;
+    public event Action OnExpansionPhaseEnded;
+    public event Action OnExploitationPhaseStarted;
+    public event Action OnExploitationPhaseEnded;
+    public event Action OnEntertainmentPhaseStarted;
+    public event Action OnEntertainmentPhaseEnded;
+    public event Action<Tile> OnNewTileSelected;
+    public event Action OnTileUnselected;
+    public event Action OnGameFinished;
     #endregion
 
     #region ACCESSORS
@@ -66,11 +66,11 @@ public class GameManager : Singleton<GameManager>
         _inputActions.Player.ConfirmPhase.performed += ctx => ConfirmPhase();
         _inputActions.Player.Menu.performed += ctx => UIManager.Instance.OpenCloseMenu();
 
-        MapManager.Instance.OnMapGenerated.AddListener(InitializeGame);
-        ExplorationManager.Instance.OnPhaseFinalized.AddListener(PhaseFinalized);
-        ExpansionManager.Instance.OnPhaseFinalized.AddListener(PhaseFinalized);
-        ExploitationManager.Instance.OnPhaseFinalized.AddListener(PhaseFinalized);
-        EntertainmentManager.Instance.OnPhaseFinalized.AddListener(PhaseFinalized);
+        MapManager.Instance.OnMapGenerated += InitializeGame;
+        ExplorationManager.Instance.OnPhaseFinalized += PhaseFinalized;
+        ExpansionManager.Instance.OnPhaseFinalized += PhaseFinalized;
+        ExploitationManager.Instance.OnPhaseFinalized += PhaseFinalized;
+        EntertainmentManager.Instance.OnPhaseFinalized += PhaseFinalized;
     }
 
     private void Update()
@@ -109,7 +109,7 @@ public class GameManager : Singleton<GameManager>
             _currentPhase = Phase.Explore;
         }
 
-        OnExplorationPhaseStarted.Invoke();
+        OnExplorationPhaseStarted?.Invoke();
 
         _turnCounter = 1;
     }
@@ -154,6 +154,9 @@ public class GameManager : Singleton<GameManager>
     #region ACTIONS
     private void LeftClickAction()
     {
+        if(_gamePaused)
+            return;
+
         //Specific behaviour with scouts instancing
         if (ExplorationManager.Instance.ChoosingScoutDirection)
         {
@@ -207,13 +210,13 @@ public class GameManager : Singleton<GameManager>
 
         //Spawn highlight and call event
         _selectionObject = Instantiate(_selectionPrefab, _selectedTile.transform.position + new Vector3(0, 0.01f, 0), Quaternion.identity);
-        OnNewTileSelected.Invoke(_selectedTile);
+        OnNewTileSelected?.Invoke(_selectedTile);
     }
 
     public void UnselectTile()
     {
         Destroy(_selectionObject);
-        OnTileUnselected.Invoke();
+        OnTileUnselected?.Invoke();
     }
 
     private void InteractWithButton(InteractionButton button)
@@ -279,7 +282,8 @@ public class GameManager : Singleton<GameManager>
 
         if (_currentPhase == Phase.Entertain)
         {
-            OnGameFinished.Invoke();
+            OnGameFinished?.Invoke();
+            GameManager.Instance.GamePaused = true;
             return;
         }
 
@@ -293,7 +297,7 @@ public class GameManager : Singleton<GameManager>
             else
             {
                 _turnCounter++;
-                OnNewTurn.Invoke(_turnCounter);
+                OnNewTurn?.Invoke(_turnCounter);
             }
         }
         InvokePhaseStartEvent(_currentPhase);
@@ -315,16 +319,16 @@ public class GameManager : Singleton<GameManager>
         switch (phase)
         {
             case Phase.Explore:
-                OnExplorationPhaseStarted.Invoke();
+                OnExplorationPhaseStarted?.Invoke();
                 break;
             case Phase.Expand:
-                OnExpansionPhaseStarted.Invoke();
+                OnExpansionPhaseStarted?.Invoke();
                 break;
             case Phase.Exploit:
-                OnExploitationPhaseStarted.Invoke();
+                OnExploitationPhaseStarted?.Invoke();
                 break;
             case Phase.Entertain:
-                OnEntertainmentPhaseStarted.Invoke();
+                OnEntertainmentPhaseStarted?.Invoke();
                 break;
         }
     }
@@ -334,16 +338,16 @@ public class GameManager : Singleton<GameManager>
         switch (phase)
         {
             case Phase.Explore:
-                OnExplorationPhaseEnded.Invoke();
+                OnExplorationPhaseEnded?.Invoke();
                 break;
             case Phase.Expand:
-                OnExpansionPhaseEnded.Invoke();
+                OnExpansionPhaseEnded?.Invoke();
                 break;
             case Phase.Exploit:
-                OnExploitationPhaseEnded.Invoke();
+                OnExploitationPhaseEnded?.Invoke();
                 break;
             case Phase.Entertain:
-                OnEntertainmentPhaseEnded.Invoke();
+                OnEntertainmentPhaseEnded?.Invoke();
                 break;
         }
     }

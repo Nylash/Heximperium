@@ -13,25 +13,25 @@ public class BoostNeighborEntertainments : SpecialBehaviour
 
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
     {
-        behaviourTile.OnEntertainmentModified.RemoveListener(behaviourTile.ListenerOnEntertainmentModified_BoostNeighborEntertainments);
-        behaviourTile.OnEntertainmentModified.AddListener(behaviourTile.ListenerOnEntertainmentModified_BoostNeighborEntertainments);
+        behaviourTile.OnEntertainmentModified -= behaviourTile.ListenerOnEntertainmentModified_BoostNeighborEntertainments;
+        behaviourTile.OnEntertainmentModified += behaviourTile.ListenerOnEntertainmentModified_BoostNeighborEntertainments;
         foreach (Tile neighbor in behaviourTile.Neighbors)
         {
             if (!neighbor)
                 continue;
-            neighbor.OnEntertainmentModified.RemoveListener(behaviourTile.ListenerOnEntertainmentModified_BoostNeighborEntertainments);
-            neighbor.OnEntertainmentModified.AddListener(behaviourTile.ListenerOnEntertainmentModified_BoostNeighborEntertainments);
+            neighbor.OnEntertainmentModified -= behaviourTile.ListenerOnEntertainmentModified_BoostNeighborEntertainments;
+            neighbor.OnEntertainmentModified += behaviourTile.ListenerOnEntertainmentModified_BoostNeighborEntertainments;
         }
     }
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
-        behaviourTile.OnEntertainmentModified.RemoveListener(behaviourTile.ListenerOnEntertainmentModified_BoostNeighborEntertainments);
+        behaviourTile.OnEntertainmentModified -= behaviourTile.ListenerOnEntertainmentModified_BoostNeighborEntertainments;
         foreach (Tile neighbor in behaviourTile.Neighbors)
         {
             if (!neighbor)
                 continue;
-            neighbor.OnEntertainmentModified.RemoveListener(behaviourTile.ListenerOnEntertainmentModified_BoostNeighborEntertainments);
+            neighbor.OnEntertainmentModified -= behaviourTile.ListenerOnEntertainmentModified_BoostNeighborEntertainments;
         }
     }
 

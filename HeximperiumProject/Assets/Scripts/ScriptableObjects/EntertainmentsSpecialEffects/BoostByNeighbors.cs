@@ -13,8 +13,8 @@ public class BoostByNeighbors : SpecialEffect
         {
             if (!neighbor)
                 continue;
-            neighbor.OnEntertainmentModified.RemoveListener(associatedEntertainment.ListenerOnEntertainmentModified_BoostByNeighbors);
-            neighbor.OnEntertainmentModified.AddListener(associatedEntertainment.ListenerOnEntertainmentModified_BoostByNeighbors);
+            neighbor.OnEntertainmentModified -= associatedEntertainment.ListenerOnEntertainmentModified_BoostByNeighbors;
+            neighbor.OnEntertainmentModified += associatedEntertainment.ListenerOnEntertainmentModified_BoostByNeighbors;
             if (!neighbor.Entertainment)
                 continue;
             if (_boostingNeighbors.Contains(neighbor.Entertainment.Data))
@@ -28,7 +28,7 @@ public class BoostByNeighbors : SpecialEffect
         {
             if (!neighbor)
                 continue;
-            neighbor.OnEntertainmentModified.RemoveListener(associatedEntertainment.ListenerOnEntertainmentModified_BoostByNeighbors);
+            neighbor.OnEntertainmentModified -= associatedEntertainment.ListenerOnEntertainmentModified_BoostByNeighbors;
             if (!neighbor.Entertainment)
                 continue;
         }

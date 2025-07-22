@@ -8,13 +8,13 @@ public class IncomePerSavedClaim : SpecialBehaviour
 
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
     {
-        ExpansionManager.Instance.OnClaimSaved.RemoveListener(behaviourTile.ListenerOnClaimSaved);
-        ExpansionManager.Instance.OnClaimSaved.AddListener(behaviourTile.ListenerOnClaimSaved);
+        ExpansionManager.Instance.OnClaimSaved -= behaviourTile.ListenerOnClaimSaved;
+        ExpansionManager.Instance.OnClaimSaved += behaviourTile.ListenerOnClaimSaved;
     }
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
-        ExpansionManager.Instance.OnClaimSaved.RemoveListener(behaviourTile.ListenerOnClaimSaved);
+        ExpansionManager.Instance.OnClaimSaved -= behaviourTile.ListenerOnClaimSaved;
     }
 
     public override void HighlightImpactedTile(Tile behaviourTile, bool show)

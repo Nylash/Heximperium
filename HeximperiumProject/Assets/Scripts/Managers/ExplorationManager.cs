@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class ExplorationManager : PhaseManager<ExplorationManager>
 {
@@ -37,8 +37,8 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     #endregion
 
     #region EVENTS
-    [HideInInspector] public UnityEvent OnScoutsLimitModified = new UnityEvent();
-    [HideInInspector] public UnityEvent<Scout> OnScoutSpawned = new UnityEvent<Scout>();
+    public event Action OnScoutsLimitModified;
+    public event Action<Scout> OnScoutSpawned;
     #endregion
 
     #region ACCESSORS
@@ -52,7 +52,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         set
         {
             _scoutsLimit = value;
-            OnScoutsLimitModified.Invoke();
+            OnScoutsLimitModified?.Invoke();
         }
     }
     public int CurrentScoutsCount
@@ -61,7 +61,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         set
         {
             _currentScoutsCount = value;
-            OnScoutsLimitModified.Invoke();
+            OnScoutsLimitModified?.Invoke();
         }
     }
 
@@ -102,10 +102,10 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
 
     protected override void OnAwake()
     {
-        GameManager.Instance.OnExplorationPhaseStarted.AddListener(StartPhase);
-        GameManager.Instance.OnExplorationPhaseEnded.AddListener(ConfirmPhase);
-        GameManager.Instance.OnNewTileSelected.AddListener(NewTileSelected);
-        GameManager.Instance.OnTileUnselected.AddListener(TileUnselected);
+        GameManager.Instance.OnExplorationPhaseStarted += StartPhase;
+        GameManager.Instance.OnExplorationPhaseEnded += ConfirmPhase;
+        GameManager.Instance.OnNewTileSelected += NewTileSelected;
+        GameManager.Instance.OnTileUnselected += TileUnselected;
 
         ScoutsLimit = _baseScoutsLimit;
     }
@@ -231,7 +231,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
 
             _choosingScoutDirection = true;
 
-            OnScoutSpawned.Invoke(_currentScout);
+            OnScoutSpawned?.Invoke(_currentScout);
         }
     }
 
@@ -241,6 +241,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         _currentScout.HasRedirected = true;
         _tileRefForScoutDirection = tile;
         _choosingScoutDirection = true;
+        scout.Animator.SetTrigger("Redirecting");
     }
 
     private void ScoutInteraction(Tile tile, int positionIndex)

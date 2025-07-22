@@ -11,25 +11,24 @@ public class Border : MonoBehaviour
         Left
         Top-left
     */
-    [SerializeField] private Renderer[] _renderers;
+    [SerializeField] private Animator[] _animators;
 
+    public Tile associatedTile;
 
-    public void CheckBorderVisibility(Tile[] neighbors)
+    public void CheckBorderVisibility()
     {
-        for (int i = 0; i < neighbors.Length; i++) 
+        for (int i = 0; i < associatedTile.Neighbors.Length; i++) 
         {
-            //No tile so we activate the border
-            if (neighbors[i] == null)
-            {
-                _renderers[i].enabled = true;
+            if (!associatedTile.Neighbors[i])
                 continue;
-            }
-            //Neighbor is claimed, so no border
-            if(neighbors[i].Claimed)
-                _renderers[i].enabled = false;
-            //Neighbor isn't claimed, so border
-            else
-                _renderers[i].enabled = true;
+            //Neighbor is claimed, so no border fade out
+            if(associatedTile.Neighbors[i].Claimed)
+                _animators[i].SetTrigger("Fade");
         }
+    }
+
+    public void AnimationDone()
+    {
+        associatedTile.OnClaimBorderAnimationDone?.Invoke();
     }
 }

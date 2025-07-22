@@ -7,25 +7,25 @@ public class BoostEntertainmentByUniqueNeighbors : SpecialBehaviour
     [SerializeField] private int _boost;
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
     {
-        behaviourTile.OnEntertainmentModified.RemoveListener(behaviourTile.ListenerOnEntertainmentModified_BoostEntertainmentByUniqueNeighbors);
-        behaviourTile.OnEntertainmentModified.AddListener(behaviourTile.ListenerOnEntertainmentModified_BoostEntertainmentByUniqueNeighbors);
+        behaviourTile.OnEntertainmentModified -= behaviourTile.ListenerOnEntertainmentModified_BoostEntertainmentByUniqueNeighbors;
+        behaviourTile.OnEntertainmentModified += behaviourTile.ListenerOnEntertainmentModified_BoostEntertainmentByUniqueNeighbors;
         foreach (Tile neighbor in behaviourTile.Neighbors)
         {
             if (!neighbor)
                 continue;
-            neighbor.OnEntertainmentModified.RemoveListener(behaviourTile.ListenerOnEntertainmentModified_BoostEntertainmentByUniqueNeighbors);
-            neighbor.OnEntertainmentModified.AddListener(behaviourTile.ListenerOnEntertainmentModified_BoostEntertainmentByUniqueNeighbors);
+            neighbor.OnEntertainmentModified -= behaviourTile.ListenerOnEntertainmentModified_BoostEntertainmentByUniqueNeighbors;
+            neighbor.OnEntertainmentModified += behaviourTile.ListenerOnEntertainmentModified_BoostEntertainmentByUniqueNeighbors;
         }
     }
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
-        behaviourTile.OnEntertainmentModified.RemoveListener(behaviourTile.ListenerOnEntertainmentModified_BoostEntertainmentByUniqueNeighbors);
+        behaviourTile.OnEntertainmentModified -= behaviourTile.ListenerOnEntertainmentModified_BoostEntertainmentByUniqueNeighbors;
         foreach (Tile neighbor in behaviourTile.Neighbors)
         {
             if (!neighbor)
                 continue;
-            neighbor.OnEntertainmentModified.RemoveListener(behaviourTile.ListenerOnEntertainmentModified_BoostEntertainmentByUniqueNeighbors);
+            neighbor.OnEntertainmentModified -= behaviourTile.ListenerOnEntertainmentModified_BoostEntertainmentByUniqueNeighbors;
         }
     }
 

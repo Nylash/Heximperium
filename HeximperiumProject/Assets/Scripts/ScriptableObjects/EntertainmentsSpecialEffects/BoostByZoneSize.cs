@@ -17,8 +17,8 @@ public class BoostByZoneSize : SpecialEffect
         {
             if (!neighbor)
                 continue;
-            neighbor.OnEntertainmentModified.RemoveListener(associatedEntertainment.ListenerOnEntertainmentModified_BoostByZoneSize);
-            neighbor.OnEntertainmentModified.AddListener(associatedEntertainment.ListenerOnEntertainmentModified_BoostByZoneSize);
+            neighbor.OnEntertainmentModified -= associatedEntertainment.ListenerOnEntertainmentModified_BoostByZoneSize;
+            neighbor.OnEntertainmentModified += associatedEntertainment.ListenerOnEntertainmentModified_BoostByZoneSize;
             if (neighbor.GroupID > 0)
                 neighborGroups.Add(neighbor.GroupID);
         }
@@ -46,7 +46,7 @@ public class BoostByZoneSize : SpecialEffect
         {
             if (!neighbor)
                 continue;
-            neighbor.OnEntertainmentModified.RemoveListener(associatedEntertainment.ListenerOnEntertainmentModified_BoostByZoneSize);
+            neighbor.OnEntertainmentModified -= associatedEntertainment.ListenerOnEntertainmentModified_BoostByZoneSize;
         }
         foreach (Entertainment isolatedBridge in CheckIsolatedBridges(associatedEntertainment))
             RemoveEntertainmentFromItsGroup(isolatedBridge.Tile, isolatedBridge.Data, false);
@@ -138,7 +138,7 @@ public class BoostByZoneSize : SpecialEffect
         return newGroupId;
     }
 
-    private void AddEntertainmentToGroup(int groupID, Entertainment newEntertainment)
+    private void AddEntertainmentToGroup(int groupID, Entertainment newEntertainment, bool skipVFX = false)
     {
         if (newEntertainment.Data == _dataBoosting)
         {
@@ -146,7 +146,7 @@ public class BoostByZoneSize : SpecialEffect
             {
                 if (item.Data != _dataBoosting)
                     continue;
-                item.UpdatePoints(_boost, Transaction.Gain);
+                item.UpdatePoints(_boost, Transaction.Gain, skipVFX);
             }
         }
             
@@ -154,7 +154,7 @@ public class BoostByZoneSize : SpecialEffect
         if (newEntertainment.Data == _dataBoosting)
         {
             //Apply the boost before increasing the count because the effect shouldn't count itself
-            newEntertainment.UpdatePoints(_boost * EntertainmentManager.Instance.GroupBoostCount[groupID], Transaction.Gain);
+            newEntertainment.UpdatePoints(_boost * EntertainmentManager.Instance.GroupBoostCount[groupID], Transaction.Gain, skipVFX);
             EntertainmentManager.Instance.GroupBoostCount[groupID]++;
         }
 
@@ -372,7 +372,7 @@ public class BoostByZoneSize : SpecialEffect
                         isFirst = false;
                     }
                     else
-                        AddEntertainmentToGroup(newGroupID, ent);
+                        AddEntertainmentToGroup(newGroupID, ent, true);//Skip VFX too avoid confusing the player
                 }
             }
         }

@@ -8,13 +8,13 @@ public class IncomeWhenTileClaimed : SpecialBehaviour
 
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
     {
-        ExpansionManager.Instance.OnTileClaimed.RemoveListener(behaviourTile.ListenerOnTileClaimed_IncomeWhenTileClaimed);
-        ExpansionManager.Instance.OnTileClaimed.AddListener(behaviourTile.ListenerOnTileClaimed_IncomeWhenTileClaimed);
+        ExpansionManager.Instance.OnTileClaimed -= behaviourTile.ListenerOnTileClaimed_IncomeWhenTileClaimed;
+        ExpansionManager.Instance.OnTileClaimed += behaviourTile.ListenerOnTileClaimed_IncomeWhenTileClaimed;
     }
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
-        ExpansionManager.Instance.OnTileClaimed.RemoveListener(behaviourTile.ListenerOnTileClaimed_IncomeWhenTileClaimed);
+        ExpansionManager.Instance.OnTileClaimed -= behaviourTile.ListenerOnTileClaimed_IncomeWhenTileClaimed;
     }
 
     public override void HighlightImpactedTile(Tile behaviourTile, bool show)

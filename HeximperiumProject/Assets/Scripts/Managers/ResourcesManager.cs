@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -14,12 +15,6 @@ public class ResourcesManager : Singleton<ResourcesManager>
     [Header("-Sell")]
     [SerializeField] private List<ResourceToIntMap> _tradeSellCost;
     [SerializeField] private List<ResourceToIntMap> _tradeSellGain;
-    [Header("_________________________________________________________")]
-    [Header("VFX")]
-    [SerializeField] private GameObject _resourceGainPrefab;
-    [SerializeField] private Material _goldVFXMat;
-    [SerializeField] private Material _srVFXMat;
-    [SerializeField] private Material _claimVFXMat;
     #endregion
 
     #region VARIABLES
@@ -94,6 +89,15 @@ public class ResourcesManager : Singleton<ResourcesManager>
     }
     #endregion
 
+    #region EVENTS
+    public event Action<Tile, int> OnGoldGained;
+    public event Action<Tile, int> OnSpecialResourcesGained;
+    public event Action<Tile, int> OnClaimGained;
+    public event Action<int> OnGoldSpent;
+    public event Action<int> OnSpecialResourcesSpent;
+    public event Action<int> OnClaimSpent;
+    #endregion
+
     public void CHEAT_RESOURCES()
     {
         Debug.LogWarning("USING CHEAT !");
@@ -130,18 +134,30 @@ public class ResourcesManager : Singleton<ResourcesManager>
         {
             UpdateResource(item.resource, item.value, transaction);
 
-            //Play VFX if we gain resource from a tile
-            if (tile != null && transaction == Transaction.Gain)
+            switch (transaction)
             {
-                switch (item.resource)
-                {
-                    case Resource.Gold:
-                        Utilities.PlayResourceGainVFX(tile, _resourceGainPrefab, _goldVFXMat, item.value);
-                        break;
-                    case Resource.SpecialResources:
-                        Utilities.PlayResourceGainVFX(tile, _resourceGainPrefab, _srVFXMat, item.value);
-                        break;
-                }
+                case Transaction.Gain:
+                    switch (item.resource)
+                    {
+                        case Resource.Gold:
+                            OnGoldGained?.Invoke(tile, item.value);
+                            break;
+                        case Resource.SpecialResources:
+                            OnSpecialResourcesGained?.Invoke(tile, item.value);
+                            break;
+                    }
+                    break;
+                case Transaction.Spent:
+                    switch (item.resource)
+                    {
+                        case Resource.Gold:
+                            OnGoldSpent?.Invoke(item.value);
+                            break;
+                        case Resource.SpecialResources:
+                            OnSpecialResourcesSpent?.Invoke(item.value);
+                            break;
+                    }
+                    break;
             }
         }
     }
@@ -155,10 +171,14 @@ public class ResourcesManager : Singleton<ResourcesManager>
             _claim = 0;
         UIManager.Instance.UpdateClaimUI(_claim);
 
-        //Play VFX if we gain claim from a tile
-        if (tile != null && transaction == Transaction.Gain)
+        switch (transaction)
         {
-            Utilities.PlayResourceGainVFX(tile, _resourceGainPrefab, _claimVFXMat, value);
+            case Transaction.Gain:
+                OnClaimGained?.Invoke(tile, value);
+                break;
+            case Transaction.Spent:
+                OnClaimSpent?.Invoke(Mathf.Abs(value));
+                break;
         }
     }
 

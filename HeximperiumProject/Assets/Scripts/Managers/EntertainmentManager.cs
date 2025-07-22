@@ -1,6 +1,6 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class EntertainmentManager : PhaseManager<EntertainmentManager>
 {
@@ -10,10 +10,6 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     [SerializeField] private List<EntertainmentData> _entertainmentsData = new List<EntertainmentData>();
     [SerializeField] private GameObject _entertainmentPrefab;
     [SerializeField] private Transform _entertainmentsParent;
-    [Header("_________________________________________________________")]
-    [Header("VFX")]
-    [SerializeField] private GameObject _pointsGainPrefab;
-    [SerializeField] private Material _pointVFXMat;
     [Header("_________________________________________________________")]
     [Header("Resources Conversion")]
     [SerializeField] private float _pointForOneGold;
@@ -35,16 +31,18 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     #endregion
 
     #region EVENTS
-    [HideInInspector] public UnityEvent<Entertainment> OnEntertainmentSpawned = new UnityEvent<Entertainment>();
-    [HideInInspector] public UnityEvent OnScoreUpdated = new UnityEvent();
+    public event Action<Entertainment> OnEntertainmentSpawned;
+    public event Action OnScoreUpdated;
+    public event Action<Tile, int> OnScoreGained;
+    public Action<Tile, int> OnScoreLost;//Directly called by Entertainment when it lose points (or by the manager on destroy)
     #endregion
 
     protected override void OnAwake()
     {
-        GameManager.Instance.OnEntertainmentPhaseStarted.AddListener(StartPhase);
-        GameManager.Instance.OnEntertainmentPhaseEnded.AddListener(ConfirmPhase);
-        GameManager.Instance.OnNewTileSelected.AddListener(NewTileSelected);
-        GameManager.Instance.OnTileUnselected.AddListener(TileUnselected);
+        GameManager.Instance.OnEntertainmentPhaseStarted += StartPhase;
+        GameManager.Instance.OnEntertainmentPhaseEnded += ConfirmPhase;
+        GameManager.Instance.OnNewTileSelected += NewTileSelected;
+        GameManager.Instance.OnTileUnselected += TileUnselected;
     }
 
     private void Update()
@@ -69,7 +67,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         float goldIntoPoints = _pointForOneGold * ResourcesManager.Instance.GetResourceStock(Resource.Gold);
         float srIntoPoints = _pointForOneSR * ResourcesManager.Instance.GetResourceStock(Resource.SpecialResources);
         _score += Mathf.RoundToInt(goldIntoPoints) + Mathf.RoundToInt(srIntoPoints);
-        OnScoreUpdated.Invoke();
+        OnScoreUpdated?.Invoke();
         ResourcesManager.Instance.SpendAllResources();
 
         //Earn incomes of every claimed tiles
@@ -143,12 +141,13 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
             _entertainments.Add(currentEntertainment);
             currentEntertainment.Initialize(tile, data);
             tile.Entertainment = currentEntertainment;
-            OnEntertainmentSpawned.Invoke(currentEntertainment);
+            OnEntertainmentSpawned?.Invoke(currentEntertainment);
         }
     }
 
     public void DestroyEntertainment(Tile tile)
     {
+        OnScoreLost?.Invoke(tile, tile.Entertainment.Points);
         tile.Entertainment.DestroyEntertainment();
         _entertainments.Remove(tile.Entertainment);
         tile.Entertainment = null;
@@ -157,18 +156,21 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     }
     #endregion
 
-    public void UpdateScore(int value, Transaction transaction, Tile tile = null)
+    public void UpdateScore(int value, Transaction transaction, Tile tile = null, bool skipVFX = false)
     {
         if (transaction == Transaction.Spent)
             value = -value;
 
         _score += value;
 
-        //Play VFX if we gain score
-        if (tile != null && transaction == Transaction.Gain)
-            Utilities.PlayResourceGainVFX(tile, _pointsGainPrefab, _pointVFXMat, value);
+        if(!skipVFX)
+        {
+            //Play VFX if we gain score
+            if (tile != null && transaction == Transaction.Gain)
+                OnScoreGained?.Invoke(tile, value);
+        }
 
-        OnScoreUpdated.Invoke();
+        OnScoreUpdated?.Invoke();
     }
 
     //For boostByZone special effect, needed when the group last entry is a BridgeData, otherwise the SO handle everything
