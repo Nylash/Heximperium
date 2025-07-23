@@ -72,7 +72,9 @@ public class GameManager : Singleton<GameManager>
         ExploitationManager.Instance.OnPhaseFinalized += PhaseFinalized;
         EntertainmentManager.Instance.OnPhaseFinalized += PhaseFinalized;
 
-        if (LoadingManager.Instance != null)
+        if (TutorialManager.Instance != null)
+            TutorialManager.Instance.OnTutorialStarted += InitializeGame;
+        else if (LoadingManager.Instance != null)
             LoadingManager.Instance.OnLoadingDone += InitializeGame;
         else
             Utilities.OnGameInitialized += InitializeGame;
@@ -80,6 +82,9 @@ public class GameManager : Singleton<GameManager>
 
     private void Update()
     {
+        if (_gamePaused)
+            return;
+
         //Check if the cursor if over UI
         _isPointerOverUI = EventSystem.current.IsPointerOverGameObject();
     }

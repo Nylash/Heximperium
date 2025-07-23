@@ -17,8 +17,6 @@ public class LoadingManager : Singleton<LoadingManager>
 
     protected override void OnAwake()
     {
-        base.OnAwake();
-
         Utilities.OnGameInitialized += () => _isLoaded = true;
     } 
 

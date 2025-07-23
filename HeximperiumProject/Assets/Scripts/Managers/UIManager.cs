@@ -56,6 +56,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TextMeshProUGUI _endScore;
     [Header("_________________________________________________________")]
     [Header("Trade Menu")]
+    [SerializeField] private GameObject _tradeMenuButton;
     [SerializeField] private GameObject _tradeMenu;
     [SerializeField] private GameObject _buyButton;
     [SerializeField] private GameObject _sellButton;
@@ -65,6 +66,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TextMeshProUGUI _scoreText;
     [Header("_________________________________________________________")]
     [Header("UpgradesMenu")]
+    [SerializeField] private GameObject _upgradesMenuButton;
     [SerializeField] private GameObject _upgradesMenu;
     [SerializeField] private List<UpgradeTree> _upgradeTrees = new List<UpgradeTree>();
     [SerializeField] private UpgradeTree _activatedTree;
@@ -134,7 +136,13 @@ public class UIManager : Singleton<UIManager>
 
         ExplorationManager.Instance.OnScoutsLimitModified += UpdateScoutLimit;
 
-        EntertainmentManager.Instance.OnScoreUpdated += () => _scoreText.text = EntertainmentManager.Instance.Score.ToString(); ;
+        EntertainmentManager.Instance.OnScoreUpdated += () => _scoreText.text = EntertainmentManager.Instance.Score.ToString();
+
+        if (TutorialManager.Instance != null)
+        {
+            _tradeMenuButton.SetActive(false);
+            _upgradesMenuButton.SetActive(false);
+        }
     }
 
     private void Start()

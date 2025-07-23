@@ -39,6 +39,9 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     #region EVENTS
     public event Action OnScoutsLimitModified;
     public event Action<Scout> OnScoutSpawned;
+    //Tutorial events
+    public event Action OnTownSelected;
+    public event Action OnScoutDirected;
     #endregion
 
     #region ACCESSORS
@@ -130,7 +133,6 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
             _finalizingPhase = false;
             StartCoroutine(PhaseFinalized());
         }
-        
     }
 
     #region PHASE LOGIC
@@ -206,6 +208,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         {
             _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
             ScoutInteraction(tile, 0);
+            OnTownSelected();
         }
     }
 
@@ -262,6 +265,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         _currentScout.Direction = GetAngleForScout();
         _tileRefForScoutDirection = null;
         _currentScout = null;
+        OnScoutDirected?.Invoke();
     }
 
     private Direction GetAngleForScout()

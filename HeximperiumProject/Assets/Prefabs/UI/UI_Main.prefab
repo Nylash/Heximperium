@@ -20683,11 +20683,13 @@ MonoBehaviour:
   _menu: {fileID: 8818326938822355480}
   _endMenu: {fileID: 7241879601813748829}
   _endScore: {fileID: 4270489205323450312}
+  _tradeMenuButton: {fileID: 1395824234238301748}
   _tradeMenu: {fileID: 3004278509888641597}
   _buyButton: {fileID: 8159433260962236379}
   _sellButton: {fileID: 5698359097496889589}
   _scoreUI: {fileID: 1762184193661873927}
   _scoreText: {fileID: 309545220694066425}
+  _upgradesMenuButton: {fileID: 4493922954641602480}
   _upgradesMenu: {fileID: 1091653452127817214}
   _upgradeTrees:
   - treeObject: {fileID: 5102842736091909168}
