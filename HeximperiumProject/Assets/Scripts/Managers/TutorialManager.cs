@@ -9,10 +9,10 @@ public class TutorialManager : Singleton<TutorialManager>
     [Header("_________________________________________________________")]
     [Header("Exploration Turn 1")]
     [SerializeField] private GameObject _explo1;
-    [SerializeField] private GameObject _explo1_1;//Select town
-    [SerializeField] private GameObject _explo1_2;//Scout spawned
-    [SerializeField] private GameObject _explo1_3;//Scout directed
-    [SerializeField] private GameObject _explo1_4;//Phase ended
+    [SerializeField] private Animator _explo1_1;//Select town
+    [SerializeField] private Animator _explo1_2;//Scout spawned
+    [SerializeField] private Animator _explo1_3;//Scout directed
+    [SerializeField] private Animator _explo1_4;//Phase ended
 
     public event Action OnTutorialStarted;
 
@@ -43,7 +43,7 @@ public class TutorialManager : Singleton<TutorialManager>
         _explo1.GetComponent<Animator>().SetTrigger("Shrink");
         GameManager.Instance.GamePaused = false;
 
-        _explo1_1.SetActive(true);
+        _explo1_1.SetTrigger("Unfold");
         ExplorationManager.Instance.OnTownSelected += Explo1_1Done;
 
         GameManager.Instance.OnTileUnselected += RollBackToExplo1_1;
@@ -51,22 +51,22 @@ public class TutorialManager : Singleton<TutorialManager>
 
     private void RollBackToExplo1_1()
     {
-        _explo1_2.SetActive(false);
-        _explo1_1.SetActive(true);
+        _explo1_2.SetTrigger("Fold");
+        _explo1_1.SetTrigger("Unfold");
     }
 
     private void Explo1_1Done()
     {
-        _explo1_1.SetActive(false);
-        _explo1_2.SetActive(true);
+        _explo1_1.SetTrigger("Fold");
+        _explo1_2.SetTrigger("Unfold");
         ExplorationManager.Instance.OnScoutSpawned += scout => Explo1_2Done();
     }
 
     private void Explo1_2Done()
     {
-        _explo1_1.SetActive(false);
-        _explo1_2.SetActive(false);
-        _explo1_3.SetActive(true);
+        _explo1_1.SetTrigger("Fold");
+        _explo1_2.SetTrigger("Fold");
+        _explo1_3.SetTrigger("Unfold");
         ExplorationManager.Instance.OnScoutSpawned -= scout => Explo1_2Done();
         ExplorationManager.Instance.OnTownSelected -= Explo1_1Done;
         GameManager.Instance.OnTileUnselected -= RollBackToExplo1_1;
@@ -75,15 +75,15 @@ public class TutorialManager : Singleton<TutorialManager>
 
     private void Explo1_3Done()
     {
-        _explo1_3.SetActive(false);
-        _explo1_4.SetActive(true);
+        _explo1_3.SetTrigger("Fold");
+        _explo1_4.SetTrigger("Unfold");
         ExplorationManager.Instance.OnScoutDirected -= Explo1_3Done;
         GameManager.Instance.OnExplorationPhaseEnded += Explo1_4Done;
     }
 
     private void Explo1_4Done()
     {
-        _explo1_4.SetActive(false);
+        _explo1_4.SetTrigger("Fold");
         GameManager.Instance.OnExplorationPhaseEnded -= Explo1_4Done;
     }
     #endregion
