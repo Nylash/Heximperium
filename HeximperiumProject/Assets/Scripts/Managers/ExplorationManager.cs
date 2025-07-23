@@ -208,7 +208,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         {
             _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
             ScoutInteraction(tile, 0);
-            OnTownSelected();
+            OnTownSelected?.Invoke();
         }
     }
 

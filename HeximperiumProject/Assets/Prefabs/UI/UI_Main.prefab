@@ -20668,6 +20668,7 @@ MonoBehaviour:
   _popUpExpandPhase: {fileID: 7820141766064072905}
   _popUpExploitPhase: {fileID: 2411218847409732534}
   _popUpEntertainPhase: {fileID: 698151798308468607}
+  _buttonEndPhase: {fileID: 118399365143820747}
   _durationHoverForUI: 1
   _offsetBetweenPopUps: 1
   _prefabPopUpEntertainment: {fileID: 7317370589033109142, guid: 7977b42869768b74f82fe4ab1473b0c6, type: 3}

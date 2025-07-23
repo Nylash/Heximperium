@@ -28,8 +28,9 @@ public class GameManager : Singleton<GameManager>
     private bool _waitingPhaseFinalization;
     private Phase _currentPhase;
     private int _turnCounter = 1;
-
+    //Game state
     private bool _gamePaused = true;
+    private bool _tutorialLockingPhase = false;
     #endregion
 
     #region EVENTS
@@ -52,6 +53,7 @@ public class GameManager : Singleton<GameManager>
     public int TurnCounter { get => _turnCounter;}
     public GameObject InteractionPrefab { get => _interactionPrefab;}
     public bool GamePaused { get => _gamePaused; set => _gamePaused = value; }
+    public bool TutorialLockingPhase { get => _tutorialLockingPhase; set => _tutorialLockingPhase = value; }
     #endregion
 
     private void OnEnable() => _inputActions.Player.Enable();
@@ -271,6 +273,9 @@ public class GameManager : Singleton<GameManager>
     public void ConfirmPhase()
     {
         if(_gamePaused) 
+            return;
+
+        if (_tutorialLockingPhase)
             return;
 
         //The phase is finalizing its logic

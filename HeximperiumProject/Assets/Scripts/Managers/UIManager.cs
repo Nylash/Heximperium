@@ -33,6 +33,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Animator _popUpExpandPhase;
     [SerializeField] private Animator _popUpExploitPhase;
     [SerializeField] private Animator _popUpEntertainPhase;
+    [SerializeField] private Button _buttonEndPhase;
     [Header("_________________________________________________________")]
     [Header("PopUp UI")]
     [SerializeField] private float _durationHoverForUI = 2.0f;
@@ -115,6 +116,7 @@ public class UIManager : Singleton<UIManager>
     public RectTransform VfxAnchorClaim { get => _vfxAnchorClaim; }
     public RectTransform VfxAnchorGold { get => _vfxAnchorGold; }
     public RectTransform VfxAnchorSR { get => _vfxAnchorSR; }
+    public Button ButtonEndPhase { get => _buttonEndPhase; }
     #endregion
 
     protected override void OnAwake()
