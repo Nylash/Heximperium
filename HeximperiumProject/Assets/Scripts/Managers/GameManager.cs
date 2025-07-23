@@ -83,6 +83,11 @@ public class GameManager : Singleton<GameManager>
             Utilities.OnGameInitialized += InitializeGame;
     }
 
+    private void OnDestroy()
+    {
+        Utilities.OnGameInitialized -= InitializeGame;
+    }
+
     private void Update()
     {
         if (_gamePaused)
