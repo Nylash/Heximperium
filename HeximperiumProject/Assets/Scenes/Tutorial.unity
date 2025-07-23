@@ -151,14 +151,14 @@ MonoBehaviour:
   _persistentSingleton: 0
   _introduction: {fileID: 468181807}
   _explo1: {fileID: 242431404}
-  _explo1_1: {fileID: 37655131}
-  _explo1_2: {fileID: 1107403608}
-  _explo1_3: {fileID: 856934550}
-  _explo1_4: {fileID: 534109152}
+  _explo1_ObjSelectTown: {fileID: 37655131}
+  _explo1_ObjScoutSpawn: {fileID: 1107403608}
+  _explo1_ObjDirectScout: {fileID: 856934550}
+  _explo1_ObjEndPhase: {fileID: 534109152}
   _expand1: {fileID: 1681881439}
-  _expand1_1: {fileID: 635654438}
-  _expand1_2: {fileID: 1198153565}
-  _expand1_3: {fileID: 1324511432}
+  _expand1_ObjSelectTile: {fileID: 635654438}
+  _expand1_ObjClaimTile: {fileID: 1198153565}
+  _expand1_ObjEndPhase: {fileID: 1324511432}
 --- !u!4 &2115774
 Transform:
   m_ObjectHideFlags: 0

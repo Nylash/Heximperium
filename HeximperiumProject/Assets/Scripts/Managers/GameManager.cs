@@ -54,6 +54,7 @@ public class GameManager : Singleton<GameManager>
     public GameObject InteractionPrefab { get => _interactionPrefab;}
     public bool GamePaused { get => _gamePaused; set => _gamePaused = value; }
     public bool TutorialLockingPhase { get => _tutorialLockingPhase; set => _tutorialLockingPhase = value; }
+    public Tile SelectedTile { get => _selectedTile; }
     #endregion
 
     private void OnEnable() => _inputActions.Player.Enable();
