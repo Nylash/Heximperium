@@ -138,13 +138,16 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     #region PHASE LOGIC
     protected override void StartPhase()
     {
-        //Highlight all tiles that are starting points for scouts
-        foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
+        if (_currentScoutsCount < _scoutsLimit)
         {
-            if(tile.TileData is InfrastructureData data)
+            //Highlight all tiles that are starting points for scouts
+            foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
             {
-                if (data.ScoutStartingPoint)
-                    tile.Highlight(true);
+                if (tile.TileData is InfrastructureData data)
+                {
+                    if (data.ScoutStartingPoint)
+                        tile.Highlight(true);
+                }
             }
         }
     }

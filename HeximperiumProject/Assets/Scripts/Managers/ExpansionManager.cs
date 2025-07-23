@@ -39,6 +39,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     public event Action<int> OnClaimSaved;
     //Tutorial events
     public event Action OnClaimableTileSelected;
+    public event Action OnBasicTileSelected;
     #endregion
 
     protected override void OnAwake()
@@ -132,6 +133,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
 
     private void TownInteraction(Tile tile, int positionIndex)
     {
+        OnBasicTileSelected?.Invoke();
         _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Infrastructure, _townData));
     }
 
