@@ -1,8 +1,14 @@
+using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class UI_MainMenu : MonoBehaviour
 {
+    [SerializeField] private TMP_Dropdown _gameDurationDropdown;
+
+    public TMP_Dropdown GameDurationDropdown { get => _gameDurationDropdown; }
+
     private void Start()
     {
         SceneManager.LoadSceneAsync("LoadingScene", LoadSceneMode.Additive);
@@ -17,5 +23,15 @@ public class UI_MainMenu : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void OnDropdownChanged(int index)
+    {
+        string label = _gameDurationDropdown.options[index].text;
+
+        string digits = string.Concat(label.Where(char.IsDigit));
+        int value = int.Parse(digits);
+
+        LoadingManager.Instance.GameDuration = value;
     }
 }

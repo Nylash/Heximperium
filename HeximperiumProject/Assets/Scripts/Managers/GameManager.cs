@@ -62,6 +62,7 @@ public class GameManager : Singleton<GameManager>
     }
     public bool TutorialLockingPhase { get => _tutorialLockingPhase; set => _tutorialLockingPhase = value; }
     public Tile SelectedTile { get => _selectedTile; }
+    public int TurnLimit { get => _turnLimit; set => _turnLimit = value; }
     #endregion
 
     private void OnEnable() => _inputActions.Player.Enable();
