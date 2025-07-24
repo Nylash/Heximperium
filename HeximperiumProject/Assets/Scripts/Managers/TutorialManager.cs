@@ -24,6 +24,7 @@ public class TutorialManager : Singleton<TutorialManager>
         Exploit1bis_Init,
         Exploit1bis_ObjSelectTile,
         Exploit1_ObjBuildWindmill,
+        Exploit1ter_Init,
         Exploit1_ObjEndTurn,
         Explo2_Init,
         Explo2_ObjEndPhase,
@@ -72,6 +73,7 @@ public class TutorialManager : Singleton<TutorialManager>
     [SerializeField] private Vector2 _exploit1bis_TargetTileCoor;
     [SerializeField] private InfrastructureData _windmillData;
     [SerializeField] private Animator _exploit1_ObjBuildWindmill;
+    [SerializeField] private GameObject _exploit1ter;
     [SerializeField] private Animator _exploit1_ObjEndTurn;
     [Header("_________________________________________________________")]
     [Header("Exploration Turn 2")]
@@ -473,6 +475,19 @@ public class TutorialManager : Singleton<TutorialManager>
 
         _step = TutorialStep.Exploit1_ObjEndTurn;
         _exploit1_ObjBuildWindmill.SetTrigger("Fold");
+
+        _exploit1ter.SetActive(true);
+        GameManager.Instance.GamePaused = true;
+        _step = TutorialStep.Exploit1ter_Init;
+    }
+
+    public void StartExploit1Ter()
+    {
+        if (_step != TutorialStep.Exploit1ter_Init) return;
+        _exploit1ter.GetComponent<Animator>().SetTrigger("Shrink");
+        GameManager.Instance.GamePaused = false;
+
+        _step = TutorialStep.Exploit1_ObjEndTurn;
         _exploit1_ObjEndTurn.SetTrigger("Unfold");
 
         UIManager.Instance.ButtonEndPhase.interactable = true;
