@@ -149,7 +149,8 @@ public class TutorialManager : Singleton<TutorialManager>
     {
         _introduction.SetActive(true);
         _step = TutorialStep.Intro;
-        LoadingManager.Instance.OnLoadingDone -= ShowIntro;
+        if (LoadingManager.Instance != null)
+            LoadingManager.Instance.OnLoadingDone -= ShowIntro;
     }
 
     /// <summary>
