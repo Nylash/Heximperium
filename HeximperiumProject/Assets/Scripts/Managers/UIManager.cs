@@ -370,7 +370,7 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    private void ResetPopUps(GameObject obj)
+    public void ResetPopUps(GameObject obj)
     {
         _objectUnderMouse = obj;
         _hoverTimer = 0.0f;

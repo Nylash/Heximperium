@@ -52,7 +52,14 @@ public class GameManager : Singleton<GameManager>
     public Phase CurrentPhase { get => _currentPhase;}
     public int TurnCounter { get => _turnCounter;}
     public GameObject InteractionPrefab { get => _interactionPrefab;}
-    public bool GamePaused { get => _gamePaused; set => _gamePaused = value; }
+    public bool GamePaused { 
+        get => _gamePaused; 
+        set
+        {
+            _gamePaused = value;
+            UIManager.Instance.ResetPopUps(null);
+        }
+    }
     public bool TutorialLockingPhase { get => _tutorialLockingPhase; set => _tutorialLockingPhase = value; }
     public Tile SelectedTile { get => _selectedTile; }
     #endregion
