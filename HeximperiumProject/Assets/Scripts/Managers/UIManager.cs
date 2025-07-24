@@ -561,6 +561,9 @@ public class UIManager : Singleton<UIManager>
     #region MENU
     private void GameFinished()
     {
+        if (TutorialManager.Instance != null)
+            return;
+
         _endMenu.SetActive(true);
         _endScore.text = EntertainmentManager.Instance.Score.ToString();
     }

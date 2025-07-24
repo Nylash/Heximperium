@@ -35,6 +35,8 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     public event Action OnScoreUpdated;
     public event Action<Tile, int> OnScoreGained;
     public Action<Tile, int> OnScoreLost;//Directly called by Entertainment when it lose points (or by the manager on destroy)
+    //Tutorial event
+    public event Action OnClaimedTileSelected;
     #endregion
 
     protected override void OnAwake()
@@ -93,8 +95,10 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
 
         if (tile.Claimed)
         {
+            OnClaimedTileSelected?.Invoke();
+
             //Interaction depend on if the tile got an entertainment or not
-            if(tile.Entertainment != null)
+            if (tile.Entertainment != null)
             {
                 _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
                 DestroyInteraction(tile, 0);

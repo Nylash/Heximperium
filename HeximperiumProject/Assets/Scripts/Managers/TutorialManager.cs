@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TutorialManager : Singleton<TutorialManager>
@@ -30,8 +31,19 @@ public class TutorialManager : Singleton<TutorialManager>
         Expand2_ObjSelectTile,
         Expand2_ObjBuildTown,
         Expand2_ObjEndPhase,
+        Exploit2_Init,
+        Exploit2_ObjSelectTile,
+        Exploit2_ObjEnchanceInfra,
+        Exploit2bis_Init,
+        Exploit2_ObjEndTurn,
+        Entertain_Init,
+        Entertain_ObjSelectTile,
+        Entertain_ObjPlaceEntertainment,
+        Entertain_ObjEndGame,
+        Outro
     }
 
+    #region CONFIGURATION
     [Header("_________________________________________________________")]
     [Header("Intro")]
     [SerializeField] private GameObject _introduction;
@@ -72,18 +84,42 @@ public class TutorialManager : Singleton<TutorialManager>
     [SerializeField] private Animator _expand2_ObjSelectTile;
     [SerializeField] private Animator _expand2_ObjBuildTown;
     [SerializeField] private Animator _expand2_ObjEndPhase;
+    [Header("_________________________________________________________")]
+    [Header("Exploitation Turn 2")]
+    [SerializeField] private GameObject _exploit2;
+    [SerializeField] private Animator _exploit2_ObjSelectTile;
+    [SerializeField] private Vector2 _exploit2_TargetTileCoor;
+    [SerializeField] private InfrastructureData _enchancementData;
+    [SerializeField] private Animator _exploit2_ObjEnchanceInfra;
+    [SerializeField] private GameObject _exploit2bis;
+    [SerializeField] private Animator _exploit2_ObjEndTurn;
+    [Header("_________________________________________________________")]
+    [Header("Entertainment")]
+    [SerializeField] private GameObject _entertain;
+    [SerializeField] private List<ResourceToIntMap> _budget = new List<ResourceToIntMap>();
+    [SerializeField] private Animator _entertain_ObjSelectTile;
+    [SerializeField] private Animator _entertain_ObjPlaceEntertainment;
+    [SerializeField] private Animator _entertain_ObjEndGame;
+    [Header("_________________________________________________________")]
+    [Header("Outro")]
+    [SerializeField] private GameObject _outro;
+    #endregion
 
+    #region EVENTS
     public event Action OnTutorialStarted;
-
-    private TutorialStep _step = TutorialStep.None;
-
-    private Tile _targetTile;
-
+    //Event handlers
     private Action<Scout> _scoutSpawnedHandler;
     private Action<Tile> _tileClaimedHandler;
     private Action<Tile> _infraBuildHandler;
+    private Action<Entertainment> _entertainmentSpawnedHandler;
+    #endregion
+
+    #region VARIABLES
+    private TutorialStep _step = TutorialStep.None;
+    private Tile _targetTile;
 
     public Tile TargetTile { get => _targetTile; }
+    #endregion
 
     protected override void OnAwake()
     {
@@ -539,6 +575,13 @@ public class TutorialManager : Singleton<TutorialManager>
         if (_step != TutorialStep.Expand2_ObjBuildTown)
             yield break;
 
+        if (GameManager.Instance.SelectedTile != null)
+        {
+            //Check if the new tile is still a basic tile
+            if (GameManager.Instance.SelectedTile.TileData is BasicTileData)
+                yield break;
+        }
+
         GameManager.Instance.OnTileUnselected -= RollBackToObjSelectBasicTile;
         ExploitationManager.Instance.OnInfraBuilded -= _infraBuildHandler;
         ExpansionManager.Instance.OnBasicTileSelected += OnBasicTileSelected;
@@ -569,9 +612,207 @@ public class TutorialManager : Singleton<TutorialManager>
         if (_step != TutorialStep.Expand2_ObjEndPhase) return;
         GameManager.Instance.OnExpansionPhaseEnded -= OnExpansionPhaseEnded2;
 
-        //_step = TutorialStep.Exploit2_init;
+        _step = TutorialStep.Exploit2_Init;
         _expand2_ObjEndPhase.SetTrigger("Fold");
-        //GameManager.Instance.OnExploitationPhaseStarted += ;
+        GameManager.Instance.OnExploitationPhaseStarted += InitializeExploit2;
+    }
+    #endregion
+
+    #region EXPLOITATION 2
+    private void InitializeExploit2()
+    {
+        GameManager.Instance.OnExploitationPhaseStarted -= InitializeExploit2;
+        _exploit2.SetActive(true);
+        GameManager.Instance.GamePaused = true;
+        _step = TutorialStep.Exploit2_Init;
+    }
+
+    public void StartExploit2()
+    {
+        if (_step != TutorialStep.Exploit2_Init) return;
+        UIManager.Instance.ButtonEndPhase.interactable = false;
+        GameManager.Instance.TutorialLockingPhase = true;
+        _exploit2.GetComponent<Animator>().SetTrigger("Shrink");
+        GameManager.Instance.GamePaused = false;
+
+        _step = TutorialStep.Exploit2_ObjSelectTile;
+        _exploit2_ObjSelectTile.SetTrigger("Unfold");
+
+        _targetTile = MapManager.Instance.Tiles[_exploit2_TargetTileCoor];
+        _targetTile.Highlight(true);
+
+        ExploitationManager.Instance.OnRightTileSelected += OnEnhancementTileSelected;
+    }
+
+    private void OnEnhancementTileSelected()
+    {
+        if (_step != TutorialStep.Exploit2_ObjSelectTile) return;
+        ExploitationManager.Instance.OnRightTileSelected -= OnEnhancementTileSelected;
+        GameManager.Instance.OnTileUnselected += RollBackToObjSelectEnhancementTile;
+
+        _step = TutorialStep.Exploit2_ObjEnchanceInfra;
+        _exploit2_ObjSelectTile.SetTrigger("Fold");
+        _exploit2_ObjEnchanceInfra.SetTrigger("Unfold");
+
+        _infraBuildHandler = tile => OnInfraEnhanced();
+        ExploitationManager.Instance.OnInfraBuilded += _infraBuildHandler;
+
+        if (!ResourcesManager.Instance.CanAfford(_enchancementData.Costs))
+        {
+            ResourcesManager.Instance.UpdateResource(_enchancementData.Costs, Transaction.Gain);
+        }
+    }
+
+    private void RollBackToObjSelectEnhancementTile()
+    {
+        StartCoroutine(RollBackToObjSelectEnhancementTile_Coroutine());
+    }
+
+    private IEnumerator RollBackToObjSelectEnhancementTile_Coroutine()
+    {
+        yield return null;//Wait one frame to be sure the event isn't call by clicking on a interaction button
+        if (_step != TutorialStep.Exploit2_ObjEnchanceInfra)
+            yield break;
+
+        GameManager.Instance.OnTileUnselected -= RollBackToObjSelectEnhancementTile;
+        ExploitationManager.Instance.OnInfraBuilded -= _infraBuildHandler;
+        ExploitationManager.Instance.OnRightTileSelected += OnEnhancementTileSelected;
+
+        _exploit2_ObjSelectTile.SetTrigger("Unfold");
+        _exploit2_ObjEnchanceInfra.SetTrigger("Fold");
+        _step = TutorialStep.Exploit2_ObjSelectTile;
+    }
+
+
+    private void OnInfraEnhanced()
+    {
+        if (_step != TutorialStep.Exploit2_ObjEnchanceInfra) return;
+        GameManager.Instance.OnTileUnselected -= RollBackToObjSelectEnhancementTile;
+        ExploitationManager.Instance.OnInfraBuilded -= _infraBuildHandler;
+
+        _step = TutorialStep.Exploit2bis_Init;
+        _exploit2_ObjEnchanceInfra.SetTrigger("Fold");
+        _targetTile.Highlight(false);
+        _targetTile = null;
+
+        _exploit2bis.SetActive(true);
+        GameManager.Instance.GamePaused = true;
+    }
+
+    public void StartExploit2Bis()
+    {
+        if (_step != TutorialStep.Exploit2bis_Init) return;
+        UIManager.Instance.ButtonEndPhase.interactable = true;
+        GameManager.Instance.TutorialLockingPhase = false;
+        _exploit2bis.GetComponent<Animator>().SetTrigger("Shrink");
+        GameManager.Instance.GamePaused = false;
+
+        _step = TutorialStep.Exploit2_ObjEndTurn;
+        _exploit2_ObjEndTurn.SetTrigger("Unfold");
+
+        GameManager.Instance.OnExploitationPhaseEnded += OnExploitationPhaseEnded2;
+    }
+
+    private void OnExploitationPhaseEnded2()
+    {
+        if (_step != TutorialStep.Exploit2_ObjEndTurn) return;
+        GameManager.Instance.OnExploitationPhaseEnded -= OnExploitationPhaseEnded2;
+
+        _step = TutorialStep.Entertain_Init;
+        _exploit2_ObjEndTurn.SetTrigger("Fold");
+        GameManager.Instance.OnEntertainmentPhaseStarted += InitializeEntertainment;
+    }
+    #endregion
+
+    #region ENTERTAINMENT
+    private void InitializeEntertainment()
+    {
+        GameManager.Instance.OnEntertainmentPhaseStarted -= InitializeEntertainment;
+        _entertain.SetActive(true);
+        GameManager.Instance.GamePaused = true;
+        _step = TutorialStep.Entertain_Init;
+    }
+
+    public void StartEntertain()
+    {
+        if (_step != TutorialStep.Entertain_Init) return;
+        UIManager.Instance.ButtonEndPhase.interactable = false;
+        GameManager.Instance.TutorialLockingPhase = true;
+        _entertain.GetComponent<Animator>().SetTrigger("Shrink");
+        GameManager.Instance.GamePaused = false;
+
+        _step = TutorialStep.Entertain_ObjSelectTile;
+        _entertain_ObjSelectTile.SetTrigger("Unfold");
+        EntertainmentManager.Instance.OnClaimedTileSelected += OnClaimedTileSelected;
+
+        ResourcesManager.Instance.UpdateResource(_budget, Transaction.Gain);
+    }
+
+    private void OnClaimedTileSelected()
+    {
+        if (_step != TutorialStep.Entertain_ObjSelectTile) return;
+        EntertainmentManager.Instance.OnClaimedTileSelected -= OnClaimedTileSelected;
+        GameManager.Instance.OnTileUnselected += RollBackToObjSelectClaimedTile;
+
+        _step = TutorialStep.Entertain_ObjPlaceEntertainment;
+        _entertain_ObjSelectTile.SetTrigger("Fold");
+        _entertain_ObjPlaceEntertainment.SetTrigger("Unfold");
+
+        _entertainmentSpawnedHandler = ent => OnEntertainmentPlaced();
+        EntertainmentManager.Instance.OnEntertainmentSpawned += _entertainmentSpawnedHandler;
+    }
+
+    private void RollBackToObjSelectClaimedTile()
+    {
+        StartCoroutine(RollBackToObjSelectClaimedTile_Coroutine());
+    }
+
+    private IEnumerator RollBackToObjSelectClaimedTile_Coroutine()
+    {
+        yield return null;//Wait one frame to be sure the event isn't call by clicking on a interaction button
+        if (_step != TutorialStep.Entertain_ObjPlaceEntertainment)
+            yield break;
+
+        if (GameManager.Instance.SelectedTile != null)
+        {
+            //Check if the new tile is still claimed
+            if (GameManager.Instance.SelectedTile.Claimed)
+                yield break;
+        }
+
+        GameManager.Instance.OnTileUnselected -= RollBackToObjSelectClaimedTile;
+        EntertainmentManager.Instance.OnEntertainmentSpawned -= _entertainmentSpawnedHandler;
+        EntertainmentManager.Instance.OnClaimedTileSelected += OnClaimedTileSelected;
+
+        _entertain_ObjPlaceEntertainment.SetTrigger("Fold");
+        _entertain_ObjSelectTile.SetTrigger("Unfold");
+        _step = TutorialStep.Entertain_ObjSelectTile;
+    }
+
+    private void OnEntertainmentPlaced()
+    {
+        if (_step != TutorialStep.Entertain_ObjPlaceEntertainment) return;
+        GameManager.Instance.OnTileUnselected -= RollBackToObjSelectClaimedTile;
+        EntertainmentManager.Instance.OnEntertainmentSpawned -= _entertainmentSpawnedHandler;
+
+        _step = TutorialStep.Entertain_ObjEndGame;
+        _entertain_ObjPlaceEntertainment.SetTrigger("Fold");
+        _entertain_ObjEndGame.SetTrigger("Unfold");
+
+        UIManager.Instance.ButtonEndPhase.interactable = true;
+        GameManager.Instance.TutorialLockingPhase = false;
+        GameManager.Instance.OnEntertainmentPhaseEnded += OnEntertainmentPhaseEnded;
+    }
+
+    private void OnEntertainmentPhaseEnded()
+    {
+        if (_step != TutorialStep.Entertain_ObjEndGame) return;
+        GameManager.Instance.OnEntertainmentPhaseEnded += OnEntertainmentPhaseEnded;
+
+        _step = TutorialStep.Outro;
+        _entertain_ObjEndGame.SetTrigger("Fold");
+
+        _outro.SetActive(true);
     }
     #endregion
 }
