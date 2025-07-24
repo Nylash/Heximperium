@@ -28,8 +28,9 @@ public class GameManager : Singleton<GameManager>
     private bool _waitingPhaseFinalization;
     private Phase _currentPhase;
     private int _turnCounter = 1;
-
+    //Game state
     private bool _gamePaused = true;
+    private bool _tutorialLockingPhase = false;
     #endregion
 
     #region EVENTS
@@ -51,7 +52,16 @@ public class GameManager : Singleton<GameManager>
     public Phase CurrentPhase { get => _currentPhase;}
     public int TurnCounter { get => _turnCounter;}
     public GameObject InteractionPrefab { get => _interactionPrefab;}
-    public bool GamePaused { get => _gamePaused; set => _gamePaused = value; }
+    public bool GamePaused { 
+        get => _gamePaused; 
+        set
+        {
+            _gamePaused = value;
+            UIManager.Instance.ResetPopUps(null);
+        }
+    }
+    public bool TutorialLockingPhase { get => _tutorialLockingPhase; set => _tutorialLockingPhase = value; }
+    public Tile SelectedTile { get => _selectedTile; }
     #endregion
 
     private void OnEnable() => _inputActions.Player.Enable();
@@ -72,14 +82,24 @@ public class GameManager : Singleton<GameManager>
         ExploitationManager.Instance.OnPhaseFinalized += PhaseFinalized;
         EntertainmentManager.Instance.OnPhaseFinalized += PhaseFinalized;
 
-        if (LoadingManager.Instance != null)
+        if (TutorialManager.Instance != null)
+            TutorialManager.Instance.OnTutorialStarted += InitializeGame;
+        else if (LoadingManager.Instance != null)
             LoadingManager.Instance.OnLoadingDone += InitializeGame;
         else
             Utilities.OnGameInitialized += InitializeGame;
     }
 
+    private void OnDestroy()
+    {
+        Utilities.OnGameInitialized -= InitializeGame;
+    }
+
     private void Update()
     {
+        if (_gamePaused)
+            return;
+
         //Check if the cursor if over UI
         _isPointerOverUI = EventSystem.current.IsPointerOverGameObject();
     }
@@ -266,6 +286,9 @@ public class GameManager : Singleton<GameManager>
     public void ConfirmPhase()
     {
         if(_gamePaused) 
+            return;
+
+        if (_tutorialLockingPhase)
             return;
 
         //The phase is finalizing its logic

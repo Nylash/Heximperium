@@ -37,6 +37,9 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     #region EVENTS
     public event Action<Tile> OnTileClaimed;
     public event Action<int> OnClaimSaved;
+    //Tutorial events
+    public event Action OnClaimableTileSelected;
+    public event Action OnBasicTileSelected;
     #endregion
 
     protected override void OnAwake()
@@ -111,7 +114,10 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
             TownInteraction(tile, 0);
         //We can only claimed tiles adjacent to already claimed tiles (except if we got the upgrade)
         if (tile.IsOneNeighborClaimed())
+        {
             ClaimInteraction(tile, 1);
+            OnClaimableTileSelected?.Invoke();
+        }
         else if (_upgradeClaimRange)
         {
             if (tile.IsOneNeighborOfNeighborClaimed())
@@ -127,6 +133,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
 
     private void TownInteraction(Tile tile, int positionIndex)
     {
+        OnBasicTileSelected?.Invoke();
         _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Infrastructure, _townData));
     }
 

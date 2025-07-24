@@ -15,7 +15,7 @@ public class BoostEntertainmentsOnEmpire : SpecialBehaviour
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
-        EntertainmentManager.Instance.OnEntertainmentSpawned += behaviourTile.ListenerOnEntertainmentSpawned;
+        EntertainmentManager.Instance.OnEntertainmentSpawned -= behaviourTile.ListenerOnEntertainmentSpawned;
     }
 
     public override void HighlightImpactedTile(Tile behaviourTile, bool show)

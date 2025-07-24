@@ -17,10 +17,13 @@ public class LoadingManager : Singleton<LoadingManager>
 
     protected override void OnAwake()
     {
-        base.OnAwake();
-
-        Utilities.OnGameInitialized += () => _isLoaded = true;
+        Utilities.OnGameInitialized += LoadOver;
     } 
+
+    private void LoadOver()
+    {
+        _isLoaded = true;
+    }
 
     public void StartLoading(string targetScene)
     {
@@ -67,7 +70,7 @@ public class LoadingManager : Singleton<LoadingManager>
     private void FinishLoading()
     {
         StartCoroutine(DoCleanup());
-        Utilities.OnGameInitialized -= FinishLoading;
+        Utilities.OnGameInitialized -= LoadOver;
 
         OnLoadingDone?.Invoke();
     }

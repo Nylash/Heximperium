@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -77,7 +78,12 @@ public class CameraManager : Singleton<CameraManager>
 
     private void Start()
     {
-        raycaster = FindFirstObjectByType<GraphicRaycaster>();
+        // only look in the scene this camera lives in:
+        raycaster = gameObject.scene
+          .GetRootGameObjects()
+          .SelectMany(go => go.GetComponentsInChildren<GraphicRaycaster>())
+          .FirstOrDefault();
+
         eventSystem = EventSystem.current;
     }
 
