@@ -3,6 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Manages the in-game tutorial sequence. This component controls
+/// which instructions are displayed and monitors player actions to
+/// progress through each tutorial step.
+/// </summary>
 public class TutorialManager : Singleton<TutorialManager>
 {
     private enum TutorialStep
@@ -123,6 +128,10 @@ public class TutorialManager : Singleton<TutorialManager>
     public Tile TargetTile { get => _targetTile; }
     #endregion
 
+    /// <summary>
+    /// Registers callbacks when the scene is loaded and displays the
+    /// introduction screen once loading has finished.
+    /// </summary>
     protected override void OnAwake()
     {
         if (LoadingManager.Instance != null)
@@ -132,6 +141,10 @@ public class TutorialManager : Singleton<TutorialManager>
     }
 
     #region INTRODUCTION
+    /// <summary>
+    /// Displays the introduction canvas and sets the tutorial state
+    /// to the first step.
+    /// </summary>
     private void ShowIntro()
     {
         _introduction.SetActive(true);
@@ -139,6 +152,10 @@ public class TutorialManager : Singleton<TutorialManager>
         LoadingManager.Instance.OnLoadingDone -= ShowIntro;
     }
 
+    /// <summary>
+    /// Called from the UI to begin the tutorial sequence after the
+    /// introduction is acknowledged by the player.
+    /// </summary>
     public void StartTutorial()
     {
         _introduction.GetComponent<Animator>().SetTrigger("Shrink");
@@ -148,6 +165,10 @@ public class TutorialManager : Singleton<TutorialManager>
     #endregion
 
     #region EXPLORATION 1
+    /// <summary>
+    /// Prepare the first exploration tutorial step by pausing the game
+    /// and showing the instruction panel.
+    /// </summary>
     private void InitializeExplo1()
     {
         _explo1.SetActive(true);
@@ -155,6 +176,10 @@ public class TutorialManager : Singleton<TutorialManager>
         _step = TutorialStep.Explo1_Init;
     }
 
+    /// <summary>
+    /// Starts the first exploration turn of the tutorial. The player
+    /// must select a town to continue.
+    /// </summary>
     public void StartExplo1()
     {
         if (_step != TutorialStep.Explo1_Init) return;
@@ -168,6 +193,10 @@ public class TutorialManager : Singleton<TutorialManager>
         ExplorationManager.Instance.OnTownSelected += OnTownSelected;
     }
 
+    /// <summary>
+    /// Callback when the player selects the starting town. Moves the
+    /// tutorial forward to the scout spawning step.
+    /// </summary>
     private void OnTownSelected()
     {
         if (_step != TutorialStep.Explo1_ObjSelectTown) return;
@@ -182,14 +211,22 @@ public class TutorialManager : Singleton<TutorialManager>
         ExplorationManager.Instance.OnScoutSpawned += _scoutSpawnedHandler;
     }
 
+    /// <summary>
+    /// If the player deselects the town, return to the previous step.
+    /// </summary>
     private void RollBackToObjSelectTown()
     {
         StartCoroutine(RollBackToObjSelectTown_Coroutine());
     }
 
+    /// <summary>
+    /// Coroutine used to reset the step when the player changes their
+    /// selection before spawning a scout.
+    /// </summary>
     private IEnumerator RollBackToObjSelectTown_Coroutine()
     {
-        yield return null;//Wait one frame to be sure the event isn't call by clicking on a interaction button
+        // Wait one frame to ensure the deselection event is processed
+        yield return null;
         if (_step != TutorialStep.Explo1_ObjScoutSpawn)
             yield break;
 
@@ -202,6 +239,10 @@ public class TutorialManager : Singleton<TutorialManager>
         _step = TutorialStep.Explo1_ObjSelectTown;
     }
 
+    /// <summary>
+    /// Triggered once the scout is spawned. Guides the player to direct
+    /// the unit toward unexplored tiles.
+    /// </summary>
     private void OnScoutSpawned()
     {
         if (_step != TutorialStep.Explo1_ObjScoutSpawn) return;
@@ -215,6 +256,10 @@ public class TutorialManager : Singleton<TutorialManager>
         ExplorationManager.Instance.OnScoutDirected += OnScoutDirected;
     }
 
+    /// <summary>
+    /// Called when the player has given a movement order to the scout.
+    /// Enables ending the exploration phase.
+    /// </summary>
     private void OnScoutDirected()
     {
         if (_step != TutorialStep.Explo1_ObjDirectScout) return;
@@ -229,6 +274,10 @@ public class TutorialManager : Singleton<TutorialManager>
         GameManager.Instance.OnExplorationPhaseEnded += OnExplorationPhaseEnded;
     }
 
+    /// <summary>
+    /// Transition from exploration to the first expansion tutorial step
+    /// once the player ends the phase.
+    /// </summary>
     private void OnExplorationPhaseEnded()
     {
         if (_step != TutorialStep.Explo1_ObjEndPhase) return;
@@ -241,6 +290,10 @@ public class TutorialManager : Singleton<TutorialManager>
     #endregion
 
     #region EXPANSION 1
+    /// <summary>
+    /// Prepare the expansion tutorial by pausing the game and showing
+    /// the instructions for claiming a new tile.
+    /// </summary>
     private void InitializeExpand1()
     {
         GameManager.Instance.OnExpansionPhaseStarted -= InitializeExpand1;
@@ -249,6 +302,10 @@ public class TutorialManager : Singleton<TutorialManager>
         _step = TutorialStep.Expand1_Init;
     }
 
+    /// <summary>
+    /// Begins the first expansion turn where the player chooses a
+    /// neighboring tile to claim.
+    /// </summary>
     public void StartExpand1()
     {
         if (_step != TutorialStep.Expand1_Init) return;
@@ -262,6 +319,10 @@ public class TutorialManager : Singleton<TutorialManager>
         ExpansionManager.Instance.OnClaimableTileSelected += OnClaimableTileSelected;
     }
 
+    /// <summary>
+    /// Player selected a valid tile to claim. Switches UI to the claim
+    /// confirmation step.
+    /// </summary>
     private void OnClaimableTileSelected()
     {
         if (_step != TutorialStep.Expand1_ObjSelectTile) return;
@@ -276,6 +337,9 @@ public class TutorialManager : Singleton<TutorialManager>
         ExpansionManager.Instance.OnTileClaimed += _tileClaimedHandler;
     }
 
+    /// <summary>
+    /// Return to tile selection if the player cancels before claiming.
+    /// </summary>
     private void RollBackToObjSelectTile()
     {
         StartCoroutine(RollBackToObjSelectTile_Coroutine());
@@ -283,13 +347,14 @@ public class TutorialManager : Singleton<TutorialManager>
 
     private IEnumerator RollBackToObjSelectTile_Coroutine()
     {
-        yield return null;//Wait one frame to be sure the event isn't call by clicking on a interaction button
+        // Wait one frame to avoid reacting to UI button clicks
+        yield return null;
         if (_step != TutorialStep.Expand1_ObjClaimTile)
             yield break;
 
         if (GameManager.Instance.SelectedTile != null)
         {
-            //Check if the new tile is claimable
+            // Check if the new tile is claimable
             if (!GameManager.Instance.SelectedTile.Claimed && GameManager.Instance.SelectedTile.IsOneNeighborClaimed())
                 yield break;
         }
@@ -303,6 +368,10 @@ public class TutorialManager : Singleton<TutorialManager>
         _step = TutorialStep.Expand1_ObjSelectTile;
     }
 
+    /// <summary>
+    /// Finalizes the claim of the selected tile and prepares to end the
+    /// expansion phase.
+    /// </summary>
     private void OnTileClaimed()
     {
         if (_step != TutorialStep.Expand1_ObjClaimTile) return;
@@ -318,6 +387,10 @@ public class TutorialManager : Singleton<TutorialManager>
         GameManager.Instance.OnExpansionPhaseEnded += OnExpansionPhaseEnded;
     }
 
+    /// <summary>
+    /// Called when the first expansion phase ends and moves the
+    /// tutorial to the exploitation turn.
+    /// </summary>
     private void OnExpansionPhaseEnded()
     {
         if (_step != TutorialStep.Expand1_ObjEndPhase) return;
@@ -331,6 +404,10 @@ public class TutorialManager : Singleton<TutorialManager>
     #endregion
 
     #region EXPLOITATION 1
+    /// <summary>
+    /// Prepare the exploitation tutorial by pausing the game and
+    /// activating the relevant UI instructions.
+    /// </summary>
     private void InitializeExploit1()
     {
         GameManager.Instance.OnExploitationPhaseStarted -= InitializeExploit1;
@@ -339,6 +416,10 @@ public class TutorialManager : Singleton<TutorialManager>
         _step = TutorialStep.Exploit1_Init;
     }
 
+    /// <summary>
+    /// Begins the exploitation tutorial where the player must select
+    /// a specific tile to build a farm.
+    /// </summary>
     public void StartExploit1()
     {
         if (_step != TutorialStep.Exploit1_Init) return;
@@ -356,6 +437,10 @@ public class TutorialManager : Singleton<TutorialManager>
         ExploitationManager.Instance.OnRightTileSelected += OnFarmTileSelected;
     }
 
+    /// <summary>
+    /// The correct tile was selected. Show the build farm prompt and
+    /// wait for the player to confirm.
+    /// </summary>
     private void OnFarmTileSelected()
     {
         if (_step != TutorialStep.Exploit1_ObjSelectTile) return;
@@ -375,6 +460,10 @@ public class TutorialManager : Singleton<TutorialManager>
         }
     }
 
+    /// <summary>
+    /// Called when the player deselects the tile before building the
+    /// farm, returning to the selection step.
+    /// </summary>
     private void Exploit1_RollBackToObjSelectTile()
     {
         StartCoroutine(Exploit1_RollBackToObjSelectTile_Coroutine());
@@ -382,7 +471,8 @@ public class TutorialManager : Singleton<TutorialManager>
 
     private IEnumerator Exploit1_RollBackToObjSelectTile_Coroutine()
     {
-        yield return null;//Wait one frame to be sure the event isn't call by clicking on a interaction button
+        // Wait one frame to ensure button events are processed
+        yield return null;
         if (_step != TutorialStep.Exploit1_ObjBuildFarm)
             yield break;
 
@@ -395,6 +485,10 @@ public class TutorialManager : Singleton<TutorialManager>
         _step = TutorialStep.Exploit1_ObjSelectTile;
     }
 
+    /// <summary>
+    /// Farm construction completed. Transition to the next exploitation
+    /// tutorial which introduces the windmill.
+    /// </summary>
     private void OnFarmBuilded()
     {
         if (_step != TutorialStep.Exploit1_ObjBuildFarm) return;
@@ -409,6 +503,10 @@ public class TutorialManager : Singleton<TutorialManager>
         _step = TutorialStep.Exploit1bis_Init;
     }
 
+    /// <summary>
+    /// Begins the second exploitation objective where the player places a
+    /// windmill on a highlighted tile.
+    /// </summary>
     public void StartExploit1Bis()
     {
         if (_step != TutorialStep.Exploit1bis_Init) return;
@@ -426,6 +524,10 @@ public class TutorialManager : Singleton<TutorialManager>
         ExploitationManager.Instance.OnRightTileSelected += OnWindmillTileSelected;
     }
 
+    /// <summary>
+    /// Called when the correct windmill tile is chosen. Displays the
+    /// build prompt to construct the windmill.
+    /// </summary>
     private void OnWindmillTileSelected()
     {
         if (_step != TutorialStep.Exploit1bis_ObjSelectTile) return;
@@ -445,6 +547,9 @@ public class TutorialManager : Singleton<TutorialManager>
         }
     }
 
+    /// <summary>
+    /// Cancels windmill placement and goes back to tile selection.
+    /// </summary>
     private void Exploit1bis_RollBackToObjSelectTile()
     {
         StartCoroutine(Exploit1bis_RollBackToObjSelectTile_Coroutine());
@@ -452,7 +557,8 @@ public class TutorialManager : Singleton<TutorialManager>
 
     private IEnumerator Exploit1bis_RollBackToObjSelectTile_Coroutine()
     {
-        yield return null;//Wait one frame to be sure the event isn't call by clicking on a interaction button
+        // Wait one frame to avoid reacting to UI button clicks
+        yield return null;
         if (_step != TutorialStep.Exploit1_ObjBuildWindmill)
             yield break;
 
@@ -465,6 +571,10 @@ public class TutorialManager : Singleton<TutorialManager>
         _step = TutorialStep.Exploit1bis_ObjSelectTile;
     }
 
+    /// <summary>
+    /// Windmill successfully built. Enables the tutorial message about
+    /// ending the turn.
+    /// </summary>
     private void OnWindmillBuilded()
     {
         if (_step != TutorialStep.Exploit1_ObjBuildWindmill) return;
@@ -482,6 +592,10 @@ public class TutorialManager : Singleton<TutorialManager>
         _step = TutorialStep.Exploit1ter_Init;
     }
 
+    /// <summary>
+    /// Final step of the first exploitation phase where the player ends
+    /// their turn.
+    /// </summary>
     public void StartExploit1Ter()
     {
         if (_step != TutorialStep.Exploit1ter_Init) return;
@@ -496,6 +610,10 @@ public class TutorialManager : Singleton<TutorialManager>
         GameManager.Instance.OnExploitationPhaseEnded += OnExploitationPhaseEnded;
     }
 
+    /// <summary>
+    /// Transition to the next exploration tutorial when the player ends
+    /// the exploitation turn.
+    /// </summary>
     private void OnExploitationPhaseEnded()
     {
         if (_step != TutorialStep.Exploit1_ObjEndTurn) return;
@@ -509,6 +627,9 @@ public class TutorialManager : Singleton<TutorialManager>
     #endregion
 
     #region EXPLORATION 2
+    /// <summary>
+    /// Setup for the second exploration tutorial turn.
+    /// </summary>
     private void InitializeExplo2()
     {
         GameManager.Instance.OnExplorationPhaseStarted -= InitializeExplo2;
@@ -517,6 +638,10 @@ public class TutorialManager : Singleton<TutorialManager>
         _step = TutorialStep.Explo2_Init;
     }
 
+    /// <summary>
+    /// Starts the second exploration phase. The objective is simply to
+    /// end the phase.
+    /// </summary>
     public void StartExplo2()
     {
         if (_step != TutorialStep.Explo2_Init) return;
@@ -528,6 +653,10 @@ public class TutorialManager : Singleton<TutorialManager>
         GameManager.Instance.OnExplorationPhaseEnded += OnExplorationPhaseEnded2;
     }
 
+    /// <summary>
+    /// When the exploration phase ends, move to the second expansion
+    /// tutorial.
+    /// </summary>
     public void OnExplorationPhaseEnded2()
     {
         if (_step != TutorialStep.Explo2_ObjEndPhase) return;
@@ -540,6 +669,10 @@ public class TutorialManager : Singleton<TutorialManager>
     #endregion
 
     #region EXPANSION 2
+    /// <summary>
+    /// Setup for the second expansion phase and grant resources if needed
+    /// to build the new town.
+    /// </summary>
     private void InitializeExpand2()
     {
         GameManager.Instance.OnExpansionPhaseStarted -= InitializeExpand2;
@@ -553,6 +686,10 @@ public class TutorialManager : Singleton<TutorialManager>
         }
     }
 
+    /// <summary>
+    /// Begins the second expansion phase where the player selects a
+    /// location for a new town.
+    /// </summary>
     public void StartExpand2()
     {
         if (_step != TutorialStep.Expand2_Init) return;
@@ -566,6 +703,10 @@ public class TutorialManager : Singleton<TutorialManager>
         ExpansionManager.Instance.OnBasicTileSelected += OnBasicTileSelected;
     }
 
+    /// <summary>
+    /// Called when the player selects a valid basic tile to place the
+    /// new town.
+    /// </summary>
     private void OnBasicTileSelected()
     {
         if (_step != TutorialStep.Expand2_ObjSelectTile) return;
@@ -580,6 +721,10 @@ public class TutorialManager : Singleton<TutorialManager>
         ExploitationManager.Instance.OnInfraBuilded += _infraBuildHandler;
     }
 
+    /// <summary>
+    /// Returns to tile selection if the player cancels before building
+    /// the town.
+    /// </summary>
     private void RollBackToObjSelectBasicTile()
     {
         StartCoroutine(RollBackToObjSelectBasicTile_Coroutine());
@@ -587,13 +732,14 @@ public class TutorialManager : Singleton<TutorialManager>
 
     private IEnumerator RollBackToObjSelectBasicTile_Coroutine()
     {
-        yield return null;//Wait one frame to be sure the event isn't call by clicking on a interaction button
+        // Wait one frame to avoid reacting to UI button clicks
+        yield return null;
         if (_step != TutorialStep.Expand2_ObjBuildTown)
             yield break;
 
         if (GameManager.Instance.SelectedTile != null)
         {
-            //Check if the new tile is still a basic tile
+            // Check if the new tile is still a basic tile
             if (GameManager.Instance.SelectedTile.TileData is BasicTileData)
                 yield break;
         }
@@ -608,6 +754,10 @@ public class TutorialManager : Singleton<TutorialManager>
     }
 
 
+    /// <summary>
+    /// Town construction finished. Allow the player to end the expansion
+    /// phase.
+    /// </summary>
     private void OnTownBuilded()
     {
         if (_step != TutorialStep.Expand2_ObjBuildTown) return;
@@ -623,6 +773,9 @@ public class TutorialManager : Singleton<TutorialManager>
         GameManager.Instance.OnExpansionPhaseEnded += OnExpansionPhaseEnded2;
     }
 
+    /// <summary>
+    /// Begin the second exploitation phase after ending expansion.
+    /// </summary>
     private void OnExpansionPhaseEnded2()
     {
         if (_step != TutorialStep.Expand2_ObjEndPhase) return;
@@ -635,6 +788,9 @@ public class TutorialManager : Singleton<TutorialManager>
     #endregion
 
     #region EXPLOITATION 2
+    /// <summary>
+    /// Prepare the second exploitation phase.
+    /// </summary>
     private void InitializeExploit2()
     {
         GameManager.Instance.OnExploitationPhaseStarted -= InitializeExploit2;
@@ -643,6 +799,10 @@ public class TutorialManager : Singleton<TutorialManager>
         _step = TutorialStep.Exploit2_Init;
     }
 
+    /// <summary>
+    /// Starts the second exploitation turn where an infrastructure
+    /// enhancement is built.
+    /// </summary>
     public void StartExploit2()
     {
         if (_step != TutorialStep.Exploit2_Init) return;
@@ -660,6 +820,9 @@ public class TutorialManager : Singleton<TutorialManager>
         ExploitationManager.Instance.OnRightTileSelected += OnEnhancementTileSelected;
     }
 
+    /// <summary>
+    /// Correct enhancement tile selected; display build option.
+    /// </summary>
     private void OnEnhancementTileSelected()
     {
         if (_step != TutorialStep.Exploit2_ObjSelectTile) return;
@@ -679,6 +842,9 @@ public class TutorialManager : Singleton<TutorialManager>
         }
     }
 
+    /// <summary>
+    /// Cancel enhancement building and return to tile selection.
+    /// </summary>
     private void RollBackToObjSelectEnhancementTile()
     {
         StartCoroutine(RollBackToObjSelectEnhancementTile_Coroutine());
@@ -686,7 +852,8 @@ public class TutorialManager : Singleton<TutorialManager>
 
     private IEnumerator RollBackToObjSelectEnhancementTile_Coroutine()
     {
-        yield return null;//Wait one frame to be sure the event isn't call by clicking on a interaction button
+        // Wait one frame to avoid reacting to UI button clicks
+        yield return null;
         if (_step != TutorialStep.Exploit2_ObjEnchanceInfra)
             yield break;
 
@@ -700,6 +867,9 @@ public class TutorialManager : Singleton<TutorialManager>
     }
 
 
+    /// <summary>
+    /// Enhancement built successfully, move on to the end-turn step.
+    /// </summary>
     private void OnInfraEnhanced()
     {
         if (_step != TutorialStep.Exploit2_ObjEnchanceInfra) return;
@@ -715,6 +885,9 @@ public class TutorialManager : Singleton<TutorialManager>
         GameManager.Instance.GamePaused = true;
     }
 
+    /// <summary>
+    /// Final instruction of the second exploitation phase: end the turn.
+    /// </summary>
     public void StartExploit2Bis()
     {
         if (_step != TutorialStep.Exploit2bis_Init) return;
@@ -729,6 +902,10 @@ public class TutorialManager : Singleton<TutorialManager>
         GameManager.Instance.OnExploitationPhaseEnded += OnExploitationPhaseEnded2;
     }
 
+    /// <summary>
+    /// After the second exploitation turn ends, begin the entertainment
+    /// phase tutorial.
+    /// </summary>
     private void OnExploitationPhaseEnded2()
     {
         if (_step != TutorialStep.Exploit2_ObjEndTurn) return;
@@ -741,6 +918,9 @@ public class TutorialManager : Singleton<TutorialManager>
     #endregion
 
     #region ENTERTAINMENT
+    /// <summary>
+    /// Prepare the entertainment phase tutorial.
+    /// </summary>
     private void InitializeEntertainment()
     {
         GameManager.Instance.OnEntertainmentPhaseStarted -= InitializeEntertainment;
@@ -749,6 +929,10 @@ public class TutorialManager : Singleton<TutorialManager>
         _step = TutorialStep.Entertain_Init;
     }
 
+    /// <summary>
+    /// Begins the entertainment tutorial where an attraction is placed
+    /// on a claimed tile.
+    /// </summary>
     public void StartEntertain()
     {
         if (_step != TutorialStep.Entertain_Init) return;
@@ -764,6 +948,9 @@ public class TutorialManager : Singleton<TutorialManager>
         ResourcesManager.Instance.UpdateResource(_budget, Transaction.Gain);
     }
 
+    /// <summary>
+    /// The player selected a valid claimed tile to place entertainment.
+    /// </summary>
     private void OnClaimedTileSelected()
     {
         if (_step != TutorialStep.Entertain_ObjSelectTile) return;
@@ -778,6 +965,9 @@ public class TutorialManager : Singleton<TutorialManager>
         EntertainmentManager.Instance.OnEntertainmentSpawned += _entertainmentSpawnedHandler;
     }
 
+    /// <summary>
+    /// Returns to tile selection if entertainment placement is canceled.
+    /// </summary>
     private void RollBackToObjSelectClaimedTile()
     {
         StartCoroutine(RollBackToObjSelectClaimedTile_Coroutine());
@@ -785,13 +975,14 @@ public class TutorialManager : Singleton<TutorialManager>
 
     private IEnumerator RollBackToObjSelectClaimedTile_Coroutine()
     {
-        yield return null;//Wait one frame to be sure the event isn't call by clicking on a interaction button
+        // Wait one frame to avoid reacting to UI button clicks
+        yield return null;
         if (_step != TutorialStep.Entertain_ObjPlaceEntertainment)
             yield break;
 
         if (GameManager.Instance.SelectedTile != null)
         {
-            //Check if the new tile is still claimed
+            // Check if the new tile is still claimed
             if (GameManager.Instance.SelectedTile.Claimed)
                 yield break;
         }
@@ -805,6 +996,10 @@ public class TutorialManager : Singleton<TutorialManager>
         _step = TutorialStep.Entertain_ObjSelectTile;
     }
 
+    /// <summary>
+    /// Entertainment successfully placed; allow the player to end the
+    /// game and show the outro.
+    /// </summary>
     private void OnEntertainmentPlaced()
     {
         if (_step != TutorialStep.Entertain_ObjPlaceEntertainment) return;
@@ -820,6 +1015,9 @@ public class TutorialManager : Singleton<TutorialManager>
         GameManager.Instance.OnEntertainmentPhaseEnded += OnEntertainmentPhaseEnded;
     }
 
+    /// <summary>
+    /// Ends the tutorial and shows the closing screen.
+    /// </summary>
     private void OnEntertainmentPhaseEnded()
     {
         if (_step != TutorialStep.Entertain_ObjEndGame) return;
