@@ -136,6 +136,7 @@ public class TutorialManager : Singleton<TutorialManager>
     {
         _introduction.SetActive(true);
         _step = TutorialStep.Intro;
+        LoadingManager.Instance.OnLoadingDone -= ShowIntro;
     }
 
     public void StartTutorial()
@@ -822,7 +823,7 @@ public class TutorialManager : Singleton<TutorialManager>
     private void OnEntertainmentPhaseEnded()
     {
         if (_step != TutorialStep.Entertain_ObjEndGame) return;
-        GameManager.Instance.OnEntertainmentPhaseEnded += OnEntertainmentPhaseEnded;
+        GameManager.Instance.OnEntertainmentPhaseEnded -= OnEntertainmentPhaseEnded;
 
         _step = TutorialStep.Outro;
         _entertain_ObjEndGame.SetTrigger("Fold");
