@@ -8,13 +8,6 @@ public class InteractionButton : MonoBehaviour
 
     #region CONFIGURATION
     [Header("_________________________________________________________")]
-    [Header("PopUp Objects")]
-    [SerializeField] private GameObject _popUpClaim;
-    [SerializeField] private GameObject _popUpScout;
-    [SerializeField] private GameObject _popUpDestroy;
-    [SerializeField] private GameObject _popUpEntertainment;
-    [SerializeField] private GameObject _popUpInfra;
-    [Header("_________________________________________________________")]
     [Header("Back Textures")]
     [SerializeField] private Texture _textureExplo;
     [SerializeField] private Texture _textureExpand;
@@ -147,26 +140,6 @@ public class InteractionButton : MonoBehaviour
             return;
         }
         _renderer.sprite = sprite;
-    }
-
-    public GameObject GetPopUpPrefab()
-    {
-        switch (_interaction)
-        {
-            case Interaction.Claim:
-                return _popUpClaim;
-            case Interaction.Scout:
-                return _popUpScout;
-            case Interaction.Infrastructure:
-                return _popUpInfra;
-            case Interaction.Destroy:
-                return _popUpDestroy;
-            case Interaction.Entertainment:
-                return _popUpEntertainment;
-            default:
-                Debug.LogError("This interaction has no popup prefab assigned " + _interaction);
-                return null;
-        }
     }
 
     public void ShrinkAnimation(bool shrink)

@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class UIManager : Singleton<UIManager>
 {
     #region CONFIGURATION
+    [SerializeField] private Transform _popUpParent;
     [Header("_________________________________________________________")]
     [Header("Resources Bar")]
     [SerializeField] private TextMeshProUGUI _scoutsLimitText;
@@ -15,6 +16,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TextMeshProUGUI _townsLimitText;
     [SerializeField] private TextMeshProUGUI _goldText;
     [SerializeField] private TextMeshProUGUI _srText;
+    [SerializeField] private Color _colorCantAfford;
     [Header("_________________________________________________________")]
     [Header("Phase UI")]
     [SerializeField] private TextMeshProUGUI _currentPhaseText;
@@ -34,15 +36,6 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Animator _popUpExploitPhase;
     [SerializeField] private Animator _popUpEntertainPhase;
     [SerializeField] private Button _buttonEndPhase;
-    [Header("_________________________________________________________")]
-    [Header("PopUp UI")]
-    [SerializeField] private float _durationHoverForUI = 2.0f;
-    [SerializeField] private float _offsetBetweenPopUps = 0.5f;
-    [SerializeField] private GameObject _prefabPopUpEntertainment;
-    [SerializeField] private GameObject _prefabPopUpScout;
-    [SerializeField] private float _minOffset;
-    [SerializeField] private float _maxOffset;
-    [SerializeField] private Color _colorCantAfford;
     [Header("_________________________________________________________")]
     [Header("Units visibility UI")]
     [SerializeField] private Image _visibilityImage;
@@ -90,13 +83,6 @@ public class UIManager : Singleton<UIManager>
 
     #region VARIABLES
     private Transform _mainCanvas;
-    //PopUp variables
-    private GameObject _objectUnderMouse;
-    private float _hoverTimer;
-    private float _screenWidth;
-    private float _screenHeight;
-    private List<GameObject> _popUps = new List<GameObject>();
-
     private bool _areUnitsVisible;
     #endregion
 
@@ -117,6 +103,7 @@ public class UIManager : Singleton<UIManager>
     public RectTransform VfxAnchorGold { get => _vfxAnchorGold; }
     public RectTransform VfxAnchorSR { get => _vfxAnchorSR; }
     public Button ButtonEndPhase { get => _buttonEndPhase; }
+    public Transform PopUpParent { get => _popUpParent; }
     #endregion
 
     protected override void OnAwake()
@@ -149,9 +136,6 @@ public class UIManager : Singleton<UIManager>
 
     private void Start()
     {
-        _screenWidth = Screen.width;
-        _screenHeight = Screen.height;
-
         InitializeUI();
     }
 
@@ -303,197 +287,6 @@ public class UIManager : Singleton<UIManager>
     }
     #endregion
 
-    #region POPUP UI
-    public void PopUpUI(GameObject obj)
-    {
-        if(obj == _objectUnderMouse)
-        {
-            //Timer before spawning popup
-            _hoverTimer += Time.deltaTime;
-            if (_hoverTimer >= _durationHoverForUI && _popUps.Count == 0)
-            {
-                SpawnUIPopUp popUpComponent = obj.GetComponent<SpawnUIPopUp>();
-
-                if (popUpComponent != null)
-                {
-                    GameObject popUp = popUpComponent.SpawnPopUp(_mainCanvas);
-
-                    UI_ResourcePopUp popUpResource = popUp.GetComponent<UI_ResourcePopUp>();
-                    if (popUpResource != null)
-                        popUpResource.InitializePopUp();
-
-                    _popUps.Add(popUp);
-                }
-            }
-        }
-        else
-        {
-            //Object under cursor changed, so we reset everything
-            ResetPopUps(obj);
-        }
-    }
-
-    public void PopUpNonUI(GameObject obj)
-    {
-        if (obj == _objectUnderMouse) 
-        {
-            //Timer before spawning popup
-            _hoverTimer += Time.deltaTime;
-            if (_hoverTimer >= _durationHoverForUI && _popUps.Count == 0) 
-            {
-                if (obj.GetComponent<Tile>() is Tile tile)
-                {
-                    if (tile.Revealed)
-                    {
-                        DisplayPopUp(tile);
-                        if (tile.Scouts.Count > 0) 
-                        {
-                            foreach (Scout item in tile.Scouts)
-                            {
-                                DisplayPopUp(item);
-                            }
-                        }
-                        if(tile.Entertainment != null)
-                            DisplayPopUp(tile.Entertainment);
-                    }
-                }
-                else if (obj.GetComponent<InteractionButton>() is  InteractionButton button)
-                {
-                    DisplayPopUp(button);
-                }
-            }
-        }
-        else
-        {
-            //Object under cursor changed, so we reset everything
-            ResetPopUps(obj);
-        }
-    }
-
-    public void ResetPopUps(GameObject obj)
-    {
-        _objectUnderMouse = obj;
-        _hoverTimer = 0.0f;
-
-        if (_popUps.Count > 0)
-        {
-            foreach (GameObject item in _popUps)
-            {
-                UI_PopUp scriptPopUp = item.GetComponent<UI_PopUp>();
-                if (scriptPopUp)
-                    scriptPopUp.DestroyPopUp();
-                else
-                    Destroy(item);
-            }
-            _popUps.Clear();
-        }
-    }
-
-    private void DisplayPopUp<T>(T item, GameObject prefab)
-    {
-        GameObject popUp;
-
-        // Spawn the pop up
-        popUp = Instantiate(prefab, _mainCanvas);
-        _popUps.Add(popUp);
-
-        // Initialize the popup
-        popUp.GetComponent<UI_DynamicPopUp>().InitializePopUp(item);
-
-        // Position the pop up relatively to the mouse cursor
-        PositionPopup(popUp.transform, GetPopUpSize(popUp.GetComponent<RectTransform>()));
-    }
-
-    // Overloaded methods for different types
-    private void DisplayPopUp(Scout scout)
-    {
-        DisplayPopUp(scout, _prefabPopUpScout);
-    }
-
-    private void DisplayPopUp(Entertainment entertainment)
-    {
-        DisplayPopUp(entertainment, _prefabPopUpEntertainment);
-    }
-
-    private void DisplayPopUp(InteractionButton button)
-    {
-        DisplayPopUp(button, button.GetPopUpPrefab());
-    }
-
-    private void DisplayPopUp(Tile tile)
-    {
-        DisplayPopUp(tile, tile.TileData.PopUpPrefab);
-    }
-
-    private void PositionPopup(Transform popup, Vector2 popupSize)
-    {
-        // Get the current mouse position
-        Vector3 mousePosition = Input.mousePosition;
-
-        // Determine the quadrant
-        bool isLeft = mousePosition.x < (_screenWidth / 2);
-        bool isTop = mousePosition.y > (_screenHeight / 2);
-
-        // Calculate the cumulative vertical offset based on the sizes of previous pop-ups
-        float verticalOffset = 0;
-        //_popUps.Count -1 to avoid counting the current pop up
-        for (int i = 0; i < _popUps.Count -1; i++)
-        {
-            RectTransform previousPopupRectTransform = _popUps[i].GetComponent<RectTransform>();
-            verticalOffset += previousPopupRectTransform.rect.height + _offsetBetweenPopUps;
-        }
-
-        // Get the current zoom level from the camera
-        float zoomLevel = CameraManager.Instance.transform.position.y;
-
-        // Calculate the dynamic offset based on the zoom level
-        float normalizedZoom = Mathf.InverseLerp(CameraManager.Instance.MinZoomLevel, CameraManager.Instance.MaxZoomLevel, zoomLevel);
-        float dynamicOffset = Mathf.Lerp(_minOffset, _maxOffset, normalizedZoom);
-
-        #if UNITY_EDITOR
-        dynamicOffset = 0;//Remove the offset in the editor (game screen is small so popup aren't visible)
-        #endif
-
-        if (isLeft && isTop)
-        {
-            // Top-Left Quadrant: Snap top-left corner to cursor with dynamic offset
-            popup.position = new Vector3(
-                mousePosition.x + popupSize.x / 2 + dynamicOffset,
-                mousePosition.y - popupSize.y / 2 - verticalOffset - dynamicOffset,
-                0);
-        }
-        else if (!isLeft && isTop)
-        {
-            // Top-Right Quadrant: Snap top-right corner to cursor with dynamic offset
-            popup.position = new Vector3(
-                mousePosition.x - popupSize.x / 2 - dynamicOffset,
-                mousePosition.y - popupSize.y / 2 - verticalOffset - dynamicOffset,
-                0);
-        }
-        else if (isLeft && !isTop)
-        {
-            // Bottom-Left Quadrant: Snap bottom-left corner to cursor with dynamic offset
-            popup.position = new Vector3(
-                mousePosition.x + popupSize.x / 2 + dynamicOffset,
-                mousePosition.y + popupSize.y / 2 + verticalOffset + dynamicOffset,
-                0);
-        }
-        else
-        {
-            // Bottom-Right Quadrant: Snap bottom-right corner to cursor with dynamic offset
-            popup.position = new Vector3(
-                mousePosition.x - popupSize.x / 2 - dynamicOffset,
-                mousePosition.y + popupSize.y / 2 + verticalOffset + dynamicOffset,
-                0);
-        }
-    }
-
-    private Vector2 GetPopUpSize(RectTransform rectTransform)
-    {
-        return new Vector2(rectTransform.rect.width, rectTransform.rect.height);
-    }
-    #endregion
-
     #region PHASE UI
     public void ConfirmPhase()
     {
@@ -580,7 +373,7 @@ public class UIManager : Singleton<UIManager>
 
         _menu.SetActive(!_menu.activeSelf);
         GameManager.Instance.GamePaused = _menu.activeSelf;
-        ResetPopUps(null);
+        PopUpManager.Instance.ResetPopUp(null);
     }
 
     public void LoadMainMenu()

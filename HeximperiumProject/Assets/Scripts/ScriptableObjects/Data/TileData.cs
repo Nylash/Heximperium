@@ -12,7 +12,6 @@ public class TileData : ScriptableObject
     [SerializeField] private List<InfrastructureData> _availableInfrastructures = new List<InfrastructureData>();
     [Header("_________________________________________________________")]
     [Header("UI Settings")]
-    [SerializeField] private GameObject _popUpPrefab;
     [SerializeField] private string _interactionButtonPopUpText;
     [SerializeField] private string _tilePopUpText;
     [Header("_________________________________________________________")]
@@ -24,7 +23,6 @@ public class TileData : ScriptableObject
     public List<ResourceToIntMap> Incomes { get => _incomes; }
     public List<InfrastructureData> AvailableInfrastructures { get => _availableInfrastructures; }
     public List<SpecialBehaviour> SpecialBehaviours { get => _specialBehaviours; }
-    public GameObject PopUpPrefab { get => _popUpPrefab; }
     public string InteractionButtonPopUpText { get => _interactionButtonPopUpText; }
     public string TilePopUpText { get => _tilePopUpText; }
     public List<Material> Visuals { get => _visuals; }

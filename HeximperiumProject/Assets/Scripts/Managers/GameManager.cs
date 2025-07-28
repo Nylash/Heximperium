@@ -57,7 +57,7 @@ public class GameManager : Singleton<GameManager>
         set
         {
             _gamePaused = value;
-            UIManager.Instance.ResetPopUps(null);
+            PopUpManager.Instance.ResetPopUp(null);
         }
     }
     public bool TutorialLockingPhase { get => _tutorialLockingPhase; set => _tutorialLockingPhase = value; }
