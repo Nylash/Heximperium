@@ -3052,10 +3052,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1276648731444977417}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1210588845946721047
 GameObject:
@@ -20916,6 +20916,9 @@ MonoBehaviour:
   _offsetBetweenSeveralPopUps: 1
   _minOffset: 80
   _maxOffset: 275
+  _basePopUp: {fileID: 6245525707209063558, guid: d5762cd1b2823a44ab37029529fc5308, type: 3}
+  _title: {fileID: 7943185033060346411, guid: 323427eb9484ee64b874eee96dae90aa, type: 3}
+  _text: {fileID: 5711950651282281864, guid: 7e62b65f6bfb42b4bacaf35545e1c85b, type: 3}
 --- !u!114 &5447738742827255451
 MonoBehaviour:
   m_ObjectHideFlags: 0

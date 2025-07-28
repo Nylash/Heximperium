@@ -1,21 +1,43 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using static System.Net.Mime.MediaTypeNames;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class PopUpManager : Singleton<PopUpManager>
 {
+    #region CONFIGURATION
     [Header("_________________________________________________________")]
-    [Header("PopUp UI")]
+    [Header("Spawning Configuration")]
     [SerializeField] private float _durationHoverForUI = 1f;
     [SerializeField] private float _offsetBetweenSeveralPopUps = 1f;
     [SerializeField] private float _minOffset = 80f;
     [SerializeField] private float _maxOffset = 275f;
+    [SerializeField] private float _maxScreenFraction = 0.15f;
+    [SerializeField] private Vector4 _margin = new Vector4(10, 0, 10, 0); // left, top, right, bottom
+    [Header("_________________________________________________________")]
+    [Header("Prefabs")]
+    [SerializeField] private GameObject _basePopUp;
+    [SerializeField] private GameObject _title;
+    [SerializeField] private GameObject _text;
+    #endregion
 
+    #region VARIABLES
     private GameObject _objectUnderMouse;
     private float _hoverTimer;
     private float _screenWidth;
     private float _screenHeight;
     private List<GameObject> _popUps = new List<GameObject>();
+    float _maxAllowed;
+    #endregion
 
+    private void Start()
+    {
+        _maxAllowed = Screen.width * _maxScreenFraction;
+    }
+
+    #region BASE LOGIC
     public void UIPopUp(GameObject obj)
     {
         if (obj == _objectUnderMouse)
@@ -47,7 +69,7 @@ public class PopUpManager : Singleton<PopUpManager>
                 {
                     if (tile.Revealed)
                     {
-                        //Popup tile
+                        TilePopUp(tile);
                         if (tile.Scouts.Count > 0)
                         {
                             foreach (Scout item in tile.Scouts)
@@ -86,21 +108,63 @@ public class PopUpManager : Singleton<PopUpManager>
             _popUps.Clear();
         }
     }
+    #endregion
 
-    private void DisplayPopUp<T>(T item, GameObject prefab)
+    #region TILES POPUPS
+    private void TilePopUp(Tile tile)
     {
-        GameObject popUp;
-
-        // Spawn the pop up
-        popUp = Instantiate(prefab, UIManager.Instance.PopUpParent);
-        _popUps.Add(popUp);
-
-        // Initialize the popup
-
-        // Position the pop up relatively to the mouse cursor
-        PositionPopup(popUp.transform, GetPopUpSize(popUp.GetComponent<RectTransform>()));
+        if(tile.TileData as BasicTileData)
+        {
+            BasicTilePopUp(tile);
+            return;
+        }
+        
+        Debug.LogError("Tile PopUp not implemented for this tile type: " + tile.TileData.GetType().Name);
     }
 
+    private void BasicTilePopUp(Tile tile)
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
+        title.text = tile.TileData.name;
+        textObjects.Add(title.GetComponent<RectTransform>());
+
+        TextMeshProUGUI details = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        details.text = tile.TileData.TilePopUpText;
+        details.margin = _margin;
+        textObjects.Add(details.GetComponent<RectTransform>());
+        ClampTextWidth(details);//Manage the width of the longest text
+        details.fontStyle = FontStyles.Italic;
+
+        TextMeshProUGUI income = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        income.text = tile.TileData.Incomes.ToCustomString();
+        income.margin = _margin;
+        textObjects.Add(income.GetComponent<RectTransform>());
+
+        TextMeshProUGUI claimStatus = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        if (tile.Claimed)
+        {
+            claimStatus.text = "Tile claimed";
+            claimStatus.fontStyle = FontStyles.Italic;
+            claimStatus.alignment = TextAlignmentOptions.Right;
+        }
+        else
+            claimStatus.text = "Claim cost: " + tile.TileData.ClaimCost + "<sprite name=\"Claim_Emoji\">";
+        claimStatus.margin = _margin;
+        textObjects.Add(claimStatus.GetComponent<RectTransform>());
+
+        SetPopUpContentAnchors(textObjects);
+
+        PositionPopup(popUp.transform, GetPopUpSize(popUp.GetComponent<RectTransform>()));
+    }
+    #endregion
+
+    #region POSITIONING & LAYOUT
     private void PositionPopup(Transform popup, Vector2 popupSize)
     {
         // Get the current mouse position
@@ -168,4 +232,23 @@ public class PopUpManager : Singleton<PopUpManager>
     {
         return new Vector2(rectTransform.rect.width, rectTransform.rect.height);
     }
+
+    private void ClampTextWidth(TextMeshProUGUI tmp)
+    {
+        tmp.ForceMeshUpdate();
+        float contentWidth = tmp.preferredWidth;
+        tmp.GetComponent<LayoutElement>().preferredWidth = Mathf.Min(contentWidth, _maxAllowed);
+    }
+
+    private void SetPopUpContentAnchors(List<RectTransform> textObjects)
+    {
+        int count = textObjects.Count;
+        for (int i = 0; i < count; i++)
+        {
+            int reversedIndex = count - 1 - i;
+            textObjects[reversedIndex].anchorMin = new Vector2(0, i / (float)count);
+            textObjects[reversedIndex].anchorMax = new Vector2(1, (i + 1f) / count);
+        }
+    }
+    #endregion
 }

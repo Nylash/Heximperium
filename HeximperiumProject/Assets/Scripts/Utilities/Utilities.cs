@@ -115,7 +115,7 @@ public static class Utilities
         return mergedDictionary.Select(kvp => new ResourceToIntMap(kvp.Key, kvp.Value)).ToList();
     }
 
-    public static string ToCustomString(this Resource value)
+    public static string ToCustomString(this Resource value)//The "this" is used to extend the enum Resource with a method
     {
         return value switch
         {
@@ -149,6 +149,24 @@ public static class Utilities
             EntertainmentType.MysticGarden => "Mystic Garden",
             _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
         };
+    }
+
+    public static string ToCustomString(this List<ResourceToIntMap> incomes)
+    {
+        string incomeString = "Income: ";
+        foreach (ResourceToIntMap income in incomes)
+        {
+            switch (income.resource)
+            {
+                case Resource.Gold:
+                    incomeString += "+" + income.value + "<sprite name=\"Gold_Emoji\"> ";
+                    break;
+                case Resource.SpecialResources:
+                    incomeString += "+" + income.value + "<sprite name=\"SR_Emoji\"> ";
+                    break;
+            }
+        }
+        return incomeString;
     }
 
     //Subtract a by b and return the resulting List<ResourceToIntMap>
