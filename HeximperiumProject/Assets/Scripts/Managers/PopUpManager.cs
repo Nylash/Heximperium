@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static System.Net.Mime.MediaTypeNames;
-using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class PopUpManager : Singleton<PopUpManager>
 {
@@ -34,7 +32,10 @@ public class PopUpManager : Singleton<PopUpManager>
 
     private void Start()
     {
-        _maxAllowed = Screen.width * _maxScreenFraction;
+        _screenWidth = Screen.width;
+        _screenHeight = Screen.height;
+
+        _maxAllowed = _screenWidth * _maxScreenFraction;
     }
 
     #region BASE LOGIC
@@ -151,11 +152,11 @@ public class PopUpManager : Singleton<PopUpManager>
 
         SetPopUpContentAnchors(textObjects);
 
-        PositionPopup(popUp.transform, GetPopUpSize(popUp.GetComponent<RectTransform>()));
+        PositionPopup(popUp.GetComponent<RectTransform>());
     }
 
     #region POSITIONING & LAYOUT
-    private void PositionPopup(Transform popup, Vector2 popupSize)
+    private void PositionPopup(RectTransform popupRect)
     {
         // Get the current mouse position
         Vector3 mousePosition = Input.mousePosition;
@@ -184,43 +185,33 @@ public class PopUpManager : Singleton<PopUpManager>
         dynamicOffset = 0;//Remove the offset in the editor (game screen is small so popup aren't visible)
 #endif
 
+        Vector2 pivot;
+        Vector3 anchoredPos = mousePosition;
+
         if (isLeft && isTop)
         {
-            // Top-Left Quadrant: Snap top-left corner to cursor with dynamic offset
-            popup.position = new Vector3(
-                mousePosition.x + popupSize.x / 2 + dynamicOffset,
-                mousePosition.y - popupSize.y / 2 - verticalOffset - dynamicOffset,
-                0);
+            pivot = new Vector2(0f, 1f); // Top-left
+            anchoredPos += new Vector3(dynamicOffset, -dynamicOffset - verticalOffset, 0);
         }
         else if (!isLeft && isTop)
         {
-            // Top-Right Quadrant: Snap top-right corner to cursor with dynamic offset
-            popup.position = new Vector3(
-                mousePosition.x - popupSize.x / 2 - dynamicOffset,
-                mousePosition.y - popupSize.y / 2 - verticalOffset - dynamicOffset,
-                0);
+            pivot = new Vector2(1f, 1f); // Top-right
+            anchoredPos += new Vector3(-dynamicOffset, -dynamicOffset - verticalOffset, 0);
         }
         else if (isLeft && !isTop)
         {
-            // Bottom-Left Quadrant: Snap bottom-left corner to cursor with dynamic offset
-            popup.position = new Vector3(
-                mousePosition.x + popupSize.x / 2 + dynamicOffset,
-                mousePosition.y + popupSize.y / 2 + verticalOffset + dynamicOffset,
-                0);
+            pivot = new Vector2(0f, 0f); // Bottom-left
+            anchoredPos += new Vector3(dynamicOffset, dynamicOffset + verticalOffset, 0);
         }
         else
         {
-            // Bottom-Right Quadrant: Snap bottom-right corner to cursor with dynamic offset
-            popup.position = new Vector3(
-                mousePosition.x - popupSize.x / 2 - dynamicOffset,
-                mousePosition.y + popupSize.y / 2 + verticalOffset + dynamicOffset,
-                0);
+            pivot = new Vector2(1f, 0f); // Bottom-right
+            anchoredPos += new Vector3(-dynamicOffset, dynamicOffset + verticalOffset, 0);
         }
-    }
 
-    private Vector2 GetPopUpSize(RectTransform rectTransform)
-    {
-        return new Vector2(rectTransform.rect.width, rectTransform.rect.height);
+        // Apply pivot and position
+        popupRect.pivot = pivot;
+        popupRect.position = anchoredPos;
     }
 
     private void ClampTextWidth(TextMeshProUGUI tmp)
