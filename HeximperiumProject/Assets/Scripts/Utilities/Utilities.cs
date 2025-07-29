@@ -119,8 +119,8 @@ public static class Utilities
     {
         return value switch
         {
-            Resource.Gold => "Gold",
-            Resource.SpecialResources => "Special Resources",
+            Resource.Gold => "<sprite name=\"Gold_Emoji\">",
+            Resource.SpecialResources => "<sprite name=\"SR_Emoji\">",
             _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
         };
     }
@@ -153,22 +153,48 @@ public static class Utilities
 
     public static string ToCustomString(this List<ResourceToIntMap> incomes)
     {
-        string incomeString = "Income: ";
+        string incomeString = string.Empty;
         for (int i = 0; i < incomes.Count; i++)
         {
             if (i > 0)
                 incomeString += " & ";
-            switch (incomes[i].resource)
-            {
-                case Resource.Gold:
-                    incomeString += "+" + incomes[i].value + "<sprite name=\"Gold_Emoji\">";
-                    break;
-                case Resource.SpecialResources:
-                    incomeString += "+" + incomes[i].value + "<sprite name=\"SR_Emoji\">";
-                    break;
-            }
+            incomeString += "+" + incomes[i].value + incomes[i].resource.ToCustomString();
         }
         return incomeString;
+    }
+
+    public static string ToCustomString<T>(this List<T> data) where T : TileData
+    {
+        string res = string.Empty;
+        for (int i = 0; i < data.Count; i++)
+        {
+            if (i > 0)
+            {
+                if (i == data.Count - 1)
+                    res += " & ";
+                else
+                    res += ", ";
+            }
+            res += data[i].TileName;
+        }
+        return res;
+    }
+
+    public static string ToCustomString(this List<EntertainmentData> entertainments)
+    {
+        string res = string.Empty;
+        for (int i = 0; i < entertainments.Count; i++)
+        {
+            if (i > 0)
+            {
+                if (i == entertainments.Count - 1)
+                    res += " & ";
+                else
+                    res += ", ";
+            }
+            res += entertainments[i].Type.ToCustomString();
+        }
+        return res;
     }
 
     //Subtract a by b and return the resulting List<ResourceToIntMap>

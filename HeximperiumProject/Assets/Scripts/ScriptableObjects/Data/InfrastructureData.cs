@@ -28,4 +28,5 @@ public class InfrastructureData : TileData
         }   
     }
     public bool IsTown { get => isTown; }
+    public Phase AssociatedSystem { get => _associatedSystem; }
 }

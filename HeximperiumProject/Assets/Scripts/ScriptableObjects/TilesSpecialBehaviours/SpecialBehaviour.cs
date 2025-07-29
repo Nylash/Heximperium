@@ -10,4 +10,7 @@ public abstract class SpecialBehaviour : ScriptableObject
 
     //Method use to show tiles impacted by the special behaviour
     public abstract void HighlightImpactedTile(Tile behaviourTile, bool show);
+
+    //Method to get a description of the behaviour
+    public abstract string GetBehaviourDescription();
 }

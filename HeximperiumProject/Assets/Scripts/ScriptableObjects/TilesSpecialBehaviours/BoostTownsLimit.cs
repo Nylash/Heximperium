@@ -17,4 +17,9 @@ public class BoostTownsLimit : SpecialBehaviour
     {
         //Nothing needed
     }
+
+    public override string GetBehaviourDescription()
+    {
+        return "Boosts the town limit by 1";
+    }
 }

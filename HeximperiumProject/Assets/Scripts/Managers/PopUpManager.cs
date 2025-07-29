@@ -13,7 +13,8 @@ public class PopUpManager : Singleton<PopUpManager>
     [SerializeField] private float _minOffset = 80f;
     [SerializeField] private float _maxOffset = 275f;
     [SerializeField] private float _maxScreenFraction = 0.15f;
-    [SerializeField] private Vector4 _margin = new Vector4(10, 0, 10, 0); // left, top, right, bottom
+    [SerializeField] private Vector4 _horizontalMargin = new Vector4(10, 0, 10, 0); // left, top, right, bottom
+    [SerializeField] private Vector4 _fullMargin = new Vector4(10, 5, 10, 5);
     [Header("_________________________________________________________")]
     [Header("Prefabs")]
     [SerializeField] private GameObject _basePopUp;
@@ -119,37 +120,88 @@ public class PopUpManager : Singleton<PopUpManager>
 
         List<RectTransform> textObjects = new List<RectTransform>();
 
+        //Title
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
         title.text = tile.TileData.TileName;
+        title.margin = _fullMargin;
         textObjects.Add(title.GetComponent<RectTransform>());
 
-        TextMeshProUGUI details = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        //Special behaviour
-        //details.text = tile.TileData.TilePopUpText;
-        details.margin = _margin;
-        textObjects.Add(details.GetComponent<RectTransform>());
-        ClampTextWidth(details);//Manage the width of the longest text
-        details.fontStyle = FontStyles.Italic;
+        //Hazardous tile slow
+        if (tile.TileData is HazardousTileData && !tile.Claimed)
+        {
+            TextMeshProUGUI slow = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            slow.text = "Slow down scouts, slow removed when tile is claimed";
+            slow.margin = _horizontalMargin;
+            textObjects.Add(slow.GetComponent<RectTransform>());
+            ClampTextWidth(slow);
+        }
 
+        //Tile behaviours
+        if (tile.TileData.SpecialBehaviours.Count > 0)
+        {
+            foreach (SpecialBehaviour behaviour in tile.TileData.SpecialBehaviours)
+            {
+                TextMeshProUGUI behaviourText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+                behaviourText.text = behaviour.GetBehaviourDescription();
+                behaviourText.margin = _fullMargin;
+                textObjects.Add(behaviourText.GetComponent<RectTransform>());
+                ClampTextWidth(behaviourText);
+            }
+        }
+
+        //Tile enhancements
+        if (tile.TileData.AvailableInfrastructures.Count > 0)
+        {
+            TextMeshProUGUI enhancement = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            if (tile.TileData is ResourceTileData resourceTileData)
+            {
+                enhancement.text = "Can be upgraded to produce Special Resources and bringing a reduction to ";
+                //Resource tile only have one potential enhancement with a unique special behaviour
+                enhancement.text += (tile.TileData.AvailableInfrastructures[0].SpecialBehaviours[0] as SpecialResourcesCostReduction).AssociatedSystem;
+                enhancement.text += " oriented Infrastructures and Upgrades";
+            }
+            else
+            {
+                enhancement.text = "Can be upgraded with " + tile.TileData.AvailableInfrastructures.Count;
+                if (tile.TileData.AvailableInfrastructures.Count > 1)
+                    enhancement.text += " different enhancements";
+                else
+                    enhancement.text += " unique enhancement";
+            }
+            enhancement.margin = _horizontalMargin;
+            textObjects.Add(enhancement.GetComponent<RectTransform>());
+            ClampTextWidth(enhancement);
+            enhancement.fontStyle = FontStyles.Italic;
+        }
+
+        //Income
         if (tile.Incomes.Count > 0)
         {
             TextMeshProUGUI income = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            income.text = tile.Incomes.ToCustomString();
-            income.margin = _margin;
+            income.text = "Income: " + tile.Incomes.ToCustomString();
+            income.margin = _horizontalMargin;
             textObjects.Add(income.GetComponent<RectTransform>());
         }
 
-        TextMeshProUGUI claimStatus = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        if (tile.Claimed)
+        //Scout starting point
+        if (tile.TileData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
         {
-            claimStatus.text = "Tile claimed";
-            claimStatus.fontStyle = FontStyles.Italic;
-            claimStatus.alignment = TextAlignmentOptions.Right;
+            TextMeshProUGUI scoutText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            scoutText.text = "Scout starting point";
+            scoutText.fontStyle = FontStyles.Italic;
+            scoutText.alignment = TextAlignmentOptions.Center;
+            scoutText.margin = _horizontalMargin;
+            textObjects.Add(scoutText.GetComponent<RectTransform>());
         }
-        else
+
+        //Claim cost
+        if (!tile.Claimed)
+        {
+            TextMeshProUGUI claimStatus = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
             claimStatus.text = "Claim cost: " + tile.TileData.ClaimCost + "<sprite name=\"Claim_Emoji\">";
-        claimStatus.margin = _margin;
-        textObjects.Add(claimStatus.GetComponent<RectTransform>());
+            claimStatus.margin = _horizontalMargin;
+            textObjects.Add(claimStatus.GetComponent<RectTransform>());
+        }
 
         SetPopUpContentAnchors(textObjects);
 
@@ -218,6 +270,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void ClampTextWidth(TextMeshProUGUI tmp)
     {
         tmp.ForceMeshUpdate();
+        tmp.alignment = TextAlignmentOptions.Justified;
         float contentWidth = tmp.preferredWidth;
         tmp.GetComponent<LayoutElement>().preferredWidth = Mathf.Min(contentWidth, _maxAllowed);
     }

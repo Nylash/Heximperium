@@ -19,4 +19,9 @@ public class ReduceEntertainmentsGoldCost : SpecialBehaviour
     {
         //Nothing needed
     }
+
+    public override string GetBehaviourDescription()
+    {
+        return $"Reduces the cost of entertainments by {_reduction}<sprite name=\"Gold_Emoji\">";
+    }
 }

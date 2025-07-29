@@ -29,4 +29,9 @@ public class IncomePerSavedClaim : SpecialBehaviour
             ResourcesManager.Instance.UpdateResource(_income, Transaction.Gain, behaviourTile);
         }
     }
+
+    public override string GetBehaviourDescription()
+    {
+        return $"Gain {_income.ToCustomString()} for every saved claim";
+    }
 }

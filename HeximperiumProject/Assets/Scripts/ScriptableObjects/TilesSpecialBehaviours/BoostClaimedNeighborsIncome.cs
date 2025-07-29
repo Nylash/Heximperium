@@ -61,4 +61,9 @@ public class BoostClaimedNeighborsIncome : SpecialBehaviour
         boostedTile.Incomes = Utilities.MergeResourceToIntMaps(boostedTile.Incomes, _incomeBoost);
         boostedTile.OnTileClaimed -= behaviourTile.ListenerOnTileClaimed_BoostClaimedNeighborsIncome;
     }
+
+    public override string GetBehaviourDescription()
+    {
+        return $"Boosts the income of claimed neighbors by {_incomeBoost.ToCustomString()}";
+    }
 }

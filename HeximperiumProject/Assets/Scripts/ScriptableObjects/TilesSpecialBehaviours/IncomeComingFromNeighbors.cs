@@ -138,4 +138,12 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
         tile.OnIncomeModified -= behaviourTile.ListenerOnIncomeModified;
         tile.OnIncomeModified += behaviourTile.ListenerOnIncomeModified;
     }
+
+    public override string GetBehaviourDescription()
+    {
+        string tmp = $"Increases {_resource.ToCustomString()} income by neighbors' {_resource.ToCustomString()} income";
+        if (_excludedTiles.Count > 0)
+            tmp += $" ( excluding: {_excludedTiles.ToCustomString()})";
+        return tmp;
+    }
 }
