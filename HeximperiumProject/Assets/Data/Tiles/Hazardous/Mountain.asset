@@ -19,7 +19,4 @@ MonoBehaviour:
   _incomes: []
   _availableInfrastructures:
   - {fileID: 11400000, guid: c6beb0dc8a956d74daf59ab2dd054594, type: 2}
-  _popUpPrefab: {fileID: 9159292565962417168, guid: 787935b1706731845ae4313f79f42b96, type: 3}
-  _interactionButtonPopUpText: 
-  _tilePopUpText: Can be enhanced only with a basic infrastructure.
   _specialBehaviours: []

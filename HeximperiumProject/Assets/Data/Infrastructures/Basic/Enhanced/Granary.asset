@@ -18,11 +18,6 @@ MonoBehaviour:
   _claimCost: 0
   _incomes: []
   _availableInfrastructures: []
-  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
-  _interactionButtonPopUpText: Each adjacent Farm (except Freehold Farm) gives +2
-    Gold to the Windmill
-  _tilePopUpText: Each adjacent Farm (except Freehold Farm) gives +2 Gold to the
-    Windmill
   _specialBehaviours:
   - {fileID: 11400000, guid: 7ca701c08f762dd4fa86300725250759, type: 2}
   - {fileID: 11400000, guid: 002a356b595a8424ca88080815330aec, type: 2}

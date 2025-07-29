@@ -124,7 +124,8 @@ public class PopUpManager : Singleton<PopUpManager>
         textObjects.Add(title.GetComponent<RectTransform>());
 
         TextMeshProUGUI details = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        details.text = tile.TileData.TilePopUpText;
+        //Special behaviour
+        //details.text = tile.TileData.TilePopUpText;
         details.margin = _margin;
         textObjects.Add(details.GetComponent<RectTransform>());
         ClampTextWidth(details);//Manage the width of the longest text

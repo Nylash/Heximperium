@@ -20,11 +20,6 @@ MonoBehaviour:
   - resource: 1
     value: 3
   _availableInfrastructures: []
-  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
-  _interactionButtonPopUpText: +3 Special Resources & -1 cost in Special Resources
-    for Upgrades and Enhancements related to Exploration
-  _tilePopUpText: -1 cost in Special Resources for Upgrades and Enhancements related
-    to Exploration
   _specialBehaviours:
   - {fileID: 11400000, guid: e0122bbfaabd3b342b370a85c0cb7163, type: 2}
   _costs:

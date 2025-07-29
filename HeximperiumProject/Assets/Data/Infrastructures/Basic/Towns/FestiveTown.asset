@@ -20,10 +20,6 @@ MonoBehaviour:
   _availableInfrastructures:
   - {fileID: 11400000, guid: a37425d56a86a9a46bcf7ece7a259a94, type: 2}
   - {fileID: 11400000, guid: ba6454b70db9cd44cbad3fcf654ae343, type: 2}
-  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
-  _interactionButtonPopUpText: 'Entertainments cost 1 less Gold & Grants access to
-    two Entertainment-oriented enhancements '
-  _tilePopUpText: Entertainments cost 1 less Gold
   _specialBehaviours:
   - {fileID: 11400000, guid: 6c91aa21531956c4497c4feddc4eda04, type: 2}
   _costs:

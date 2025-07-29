@@ -18,9 +18,6 @@ MonoBehaviour:
   _claimCost: 0
   _incomes: []
   _availableInfrastructures: []
-  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
-  _interactionButtonPopUpText: +3 Gold per Tavern, Village and Town in the empire
-  _tilePopUpText: +3 Gold per Tavern, Village and Town in the empire
   _specialBehaviours:
   - {fileID: 11400000, guid: 9f090d230cd54f147ab9062e67dffc7c, type: 2}
   _costs:

@@ -20,9 +20,6 @@ MonoBehaviour:
   _availableInfrastructures:
   - {fileID: 11400000, guid: 0da4e697cd92ec5468171ae0cf2590e3, type: 2}
   - {fileID: 11400000, guid: 08209c03bce374449941d042d6de6197, type: 2}
-  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
-  _interactionButtonPopUpText: +1 Gold to surrounding claimed tiles
-  _tilePopUpText: +1 Gold to surrounding claimed tiles
   _specialBehaviours:
   - {fileID: 11400000, guid: a7ca7da112cd65742bed2cdf85e79f8a, type: 2}
   _costs:

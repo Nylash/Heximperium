@@ -20,10 +20,6 @@ MonoBehaviour:
   - resource: 0
     value: 2
   _availableInfrastructures: []
-  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
-  _interactionButtonPopUpText: +2 Gold & Tasting Pavilion on this tile and around
-    gain +10 Points
-  _tilePopUpText: Tasting Pavilion on this tile and around gain +10 Points
   _specialBehaviours:
   - {fileID: 11400000, guid: 7ca701c08f762dd4fa86300725250759, type: 2}
   - {fileID: 11400000, guid: 6fabc2e4c20bf6c45b52939c5b163946, type: 2}

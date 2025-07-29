@@ -20,9 +20,6 @@ MonoBehaviour:
   - resource: 0
     value: 3
   _availableInfrastructures: []
-  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
-  _interactionButtonPopUpText: +3 Gold & +1 Scout limit
-  _tilePopUpText: +1 Scout limit
   _specialBehaviours:
   - {fileID: 11400000, guid: a20a937bad48d1349b06d8d770aae159, type: 2}
   _costs:
