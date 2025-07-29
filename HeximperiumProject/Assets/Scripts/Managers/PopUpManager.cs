@@ -119,7 +119,7 @@ public class PopUpManager : Singleton<PopUpManager>
         List<RectTransform> textObjects = new List<RectTransform>();
 
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
-        title.text = tile.TileData.name;
+        title.text = tile.TileData.TileName;
         textObjects.Add(title.GetComponent<RectTransform>());
 
         TextMeshProUGUI details = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
@@ -132,7 +132,7 @@ public class PopUpManager : Singleton<PopUpManager>
         if (tile.Incomes.Count > 0)
         {
             TextMeshProUGUI income = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            income.text = tile.TileData.Incomes.ToCustomString();
+            income.text = tile.Incomes.ToCustomString();
             income.margin = _margin;
             textObjects.Add(income.GetComponent<RectTransform>());
         }
