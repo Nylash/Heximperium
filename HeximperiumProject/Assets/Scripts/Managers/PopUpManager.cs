@@ -110,19 +110,7 @@ public class PopUpManager : Singleton<PopUpManager>
     }
     #endregion
 
-    #region TILES POPUPS
     private void TilePopUp(Tile tile)
-    {
-        if(tile.TileData as BasicTileData)
-        {
-            BasicTilePopUp(tile);
-            return;
-        }
-        
-        Debug.LogError("Tile PopUp not implemented for this tile type: " + tile.TileData.GetType().Name);
-    }
-
-    private void BasicTilePopUp(Tile tile)
     {
         GameObject popUp;
         popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
@@ -141,10 +129,13 @@ public class PopUpManager : Singleton<PopUpManager>
         ClampTextWidth(details);//Manage the width of the longest text
         details.fontStyle = FontStyles.Italic;
 
-        TextMeshProUGUI income = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        income.text = tile.TileData.Incomes.ToCustomString();
-        income.margin = _margin;
-        textObjects.Add(income.GetComponent<RectTransform>());
+        if (tile.Incomes.Count > 0)
+        {
+            TextMeshProUGUI income = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            income.text = tile.TileData.Incomes.ToCustomString();
+            income.margin = _margin;
+            textObjects.Add(income.GetComponent<RectTransform>());
+        }
 
         TextMeshProUGUI claimStatus = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
         if (tile.Claimed)
@@ -162,7 +153,6 @@ public class PopUpManager : Singleton<PopUpManager>
 
         PositionPopup(popUp.transform, GetPopUpSize(popUp.GetComponent<RectTransform>()));
     }
-    #endregion
 
     #region POSITIONING & LAYOUT
     private void PositionPopup(Transform popup, Vector2 popupSize)

@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public static class Utilities
 {
@@ -154,15 +154,17 @@ public static class Utilities
     public static string ToCustomString(this List<ResourceToIntMap> incomes)
     {
         string incomeString = "Income: ";
-        foreach (ResourceToIntMap income in incomes)
+        for (int i = 0; i < incomes.Count; i++)
         {
-            switch (income.resource)
+            if (i > 0)
+                incomeString += " & ";
+            switch (incomes[i].resource)
             {
                 case Resource.Gold:
-                    incomeString += "+" + income.value + "<sprite name=\"Gold_Emoji\"> ";
+                    incomeString += "+" + incomes[i].value + "<sprite name=\"Gold_Emoji\">";
                     break;
                 case Resource.SpecialResources:
-                    incomeString += "+" + income.value + "<sprite name=\"SR_Emoji\"> ";
+                    incomeString += "+" + incomes[i].value + "<sprite name=\"SR_Emoji\">";
                     break;
             }
         }
