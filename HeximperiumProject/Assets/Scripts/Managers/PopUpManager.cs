@@ -103,7 +103,7 @@ public class PopUpManager : Singleton<PopUpManager>
         {
             foreach (GameObject item in _popUps)
             {
-                //Destrou popup
+                    Destroy(item);
             }
             _popUps.Clear();
         }
