@@ -66,4 +66,9 @@ public class BoostByNeighbors : SpecialEffect
                 associatedEntertainment.UpdatePoints(_boost, Transaction.Spent);
         }
     }
+
+    public override string GetBehaviourDescription()
+    {
+        return $"Gain +{_boost}<sprite name=\"Point_Emoji\"> for each neighboring {_boostingNeighbors.ToCustomString()}";
+    }
 }

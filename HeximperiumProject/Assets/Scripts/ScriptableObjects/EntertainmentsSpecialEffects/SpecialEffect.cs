@@ -9,4 +9,7 @@ public abstract class SpecialEffect : ScriptableObject
 
     //Method use to show entertainment impacted by the special effect
     public abstract void HighlightImpactedEntertainment(Tile associatedTile, bool show);
+
+    //Method to get a description of the effect
+    public abstract string GetBehaviourDescription();
 }

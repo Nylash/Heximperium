@@ -80,4 +80,9 @@ public class BoostByUniqueNeighbors : SpecialEffect
 
         entertainment.Tile.UniqueEntertainmentNeighborsCount_SE = uniqueData.Count;
     }
+
+    public override string GetBehaviourDescription()
+    {
+        return $"Gain +{_boost}<sprite name=\"Point_Emoji\"> for each unique entertainment neighbor";
+    }
 }

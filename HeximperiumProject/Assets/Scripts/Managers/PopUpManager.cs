@@ -29,6 +29,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private float _screenHeight;
     private List<GameObject> _popUps = new List<GameObject>();
     private Dictionary<SpecialBehaviour, Tile> _highlightingBehaviours = new Dictionary<SpecialBehaviour, Tile>();
+    private Dictionary<SpecialEffect, Tile> _highlightingEffects = new Dictionary<SpecialEffect, Tile>();
     float _maxAllowed;
     #endregion
 
@@ -78,8 +79,8 @@ public class PopUpManager : Singleton<PopUpManager>
                             foreach (Scout item in tile.Scouts)
                                 ScoutPopUp(item);
                         }
-                        //if (tile.Entertainment != null)
-                            //Popup entertainment
+                        if (tile.Entertainment != null)
+                            EntertainmentPopUp(tile.Entertainment);
                     }
                 }
                 else if (obj.GetComponent<InteractionButton>() is InteractionButton button)
@@ -115,6 +116,14 @@ public class PopUpManager : Singleton<PopUpManager>
                 item.Key.HighlightImpactedTile(item.Value, false);
             }
             _highlightingBehaviours.Clear();
+        }
+        if (_highlightingEffects.Count > 0)
+        {
+            foreach (KeyValuePair<SpecialEffect, Tile> item in _highlightingEffects)
+            {
+                item.Key.HighlightImpactedEntertainment(item.Value, false);
+            }
+            _highlightingEffects.Clear();
         }
     }
     #endregion
@@ -281,6 +290,45 @@ public class PopUpManager : Singleton<PopUpManager>
         directionText.fontStyle = FontStyles.Italic;
         directionText.alignment = TextAlignmentOptions.Right;
         textObjects.Add(directionText.GetComponent<RectTransform>());
+        #endregion
+
+        SetPopUpContentAnchors(textObjects);
+        PositionPopup(popUp.GetComponent<RectTransform>());
+    }
+
+    private void EntertainmentPopUp(Entertainment ent)
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        #region TITLE
+        TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
+        title.text = ent.Data.Type.ToCustomString();
+        title.margin = _fullMargin;
+        textObjects.Add(title.GetComponent<RectTransform>());
+        #endregion
+
+        #region EFFECT
+        if (ent.Data.SpecialEffect != null)
+        {
+            TextMeshProUGUI effectText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            effectText.text = ent.Data.SpecialEffect.GetBehaviourDescription();
+            effectText.margin = _horizontalMargin;
+            textObjects.Add(effectText.GetComponent<RectTransform>());
+            ClampTextWidth(effectText);
+            ent.Data.SpecialEffect.HighlightImpactedEntertainment(ent.Tile, true);
+            _highlightingEffects.Add(ent.Data.SpecialEffect, ent.Tile);
+        }
+        #endregion
+
+        #region POINTS
+        TextMeshProUGUI pointsText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        pointsText.text = "Points: +" + ent.Points + "<sprite name=\"Point_Emoji\">";
+        pointsText.margin = _horizontalMargin;
+        textObjects.Add(pointsText.GetComponent<RectTransform>());
         #endregion
 
         SetPopUpContentAnchors(textObjects);

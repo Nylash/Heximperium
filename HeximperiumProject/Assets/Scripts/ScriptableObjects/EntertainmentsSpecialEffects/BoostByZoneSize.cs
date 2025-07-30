@@ -381,4 +381,10 @@ public class BoostByZoneSize : SpecialEffect
             Debug.LogError("CheckIfGroupStillWhole shouldn't have return false, groupID : " + groupID);
         }
     }
+
+    public override string GetBehaviourDescription()
+    {
+        return $"Gain +{_boost}<sprite name=\"Point_Emoji\"> for each other {_dataBoosting.Type.ToCustomString()} connected to this one through a continuous zone. " +
+               $"A {_dataBridge.Type.ToCustomString()} can bridge a one gap tile between two {_dataBoosting.Type.ToCustomString()}";
+    }
 }
