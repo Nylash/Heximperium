@@ -28,6 +28,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private float _screenWidth;
     private float _screenHeight;
     private List<GameObject> _popUps = new List<GameObject>();
+    private Dictionary<SpecialBehaviour, Tile> _highlightingBehaviours = new Dictionary<SpecialBehaviour, Tile>();
     float _maxAllowed;
     #endregion
 
@@ -109,6 +110,14 @@ public class PopUpManager : Singleton<PopUpManager>
             }
             _popUps.Clear();
         }
+        if (_highlightingBehaviours.Count > 0)
+        {
+            foreach (KeyValuePair<SpecialBehaviour, Tile> item in _highlightingBehaviours)
+            {
+                item.Key.HighlightImpactedTile(item.Value, false);
+            }
+            _highlightingBehaviours.Clear();
+        }
     }
     #endregion
 
@@ -146,6 +155,8 @@ public class PopUpManager : Singleton<PopUpManager>
                 behaviourText.margin = _fullMargin;
                 textObjects.Add(behaviourText.GetComponent<RectTransform>());
                 ClampTextWidth(behaviourText);
+                behaviour.HighlightImpactedTile(tile, true);
+                _highlightingBehaviours.Add(behaviour, tile);
             }
         }
 
