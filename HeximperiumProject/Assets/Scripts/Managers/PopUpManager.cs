@@ -76,9 +76,7 @@ public class PopUpManager : Singleton<PopUpManager>
                         if (tile.Scouts.Count > 0)
                         {
                             foreach (Scout item in tile.Scouts)
-                            {
-                                //Popup scout
-                            }
+                                ScoutPopUp(item);
                         }
                         //if (tile.Entertainment != null)
                             //Popup entertainment
@@ -129,13 +127,14 @@ public class PopUpManager : Singleton<PopUpManager>
 
         List<RectTransform> textObjects = new List<RectTransform>();
 
-        //Title
+        #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
         title.text = tile.TileData.TileName;
         title.margin = _fullMargin;
         textObjects.Add(title.GetComponent<RectTransform>());
+        #endregion
 
-        //Hazardous tile slow
+        #region HAZARDOUS TILE
         if (tile.TileData is HazardousTileData && !tile.Claimed)
         {
             TextMeshProUGUI slow = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
@@ -144,8 +143,9 @@ public class PopUpManager : Singleton<PopUpManager>
             textObjects.Add(slow.GetComponent<RectTransform>());
             ClampTextWidth(slow);
         }
+        #endregion
 
-        //Tile behaviours
+        #region BEHAVIOURS
         if (tile.TileData.SpecialBehaviours.Count > 0)
         {
             foreach (SpecialBehaviour behaviour in tile.TileData.SpecialBehaviours)
@@ -159,8 +159,9 @@ public class PopUpManager : Singleton<PopUpManager>
                 _highlightingBehaviours.Add(behaviour, tile);
             }
         }
+        #endregion
 
-        //Tile enhancements
+        #region ENHANCEMENTS
         if (tile.TileData.AvailableInfrastructures.Count > 0)
         {
             TextMeshProUGUI enhancement = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
@@ -184,8 +185,9 @@ public class PopUpManager : Singleton<PopUpManager>
             ClampTextWidth(enhancement);
             enhancement.fontStyle = FontStyles.Italic;
         }
+        #endregion
 
-        //Income
+        #region INCOME
         if (tile.Incomes.Count > 0)
         {
             TextMeshProUGUI income = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
@@ -193,8 +195,9 @@ public class PopUpManager : Singleton<PopUpManager>
             income.margin = _horizontalMargin;
             textObjects.Add(income.GetComponent<RectTransform>());
         }
+        #endregion
 
-        //Scout starting point
+        #region SCOUT STARTING POINT
         if (tile.TileData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
         {
             TextMeshProUGUI scoutText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
@@ -204,8 +207,9 @@ public class PopUpManager : Singleton<PopUpManager>
             scoutText.margin = _horizontalMargin;
             textObjects.Add(scoutText.GetComponent<RectTransform>());
         }
+        #endregion
 
-        //Claim cost
+        #region CLAIM COST
         if (!tile.Claimed)
         {
             TextMeshProUGUI claimStatus = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
@@ -213,70 +217,147 @@ public class PopUpManager : Singleton<PopUpManager>
             claimStatus.margin = _horizontalMargin;
             textObjects.Add(claimStatus.GetComponent<RectTransform>());
         }
+        #endregion
 
         SetPopUpContentAnchors(textObjects);
+        PositionPopup(popUp.GetComponent<RectTransform>());
+    }
 
+    private void ScoutPopUp(Scout scout)
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        #region TITLE
+        TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
+        title.text = "Scout";
+        title.margin = _fullMargin;
+        textObjects.Add(title.GetComponent<RectTransform>());
+        #endregion
+
+        #region SPEED
+        TextMeshProUGUI speedText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        speedText.text = "Speed: " + scout.Speed;
+        speedText.margin = _horizontalMargin;
+        textObjects.Add(speedText.GetComponent<RectTransform>());
+        #endregion
+
+        #region REVEAL RADIUS
+        TextMeshProUGUI revealText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        revealText.text = "Reveal radius: " + scout.RevealRadius;
+        revealText.margin = _horizontalMargin;
+        textObjects.Add(revealText.GetComponent<RectTransform>());
+        #endregion
+
+        #region LIFESPAN
+        TextMeshProUGUI lifespanText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        lifespanText.text = "Remaining turns: " + scout.Lifespan;
+        lifespanText.margin = _horizontalMargin;
+        textObjects.Add(lifespanText.GetComponent<RectTransform>());
+        #endregion
+
+        #region REDIRECTABLE
+        if (ExplorationManager.Instance.UpgradeScoutRedirectable)
+        {
+            TextMeshProUGUI redirectText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            if (scout.HasRedirected)
+                redirectText.text = "Scout has already been redirected";
+            else
+                redirectText.text = "Scout can be redirected";
+            redirectText.margin = _fullMargin;
+            redirectText.fontStyle = FontStyles.Italic;
+            redirectText.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(redirectText.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region DIRECTION
+        TextMeshProUGUI directionText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        directionText.text = scout.Direction.ToCustomString();
+        directionText.margin = _horizontalMargin;
+        directionText.fontStyle = FontStyles.Italic;
+        directionText.alignment = TextAlignmentOptions.Right;
+        textObjects.Add(directionText.GetComponent<RectTransform>());
+        #endregion
+
+        SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>());
     }
 
     #region POSITIONING & LAYOUT
     private void PositionPopup(RectTransform popupRect)
     {
-        // Get the current mouse position
-        Vector3 mousePosition = Input.mousePosition;
+        Vector2 mousePosition = Input.mousePosition;
 
-        // Determine the quadrant
-        bool isLeft = mousePosition.x < (_screenWidth / 2);
-        bool isTop = mousePosition.y > (_screenHeight / 2);
+        // Determine screen quadrant
+        bool isLeft = mousePosition.x >= (_screenWidth / 2f); // flip: right side means place on left
+        bool isTop = mousePosition.y <= (_screenHeight / 2f); // flip: bottom half means place on top
 
-        // Calculate the cumulative vertical offset based on the sizes of previous pop-ups
-        float verticalOffset = 0;
-        //_popUps.Count -1 to avoid counting the current pop up
+        // Rebuild popup layout to ensure height is accurate
+        LayoutRebuilder.ForceRebuildLayoutImmediate(popupRect);
+
+        // Calculate vertical offset from existing popups
+        float verticalOffset = 0f;
         for (int i = 0; i < _popUps.Count - 1; i++)
         {
-            RectTransform previousPopupRectTransform = _popUps[i].GetComponent<RectTransform>();
-            verticalOffset += previousPopupRectTransform.rect.height + _offsetBetweenSeveralPopUps;
+            var rt = _popUps[i].GetComponent<RectTransform>();
+            verticalOffset += rt.rect.height + _offsetBetweenSeveralPopUps;
         }
 
-        // Get the current zoom level from the camera
+        // Calculate zoom-based dynamic offset
         float zoomLevel = CameraManager.Instance.transform.position.y;
-
-        // Calculate the dynamic offset based on the zoom level
-        float normalizedZoom = Mathf.InverseLerp(CameraManager.Instance.MinZoomLevel, CameraManager.Instance.MaxZoomLevel, zoomLevel);
+        float normalizedZoom = Mathf.InverseLerp(CameraManager.Instance.MaxZoomLevel, CameraManager.Instance.MinZoomLevel, zoomLevel);
         float dynamicOffset = Mathf.Lerp(_minOffset, _maxOffset, normalizedZoom);
 
-#if UNITY_EDITOR
-        dynamicOffset = 0;//Remove the offset in the editor (game screen is small so popup aren't visible)
-#endif
-
-        Vector2 pivot;
-        Vector3 anchoredPos = mousePosition;
-
+        // Determine pivot and anchor
+        Vector2 anchor, pivot;
         if (isLeft && isTop)
         {
-            pivot = new Vector2(0f, 1f); // Top-left
-            anchoredPos += new Vector3(dynamicOffset, -dynamicOffset - verticalOffset, 0);
+            anchor = pivot = new Vector2(0f, 1f); // Top-left
         }
         else if (!isLeft && isTop)
         {
-            pivot = new Vector2(1f, 1f); // Top-right
-            anchoredPos += new Vector3(-dynamicOffset, -dynamicOffset - verticalOffset, 0);
+            anchor = pivot = new Vector2(1f, 1f); // Top-right
         }
         else if (isLeft && !isTop)
         {
-            pivot = new Vector2(0f, 0f); // Bottom-left
-            anchoredPos += new Vector3(dynamicOffset, dynamicOffset + verticalOffset, 0);
+            anchor = pivot = new Vector2(0f, 0f); // Bottom-left
         }
         else
         {
-            pivot = new Vector2(1f, 0f); // Bottom-right
-            anchoredPos += new Vector3(-dynamicOffset, dynamicOffset + verticalOffset, 0);
+            anchor = pivot = new Vector2(1f, 0f); // Bottom-right
         }
 
-        // Apply pivot and position
+        // Apply anchor and pivot
+        popupRect.anchorMin = anchor;
+        popupRect.anchorMax = anchor;
         popupRect.pivot = pivot;
-        popupRect.position = anchoredPos;
+
+        // Convert screen position to local anchored position
+        RectTransform parentRect = popupRect.parent as RectTransform;
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRect, mousePosition, null, out localPoint);
+
+        // Apply dynamic and vertical offsets
+        Vector2 anchoredPos = localPoint;
+
+        if (isTop)
+            anchoredPos.y -= dynamicOffset + verticalOffset;
+        else
+            anchoredPos.y += dynamicOffset + verticalOffset;
+
+        if (isLeft)
+            anchoredPos.x += dynamicOffset;
+        else
+            anchoredPos.x -= dynamicOffset;
+
+        // Final position
+        popupRect.anchoredPosition = anchoredPos;
     }
+
 
     private void ClampTextWidth(TextMeshProUGUI tmp)
     {
