@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -85,7 +86,26 @@ public class PopUpManager : Singleton<PopUpManager>
                 }
                 else if (obj.GetComponent<InteractionButton>() is InteractionButton button)
                 {
-                    //Popup interaction button
+                    switch (button.Interaction)
+                    {
+                        case Interaction.Claim:
+                            break;
+                        case Interaction.Scout:
+                            ButtonScoutPopUp(button);
+                            break;
+                        case Interaction.Infrastructure:
+                            break;
+                        case Interaction.Destroy:
+                            break;
+                        case Interaction.Entertainment:
+                            break;
+                        case Interaction.RedirectScout:
+                            ButtonRedirectScoutPopUp(button);
+                            break;
+                        default:
+                            Debug.LogWarning("PopUpManager: InteractionButton with no interaction type found " + button.Interaction);
+                            break;
+                    }
                 }
             }
         }
@@ -128,6 +148,7 @@ public class PopUpManager : Singleton<PopUpManager>
     }
     #endregion
 
+    #region ON TILE POP UP
     private void TilePopUp(Tile tile)
     {
         GameObject popUp;
@@ -334,6 +355,90 @@ public class PopUpManager : Singleton<PopUpManager>
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>());
     }
+    #endregion
+
+    #region INTERACTION BUTTON POP UP
+    private void ButtonScoutPopUp(InteractionButton button)
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        BoostScoutOnSpawn boostingInfra = button.AssociatedTile.TileData.SpecialBehaviours
+            .OfType<BoostScoutOnSpawn>()
+            .FirstOrDefault();
+
+        #region TITLE
+        TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
+        title.text = "Spawn a Scout";
+        title.margin = _fullMargin;
+        textObjects.Add(title.GetComponent<RectTransform>());
+        #endregion
+
+        #region SPEED
+        TextMeshProUGUI speedText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        if (boostingInfra != null)
+            speedText.text = "Speed: " + (button.ScoutData.Speed + boostingInfra.BoostSpeed + ExplorationManager.Instance.BoostScoutSpeed);
+        else
+            speedText.text = "Speed: " + (button.ScoutData.Speed + ExplorationManager.Instance.BoostScoutSpeed);
+        speedText.margin = _horizontalMargin;
+        textObjects.Add(speedText.GetComponent<RectTransform>());
+        #endregion
+
+        #region REVEAL RADIUS
+        TextMeshProUGUI revealText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        if (boostingInfra != null)
+            revealText.text = "Reveal radius: " + (button.ScoutData.RevealRadius + boostingInfra.BoostRevealRadius + ExplorationManager.Instance.BoostScoutRevealRadius);
+        else
+            revealText.text = "Reveal radius: " + (button.ScoutData.RevealRadius + ExplorationManager.Instance.BoostScoutRevealRadius);
+        revealText.margin = _horizontalMargin;
+        textObjects.Add(revealText.GetComponent<RectTransform>());
+        #endregion
+
+        #region LIFESPAN
+        TextMeshProUGUI lifespanText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        if (boostingInfra != null)
+            lifespanText.text = "Lifespan: " + (button.ScoutData.Lifespan + boostingInfra.BoostLifespan + ExplorationManager.Instance.BoostScoutLifespan);
+        else
+            lifespanText.text = "Lifespan: " + (button.ScoutData.Lifespan + ExplorationManager.Instance.BoostScoutLifespan);
+        lifespanText.margin = _horizontalMargin;
+        textObjects.Add(lifespanText.GetComponent<RectTransform>());
+        #endregion
+
+        #region AVAILABILITY
+        TextMeshProUGUI availability = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        availability.text = (ExplorationManager.Instance.ScoutsLimit - ExplorationManager.Instance.CurrentScoutsCount) + " Scout(s) available";
+        if (ExplorationManager.Instance.CurrentScoutsCount >= ExplorationManager.Instance.ScoutsLimit)
+            availability.color = UIManager.Instance.ColorCantAfford;
+        availability.margin = _fullMargin;
+        textObjects.Add(availability.GetComponent<RectTransform>());
+        availability.fontStyle = FontStyles.Italic;
+        availability.alignment = TextAlignmentOptions.Center;
+        #endregion
+
+        SetPopUpContentAnchors(textObjects);
+        PositionPopup(popUp.GetComponent<RectTransform>());
+    }
+
+    private void ButtonRedirectScoutPopUp(InteractionButton button)
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
+        title.text = "Redirect a Scout";
+        title.margin = _fullMargin;
+        textObjects.Add(title.GetComponent<RectTransform>());
+
+        SetPopUpContentAnchors(textObjects);
+        PositionPopup(popUp.GetComponent<RectTransform>());
+    }
+    #endregion
 
     #region POSITIONING & LAYOUT
     private void PositionPopup(RectTransform popupRect)

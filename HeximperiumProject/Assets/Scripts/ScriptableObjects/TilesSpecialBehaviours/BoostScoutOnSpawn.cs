@@ -9,6 +9,10 @@ public class BoostScoutOnSpawn : SpecialBehaviour
     [SerializeField] private int _boostLifespan;
     [SerializeField] private int _boostRevealRadius;
 
+    public int BoostSpeed { get => _boostSpeed; }
+    public int BoostLifespan { get => _boostLifespan; }
+    public int BoostRevealRadius { get => _boostRevealRadius; }
+
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
     {
         ExplorationManager.Instance.OnScoutSpawned -= behaviourTile.ListenerOnScoutSpawned_BoostScoutOnSpawn;
