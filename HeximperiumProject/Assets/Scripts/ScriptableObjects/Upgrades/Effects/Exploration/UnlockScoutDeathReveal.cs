@@ -9,4 +9,9 @@ public class UnlockScoutDeathReveal : UpgradeEffect
     {
         ExplorationManager.Instance.UpgradeScoutRevealOnDeathRadius = _deathRevealRadius;
     }
+
+    public override string GetEffectDescription()
+    {
+        return $"When a Scout reaches the end of its lifespan, he reveals all tiles in a {_deathRevealRadius}-tiles radius around him";
+    }
 }

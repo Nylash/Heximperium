@@ -7,4 +7,9 @@ public class UpgradeScoutSpeed : UpgradeEffect
     {
         ExplorationManager.Instance.BoostScoutSpeed++;
     }
+
+    public override string GetEffectDescription()
+    {
+        return "+1 to Scouts' speed";
+    }
 }

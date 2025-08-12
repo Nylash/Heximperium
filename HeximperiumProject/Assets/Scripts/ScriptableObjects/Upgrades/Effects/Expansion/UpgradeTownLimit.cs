@@ -7,4 +7,9 @@ public class UpgradeTownLimit : UpgradeEffect
     {
         ExploitationManager.Instance.UpdateTownLimit(1);
     }
+
+    public override string GetEffectDescription()
+    {
+        return "+1 Towns limit";
+    }
 }

@@ -7,4 +7,9 @@ public class UnlockTownGenerateClaim : UpgradeEffect
     {
         ExpansionManager.Instance.UpgradeTownsGenerateClaim = true;
     }
+
+    public override string GetEffectDescription()
+    {
+        return "Each Town generates +1<sprite name=\"Claim_Emoji\"> per turn";
+    }
 }

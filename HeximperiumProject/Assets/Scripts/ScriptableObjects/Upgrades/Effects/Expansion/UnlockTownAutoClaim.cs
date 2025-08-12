@@ -7,4 +7,9 @@ public class UnlockTownAutoClaim : UpgradeEffect
     {
         ExpansionManager.Instance.UpgradeTownAutoClaim = true;
     }
+
+    public override string GetEffectDescription()
+    {
+        return "Founding a Town automatically claim the 6 surrounding tiles";
+    }
 }

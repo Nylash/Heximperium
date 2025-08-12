@@ -7,4 +7,9 @@ public class UnlockClaimRangeImproved : UpgradeEffect
     {
         ExpansionManager.Instance.UpgradeClaimRange = true;
     }
+
+    public override string GetEffectDescription()
+    {
+        return "Allow claiming tiles that are up to 1 tile away from your current territory";
+    }
 }

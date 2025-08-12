@@ -7,4 +7,9 @@ public class UpgradeSavedClaim : UpgradeEffect
     {
         ExpansionManager.Instance.SavedClaimPerTurn++;
     }
+
+    public override string GetEffectDescription()
+    {
+        return "+1 stockable <sprite name=\"Claim_Emoji\">";
+    }
 }

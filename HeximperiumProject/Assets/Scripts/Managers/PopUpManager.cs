@@ -72,6 +72,7 @@ public class PopUpManager : Singleton<PopUpManager>
                         VisibilityPopUp();
                         break;
                     case "UpgradeNodeUI":
+                        UpgradeNodePopUp(obj.GetComponent<UI_UpgradeNode>());
                         break;
                     case "ScoreUI":
                         ScorePopUp();
@@ -403,6 +404,59 @@ public class PopUpManager : Singleton<PopUpManager>
         converted.margin = _horizontalMargin;
         ClampTextWidth(converted);
         textObjects.Add(converted.GetComponent<RectTransform>());
+        #endregion
+
+        SetPopUpContentAnchors(textObjects);
+        PositionPopupRelativeToUI(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>());
+    }
+
+    private void UpgradeNodePopUp(UI_UpgradeNode node)
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        #region DETAIL
+        TextMeshProUGUI detail = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        detail.text = node.NodeData.Effect.GetEffectDescription();
+        detail.margin = _horizontalMargin;
+        ClampTextWidth(detail);
+        textObjects.Add(detail.GetComponent<RectTransform>());
+        #endregion
+
+        #region EXCLUSIVE
+        if (node.NodeData.ExclusiveNode != null)
+        {
+            TextMeshProUGUI exclusive = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            if (UpgradesManager.Instance.IsNodeUnlocked(node.NodeData.ExclusiveNode))
+            {
+                exclusive.text = "Locked by opposite node";
+                exclusive.color = UIManager.Instance.ColorCantAfford;
+            }
+            else
+            {
+                exclusive.text = "Choice node";
+            }
+            exclusive.margin = _fullMargin;
+            exclusive.fontStyle = FontStyles.Italic;
+            exclusive.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(exclusive.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region COST
+        if (!UpgradesManager.Instance.IsNodeUnlocked(node.NodeData) && !UpgradesManager.Instance.IsNodeUnlocked(node.NodeData.ExclusiveNode))
+        {
+            TextMeshProUGUI cost = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            cost.text = "Cost: " + node.NodeData.Costs.CostToString();
+            if (!ResourcesManager.Instance.CanAfford(node.NodeData.Costs))
+                cost.color = UIManager.Instance.ColorCantAfford;
+            cost.margin = _fullMargin;
+            textObjects.Add(cost.GetComponent<RectTransform>());
+            ClampTextWidth(cost);
+        }
         #endregion
 
         SetPopUpContentAnchors(textObjects);
