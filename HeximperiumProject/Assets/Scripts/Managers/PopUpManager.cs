@@ -109,6 +109,7 @@ public class PopUpManager : Singleton<PopUpManager>
                                 ButtonDestroyPopUp("Remove " + button.AssociatedTile.Entertainment.Data.Type.ToCustomString());
                             break;
                         case Interaction.Entertainment:
+                            ButtonEntertainmentPopUp(button);
                             break;
                         case Interaction.RedirectScout:
                             ButtonRedirectScoutPopUp(button);
@@ -203,7 +204,7 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         #region ENHANCEMENTS
-        if (tile.TileData.AvailableInfrastructures.Count > 0)
+        if (tile.TileData.AvailableInfrastructures.Count > 0 && GameManager.Instance.CurrentPhase != Phase.Entertain)
         {
             TextMeshProUGUI enhancement = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
             if (tile.TileData is ResourceTileData resourceTileData)
@@ -492,6 +493,45 @@ public class PopUpManager : Singleton<PopUpManager>
         title.text = text;
         title.margin = _fullMargin;
         textObjects.Add(title.GetComponent<RectTransform>());
+        #endregion
+
+        SetPopUpContentAnchors(textObjects);
+        PositionPopup(popUp.GetComponent<RectTransform>());
+    }
+
+    private void ButtonEntertainmentPopUp(InteractionButton button)
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        #region TITLE
+        TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
+        title.text = button.EntertainData.Type.ToCustomString();
+        title.margin = _fullMargin;
+        textObjects.Add(title.GetComponent<RectTransform>());
+        #endregion
+
+        #region EFFECT
+        if (button.EntertainData.SpecialEffect != null)
+        {
+            TextMeshProUGUI effectText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            effectText.text = button.EntertainData.SpecialEffect.GetBehaviourDescription();
+            effectText.margin = _horizontalMargin;
+            textObjects.Add(effectText.GetComponent<RectTransform>());
+            ClampTextWidth(effectText);
+            button.EntertainData.SpecialEffect.HighlightImpactedEntertainment(button.AssociatedTile, true);
+            _highlightingEffects.Add(button.EntertainData.SpecialEffect, button.AssociatedTile);
+        }
+        #endregion
+
+        #region POINTS
+        TextMeshProUGUI pointsText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        pointsText.text = "Base points: +" + button.EntertainData.BasePoints + "<sprite name=\"Point_Emoji\">";
+        pointsText.margin = _horizontalMargin;
+        textObjects.Add(pointsText.GetComponent<RectTransform>());
         #endregion
 
         SetPopUpContentAnchors(textObjects);
