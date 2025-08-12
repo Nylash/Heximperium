@@ -12,6 +12,7 @@ TagManager:
   - SRUI
   - VisibilityUI
   - UpgradeNodeUI
+  - ScoreUI
   layers:
   - Default
   - TransparentFX
