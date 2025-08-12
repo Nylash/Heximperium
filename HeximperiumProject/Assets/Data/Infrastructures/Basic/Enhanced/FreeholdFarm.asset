@@ -20,9 +20,6 @@ MonoBehaviour:
   - resource: 0
     value: 7
   _availableInfrastructures: []
-  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
-  _interactionButtonPopUpText: +7 Gold but cannot be boosted by Windmills
-  _tilePopUpText: Cannot be boosted by Windmills
   _specialBehaviours: []
   _costs:
   - resource: 1

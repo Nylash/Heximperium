@@ -498,7 +498,7 @@ GameObject:
   - component: {fileID: 3360793467973606574}
   m_Layer: 5
   m_Name: 4_Path1
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1233,7 +1233,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1327,7 +1327,7 @@ GameObject:
   - component: {fileID: 8436193245601557355}
   m_Layer: 5
   m_Name: 6
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1513,7 +1513,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1661,7 +1661,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1753,7 +1753,7 @@ GameObject:
   - component: {fileID: 7804648677702942219}
   m_Layer: 5
   m_Name: 1
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1968,7 +1968,7 @@ GameObject:
   - component: {fileID: 8503863107849302329}
   m_Layer: 5
   m_Name: SpecialResources
-  m_TagString: Untagged
+  m_TagString: SRUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2723,7 +2723,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3022,6 +3022,41 @@ MonoBehaviour:
   - {x: 150.528, y: -79.59061}
   thickness: 5
   center: 1
+--- !u!1 &1184623993791848880
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 32523236647451451}
+  m_Layer: 5
+  m_Name: PopUps
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &32523236647451451
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1184623993791848880}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1276648731444977417}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1210588845946721047
 GameObject:
   m_ObjectHideFlags: 0
@@ -3081,7 +3116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3292,7 +3327,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3456,7 +3491,7 @@ GameObject:
   - component: {fileID: 1271253749712088318}
   m_Layer: 5
   m_Name: 4_Path2
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3641,7 +3676,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -4093,7 +4128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -4229,7 +4264,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -4719,7 +4754,7 @@ GameObject:
   - component: {fileID: 5646575419411938907}
   m_Layer: 5
   m_Name: ScoreBar
-  m_TagString: Untagged
+  m_TagString: ScoreUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4820,7 +4855,7 @@ GameObject:
   - component: {fileID: 7336112202393570566}
   m_Layer: 5
   m_Name: 4_Path2_Opt1
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4961,7 +4996,7 @@ GameObject:
   - component: {fileID: 1830072627909993069}
   m_Layer: 5
   m_Name: 2_Opt1
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5518,7 +5553,7 @@ GameObject:
   - component: {fileID: 8584807446764271264}
   m_Layer: 5
   m_Name: 3_Path1
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5703,7 +5738,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -6006,7 +6041,7 @@ GameObject:
   - component: {fileID: 4112693687408081440}
   m_Layer: 5
   m_Name: 1
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6409,7 +6444,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -6637,7 +6672,7 @@ GameObject:
   - component: {fileID: 5024011382895805463}
   m_Layer: 5
   m_Name: 2
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6822,7 +6857,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -6933,7 +6968,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00018310547, y: -0.00012207031}
+  m_AnchoredPosition: {x: -0.00024414062, y: -0.00012207031}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5770146688208218713
@@ -7278,10 +7313,10 @@ GameObject:
   - component: {fileID: 8732156004688695813}
   - component: {fileID: 3236270042587914365}
   - component: {fileID: 206359046261627793}
-  - component: {fileID: 8126272557117596856}
+  - component: {fileID: 7501614184439915161}
   m_Layer: 5
   m_Name: Visibility
-  m_TagString: Untagged
+  m_TagString: VisibilityUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7356,7 +7391,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 7501614184439915161}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -7372,7 +7407,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &8126272557117596856
+--- !u!114 &7501614184439915161
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7381,10 +7416,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 2900697739056650002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd50dec83bafd534498730e7d8ac32e9, type: 3}
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _popUp: {fileID: 5077026704930332122, guid: a5f4419078f74ee429252d22e7b31ebd, type: 3}
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &2920030299323011906
 GameObject:
   m_ObjectHideFlags: 0
@@ -7398,7 +7450,7 @@ GameObject:
   - component: {fileID: 5135823249512600925}
   m_Layer: 5
   m_Name: TownLimit
-  m_TagString: Untagged
+  m_TagString: TownLimitUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7697,7 +7749,7 @@ GameObject:
   - component: {fileID: 6016683345564983387}
   m_Layer: 5
   m_Name: 3
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8103,7 +8155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -8195,7 +8247,7 @@ GameObject:
   - component: {fileID: 71376423920516271}
   m_Layer: 5
   m_Name: 2
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8355,7 +8407,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00018310547, y: -0.00012207031}
+  m_AnchoredPosition: {x: -0.00024414062, y: -0.00012207031}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4419837119936621420
@@ -8983,7 +9035,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -9333,7 +9385,7 @@ GameObject:
   - component: {fileID: 3665884053876544177}
   m_Layer: 5
   m_Name: 4_Path2_Opt2
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9474,7 +9526,7 @@ GameObject:
   - component: {fileID: 7433121160265103278}
   m_Layer: 5
   m_Name: 5
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9661,7 +9713,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -9902,7 +9954,7 @@ GameObject:
   - component: {fileID: 6303456999810114586}
   m_Layer: 5
   m_Name: 4
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10433,7 +10485,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -10606,7 +10658,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.9372549, g: 0.7490196, b: 0.015686275, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -10773,7 +10825,7 @@ GameObject:
   - component: {fileID: 8537661134839358268}
   m_Layer: 5
   m_Name: 3_Path2_Opt
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10914,7 +10966,7 @@ GameObject:
   - component: {fileID: 4679625733986261767}
   m_Layer: 5
   m_Name: 3_Opt1
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11441,7 +11493,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -11535,7 +11587,7 @@ GameObject:
   - component: {fileID: 5882855382952684550}
   m_Layer: 5
   m_Name: 5_Opt2
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12009,7 +12061,7 @@ GameObject:
   - component: {fileID: 5167385974383241540}
   m_Layer: 5
   m_Name: 3_Opt2
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12447,10 +12499,9 @@ GameObject:
   - component: {fileID: 4026471011766782749}
   - component: {fileID: 7906036044059380710}
   - component: {fileID: 6050666458798914775}
-  - component: {fileID: 8177975694871683938}
   m_Layer: 5
   m_Name: Claims
-  m_TagString: Untagged
+  m_TagString: ClaimUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12514,19 +12565,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8177975694871683938
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5435427267471136498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd50dec83bafd534498730e7d8ac32e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _popUp: {fileID: 4726505612984096945, guid: 952bba7efd17191458fe09134a1cfaa8, type: 3}
 --- !u!1 &5506983636348608387
 GameObject:
   m_ObjectHideFlags: 0
@@ -12954,7 +12992,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -13537,7 +13575,7 @@ GameObject:
   - component: {fileID: 5710944251376378302}
   m_Layer: 5
   m_Name: 5_Opt1
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14177,7 +14215,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -14897,7 +14935,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -15169,7 +15207,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -15530,7 +15568,7 @@ GameObject:
   - component: {fileID: 1085266510881528494}
   m_Layer: 5
   m_Name: 2_Opt2
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15746,7 +15784,7 @@ GameObject:
   - component: {fileID: 7033642053326772363}
   m_Layer: 5
   m_Name: 3_Path2
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15887,7 +15925,7 @@ GameObject:
   - component: {fileID: 5008307652041675916}
   m_Layer: 5
   m_Name: 4_Path1_Opt2
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16072,7 +16110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -16208,7 +16246,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -16420,7 +16458,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -16730,7 +16768,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -16818,10 +16856,9 @@ GameObject:
   - component: {fileID: 2698840878697079004}
   - component: {fileID: 3296316151247437502}
   - component: {fileID: 3073497763662809190}
-  - component: {fileID: 5656893391888538737}
   m_Layer: 5
   m_Name: Gold
-  m_TagString: Untagged
+  m_TagString: GoldUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16885,19 +16922,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5656893391888538737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7558643933088224382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd50dec83bafd534498730e7d8ac32e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _popUp: {fileID: 6545422123523209529, guid: ceb19fde1702ead4095f7e4c499095c7, type: 3}
 --- !u!1 &7713312340042976432
 GameObject:
   m_ObjectHideFlags: 0
@@ -17068,7 +17092,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00018310547, y: -0.00012207031}
+  m_AnchoredPosition: {x: -0.00024414062, y: -0.00012207031}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &391304835664855365
@@ -17801,7 +17825,7 @@ GameObject:
   - component: {fileID: 855564290943685903}
   m_Layer: 5
   m_Name: 3_Path1_Opt
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18031,7 +18055,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00018310547, y: -0.00012207031}
+  m_AnchoredPosition: {x: -0.00024414062, y: -0.00012207031}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4677165075545516052
@@ -18286,7 +18310,7 @@ GameObject:
   - component: {fileID: 5818441621486912166}
   m_Layer: 5
   m_Name: 4_Path1_Opt1
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18959,7 +18983,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -19124,7 +19148,7 @@ GameObject:
   - component: {fileID: 6249043996459851078}
   m_Layer: 5
   m_Name: ScoutLimit
-  m_TagString: Untagged
+  m_TagString: ScoutLimitUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19720,7 +19744,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -20594,7 +20618,7 @@ GameObject:
   - component: {fileID: 3071022332752849702}
   m_Layer: 5
   m_Name: 5
-  m_TagString: Untagged
+  m_TagString: UpgradeNodeUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20865,6 +20889,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1276648731444977417}
+  - component: {fileID: 4982810374460275982}
   - component: {fileID: 5447738742827255451}
   - component: {fileID: 6794449871484859327}
   - component: {fileID: 4864546286106312487}
@@ -20896,6 +20921,7 @@ RectTransform:
   - {fileID: 7423347823802518226}
   - {fileID: 6613764529174209467}
   - {fileID: 3403984325348803791}
+  - {fileID: 32523236647451451}
   - {fileID: 7548714101093337782}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -20904,6 +20930,29 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &4982810374460275982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9128008542845861579}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9c2ac7e6964c8b4591cf963b1e56232, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _persistentSingleton: 0
+  _durationHoverForUI: 1
+  _offsetBetweenSeveralPopUps: 1
+  _minOffset: 80
+  _maxOffset: 275
+  _maxScreenFraction: 0.15
+  _horizontalMargin: {x: 10, y: 0, z: 10, w: 0}
+  _fullMargin: {x: 10, y: 5, z: 10, w: 5}
+  _basePopUp: {fileID: 6245525707209063558, guid: d5762cd1b2823a44ab37029529fc5308, type: 3}
+  _title: {fileID: 7943185033060346411, guid: 323427eb9484ee64b874eee96dae90aa, type: 3}
+  _text: {fileID: 5711950651282281864, guid: 7e62b65f6bfb42b4bacaf35545e1c85b, type: 3}
 --- !u!114 &5447738742827255451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20917,11 +20966,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
+  _popUpParent: {fileID: 32523236647451451}
   _scoutsLimitText: {fileID: 2957421749578235539}
   _claimText: {fileID: 5128465592845207830}
   _townsLimitText: {fileID: 6453143418820908059}
   _goldText: {fileID: 9090656008355875002}
   _srText: {fileID: 9068219591790210569}
+  _colorCantAfford: {r: 0.9056604, g: 0.32039872, b: 0.32039872, a: 1}
   _currentPhaseText: {fileID: 8166876475514492029}
   _confirmPhaseButtonText: {fileID: 4335767624074561558}
   _turnCounterText: {fileID: 4180945939024946559}
@@ -20939,13 +20990,6 @@ MonoBehaviour:
   _popUpExploitPhase: {fileID: 2411218847409732534}
   _popUpEntertainPhase: {fileID: 698151798308468607}
   _buttonEndPhase: {fileID: 118399365143820747}
-  _durationHoverForUI: 1
-  _offsetBetweenPopUps: 1
-  _prefabPopUpEntertainment: {fileID: 7317370589033109142, guid: 7977b42869768b74f82fe4ab1473b0c6, type: 3}
-  _prefabPopUpScout: {fileID: 7242006630199399831, guid: a4ef471a94a74ec4cb1fb7247f7b301a, type: 3}
-  _minOffset: 80
-  _maxOffset: 275
-  _colorCantAfford: {r: 0.9056604, g: 0.32039872, b: 0.32039872, a: 1}
   _visibilityImage: {fileID: 8299255979735939019}
   _scoutImageVisibility: {fileID: 6264320945863995282}
   _entertainmentImageVisibility: {fileID: 2602213935654975927}

@@ -20,6 +20,7 @@ public class UpgradesManager : Singleton<UpgradesManager>
                 n.UpdateVisual();
 
             OnNodeUnlocked?.Invoke(node);
+            PopUpManager.Instance.ResetPopUp(null);//Reset popup to avoid showing non updated information
         }
     }
 
@@ -38,5 +39,10 @@ public class UpgradesManager : Singleton<UpgradesManager>
             return UpgradeStatus.Unlockable;
         else
             return UpgradeStatus.CantAfford;
+    }
+
+    public bool IsNodeUnlocked(UpgradeNodeData node)
+    {
+        return node == null ? false : _unlockedNodes.Contains(node);
     }
 }

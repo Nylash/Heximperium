@@ -17,4 +17,9 @@ public class BoostScoutsLimit : SpecialBehaviour
     {
         //Not needed
     }
+
+    public override string GetBehaviourDescription()
+    {
+        return "Increases the limit of scouts by 1";
+    }
 }

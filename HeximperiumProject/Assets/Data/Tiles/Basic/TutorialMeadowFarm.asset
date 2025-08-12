@@ -21,7 +21,4 @@ MonoBehaviour:
     value: 1
   _availableInfrastructures:
   - {fileID: 11400000, guid: 2343a704b58abda4dbeead80ff882353, type: 2}
-  _popUpPrefab: {fileID: 4604967413891682696, guid: 8a2a6ee03e8ce0142be608694ce4402e, type: 3}
-  _interactionButtonPopUpText: 
-  _tilePopUpText: Can be upgraded with various infrastructures
   _specialBehaviours: []

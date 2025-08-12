@@ -19,8 +19,4 @@ MonoBehaviour:
   _incomes: []
   _availableInfrastructures:
   - {fileID: 11400000, guid: babbdf6331d91034888b073e6c34d892, type: 2}
-  _popUpPrefab: {fileID: 4713123567034353809, guid: d8f213d35ee68da42bdab236132145bb, type: 3}
-  _interactionButtonPopUpText: 
-  _tilePopUpText: Can be upgraded to produce Special Resources and bringing a reduction
-    to Exploitation oriented Infrastructures and Upgrades.
   _specialBehaviours: []

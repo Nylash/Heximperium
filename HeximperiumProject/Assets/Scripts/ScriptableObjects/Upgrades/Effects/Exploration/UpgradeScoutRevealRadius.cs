@@ -7,4 +7,9 @@ public class UpgradeScoutRevealRadius : UpgradeEffect
     {
         ExplorationManager.Instance.BoostScoutRevealRadius++;
     }
+
+    public override string GetEffectDescription()
+    {
+        return "+1 to Scouts' reveal radius";
+    }
 }

@@ -22,9 +22,6 @@ MonoBehaviour:
   _availableInfrastructures:
   - {fileID: 11400000, guid: 4e8ee20a776700a43b1e6df15478b4cc, type: 2}
   - {fileID: 11400000, guid: aaef9a2cdbf4922458d685f80add1a47, type: 2}
-  _popUpPrefab: {fileID: 4211441305533441537, guid: ef8dd89153ab58342bac319dd00772f5, type: 3}
-  _interactionButtonPopUpText: +2 Gold
-  _tilePopUpText: 
   _specialBehaviours: []
   _costs:
   - resource: 0

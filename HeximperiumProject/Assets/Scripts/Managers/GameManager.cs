@@ -57,7 +57,7 @@ public class GameManager : Singleton<GameManager>
         set
         {
             _gamePaused = value;
-            UIManager.Instance.ResetPopUps(null);
+            PopUpManager.Instance.ResetPopUp(null);
         }
     }
     public bool TutorialLockingPhase { get => _tutorialLockingPhase; set => _tutorialLockingPhase = value; }
@@ -269,7 +269,7 @@ public class GameManager : Singleton<GameManager>
                     ExploitationManager.Instance.DestroyInfrastructure(button.AssociatedTile);
                 else
                     EntertainmentManager.Instance.DestroyEntertainment(button.AssociatedTile);
-                    break;
+                break;
             case Interaction.Entertainment:
                 EntertainmentManager.Instance.SpawnEntertainment(button.AssociatedTile, button.EntertainData);
                 break;

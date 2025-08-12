@@ -7,4 +7,9 @@ public class UpgradeScoutLimit : UpgradeEffect
     {
         ExplorationManager.Instance.ScoutsLimit++;
     }
+
+    public override string GetEffectDescription()
+    {
+        return "+1 Scouts limit";
+    }
 }

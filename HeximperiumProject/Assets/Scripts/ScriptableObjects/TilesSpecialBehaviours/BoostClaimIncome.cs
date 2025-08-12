@@ -19,4 +19,9 @@ public class BoostClaimIncome : SpecialBehaviour
     {
         //Nothing needed
     }
+
+    public override string GetBehaviourDescription()
+    {
+        return $"Boosts claim income by +{_claimQuantity}<sprite name=\"Claim_Emoji\">";
+    }
 }

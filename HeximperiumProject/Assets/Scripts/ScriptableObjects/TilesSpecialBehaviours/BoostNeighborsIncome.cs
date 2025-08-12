@@ -68,4 +68,9 @@ public class BoostNeighborsIncome : SpecialBehaviour
                 tile.Incomes = Utilities.SubtractResourceToIntMaps(tile.Incomes, _incomeBoost);
         }
     }
+
+    public override string GetBehaviourDescription()
+    {
+        return $"Boosts the income of neighboring {_infrastructuresBoosted.ToCustomString()} by {_incomeBoost.IncomeToString()}";
+    }
 }

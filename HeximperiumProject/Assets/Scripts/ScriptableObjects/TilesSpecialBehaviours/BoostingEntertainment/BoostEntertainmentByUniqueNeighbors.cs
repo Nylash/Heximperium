@@ -72,4 +72,9 @@ public class BoostEntertainmentByUniqueNeighbors : SpecialBehaviour
 
         behaviourTile.UniqueEntertainmentNeighborsCount_SB = uniqueData.Count;
     }
+
+    public override string GetBehaviourDescription()
+    {
+        return $"Boosts entertainment on this tile by +{_boost}<sprite name=\"Point_Emoji\"> for each unique entertainment neighbor";
+    }
 }

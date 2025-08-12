@@ -78,4 +78,12 @@ public class BoostNeighborEntertainments : SpecialBehaviour
         else
             ent.UpdatePoints(_boost, transaction);
     }
+
+    public override string GetBehaviourDescription()
+    {
+        string tmp = $"{_boostedEntertainments.ToCustomString()} on this tile and around gain +{_boost}<sprite name=\"Point_Emoji\">";
+        if (_multiplierInfraOnEmpire != null)
+            tmp += $" per {_multiplierInfraOnEmpire.TileName} in the empire";
+        return tmp;
+    }
 }

@@ -7,4 +7,9 @@ public class UnlockRedirectScout : UpgradeEffect
     {
         ExplorationManager.Instance.UpgradeScoutRedirectable = true;
     }
+
+    public override string GetEffectDescription()
+    {
+        return "Each Scout can be redirected once per turn";
+    }
 }

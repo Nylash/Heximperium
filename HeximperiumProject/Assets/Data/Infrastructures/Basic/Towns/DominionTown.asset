@@ -20,10 +20,6 @@ MonoBehaviour:
   _availableInfrastructures:
   - {fileID: 11400000, guid: 3391e575741b98849b16016b090a9bf3, type: 2}
   - {fileID: 11400000, guid: e310b7ff124144845a186ce5a7268be2, type: 2}
-  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
-  _interactionButtonPopUpText: 'Claiming a tile produces +1 Gold & Grants access
-    to two Expansion-oriented enhancements '
-  _tilePopUpText: Claiming a tile produces +1 Gold
   _specialBehaviours:
   - {fileID: 11400000, guid: c0d2e932331af9d479c1f0c0450c852d, type: 2}
   _costs:

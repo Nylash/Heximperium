@@ -7,4 +7,9 @@ public class UpgradeClaim : UpgradeEffect
     {
         ExpansionManager.Instance.ClaimPerTurn++;
     }
+
+    public override string GetEffectDescription()
+    {
+        return "+1<sprite name=\"Claim_Emoji\"> per turn";
+    }
 }

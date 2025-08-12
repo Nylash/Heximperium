@@ -19,6 +19,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     #region VARIABLES
     private List<Entertainment> _entertainments = new List<Entertainment>();
     private int _score;
+    private int _convertedPoints;
     private Dictionary<int, List<Entertainment>> _groupBoost = new Dictionary<int, List<Entertainment>>(); //Use for BoostByZoneSize special effect, <GroupID, Entertainments>
     private Dictionary<int, int> _groupBoostCount = new Dictionary<int, int>(); //Use for BoostByZoneSize special effect, <GroupID, Count>
     #endregion
@@ -28,6 +29,56 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     public int Score { get => _score; }
     public Dictionary<int, List<Entertainment>> GroupBoost { get => _groupBoost; }
     public Dictionary<int, int> GroupBoostCount { get => _groupBoostCount; }
+    public int ConvertedPoints { get => _convertedPoints; }
+
+    public int GetPointsFromMinstrelStage()
+    {
+        int points = 0;
+        foreach (Entertainment entertainment in _entertainments)
+        {
+            if (entertainment.Data.Type == EntertainmentType.MinstrelStage)
+            {
+                points += entertainment.Points;
+            }
+        }
+        return points;
+    }
+    public int GetPointsFromTastingPavilion()
+    {
+        int points = 0;
+        foreach (Entertainment entertainment in _entertainments)
+        {
+            if (entertainment.Data.Type == EntertainmentType.TastingPavilion)
+            {
+                points += entertainment.Points;
+            }
+        }
+        return points;
+    }
+    public int GetPointsFromParadeRoute()
+    {
+        int points = 0;
+        foreach (Entertainment entertainment in _entertainments)
+        {
+            if (entertainment.Data.Type == EntertainmentType.ParadeRoute)
+            {
+                points += entertainment.Points;
+            }
+        }
+        return points;
+    }
+    public int GetPointsFromMysticGarden()
+    {
+        int points = 0;
+        foreach (Entertainment entertainment in _entertainments)
+        {
+            if (entertainment.Data.Type == EntertainmentType.MysticGarden)
+            {
+                points += entertainment.Points;
+            }
+        }
+        return points;
+    }
     #endregion
 
     #region EVENTS
@@ -72,9 +123,13 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         OnScoreUpdated?.Invoke();
         ResourcesManager.Instance.SpendAllResources();
 
+        _convertedPoints = _score;
+
         //Earn incomes of every claimed tiles
         foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
             ResourcesManager.Instance.UpdateResource(tile.Incomes, Transaction.Gain, tile);
+
+        ResourcesManager.Instance.CHEAT_RESOURCES();
     }
 
     protected override void ConfirmPhase()

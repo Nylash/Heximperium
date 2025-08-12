@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public static class Utilities
 {
@@ -115,12 +115,12 @@ public static class Utilities
         return mergedDictionary.Select(kvp => new ResourceToIntMap(kvp.Key, kvp.Value)).ToList();
     }
 
-    public static string ToCustomString(this Resource value)
+    public static string ToCustomString(this Resource value)//The "this" is used to extend the enum Resource with a method
     {
         return value switch
         {
-            Resource.Gold => "Gold",
-            Resource.SpecialResources => "Special Resources",
+            Resource.Gold => "<sprite name=\"Gold_Emoji\">",
+            Resource.SpecialResources => "<sprite name=\"SR_Emoji\">",
             _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
         };
     }
@@ -149,6 +149,64 @@ public static class Utilities
             EntertainmentType.MysticGarden => "Mystic Garden",
             _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
         };
+    }
+
+    public static string IncomeToString(this List<ResourceToIntMap> incomes)
+    {
+        string incomeString = string.Empty;
+        for (int i = 0; i < incomes.Count; i++)
+        {
+            if (i > 0)
+                incomeString += " & ";
+            incomeString += "+" + incomes[i].value + incomes[i].resource.ToCustomString();
+        }
+        return incomeString;
+    }
+
+    public static string CostToString(this List<ResourceToIntMap> incomes)
+    {
+        string costString = string.Empty;
+        for (int i = 0; i < incomes.Count; i++)
+        {
+            if (i > 0)
+                costString += " & ";
+            costString += incomes[i].value + incomes[i].resource.ToCustomString() + "(" + ResourcesManager.Instance.GetResourceStock(incomes[i].resource) + ")";
+        }
+        return costString;
+    }
+
+    public static string ToCustomString<T>(this List<T> data) where T : TileData
+    {
+        string res = string.Empty;
+        for (int i = 0; i < data.Count; i++)
+        {
+            if (i > 0)
+            {
+                if (i == data.Count - 1)
+                    res += " & ";
+                else
+                    res += ", ";
+            }
+            res += data[i].TileName;
+        }
+        return res;
+    }
+
+    public static string ToCustomString(this List<EntertainmentData> entertainments)
+    {
+        string res = string.Empty;
+        for (int i = 0; i < entertainments.Count; i++)
+        {
+            if (i > 0)
+            {
+                if (i == entertainments.Count - 1)
+                    res += " & ";
+                else
+                    res += ", ";
+            }
+            res += entertainments[i].Type.ToCustomString();
+        }
+        return res;
     }
 
     //Subtract a by b and return the resulting List<ResourceToIntMap>

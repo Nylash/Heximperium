@@ -18,11 +18,6 @@ MonoBehaviour:
   _claimCost: 0
   _incomes: []
   _availableInfrastructures: []
-  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
-  _interactionButtonPopUpText: +2 saved Claims per turn & Saved Claims produces +2
-    Gold at the end of the Expand phase
-  _tilePopUpText: +2 saved Claims per turn & Saved Claims produces +2 Gold at the
-    end of the Expand phase
   _specialBehaviours:
   - {fileID: 11400000, guid: c0d2e932331af9d479c1f0c0450c852d, type: 2}
   - {fileID: 11400000, guid: 74b903bf6b0fe0049950a02c6e4f5bf5, type: 2}

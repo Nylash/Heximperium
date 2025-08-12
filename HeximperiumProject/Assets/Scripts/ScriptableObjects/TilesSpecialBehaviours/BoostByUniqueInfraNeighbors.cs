@@ -86,4 +86,9 @@ public class BoostByUniqueInfraNeighbors : SpecialBehaviour
 
         behaviourTile.UniqueInfraNeighborsCount = uniqueData.Count;
     }
+
+    public override string GetBehaviourDescription()
+    {
+        return $"Income boosted by {_boost.IncomeToString()} for each unique neighboring infrastructure";
+    }
 }

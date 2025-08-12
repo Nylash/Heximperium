@@ -71,4 +71,9 @@ public class BoostByInfraOccurrenceInEmpire : SpecialBehaviour
             behaviourTile.Incomes = Utilities.SubtractResourceToIntMaps(behaviourTile.Incomes, _boost);
         }
     }
+
+    public override string GetBehaviourDescription()
+    {
+        return $"Boosts tile income by {_boost.IncomeToString()} for each occurrence of {_tilesBoosting.ToCustomString()} in the empire";
+    }
 }

@@ -7,4 +7,9 @@ public class UpgradeScoutLifespan : UpgradeEffect
     {
         ExplorationManager.Instance.BoostScoutLifespan++;
     }
+
+    public override string GetEffectDescription()
+    {
+        return "+1 to Scouts' lifespan";
+    }
 }

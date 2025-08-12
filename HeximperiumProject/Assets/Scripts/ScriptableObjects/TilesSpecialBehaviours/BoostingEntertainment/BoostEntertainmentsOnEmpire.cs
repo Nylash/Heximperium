@@ -33,4 +33,9 @@ public class BoostEntertainmentsOnEmpire : SpecialBehaviour
             ent.UpdatePoints(_boost, Transaction.Gain);
         //No need to remove the boost, handled by Entertainment destruction method
     }
+
+    public override string GetBehaviourDescription()
+    {
+        return $"Boosts every {_entertainmentsBoosted.ToCustomString()} in the empire by +{_boost}<sprite name=\"Point_Emoji\">";
+    }
 }

@@ -90,7 +90,11 @@ public class CameraManager : Singleton<CameraManager>
     private void Update()
     {
         if (GameManager.Instance.GamePaused)
+        {
+            if (UIManager.Instance.UpgradesMenuObject.activeSelf)
+                ObjectUnderMouseDetection();
             return;
+        }
 
         if (!_isMouseDragging)
         {
@@ -98,6 +102,9 @@ public class CameraManager : Singleton<CameraManager>
             EdgePan();
         }
         Zoom();
+
+        if (ExplorationManager.Instance.ChoosingScoutDirection)
+            return;
 
         ObjectUnderMouseDetection();
     }
@@ -116,7 +123,7 @@ public class CameraManager : Singleton<CameraManager>
             if (results.Count > 0)
             {
                 // Pass the topmost UI object under the cursor
-                UIManager.Instance.PopUpUI(results[0].gameObject);
+                PopUpManager.Instance.UIPopUp(results[0].gameObject);
             }
 
             //If a interaction button was shrink we unshrink it
@@ -131,7 +138,7 @@ public class CameraManager : Singleton<CameraManager>
             _mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(_mouseRay, out _mouseRayHit))
             {
-                UIManager.Instance.PopUpNonUI(_mouseRayHit.collider.gameObject);
+                PopUpManager.Instance.NonUIPopUp(_mouseRayHit.collider.gameObject);
 
                 //If we detect a InteractionButton we play the shrink animation
                 if (_mouseRayHit.collider.gameObject.GetComponent<InteractionButton>() is InteractionButton button)

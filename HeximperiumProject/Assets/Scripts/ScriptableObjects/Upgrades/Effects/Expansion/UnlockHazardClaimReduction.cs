@@ -7,4 +7,9 @@ public class UnlockHazardClaimReduction : UpgradeEffect
     {
         ExpansionManager.Instance.UpgradeHazardClaimReduction = true;
     }
+
+    public override string GetEffectDescription()
+    {
+        return "Hazardous tiles cost only 1<sprite name=\"Claim_Emoji\"> to acquire";
+    }
 }

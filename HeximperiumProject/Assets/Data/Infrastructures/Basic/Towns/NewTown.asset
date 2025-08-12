@@ -22,9 +22,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 06aa18196c9fb26428e888bb22579ff3, type: 2}
   - {fileID: 11400000, guid: 3eed203c5284a3c43b04945ebcccec1c, type: 2}
   - {fileID: 11400000, guid: 86f60fc9c608a354c88e8d8f09966881, type: 2}
-  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
-  _interactionButtonPopUpText: Scout Starting Position & Claim the tile for free
-  _tilePopUpText: Scout Starting Position
   _specialBehaviours: []
   _costs:
   - resource: 0

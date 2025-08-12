@@ -22,10 +22,6 @@ MonoBehaviour:
   _availableInfrastructures:
   - {fileID: 11400000, guid: 1800d8cb0ef44b84b983fb48fbf59fe3, type: 2}
   - {fileID: 11400000, guid: c2c7e8b398a278848afc8e7953b35c02, type: 2}
-  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
-  _interactionButtonPopUpText: +6 Gold per turn & Grants access to two Exploitation-oriented
-    enhancements
-  _tilePopUpText: 
   _specialBehaviours: []
   _costs:
   - resource: 0

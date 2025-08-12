@@ -19,4 +19,9 @@ public class BoostSavedClaim : SpecialBehaviour
     {
         //Not needed
     }
+
+    public override string GetBehaviourDescription()
+    {
+        return $"Boosts saved claim quantity by +{_savedClaim}<sprite name=\"Claim_Emoji\">";
+    }
 }

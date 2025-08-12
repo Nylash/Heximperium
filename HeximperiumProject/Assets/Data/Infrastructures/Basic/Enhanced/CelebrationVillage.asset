@@ -20,11 +20,6 @@ MonoBehaviour:
   - resource: 0
     value: 2
   _availableInfrastructures: []
-  _popUpPrefab: {fileID: 3447775021402595464, guid: 5037c44478446264090d9874da2d138a, type: 3}
-  _interactionButtonPopUpText: +2 Gold & Minstrel Stage and Parade Route on this
-    tile and around gain +5 Points per Celebration Village in the empire
-  _tilePopUpText: Minstrel Stage and Parade Route on this tile and around gain +5
-    Points per Celebration Village in the empire
   _specialBehaviours:
   - {fileID: 11400000, guid: 76410f1dec70a074289e3002308e9c1d, type: 2}
   - {fileID: 11400000, guid: 9145ea0cccce1fc469c31cb7cc1a08fe, type: 2}

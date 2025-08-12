@@ -17,4 +17,9 @@ public class SpawnScoutOnInit : SpecialBehaviour
     {
         //Not needed
     }
+
+    public override string GetBehaviourDescription()
+    {
+        return "Spawns a scout on the tile when built (doesn't count toward the scout limit)";
+    }
 }
