@@ -103,12 +103,10 @@ public class PopUpManager : Singleton<PopUpManager>
                             */
                             break;
                         case Interaction.Destroy:
-                            /*
-                            if (_currentPhase == Phase.Exploit)
-                                destroy infrastructure popup
+                            if (GameManager.Instance.CurrentPhase == Phase.Exploit)
+                                ButtonDestroyPopUp("Destroy " + button.AssociatedTile.TileData.TileName);
                             else
-                                destroy entertainment popup
-                            */
+                                ButtonDestroyPopUp("Remove " + button.AssociatedTile.Entertainment.Data.Type.ToCustomString());
                             break;
                         case Interaction.Entertainment:
                             break;
@@ -475,6 +473,25 @@ public class PopUpManager : Singleton<PopUpManager>
         cost.margin = _fullMargin;
         textObjects.Add(cost.GetComponent<RectTransform>());
         ClampTextWidth(cost);
+        #endregion
+
+        SetPopUpContentAnchors(textObjects);
+        PositionPopup(popUp.GetComponent<RectTransform>());
+    }
+
+    private void ButtonDestroyPopUp(string text)
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        #region TITLE
+        TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
+        title.text = text;
+        title.margin = _fullMargin;
+        textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
         SetPopUpContentAnchors(textObjects);
