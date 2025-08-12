@@ -51,8 +51,30 @@ public class PopUpManager : Singleton<PopUpManager>
             _hoverTimer += Time.deltaTime;
             if (_hoverTimer >= _durationHoverForUI && _popUps.Count == 0)
             {
-                //spawn UI pop up
-                //_popUps.Add(popUp);
+                switch (obj.tag)
+                {
+                    case "ScoutLimitUI":
+                        ScoutLimitPopUp();
+                        break;
+                    case "ClaimUI":
+                        break;
+                    case "TownLimitUI":
+                        break;
+                    case "GoldUI":
+                        break;
+                    case "SRUI":
+                        break;
+                    case "VisibilityUI":
+                        VisibilityPopUp();
+                        break;
+                    case "UpgradeNodeUI":
+                        break;
+                    case "Untagged":
+                        break;
+                    default:
+                        Debug.LogWarning("PopUpManager: Object with no tag for pop up found " + obj.name);
+                        break;
+                }
             }
         }
         else
@@ -152,6 +174,68 @@ public class PopUpManager : Singleton<PopUpManager>
             }
             _highlightingEffects.Clear();
         }
+    }
+    #endregion
+
+    #region UI POP UP
+    private void ScoutLimitPopUp()
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        #region TITLE
+        TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
+        title.text = "Scouts limit";
+        title.margin = _fullMargin;
+        textObjects.Add(title.GetComponent<RectTransform>());
+        #endregion
+
+        #region DETAIL
+        TextMeshProUGUI detail = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        detail.text = "Can be upgrades with specifics enhancements and upgrades";
+        detail.margin = _horizontalMargin;
+        ClampTextWidth(detail);
+        textObjects.Add(detail.GetComponent<RectTransform>());
+        #endregion
+
+        SetPopUpContentAnchors(textObjects);
+        PositionPopupRelativeToUI(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>());
+    }
+
+    private void VisibilityPopUp()
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        #region TITLE
+        TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
+        if (GameManager.Instance.CurrentPhase == Phase.Entertain)
+            title.text = "Entertainments visibility";
+        else
+            title.text = "Scouts visibility";
+        title.margin = _fullMargin;
+        textObjects.Add(title.GetComponent<RectTransform>());
+        #endregion
+
+        #region DETAIL
+        TextMeshProUGUI detail = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        if (GameManager.Instance.CurrentPhase == Phase.Entertain)
+            detail.text = "Hide or show Entertainments' icon";
+        else
+            detail.text = "Hide or show Scouts' icon";
+        detail.margin = _horizontalMargin;
+        ClampTextWidth(detail);
+        textObjects.Add(detail.GetComponent<RectTransform>());
+        #endregion
+
+        SetPopUpContentAnchors(textObjects);
+        PositionPopupRelativeToUI(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>());
     }
     #endregion
 
@@ -619,6 +703,48 @@ public class PopUpManager : Singleton<PopUpManager>
     #endregion
 
     #region POSITIONING & LAYOUT
+    private void PositionPopupRelativeToUI(RectTransform popupRect, RectTransform targetRect)
+    {
+        // Decide side/over-under from target center in SCREEN space
+        Vector2 targetScreen = RectTransformUtility.WorldToScreenPoint(null, targetRect.TransformPoint(targetRect.rect.center));
+        bool placeLeft = targetScreen.x >= Screen.width * 0.5f; // right half -> place to left
+        bool placeUnder = targetScreen.y >= Screen.height * 0.5f; // top half  -> place under
+
+        LayoutRebuilder.ForceRebuildLayoutImmediate(popupRect);
+
+        RectTransform parent = (RectTransform)popupRect.parent;
+
+        // Get target edges in PARENT-LOCAL space
+        Vector3[] wc = new Vector3[4]; // 0:BL, 1:TL, 2:TR, 3:BR
+        targetRect.GetWorldCorners(wc);
+
+        Vector2 bl, tr;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            parent, RectTransformUtility.WorldToScreenPoint(null, wc[0]), null, out bl);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            parent, RectTransformUtility.WorldToScreenPoint(null, wc[2]), null, out tr);
+
+        // Compute target center in parent-local space
+        Vector2 centerLocal;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            parent,
+            RectTransformUtility.WorldToScreenPoint(null, targetRect.TransformPoint(targetRect.rect.center)),
+            null,
+            out centerLocal);
+
+        // Pivot decides which popup edge is used; X aligns to target center
+        popupRect.anchorMin = popupRect.anchorMax = new Vector2(0.5f, 0.5f);
+        popupRect.pivot = new Vector2(placeLeft ? 1f : 0f, placeUnder ? 1f : 0f);
+
+        // X from center, Y from top/bottom edge
+        Vector2 pos = new Vector2(
+            centerLocal.x,
+            placeUnder ? bl.y : tr.y
+        );
+
+        popupRect.anchoredPosition = pos;
+    }
+
     private void PositionPopup(RectTransform popupRect)
     {
         Vector2 mousePosition = Input.mousePosition;
@@ -689,7 +815,6 @@ public class PopUpManager : Singleton<PopUpManager>
         popupRect.anchoredPosition = anchoredPos;
     }
 
-
     private void ClampTextWidth(TextMeshProUGUI tmp)
     {
         tmp.ForceMeshUpdate();
@@ -698,6 +823,7 @@ public class PopUpManager : Singleton<PopUpManager>
         tmp.GetComponent<LayoutElement>().preferredWidth = Mathf.Min(contentWidth, _maxAllowed);
     }
 
+    //Distribute the Y space of the popup content evenly
     private void SetPopUpContentAnchors(List<RectTransform> textObjects)
     {
         int count = textObjects.Count;

@@ -104,6 +104,7 @@ public class UIManager : Singleton<UIManager>
     public RectTransform VfxAnchorSR { get => _vfxAnchorSR; }
     public Button ButtonEndPhase { get => _buttonEndPhase; }
     public Transform PopUpParent { get => _popUpParent; }
+    public GameObject UpgradesMenuObject { get => _upgradesMenu; }
     #endregion
 
     protected override void OnAwake()

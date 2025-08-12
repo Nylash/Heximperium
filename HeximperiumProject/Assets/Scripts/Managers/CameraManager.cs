@@ -90,7 +90,11 @@ public class CameraManager : Singleton<CameraManager>
     private void Update()
     {
         if (GameManager.Instance.GamePaused)
+        {
+            if (UIManager.Instance.UpgradesMenuObject.activeSelf)
+                ObjectUnderMouseDetection();
             return;
+        }
 
         if (!_isMouseDragging)
         {

@@ -5,6 +5,13 @@ TagManager:
   serializedVersion: 3
   tags:
   - Grid
+  - ScoutLimitUI
+  - ClaimUI
+  - TownLimitUI
+  - GoldUI
+  - SRUI
+  - VisibilityUI
+  - UpgradeNodeUI
   layers:
   - Default
   - TransparentFX
