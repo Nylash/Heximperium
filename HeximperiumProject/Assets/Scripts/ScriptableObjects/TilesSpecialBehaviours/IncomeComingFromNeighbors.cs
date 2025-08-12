@@ -143,7 +143,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
     {
         string tmp = $"Increases {_resource.ToCustomString()} income by neighbors' {_resource.ToCustomString()} income";
         if (_excludedTiles.Count > 0)
-            tmp += $" ( excluding: {_excludedTiles.ToCustomString()})";
+            tmp += $" (excluding: {_excludedTiles.ToCustomString()})";
         return tmp;
     }
 }

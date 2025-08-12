@@ -64,6 +64,6 @@ public class BoostClaimedNeighborsIncome : SpecialBehaviour
 
     public override string GetBehaviourDescription()
     {
-        return $"Boosts the income of claimed neighbors by {_incomeBoost.ToCustomString()}";
+        return $"Boosts the income of claimed neighbors by {_incomeBoost.IncomeToString()}";
     }
 }

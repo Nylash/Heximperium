@@ -32,6 +32,6 @@ public class IncomePerSavedClaim : SpecialBehaviour
 
     public override string GetBehaviourDescription()
     {
-        return $"Gain {_income.ToCustomString()} for every saved claim";
+        return $"Gain {_income.IncomeToString()} for every saved claim";
     }
 }

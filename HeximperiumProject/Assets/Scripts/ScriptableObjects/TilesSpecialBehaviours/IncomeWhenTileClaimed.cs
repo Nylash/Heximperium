@@ -29,6 +29,6 @@ public class IncomeWhenTileClaimed : SpecialBehaviour
 
     public override string GetBehaviourDescription()
     {
-        return $"Gain {_income.ToCustomString()} when a tile is claimed";
+        return $"Gain {_income.IncomeToString()} when a tile is claimed";
     }
 }

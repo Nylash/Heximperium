@@ -151,7 +151,7 @@ public static class Utilities
         };
     }
 
-    public static string ToCustomString(this List<ResourceToIntMap> incomes)
+    public static string IncomeToString(this List<ResourceToIntMap> incomes)
     {
         string incomeString = string.Empty;
         for (int i = 0; i < incomes.Count; i++)
@@ -161,6 +161,18 @@ public static class Utilities
             incomeString += "+" + incomes[i].value + incomes[i].resource.ToCustomString();
         }
         return incomeString;
+    }
+
+    public static string CostToString(this List<ResourceToIntMap> incomes)
+    {
+        string costString = string.Empty;
+        for (int i = 0; i < incomes.Count; i++)
+        {
+            if (i > 0)
+                costString += " & ";
+            costString += incomes[i].value + incomes[i].resource.ToCustomString() + "(" + ResourcesManager.Instance.GetResourceStock(incomes[i].resource) + ")";
+        }
+        return costString;
     }
 
     public static string ToCustomString<T>(this List<T> data) where T : TileData

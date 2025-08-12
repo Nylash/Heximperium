@@ -37,6 +37,6 @@ public class IncomeWhenScoutRevealTile : SpecialBehaviour
 
     public override string GetBehaviourDescription()
     {
-        return $"Gain {_income.ToCustomString()} when a scout reveals a tile";
+        return $"Gain {_income.IncomeToString()} when a scout reveals a tile";
     }
 }

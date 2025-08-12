@@ -89,6 +89,6 @@ public class BoostByUniqueInfraNeighbors : SpecialBehaviour
 
     public override string GetBehaviourDescription()
     {
-        return $"Income boosted by {_boost.ToCustomString()} for each unique neighboring infrastructure";
+        return $"Income boosted by {_boost.IncomeToString()} for each unique neighboring infrastructure";
     }
 }

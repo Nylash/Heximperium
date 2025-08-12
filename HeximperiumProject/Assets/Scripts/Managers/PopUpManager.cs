@@ -95,12 +95,7 @@ public class PopUpManager : Singleton<PopUpManager>
                             ButtonScoutPopUp(button);
                             break;
                         case Interaction.Infrastructure:
-                            /*
-                            if (_currentPhase == Phase.Expand)
-                                Town popup
-                            else
-                                Infrastructure popup
-                            */
+                            ButtonInfraPopUp(button);
                             break;
                         case Interaction.Destroy:
                             if (GameManager.Instance.CurrentPhase == Phase.Exploit)
@@ -233,7 +228,7 @@ public class PopUpManager : Singleton<PopUpManager>
         if (tile.Incomes.Count > 0)
         {
             TextMeshProUGUI income = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            income.text = "Income: " + tile.Incomes.ToCustomString();
+            income.text = "Income: " + tile.Incomes.IncomeToString();
             income.margin = _horizontalMargin;
             textObjects.Add(income.GetComponent<RectTransform>());
         }
@@ -509,7 +504,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
-        title.text = button.EntertainData.Type.ToCustomString();
+        title.text = "Place " + button.EntertainData.Type.ToCustomString();
         title.margin = _fullMargin;
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
@@ -532,6 +527,90 @@ public class PopUpManager : Singleton<PopUpManager>
         pointsText.text = "Base points: +" + button.EntertainData.BasePoints + "<sprite name=\"Point_Emoji\">";
         pointsText.margin = _horizontalMargin;
         textObjects.Add(pointsText.GetComponent<RectTransform>());
+        #endregion
+
+        SetPopUpContentAnchors(textObjects);
+        PositionPopup(popUp.GetComponent<RectTransform>());
+    }
+
+    private void ButtonInfraPopUp(InteractionButton button)
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        #region TITLE
+        TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
+        title.text = "Build " + button.InfrastructureData.TileName;
+        title.margin = _fullMargin;
+        textObjects.Add(title.GetComponent<RectTransform>());
+        #endregion
+
+        #region BEHAVIOURS
+        if (button.InfrastructureData.SpecialBehaviours.Count > 0)
+        {
+            foreach (SpecialBehaviour behaviour in button.InfrastructureData.SpecialBehaviours)
+            {
+                TextMeshProUGUI behaviourText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+                behaviourText.text = behaviour.GetBehaviourDescription();
+                behaviourText.margin = _fullMargin;
+                textObjects.Add(behaviourText.GetComponent<RectTransform>());
+                ClampTextWidth(behaviourText);
+                behaviour.HighlightImpactedTile(button.AssociatedTile, true);
+                _highlightingBehaviours.Add(behaviour, button.AssociatedTile);
+            }
+        }
+        #endregion
+
+        #region ENHANCEMENTS
+        if (button.InfrastructureData.AvailableInfrastructures.Count > 0)
+        {
+            TextMeshProUGUI enhancement = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            enhancement.text = "Can be further upgraded with " + button.InfrastructureData.AvailableInfrastructures.Count;
+            if (button.InfrastructureData.AvailableInfrastructures.Count > 1)
+                enhancement.text += " different enhancements";
+            else
+                enhancement.text += " unique enhancement";
+
+            enhancement.margin = _horizontalMargin;
+            textObjects.Add(enhancement.GetComponent<RectTransform>());
+            ClampTextWidth(enhancement);
+            enhancement.fontStyle = FontStyles.Italic;
+        }
+        #endregion
+
+        #region INCOME
+        if (button.InfrastructureData.Incomes.Count > 0)
+        {
+            TextMeshProUGUI income = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            income.text = "Income increase: " + button.InfrastructureData.Incomes.IncomeToString();
+            income.margin = _horizontalMargin;
+            textObjects.Add(income.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region SCOUT STARTING POINT
+        if (button.InfrastructureData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
+        {
+            TextMeshProUGUI scoutText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            scoutText.text = "Scout starting point";
+            scoutText.fontStyle = FontStyles.Italic;
+            scoutText.alignment = TextAlignmentOptions.Center;
+            scoutText.margin = _horizontalMargin;
+            textObjects.Add(scoutText.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region COST
+        TextMeshProUGUI cost = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        cost.text = "Cost: " + button.InfrastructureData.Costs.CostToString();
+        if (!ResourcesManager.Instance.CanAfford(button.InfrastructureData.Costs))
+            cost.color = UIManager.Instance.ColorCantAfford;
+        cost.margin = _fullMargin;
+        textObjects.Add(cost.GetComponent<RectTransform>());
+        ClampTextWidth(cost);
         #endregion
 
         SetPopUpContentAnchors(textObjects);
