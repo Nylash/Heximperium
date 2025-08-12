@@ -10,6 +10,7 @@ public class PopUpManager : Singleton<PopUpManager>
     [Header("_________________________________________________________")]
     [Header("Spawning Configuration")]
     [SerializeField] private float _durationHoverForUI = 1f;
+    [SerializeField] private Image _timerOverImage;
     [SerializeField] private float _offsetBetweenSeveralPopUps = 1f;
     [SerializeField] private float _minOffset = 80f;
     [SerializeField] private float _maxOffset = 275f;
@@ -26,6 +27,7 @@ public class PopUpManager : Singleton<PopUpManager>
     #region VARIABLES
     private GameObject _objectUnderMouse;
     private float _hoverTimer;
+    private float _delayedHoverTimer;//For filling image purpose
     private float _screenWidth;
     private float _screenHeight;
     private List<GameObject> _popUps = new List<GameObject>();
@@ -49,8 +51,14 @@ public class PopUpManager : Singleton<PopUpManager>
         {
             //Timer before spawning popup
             _hoverTimer += Time.deltaTime;
+            // delay start
+            _delayedHoverTimer = _durationHoverForUI * .75f;
+            // Fill is 0 until t >= t0, then rises linearly to 1 at t == d.
+            _timerOverImage.fillAmount = Mathf.InverseLerp(_delayedHoverTimer, _durationHoverForUI, _hoverTimer);
+
             if (_hoverTimer >= _durationHoverForUI && _popUps.Count == 0)
             {
+                _timerOverImage.enabled = false;
                 switch (obj.tag)
                 {
                     case "ScoutLimitUI":
@@ -98,8 +106,13 @@ public class PopUpManager : Singleton<PopUpManager>
         {
             //Timer before spawning popup
             _hoverTimer += Time.deltaTime;
+            // delay start
+            _delayedHoverTimer = _durationHoverForUI * 0.75f;
+            // Fill is 0 until t >= t0, then rises linearly to 1 at t == d.
+            _timerOverImage.fillAmount = Mathf.InverseLerp(_delayedHoverTimer, _durationHoverForUI, _hoverTimer);
             if (_hoverTimer >= _durationHoverForUI && _popUps.Count == 0)
             {
+                _timerOverImage.enabled = false;
                 if (obj.GetComponent<Tile>() is Tile tile)
                 {
                     if (tile.Revealed)
@@ -157,6 +170,9 @@ public class PopUpManager : Singleton<PopUpManager>
     {
         _objectUnderMouse = obj;
         _hoverTimer = 0.0f;
+        _timerOverImage.fillAmount = 0.0f;
+        _delayedHoverTimer = 0.0f;
+        _timerOverImage.enabled = true;
 
         if (_popUps.Count > 0)
         {
