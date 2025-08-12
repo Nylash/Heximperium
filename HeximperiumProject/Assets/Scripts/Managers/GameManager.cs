@@ -269,7 +269,7 @@ public class GameManager : Singleton<GameManager>
                     ExploitationManager.Instance.DestroyInfrastructure(button.AssociatedTile);
                 else
                     EntertainmentManager.Instance.DestroyEntertainment(button.AssociatedTile);
-                    break;
+                break;
             case Interaction.Entertainment:
                 EntertainmentManager.Instance.SpawnEntertainment(button.AssociatedTile, button.EntertainData);
                 break;

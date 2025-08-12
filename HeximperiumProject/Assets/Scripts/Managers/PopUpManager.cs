@@ -89,13 +89,26 @@ public class PopUpManager : Singleton<PopUpManager>
                     switch (button.Interaction)
                     {
                         case Interaction.Claim:
+                            ButtonClaimPopUp(button);
                             break;
                         case Interaction.Scout:
                             ButtonScoutPopUp(button);
                             break;
                         case Interaction.Infrastructure:
+                            /*
+                            if (_currentPhase == Phase.Expand)
+                                Town popup
+                            else
+                                Infrastructure popup
+                            */
                             break;
                         case Interaction.Destroy:
+                            /*
+                            if (_currentPhase == Phase.Exploit)
+                                destroy infrastructure popup
+                            else
+                                destroy entertainment popup
+                            */
                             break;
                         case Interaction.Entertainment:
                             break;
@@ -434,6 +447,35 @@ public class PopUpManager : Singleton<PopUpManager>
         title.text = "Redirect a Scout";
         title.margin = _fullMargin;
         textObjects.Add(title.GetComponent<RectTransform>());
+
+        SetPopUpContentAnchors(textObjects);
+        PositionPopup(popUp.GetComponent<RectTransform>());
+    }
+
+    private void ButtonClaimPopUp(InteractionButton button)
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        #region TITLE
+        TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
+        title.text = "Claim " + button.AssociatedTile.TileData.TileName;
+        title.margin = _fullMargin;
+        textObjects.Add(title.GetComponent<RectTransform>());
+        #endregion
+
+        #region CLAIM COST
+        TextMeshProUGUI cost = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        cost.text = "Cost: " + button.AssociatedTile.TileData.ClaimCost + "<sprite name=\"Claim_Emoji\">" + "(" + ResourcesManager.Instance.Claim + ")";
+        if (!ResourcesManager.Instance.CanAffordClaim(button.AssociatedTile.TileData.ClaimCost))
+            cost.color = UIManager.Instance.ColorCantAfford;
+        cost.margin = _fullMargin;
+        textObjects.Add(cost.GetComponent<RectTransform>());
+        ClampTextWidth(cost);
+        #endregion
 
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>());
