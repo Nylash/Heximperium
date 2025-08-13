@@ -8,8 +8,8 @@ public class UI_UpgradeNode : MonoBehaviour
     [Tooltip("Let empty if this node is the first.")]
     [SerializeField] private List<UI_UpgradeNode> _previousNodes;
     [SerializeField] private RectTransform _parent;
-    [Tooltip("If false, the line will be drawn horizontally from the start point to the mid point, then vertically to the end point.")]
-    [SerializeField] private bool _stepOnMid = true;
+    [SerializeField] private bool _rightAngleConnector;
+    [SerializeField] private GameObject _lineRendererPrefab;
     [SerializeField] private List<UILineRenderer> _connectors = new List<UILineRenderer>();
 
     private Button _btn;
@@ -88,7 +88,7 @@ public class UI_UpgradeNode : MonoBehaviour
         //Create connectors to previous nodes
         foreach (UI_UpgradeNode previousNode in _previousNodes)
         {
-            UILineRenderer line = Instantiate(UIManager.Instance.LineRendererPrefab, _parent).GetComponent<UILineRenderer>();
+            UILineRenderer line = Instantiate(_lineRendererPrefab, _parent).GetComponent<UILineRenderer>();
 
             Vector2 startPoint = RectTransformUtility.WorldToScreenPoint(null, transform.position);
             Vector2 endPoint = RectTransformUtility.WorldToScreenPoint(null, previousNode.transform.position);
@@ -100,17 +100,20 @@ public class UI_UpgradeNode : MonoBehaviour
             //Check if the start and end points are aligned vertically
             if (!Mathf.Approximately(startLocal.y, endLocal.y))
             {
-                float midX;
-                if (_stepOnMid)
-                    midX = (startLocal.x + endLocal.x) * 0.5f;
+                if (_rightAngleConnector)
+                {
+                    Vector2 step = new Vector2(endLocal.x, startLocal.y);
+                    // step: vertical → horizontal
+                    line.points = new[] { startLocal, step, endLocal };
+                }
                 else
-                    midX = endLocal.x;
-
-                // step: horizontal → vertical → horizontal
-                Vector2 step1 = new Vector2(midX, startLocal.y);
-                Vector2 step2 = new Vector2(midX, endLocal.y);
-
-                line.points = new[] { startLocal, step1, step2, endLocal };
+                {
+                    float midX = (startLocal.x + endLocal.x) * 0.5f;
+                    Vector2 step1 = new Vector2(midX, startLocal.y);
+                    Vector2 step2 = new Vector2(midX, endLocal.y);
+                    // step: horizontal → vertical → horizontal
+                    line.points = new[] { startLocal, step1, step2, endLocal };
+                }
             }
             else
             {

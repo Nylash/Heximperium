@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98ad719e97de0f3438db15137b1b093b, type: 3}
-  m_Name: 2_B_Speed
+  m_Name: 2_Up_A_Speed
   m_EditorClassIdentifier: 
   _costs:
   - resource: 0
-    value: 10
+    value: 20
   _effect: {fileID: 11400000, guid: 1b0f5ca0efbd2934f8e49b77ff510cb0, type: 2}
   _prerequisites:
-  - {fileID: 11400000, guid: 926e8d07e1d8e1141a5a88cad5b43942, type: 2}
+  - {fileID: 11400000, guid: 0aa2800f3ed91a745a4ee3cb6eb6e3d8, type: 2}
   _exclusiveNode: {fileID: 0}

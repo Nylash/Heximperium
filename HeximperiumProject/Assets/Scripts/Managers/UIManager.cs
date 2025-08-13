@@ -64,7 +64,6 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject _upgradesMenu;
     [SerializeField] private List<UpgradeTree> _upgradeTrees = new List<UpgradeTree>();
     [SerializeField] private UpgradeTree _activatedTree;
-    [SerializeField] private GameObject _lineRendererPrefab;
     [SerializeField] private Color _colorLocked;
     [SerializeField] private Color _colorUnlocked;
     [SerializeField] private Sprite _spriteButtonUnlocked;
@@ -88,7 +87,6 @@ public class UIManager : Singleton<UIManager>
 
     #region ACCESSORS
     public Color ColorCantAfford { get => _colorCantAfford;}
-    public GameObject LineRendererPrefab { get => _lineRendererPrefab; }
     public Color ColorLocked { get => _colorLocked; }
     public Color ColorUnlocked { get => _colorUnlocked; }
     public UpgradeTree ActivatedTree { get => _activatedTree; }
