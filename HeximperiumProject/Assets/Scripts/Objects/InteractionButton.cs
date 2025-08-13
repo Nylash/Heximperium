@@ -163,6 +163,8 @@ public class InteractionButton : MonoBehaviour
 
     public void DestroyHighlightedClone()
     {
+        if (_highlightedClone == null)
+            return;
         _highlightedClone.GetComponent<Animator>().SetTrigger("Destroy");
     }
 
