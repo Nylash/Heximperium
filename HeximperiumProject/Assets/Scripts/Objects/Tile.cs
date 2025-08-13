@@ -193,7 +193,9 @@ public class Tile : MonoBehaviour
             _highlightObject = Instantiate(_highlightPrefab, transform.position + new Vector3(0, 0.02f, 0), Quaternion.identity);
         }
         else if(_highlightObject != null)
-            Destroy(_highlightObject);
+        {
+            _highlightObject.GetComponent<Animator>().SetTrigger("Destroy");
+        }
     }
 
     //Method used manage the scout counter of the tile (if there is several scouts on the same tile)
