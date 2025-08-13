@@ -243,7 +243,10 @@ public class GameManager : Singleton<GameManager>
 
     public void UnselectTile()
     {
-        Destroy(_selectionObject);
+        if (_selectionObject == null)
+            return;
+        _selectionObject.GetComponent<Animator>().SetTrigger("Destroy");
+        _selectionObject = null;
         OnTileUnselected?.Invoke();
     }
 
