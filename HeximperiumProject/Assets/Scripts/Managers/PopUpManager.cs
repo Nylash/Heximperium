@@ -52,6 +52,9 @@ public class PopUpManager : Singleton<PopUpManager>
     {
         if (obj == _objectUnderMouse)
         {
+            if (obj.CompareTag("Untagged"))
+                return;
+
             //Timer before spawning popup
             _hoverTimer += Time.deltaTime;
             // delay start
@@ -107,6 +110,9 @@ public class PopUpManager : Singleton<PopUpManager>
     {
         if (obj == _objectUnderMouse)
         {
+            if (obj.GetComponent<Tile>() is Tile t && !t.Revealed)
+                return;
+
             //Timer before spawning popup
             _hoverTimer += Time.deltaTime;
             // delay start
@@ -118,17 +124,14 @@ public class PopUpManager : Singleton<PopUpManager>
                 _timerOverImage.enabled = false;
                 if (obj.GetComponent<Tile>() is Tile tile)
                 {
-                    if (tile.Revealed)
+                    TilePopUp(tile);
+                    if (tile.Scouts.Count > 0)
                     {
-                        TilePopUp(tile);
-                        if (tile.Scouts.Count > 0)
-                        {
-                            foreach (Scout item in tile.Scouts)
-                                ScoutPopUp(item);
-                        }
-                        if (tile.Entertainment != null)
-                            EntertainmentPopUp(tile.Entertainment);
+                        foreach (Scout item in tile.Scouts)
+                            ScoutPopUp(item);
                     }
+                    if (tile.Entertainment != null)
+                        EntertainmentPopUp(tile.Entertainment);
                 }
                 else if (obj.GetComponent<InteractionButton>() is InteractionButton button)
                 {
