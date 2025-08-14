@@ -21132,7 +21132,7 @@ MonoBehaviour:
   _offsetBetweenSeveralPopUps: 1
   _minOffset: 80
   _maxOffset: 275
-  _maxScreenFraction: 0.15
+  _maxScreenFraction: 0.3
   _horizontalMargin: {x: 10, y: 0, z: 10, w: 0}
   _fullMargin: {x: 10, y: 5, z: 10, w: 5}
   _basePopUp: {fileID: 6245525707209063558, guid: d5762cd1b2823a44ab37029529fc5308, type: 3}

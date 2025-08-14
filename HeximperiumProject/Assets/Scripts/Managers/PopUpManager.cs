@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class PopUpManager : Singleton<PopUpManager>
 {
+    const float REF_WIDTH = 1920f;
+
     #region CONFIGURATION
     [Header("_________________________________________________________")]
     [Header("Spawning Configuration")]
@@ -44,7 +46,9 @@ public class PopUpManager : Singleton<PopUpManager>
         _screenWidth = Screen.width;
         _screenHeight = Screen.height;
 
-        _maxAllowed = _screenWidth * _maxScreenFraction;
+        float dynamicFraction = _maxScreenFraction * (REF_WIDTH / _screenWidth);
+
+        _maxAllowed = _screenWidth * dynamicFraction;
     }
 
     #region BASE LOGIC

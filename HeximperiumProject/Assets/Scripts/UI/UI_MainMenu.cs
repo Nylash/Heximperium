@@ -11,6 +11,7 @@ public class UI_MainMenu : MonoBehaviour
 
     private void Start()
     {
+        Application.targetFrameRate = 60;
         SceneManager.LoadSceneAsync("LoadingScene", LoadSceneMode.Additive);
     }
 
