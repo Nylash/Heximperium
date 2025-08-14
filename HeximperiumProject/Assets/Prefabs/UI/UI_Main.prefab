@@ -21130,8 +21130,8 @@ MonoBehaviour:
   _durationHoverForUI: 1
   _timerOverImage: {fileID: 896984897485514827}
   _offsetBetweenSeveralPopUps: 1
-  _minOffset: 80
-  _maxOffset: 275
+  _marginAtMinZoom: 45
+  _marginAtMaxZoom: 150
   _maxScreenFraction: 0.3
   _horizontalMargin: {x: 10, y: 0, z: 10, w: 0}
   _fullMargin: {x: 10, y: 5, z: 10, w: 5}

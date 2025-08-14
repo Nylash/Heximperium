@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -14,8 +14,8 @@ public class PopUpManager : Singleton<PopUpManager>
     [SerializeField] private float _durationHoverForUI = 1f;
     [SerializeField] private Image _timerOverImage;
     [SerializeField] private float _offsetBetweenSeveralPopUps = 1f;
-    [SerializeField] private float _minOffset = 80f;
-    [SerializeField] private float _maxOffset = 275f;
+    [SerializeField] private float _marginAtMinZoom = 45f;
+    [SerializeField] private float _marginAtMaxZoom = 150f;
     [SerializeField] private float _maxScreenFraction = 0.15f;
     [SerializeField] private Vector4 _horizontalMargin = new Vector4(10, 0, 10, 0); // left, top, right, bottom
     [SerializeField] private Vector4 _fullMargin = new Vector4(10, 5, 10, 5);
@@ -1007,71 +1007,53 @@ public class PopUpManager : Singleton<PopUpManager>
 
     private void PositionPopup(RectTransform popupRect)
     {
-        Vector2 mousePosition = Input.mousePosition;
+        Vector2 mouse = Input.mousePosition;
 
-        // Determine screen quadrant
-        bool isLeft = mousePosition.x >= (_screenWidth / 2f); // flip: right side means place on left
-        bool isTop = mousePosition.y <= (_screenHeight / 2f); // flip: bottom half means place on top
+        // Quadrant → choose which popup corner sits under the cursor
+        bool isLeft = mouse.x <= (_screenWidth * 0.5f);
+        bool isBottom = mouse.y <= (_screenHeight * 0.5f);
 
-        // Rebuild popup layout to ensure height is accurate
         LayoutRebuilder.ForceRebuildLayoutImmediate(popupRect);
 
-        // Calculate vertical offset from existing popups
-        float verticalOffset = 0f;
+        // Stack offset from existing popups
+        float stackOffset = 0f;
         for (int i = 0; i < _popUps.Count - 1; i++)
-        {
-            var rt = _popUps[i].GetComponent<RectTransform>();
-            verticalOffset += rt.rect.height + _offsetBetweenSeveralPopUps;
-        }
+            stackOffset += _popUps[i].GetComponent<RectTransform>().rect.height + _offsetBetweenSeveralPopUps;
 
-        // Calculate zoom-based dynamic offset
-        float zoomLevel = CameraManager.Instance.transform.position.y;
-        float normalizedZoom = Mathf.InverseLerp(CameraManager.Instance.MaxZoomLevel, CameraManager.Instance.MinZoomLevel, zoomLevel);
-        float dynamicOffset = Mathf.Lerp(_minOffset, _maxOffset, normalizedZoom);
+        // Anchor & pivot at the same corner so that corner == cursor
+        Vector2 corner = new Vector2(isLeft ? 0f : 1f, isBottom ? 0f : 1f);
+        popupRect.anchorMin = corner;
+        popupRect.anchorMax = corner;
+        popupRect.pivot = corner;
 
-        // Determine pivot and anchor
-        Vector2 anchor, pivot;
-        if (isLeft && isTop)
-        {
-            anchor = pivot = new Vector2(0f, 1f); // Top-left
-        }
-        else if (!isLeft && isTop)
-        {
-            anchor = pivot = new Vector2(1f, 1f); // Top-right
-        }
-        else if (isLeft && !isTop)
-        {
-            anchor = pivot = new Vector2(0f, 0f); // Bottom-left
-        }
-        else
-        {
-            anchor = pivot = new Vector2(1f, 0f); // Bottom-right
-        }
+        RectTransform parent = (RectTransform)popupRect.parent;
 
-        // Apply anchor and pivot
-        popupRect.anchorMin = anchor;
-        popupRect.anchorMax = anchor;
-        popupRect.pivot = pivot;
+        // Convert screen → parent local (relative to parent *pivot*)
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(parent, mouse, null, out var localFromParentPivot);
 
-        // Convert screen position to local anchored position
-        RectTransform parentRect = popupRect.parent as RectTransform;
-        Vector2 localPoint;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(parentRect, mousePosition, null, out localPoint);
+        // Convert parent-pivot space → anchor space
+        Vector2 anchorOffset = new Vector2(
+            parent.rect.width * (parent.pivot.x - popupRect.anchorMin.x),
+            parent.rect.height * (parent.pivot.y - popupRect.anchorMin.y)
+        );
+        Vector2 anchoredPos = localFromParentPivot + anchorOffset;
 
-        // Apply dynamic and vertical offsets
-        Vector2 anchoredPos = localPoint;
+        // Apply stacking offset along the outward direction
+        anchoredPos.y += isBottom ? +stackOffset : -stackOffset;
 
-        if (isTop)
-            anchoredPos.y -= dynamicOffset + verticalOffset;
-        else
-            anchoredPos.y += dynamicOffset + verticalOffset;
+        // --- zoom-based cursor margin ---
+        float yZoom = CameraManager.Instance.transform.position.y;       // smaller => closer
+        float t = Mathf.InverseLerp(CameraManager.Instance.MaxZoomLevel,
+                                          CameraManager.Instance.MinZoomLevel, yZoom);
+        // bigger y -> smaller margin
+        float margin = Mathf.Lerp(_marginAtMaxZoom, _marginAtMinZoom, t);
 
-        if (isLeft)
-            anchoredPos.x += dynamicOffset;
-        else
-            anchoredPos.x -= dynamicOffset;
+        // push away from the cursor based on corner
+        float signX = isLeft ? +1f : -1f; // BL/TL -> +x ; BR/TR -> -x
+        float signY = isBottom ? +1f : -1f; // BL/BR -> +y ; TL/TR -> -y
+        anchoredPos += new Vector2(signX * margin, signY * margin);
+        // --- end zoom-based cursor margin ---
 
-        // Final position
         popupRect.anchoredPosition = anchoredPos;
     }
 
