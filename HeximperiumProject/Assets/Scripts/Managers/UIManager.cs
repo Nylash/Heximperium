@@ -292,6 +292,12 @@ public class UIManager : Singleton<UIManager>
         GameManager.Instance.ConfirmPhase();
     }
     
+    public void ForceExploMat()
+    {
+        _materialBack.SetColor("_ColorTop", _colorTopExplo);
+        _materialBack.SetColor("_ColorBottom", _colorBotExplo);
+    }
+
     private void UpdatePhaseUI()
     {
         switch (GameManager.Instance.CurrentPhase)
