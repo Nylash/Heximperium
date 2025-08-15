@@ -1,10 +1,12 @@
-using System.Collections.Generic;
-using UnityEngine;
-using System.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 public static class Utilities
 {
+    public static Action OnGameInitialized;
+
     //Return a list of world position around the tile, depending on how many buttons is needed
     public static List<Vector3> GetInteractionButtonsPosition(Vector3 tilePosition, int buttonsNumber)
     {
@@ -19,15 +21,15 @@ public static class Utilities
                 _positions.Add(new Vector3(tilePosition.x, 0.5f, tilePosition.z - 1));
                 return _positions;
             case 3:
-                _positions.Add(new Vector3(tilePosition.x, 0.5f, tilePosition.z + 1));
-                _positions.Add(new Vector3(tilePosition.x + 0.8f, 0.5f, tilePosition.z - 0.8f));
-                _positions.Add(new Vector3(tilePosition.x - 0.8f, 0.5f, tilePosition.z - 0.8f));
+                _positions.Add(new Vector3(tilePosition.x - 0.8f, 0.5f, tilePosition.z + 0.8f));
+                _positions.Add(new Vector3(tilePosition.x + 0.8f, 0.5f, tilePosition.z + 0.8f));
+                _positions.Add(new Vector3(tilePosition.x, 0.5f, tilePosition.z - 1));
                 return _positions;
             case 4:
+                _positions.Add(new Vector3(tilePosition.x - 0.8f, 0.5f, tilePosition.z + 0.8f));
                 _positions.Add(new Vector3(tilePosition.x + 0.8f, 0.5f, tilePosition.z + 0.8f));
                 _positions.Add(new Vector3(tilePosition.x + 0.8f, 0.5f, tilePosition.z - 0.8f));
                 _positions.Add(new Vector3(tilePosition.x - 0.8f, 0.5f, tilePosition.z - 0.8f));
-                _positions.Add(new Vector3(tilePosition.x - 0.8f, 0.5f, tilePosition.z + 0.8f));
                 return _positions;
             case 5:
                 _positions.Add(new Vector3(tilePosition.x + 0.55f, 0.5f, tilePosition.z + 1));
@@ -70,16 +72,16 @@ public static class Utilities
     }
 
     //Create a button around a tile
-    public static GameObject CreateInteractionButton(Tile tile, Vector3 positon, Interaction interactionType, InfrastructureData infraData = null, EntertainerData entertainerData = null)
+    public static GameObject CreateInteractionButton(Tile tile, Vector3 position, Interaction interactionType, InfrastructureData infraData = null, EntertainmentData entertainmentData = null, Scout scout = null)
     {
-        GameObject button = GameObject.Instantiate(GameManager.Instance.InteractionPrefab, positon, Quaternion.identity);
-        button.GetComponent<InteractionButton>().Initialize(tile, interactionType, infraData, entertainerData);
+        GameObject button = GameObject.Instantiate(GameManager.Instance.InteractionPrefab, position, Quaternion.identity);
+        button.GetComponent<InteractionButton>().Initialize(tile, interactionType, infraData, entertainmentData, scout);
 
         return button;
     }
 
-    //Merge two List<ResourceValue>
-    public static List<ResourceToIntMap> MergeResourceValues(List<ResourceToIntMap> list1, List<ResourceToIntMap> list2)
+    //Merge two List<ResourceToIntMap>
+    public static List<ResourceToIntMap> MergeResourceToIntMaps(List<ResourceToIntMap> list1, List<ResourceToIntMap> list2)
     {
         var mergedDictionary = new Dictionary<Resource, int>();
 
@@ -113,31 +115,12 @@ public static class Utilities
         return mergedDictionary.Select(kvp => new ResourceToIntMap(kvp.Key, kvp.Value)).ToList();
     }
 
-    public static string ToCustomString(this Resource value)
+    public static string ToCustomString(this Resource value)//The "this" is used to extend the enum Resource with a method
     {
         return value switch
         {
-            Resource.Gold => "Gold",
-            Resource.Crystal => "Crystal",
-            Resource.Stone => "Stone",
-            Resource.Essence => "Floral essence",
-            Resource.Horse => "Horse",
-            Resource.Pigment => "Pigment",
-            Resource.Emberbone => "Emberbone",
-            _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
-        };
-    }
-
-    public static string ToCustomString(this EntertainerType value)
-    {
-        return value switch
-        {
-            EntertainerType.Sculptor => "Sculptor",
-            EntertainerType.Magician => "Magician",
-            EntertainerType.Painter => "Painter",
-            EntertainerType.EquestrianDancer => "Equestrian dancer",
-            EntertainerType.FireEater => "Fire eater",
-            EntertainerType.AromaWeaver => "Aroma weaver",
+            Resource.Gold => "<sprite name=\"Gold_Emoji\">",
+            Resource.SpecialResources => "<sprite name=\"SR_Emoji\">",
             _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
         };
     }
@@ -156,25 +139,122 @@ public static class Utilities
         };
     }
 
-    //Spawn VFX for resources (and points) gain
-    public static void PlayResourceGainVFX(Tile tile, GameObject prefab, Material mat, int value)
+    public static string ToCustomString(this EntertainmentType value)
     {
-        GameObject vfx = GameObject.Instantiate(prefab, prefab.transform.position + tile.transform.position, prefab.transform.rotation);
+        return value switch
+        {
+            EntertainmentType.TastingPavilion => "Tasting Pavilion",
+            EntertainmentType.MinstrelStage => "Minstrel Stage",
+            EntertainmentType.ParadeRoute => "Parade Route",
+            EntertainmentType.MysticGarden => "Mystic Garden",
+            _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
+        };
+    }
 
-        ParticleSystem particleSystem = vfx.GetComponent<ParticleSystem>();
+    public static string IncomeToString(this List<ResourceToIntMap> incomes)
+    {
+        string incomeString = string.Empty;
+        for (int i = 0; i < incomes.Count; i++)
+        {
+            if (i > 0)
+                incomeString += " & ";
+            incomeString += "+" + incomes[i].value + incomes[i].resource.ToCustomString();
+        }
+        return incomeString;
+    }
 
-        particleSystem.emission.SetBurst(0, new ParticleSystem.Burst(0, value));
+    public static string CostToString(this List<ResourceToIntMap> incomes)
+    {
+        string costString = string.Empty;
+        for (int i = 0; i < incomes.Count; i++)
+        {
+            if (i > 0)
+                costString += " & ";
+            costString += incomes[i].value + incomes[i].resource.ToCustomString() + "(" + ResourcesManager.Instance.GetResourceStock(incomes[i].resource) + ")";
+        }
+        return costString;
+    }
 
-        vfx.GetComponent<ParticleSystemRenderer>().material = mat;
+    public static string ToCustomString<T>(this List<T> data) where T : TileData
+    {
+        string res = string.Empty;
+        for (int i = 0; i < data.Count; i++)
+        {
+            if (i > 0)
+            {
+                if (i == data.Count - 1)
+                    res += " & ";
+                else
+                    res += ", ";
+            }
+            res += data[i].TileName;
+        }
+        return res;
+    }
 
-        particleSystem.Play();
+    public static string ToCustomString(this List<EntertainmentData> entertainments)
+    {
+        string res = string.Empty;
+        for (int i = 0; i < entertainments.Count; i++)
+        {
+            if (i > 0)
+            {
+                if (i == entertainments.Count - 1)
+                    res += " & ";
+                else
+                    res += ", ";
+            }
+            res += entertainments[i].Type.ToCustomString();
+        }
+        return res;
+    }
+
+    //Subtract a by b and return the resulting List<ResourceToIntMap>
+    public static List<ResourceToIntMap> SubtractResourceToIntMaps(List<ResourceToIntMap> a, List<ResourceToIntMap> b)
+    {
+        var result = new Dictionary<Resource, int>();
+
+        foreach (var item in a)
+            result[item.resource] = result.GetValueOrDefault(item.resource, 0) + item.value;
+
+        foreach (var item in b)
+            result[item.resource] = result.GetValueOrDefault(item.resource, 0) - item.value;
+
+        return result
+            .Where(kvp => kvp.Value != 0)
+            .Select(kvp => new ResourceToIntMap(kvp.Key, kvp.Value))
+            .ToList();
+    }
+
+    //Clone a List<ResourceToIntMap>
+    public static List<ResourceToIntMap> CloneResourceToIntMap(List<ResourceToIntMap> original)
+    {
+        return original.Select(item => new ResourceToIntMap(item.resource, item.value)).ToList();
+    }
+
+    //Reanchor a RectTransform to its current position and size
+    public static void ReanchorToCurrentRect(RectTransform rt)
+    {
+        var parent = rt.parent as RectTransform;
+        var ps = parent.rect.size;
+
+        // compute new normalized anchors
+        Vector2 aMin = rt.anchorMin + rt.offsetMin / ps;
+        Vector2 aMax = rt.anchorMax + rt.offsetMax / ps;
+
+        // apply
+        rt.anchorMin = aMin;
+        rt.anchorMax = aMax;
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
     }
 }
 
 #region ENUMS
 public enum Phase
 {
-    Explore, Expand, Exploit, Entertain
+    //None is used for infra and upgrades not tied to a phase system, this is not directly use in the game turn logic
+    Explore, Expand, Exploit, Entertain, None
 }
 
 //The int respect the neighbors order, so simply cast it to int match the good neighbor
@@ -185,7 +265,7 @@ public enum Direction
 
 public enum Resource
 {
-    Stone, Essence, Horse, Pigment, Crystal, Emberbone, Gold
+    Gold, SpecialResources
 }
 
 public enum Transaction
@@ -195,27 +275,16 @@ public enum Transaction
 
 public enum Interaction
 {
-    Claim, Town, Scout, Infrastructure, Destroy, Entertainer
+    Claim, Scout, Infrastructure, Destroy, Entertainment, RedirectScout
 }
 
-//Whereas the new income is added (merge) or replace the previous one
-public enum TypeIncomeUpgrade
+public enum EntertainmentType
 {
-    Merge, Replace
+    MinstrelStage, TastingPavilion, ParadeRoute, MysticGarden
 }
 
-public enum EntertainerType
+public enum UpgradeStatus
 {
-    Sculptor, Painter, AromaWeaver, Magician, EquestrianDancer, FireEater
-}
-
-public enum EntertainerFamily
-{
-    Artist, Mystic, Performer
-}
-
-public enum Biome
-{
-    Grassland, DeepForest, Mountain, Desert, Swamp, Ice
+    LockedByPrerequisites, LockedByExclusive, CantAfford, Unlocked, Unlockable
 }
 #endregion

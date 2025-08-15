@@ -1,6 +1,7 @@
-using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Scout : MonoBehaviour
 {
@@ -14,7 +15,8 @@ public class Scout : MonoBehaviour
     private Tile _currentTile;
     private bool _hasDoneMoving;
     private float _yOffset;
-
+    private bool _hasRedirected;
+    //Gameplay variables
     private int _speed;
     private int _lifespan;
     private int _revealRadius;
@@ -40,24 +42,34 @@ public class Scout : MonoBehaviour
     public int RevealRadius { get => _revealRadius; set => _revealRadius = value; }
     public Tile CurrentTile { get => _currentTile; set => _currentTile = value; }
     public bool HasDoneMoving { get => _hasDoneMoving;}
+    public bool HasRedirected { get => _hasRedirected; set => _hasRedirected = value; }
+    public Animator Animator { get => _animator; }
+    #endregion
+
+    #region EVENTS
+    public event Action<Tile> OnScoutRevealingTile;
     #endregion
 
     private void Awake()
     {
         _renderers.Add(GetComponent<Renderer>());
-        foreach (Renderer renderer in GetComponentsInChildren<Renderer>()) 
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>(true)) 
             _renderers.Add(renderer);
 
-        ExplorationManager.Instance.OnPhaseFinalized.AddListener(CheckLifeSpan);
+        ExplorationManager.Instance.OnPhaseFinalized += CheckLifeSpan;
+        GameManager.Instance.OnEntertainmentPhaseStarted += KillScout;
     }
 
     private void Start()
     {
         _animator = GetComponent<Animator>();
+    }
 
-        _speed = _data.Speed;
-        _lifespan = _data.Lifespan;
-        _revealRadius = _data.RevealRadius;
+    public void InitializeScout()
+    {
+        _speed = _data.Speed + ExplorationManager.Instance.BoostScoutSpeed;
+        _lifespan = _data.Lifespan + ExplorationManager.Instance.BoostScoutLifespan;
+        _revealRadius = _data.RevealRadius + ExplorationManager.Instance.BoostScoutRevealRadius;
 
         _yOffset = transform.position.y;
     }
@@ -83,12 +95,15 @@ public class Scout : MonoBehaviour
             _currentTile.Scouts.Add(this);
             transform.position = _currentTile.transform.position + new Vector3(0,_yOffset,0);
 
-            if (_currentTile.TileData as HazardousTileData) 
-               i++;;                
+            if (_currentTile.TileData is HazardousTileData && !_currentTile.Claimed && !ExplorationManager.Instance.UpgradeScoutIgnoreHazard) 
+               i++;              
 
             //Reveal recursively
             if (!_currentTile.Revealed)
+            {
                 _currentTile.RevealTile(false);
+                OnScoutRevealingTile?.Invoke(_currentTile);
+            }    
             RevealTilesRecursively(_currentTile, _revealRadius);
 
             yield return new WaitForSeconds(ExplorationManager.Instance.AwaitTimeScoutMovement);
@@ -96,6 +111,7 @@ public class Scout : MonoBehaviour
         _currentTile.UpdateScoutCounter();
 
         _hasDoneMoving = true;
+        _hasRedirected = false;
     }
 
     //Check if the scout must stay alive
@@ -108,13 +124,31 @@ public class Scout : MonoBehaviour
         if (_lifespan <= 0)
         {
             ExplorationManager.Instance.Scouts.Remove(this);
+            ExplorationManager.Instance.CurrentScoutsCount--;
             if(_currentTile != null)
             {
                 _currentTile.Scouts.Remove(this);
                 _currentTile.UpdateScoutCounter();
             }
+            ExplorationManager.Instance.OnPhaseFinalized -= CheckLifeSpan;
+            GameManager.Instance.OnEntertainmentPhaseStarted -= KillScout;
+
+            if(ExplorationManager.Instance.UpgradeScoutRevealOnDeathRadius != 0 && GameManager.Instance.CurrentPhase != Phase.Entertain)//Don't do the reveal if we are in Entertainment phase
+                RevealTilesRecursively(_currentTile, ExplorationManager.Instance.UpgradeScoutRevealOnDeathRadius);
+
+            if (OnScoutRevealingTile != null)
+                foreach (var d in OnScoutRevealingTile.GetInvocationList())
+                    OnScoutRevealingTile -= (Action<Tile>)d;
+
             Destroy(gameObject);
         }
+    }
+
+    private void KillScout()
+    {
+        //Kill the scout (used when reaching EntertainmentPhase)
+        _lifespan = 0;
+        CheckLifeSpan();
     }
 
     //Method to reveal the tiles, depending on the scout reveal radius
@@ -132,6 +166,7 @@ public class Scout : MonoBehaviour
             if (!neighbor.Revealed)
             {
                 neighbor.RevealTile(false);
+                OnScoutRevealingTile?.Invoke(neighbor);
             }
             // Recursively reveal the neighbors of the current neighbor
             RevealTilesRecursively(neighbor, depth - 1);

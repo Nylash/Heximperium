@@ -1,10 +1,13 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class MapManager : Singleton<MapManager>
 {
     #region CONFIGURATION
+    [Header("_________________________________________________________")]
+    [Header("Map Configuration")]
     [SerializeField] private GameObject _tilePrefab;
     [SerializeField] private GameObject _emptyMap;
     //Tmp until game configuration menu
@@ -13,14 +16,16 @@ public class MapManager : Singleton<MapManager>
     #endregion
 
     #region VARIABLES
+    //Offset for grid generation
     private float _deltaX = 1f;
     private float _deltaZ = 0.91f;
+
     private Transform _grid;
     private Dictionary<Vector2, Tile> _tiles = new Dictionary<Vector2, Tile>();
     #endregion
 
     #region EVENTS
-    [HideInInspector] public UnityEvent OnMapGenerated = new UnityEvent();
+    public event Action OnMapGenerated;
     #endregion
 
     #region ACCESSORS
@@ -52,7 +57,9 @@ public class MapManager : Singleton<MapManager>
             tile.SearchNeighbors();
         }
 
-        OnMapGenerated.Invoke();
+        SceneManager.MoveGameObjectToScene(_grid.gameObject, gameObject.scene);
+
+        OnMapGenerated?.Invoke();
     }
 
     void GenerateHexagonalGrid()

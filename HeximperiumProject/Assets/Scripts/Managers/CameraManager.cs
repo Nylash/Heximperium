@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -6,19 +7,22 @@ using UnityEngine.UI;
 
 public class CameraManager : Singleton<CameraManager>
 {
-    #region CONSTANTS
-    private const float MIN_ZOOM_LEVEL = 2.0f;
-    private const float MAX_ZOOM_LEVEL = 20.0f;
-    #endregion
-
     #region CONFIGURATION
+    [Header("_________________________________________________________")]
+    [Header("Camera Movement Settings")]
     [SerializeField] private float _cameraMovementSpeed = 5;
     [SerializeField] private float _cameraDragSpeed = 2;
-    [SerializeField] private float _cameraZoomSpeed = 10;
+    [Header("_________________________________________________________")]
+    [Header("Edge Pan Settings")]
 #pragma warning disable CS0414
     [SerializeField] private float _edgePanMargin = 2;
     [SerializeField] private float _edgePanSpeed = 3;
 #pragma warning restore CS0414
+    [Header("_________________________________________________________")]
+    [Header("Zoom Settings")]
+    [SerializeField] private float _cameraZoomSpeed = 10;
+    [SerializeField] private float _maxZoomLevel = 20.0f; //Far
+    [SerializeField] private float _minZoomLevel = 3.5f; //Close
     #endregion
 
     #region VARIABLES
@@ -26,6 +30,7 @@ public class CameraManager : Singleton<CameraManager>
     //Camera
     private Vector2 _cameraMovement;
     private float _cameraZoom;
+    private Vector3 _initialPos;
     //Drag
     private bool _isMouseDragging;
     private Vector2 _lastMousePosition;
@@ -41,11 +46,18 @@ public class CameraManager : Singleton<CameraManager>
     private InteractionButton _shrinkedButton;
     #endregion
 
+    #region ACCESSORS
+    public float MaxZoomLevel { get => _maxZoomLevel; }
+    public float MinZoomLevel { get => _minZoomLevel; }
+    #endregion
+
     private void OnEnable() => _inputActions.Player.Enable();
     private void OnDisable() => _inputActions.Player.Disable();
 
     protected override void OnAwake()
     {
+        _initialPos = transform.position;
+
         _inputActions = new InputSystem_Actions();
 
         //Key input
@@ -60,18 +72,29 @@ public class CameraManager : Singleton<CameraManager>
         _inputActions.Player.RightClick.started += ctx => StartDragging();
         _inputActions.Player.RightClick.canceled += ctx => _isMouseDragging = false;
         _inputActions.Player.MouseMovement.performed += ctx => DragCamera();
+
+        _inputActions.Player.CenterCam.performed += ctx => CenterCam();
     }
 
     private void Start()
     {
-        raycaster = FindFirstObjectByType<GraphicRaycaster>();
+        // only look in the scene this camera lives in:
+        raycaster = gameObject.scene
+          .GetRootGameObjects()
+          .SelectMany(go => go.GetComponentsInChildren<GraphicRaycaster>())
+          .FirstOrDefault();
+
         eventSystem = EventSystem.current;
     }
 
     private void Update()
     {
-        if (UIManager.Instance.MenuOpen)
+        if (GameManager.Instance.GamePaused)
+        {
+            if (UIManager.Instance.UpgradesMenuObject.activeSelf)
+                ObjectUnderMouseDetection();
             return;
+        }
 
         if (!_isMouseDragging)
         {
@@ -79,6 +102,9 @@ public class CameraManager : Singleton<CameraManager>
             EdgePan();
         }
         Zoom();
+
+        if (ExplorationManager.Instance.ChoosingScoutDirection)
+            return;
 
         ObjectUnderMouseDetection();
     }
@@ -97,7 +123,7 @@ public class CameraManager : Singleton<CameraManager>
             if (results.Count > 0)
             {
                 // Pass the topmost UI object under the cursor
-                UIManager.Instance.PopUpUI(results[0].gameObject);
+                PopUpManager.Instance.UIPopUp(results[0].gameObject);
             }
 
             //If a interaction button was shrink we unshrink it
@@ -112,7 +138,7 @@ public class CameraManager : Singleton<CameraManager>
             _mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(_mouseRay, out _mouseRayHit))
             {
-                UIManager.Instance.PopUpNonUI(_mouseRayHit.collider.gameObject);
+                PopUpManager.Instance.NonUIPopUp(_mouseRayHit.collider.gameObject);
 
                 //If we detect a InteractionButton we play the shrink animation
                 if (_mouseRayHit.collider.gameObject.GetComponent<InteractionButton>() is InteractionButton button)
@@ -143,11 +169,19 @@ public class CameraManager : Singleton<CameraManager>
     }
 
     #region CAMERA MOVEMENT
+    private void CenterCam()
+    {
+        if (GameManager.Instance.GamePaused)
+            return;
+
+        transform.position = _initialPos;
+    }
+
     private void Zoom()
     {
         transform.position = new Vector3(
             transform.position.x,
-            Mathf.Clamp(Mathf.Lerp(transform.position.y, transform.position.y + _cameraZoom, _cameraZoomSpeed * Time.deltaTime), MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL),
+            Mathf.Clamp(Mathf.Lerp(transform.position.y, transform.position.y + _cameraZoom, _cameraZoomSpeed * Time.deltaTime), _maxZoomLevel, _minZoomLevel),
             transform.position.z
             );
     }
@@ -165,7 +199,7 @@ public class CameraManager : Singleton<CameraManager>
 
     private void DragCamera()
     {
-        if (UIManager.Instance.MenuOpen)
+        if (GameManager.Instance.GamePaused)
             return;
 
         if (_isMouseDragging)
@@ -178,7 +212,7 @@ public class CameraManager : Singleton<CameraManager>
 
     private void StartDragging()
     {
-        if (UIManager.Instance.MenuOpen)
+        if (GameManager.Instance.GamePaused)
             return;
 
         _isMouseDragging = true;

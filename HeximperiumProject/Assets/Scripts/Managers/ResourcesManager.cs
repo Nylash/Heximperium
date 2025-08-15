@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -5,64 +6,102 @@ using UnityEngine;
 public class ResourcesManager : Singleton<ResourcesManager>
 {
     #region CONFIGURATION
-    [SerializeField] private GameObject _resourceGainPrefab;
-    [SerializeField] private Material _goldVFXMat;
-    [SerializeField] private Material _stoneVFXMat;
-    [SerializeField] private Material _essenceVFXMat;
-    [SerializeField] private Material _horseVFXMat;
-    [SerializeField] private Material _pigmentVFXMat;
-    [SerializeField] private Material _crystalVFXMat;
-    [SerializeField] private Material _emberboneVFXMat;
+    [Header("_________________________________________________________")]
+    [Header("Trade values")]
+    [Header("-Buy")]
+    [SerializeField] private List<ResourceToIntMap> _tradeBuyCost;
+    [SerializeField] private List<ResourceToIntMap> _tradeBuyGain;
+    [Header("-Sell")]
+    [SerializeField] private List<ResourceToIntMap> _tradeSellCost;
+    [SerializeField] private List<ResourceToIntMap> _tradeSellGain;
     #endregion
 
     #region VARIABLES
     private int _claim;
     private int _gold;
-    private int _stone;
-    private int _essence;
-    private int _horse;
-    private int _pigment;
-    private int _crystal;
-    private int _emberbone;
+    private int _specialResources;
+    //Reduction variables
+    private int _srReductionForExploration;
+    private int _srReductionForExpansion;
+    private int _srReductionForExploitation;
+    private int _srReductionForEntertainment;
+    private int _entertainmentGoldReduction;
     #endregion
 
     #region ACCESSORS
     public int Claim { get => _claim; }
-    #endregion
+    public int EntertainmentGoldReduction { get => _entertainmentGoldReduction; set => _entertainmentGoldReduction = value; }
+    public List<ResourceToIntMap> TradeBuyCost { get => _tradeBuyCost; }
+    public List<ResourceToIntMap> TradeBuyGain { get => _tradeBuyGain; }
+    public List<ResourceToIntMap> TradeSellCost { get => _tradeSellCost; }
+    public List<ResourceToIntMap> TradeSellGain { get => _tradeSellGain; }
 
     public int GetResourceStock(Resource resource)
     {
         switch (resource)
         {
-            case Resource.Stone:
-                return _stone;
-            case Resource.Essence:
-                return _essence;
-            case Resource.Horse:
-                return _horse;
-            case Resource.Pigment:
-                return _pigment;
-            case Resource.Crystal:
-                return _crystal;
-            case Resource.Emberbone:
-                return _emberbone;
             case Resource.Gold:
                 return _gold;
+            case Resource.SpecialResources:
+                return _specialResources;
             default:
                 return 0;
         }
     }
 
-    public void CHEAT_GAIN_ALL_RESOURCES()
+    public int GetSRReduction(Phase system)
+    {
+        switch (system)
+        {
+            case Phase.Explore:
+                return _srReductionForExploration;
+            case Phase.Expand:
+                return _srReductionForExpansion;
+            case Phase.Exploit:
+                return _srReductionForExploitation;
+            case Phase.Entertain:
+                return _srReductionForEntertainment;
+            default:
+                return 0;
+        }
+    }
+
+    public void SetSSRReduction(Phase system, int value)
+    {
+        switch (system)
+        {
+            case Phase.Explore:
+                _srReductionForExploration += value;
+                break;
+            case Phase.Expand:
+                _srReductionForExpansion += value;
+                break;
+            case Phase.Exploit:
+                _srReductionForExploitation += value;
+                break;
+            case Phase.Entertain:
+                _srReductionForEntertainment += value;
+                break;
+            default:
+                break;
+        }
+    }
+    #endregion
+
+    #region EVENTS
+    public event Action<Tile, int> OnGoldGained;
+    public event Action<Tile, int> OnSpecialResourcesGained;
+    public event Action<Tile, int> OnClaimGained;
+    public event Action<int> OnGoldSpent;
+    public event Action<int> OnSpecialResourcesSpent;
+    public event Action<int> OnClaimSpent;
+    #endregion
+
+    public void CHEAT_RESOURCES()
     {
         Debug.LogWarning("USING CHEAT !");
-        UpdateResource(Resource.Stone, 50, Transaction.Gain);
-        UpdateResource(Resource.Essence, 50, Transaction.Gain);
-        UpdateResource(Resource.Horse, 50, Transaction.Gain);
-        UpdateResource(Resource.Pigment, 50, Transaction.Gain);
-        UpdateResource(Resource.Crystal, 50, Transaction.Gain);
-        UpdateResource(Resource.Emberbone, 50, Transaction.Gain);
-        UpdateResource(Resource.Gold, 500, Transaction.Gain);
+        UpdateResource(Resource.Gold, 5000, Transaction.Gain);
+        UpdateResource(Resource.SpecialResources, 1000, Transaction.Gain);
     }
 
     #region UPDATE RESOURCES
@@ -72,33 +111,17 @@ public class ResourcesManager : Singleton<ResourcesManager>
             value = -value;
         switch (resource)
         {
-            case Resource.Stone:
-                _stone += value;
-                UIManager.Instance.UpdateResourceUI(Resource.Stone, _stone);
-                break;
-            case Resource.Essence:
-                _essence += value;
-                UIManager.Instance.UpdateResourceUI(Resource.Essence, _essence);
-                break;
-            case Resource.Horse:
-                _horse += value;
-                UIManager.Instance.UpdateResourceUI(Resource.Horse, _horse);
-                break;
-            case Resource.Pigment:
-                _pigment += value;
-                UIManager.Instance.UpdateResourceUI(Resource.Pigment, _pigment);
-                break;
-            case Resource.Crystal:
-                _crystal += value;
-                UIManager.Instance.UpdateResourceUI(Resource.Crystal, _crystal);
-                break;
-            case Resource.Emberbone:
-                _emberbone += value;
-                UIManager.Instance.UpdateResourceUI(Resource.Emberbone, _emberbone);
-                break;
             case Resource.Gold:
                 _gold += value;
+                if (_gold < 0)
+                    _gold = 0;
                 UIManager.Instance.UpdateResourceUI(Resource.Gold, _gold);
+                break;
+            case Resource.SpecialResources:
+                _specialResources += value;
+                if (_specialResources < 0)
+                    _specialResources = 0;
+                UIManager.Instance.UpdateResourceUI(Resource.SpecialResources, _specialResources);
                 break;
         }
     }
@@ -110,43 +133,58 @@ public class ResourcesManager : Singleton<ResourcesManager>
         {
             UpdateResource(item.resource, item.value, transaction);
 
-            //Play VFX if we gain resource from a tile
-            if( tile != null && transaction == Transaction.Gain)
+            switch (transaction)
             {
-                switch (item.resource)
-                {
-                    case Resource.Stone:
-                        Utilities.PlayResourceGainVFX(tile, _resourceGainPrefab, _stoneVFXMat, item.value);
-                        break;
-                    case Resource.Essence:
-                        Utilities.PlayResourceGainVFX(tile, _resourceGainPrefab, _essenceVFXMat, item.value);
-                        break;
-                    case Resource.Horse:
-                        Utilities.PlayResourceGainVFX(tile, _resourceGainPrefab, _horseVFXMat, item.value);
-                        break;
-                    case Resource.Pigment:
-                        Utilities.PlayResourceGainVFX(tile, _resourceGainPrefab, _pigmentVFXMat, item.value);
-                        break;
-                    case Resource.Crystal:
-                        Utilities.PlayResourceGainVFX(tile, _resourceGainPrefab, _crystalVFXMat, item.value);
-                        break;
-                    case Resource.Emberbone:
-                        Utilities.PlayResourceGainVFX(tile, _resourceGainPrefab, _emberboneVFXMat, item.value);
-                        break;
-                    case Resource.Gold:
-                        Utilities.PlayResourceGainVFX(tile, _resourceGainPrefab, _goldVFXMat, item.value);
-                        break;
-                }
+                case Transaction.Gain:
+                    switch (item.resource)
+                    {
+                        case Resource.Gold:
+                            OnGoldGained?.Invoke(tile, item.value);
+                            break;
+                        case Resource.SpecialResources:
+                            OnSpecialResourcesGained?.Invoke(tile, item.value);
+                            break;
+                    }
+                    break;
+                case Transaction.Spent:
+                    switch (item.resource)
+                    {
+                        case Resource.Gold:
+                            OnGoldSpent?.Invoke(item.value);
+                            break;
+                        case Resource.SpecialResources:
+                            OnSpecialResourcesSpent?.Invoke(item.value);
+                            break;
+                    }
+                    break;
             }
         }
     }
 
-    public void UpdateClaim(int value, Transaction transaction)
+    public void UpdateClaim(int value, Transaction transaction, Tile tile = null)
     {
         if (transaction == Transaction.Spent)
             value = -value;
         _claim += value;
+        if(_claim < 0)
+            _claim = 0;
         UIManager.Instance.UpdateClaimUI(_claim);
+
+        switch (transaction)
+        {
+            case Transaction.Gain:
+                OnClaimGained?.Invoke(tile, value);
+                break;
+            case Transaction.Spent:
+                OnClaimSpent?.Invoke(Mathf.Abs(value));
+                break;
+        }
+    }
+
+    public void SpendAllResources()
+    {
+        UpdateResource(Resource.Gold, GetResourceStock(Resource.Gold), Transaction.Spent);
+        UpdateResource(Resource.SpecialResources, GetResourceStock(Resource.SpecialResources), Transaction.Spent);
     }
     #endregion
 
@@ -163,36 +201,24 @@ public class ResourcesManager : Singleton<ResourcesManager>
     {
         switch (resource)
         {
-            case Resource.Stone:
-                return CanAffordUnspecified(_stone, cost);
-            case Resource.Essence:
-                return CanAffordUnspecified(_essence, cost);
-            case Resource.Horse:
-                return CanAffordUnspecified(_horse, cost);
-            case Resource.Pigment:
-                return CanAffordUnspecified(_pigment, cost);
-            case Resource.Crystal:
-                return CanAffordUnspecified(_crystal, cost);
-            case Resource.Emberbone:
-                return CanAffordUnspecified(_emberbone, cost);
             case Resource.Gold:
-                return CanAffordUnspecified(_gold, cost);
+                if (_gold - cost >= 0)
+                    return true;
+                else
+                    return false;
+            case Resource.SpecialResources:
+                if (_specialResources - cost >= 0)
+                    return true;
+                else
+                    return false;
         }
         return false;
     }
 
     public bool CanAfford(List<ResourceToIntMap> costs) 
     {
-        if(costs.Count == 0) return false;
+        if(costs.Count == 0) return true;
         return costs.All(cost => CanAfford(cost.resource, cost.value));
-    }
-
-    private bool CanAffordUnspecified(int stock, int cost)
-    {
-        if (stock - cost >= 0)
-            return true;
-        else
-            return false;
     }
     #endregion
 }

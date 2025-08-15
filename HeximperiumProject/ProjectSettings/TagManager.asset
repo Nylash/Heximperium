@@ -5,6 +5,14 @@ TagManager:
   serializedVersion: 3
   tags:
   - Grid
+  - ScoutLimitUI
+  - ClaimUI
+  - TownLimitUI
+  - GoldUI
+  - SRUI
+  - VisibilityUI
+  - UpgradeNodeUI
+  - ScoreUI
   layers:
   - Default
   - TransparentFX
@@ -41,6 +49,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UI
+    uniqueID: 3182292657
     locked: 0
   m_RenderingLayers:
   - Default

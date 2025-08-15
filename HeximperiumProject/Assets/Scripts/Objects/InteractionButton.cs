@@ -3,21 +3,17 @@ using UnityEngine;
 public class InteractionButton : MonoBehaviour
 {
     #region CONSTANTS
-    private const string PATH_DATA_INFRA = "Data/Infrastructures/";
-    private const string PATH_DATA_UNIT = "Data/Units/";
-    private const string PATH_SPRITE_INTERACTION = "InteractionButtons/";
+    private const string PATH_SPRITES_INTERACTION = "Sprites/InteractionButtons/";
     #endregion
 
     #region CONFIGURATION
-    [SerializeField] private GameObject _popUpClaim;
-    [SerializeField] private GameObject _popUpScout;
-    [SerializeField] private GameObject _popUpDestroy;
-    [SerializeField] private GameObject _popUpEntertainer;
-    [SerializeField] private GameObject _popUpInfra;
+    [Header("_________________________________________________________")]
+    [Header("Back Textures")]
     [SerializeField] private Texture _textureExplo;
     [SerializeField] private Texture _textureExpand;
     [SerializeField] private Texture _textureExploit;
     [SerializeField] private Texture _textureEntertain;
+    [Header("_________________________________________________________")]
     [SerializeField] private GameObject _highlightedInteractionPrefab;
     #endregion
 
@@ -26,16 +22,20 @@ public class InteractionButton : MonoBehaviour
     private Interaction _interaction;
     private Tile _associatedTile;
     private InfrastructureData _infraData;
-    private UnitData _unitData;
+    private ScoutData _scoutData;
+    private EntertainmentData _entertainData;
     private Animator _animator;
     private GameObject _highlightedClone;
+    private Scout _associatedScout;
     #endregion
 
     #region ACCESSORS
     public Interaction Interaction { get => _interaction;}
     public Tile AssociatedTile { get => _associatedTile;}
     public InfrastructureData InfrastructureData { get => _infraData;}
-    public UnitData UnitData { get => _unitData;}
+    public EntertainmentData EntertainData { get => _entertainData;}
+    public ScoutData ScoutData { get => _scoutData;}
+    public Scout AssociatedScout { get => _associatedScout; }
     #endregion
 
     private void Awake()
@@ -58,7 +58,7 @@ public class InteractionButton : MonoBehaviour
         
     }
 
-    public void Initialize(Tile associatedTile, Interaction action, InfrastructureData infraData = null, EntertainerData entrainData = null)
+    public void Initialize(Tile associatedTile, Interaction action, InfrastructureData infraData = null, EntertainmentData entertainData = null, Scout scout = null)
     {
         _renderer = GetComponentInChildren<SpriteRenderer>();
         _associatedTile = associatedTile;
@@ -69,9 +69,6 @@ public class InteractionButton : MonoBehaviour
             case Interaction.Claim:
                 InitializeClaim();
                 break;
-            case Interaction.Town:
-                InitializeTown();
-                break;
             case Interaction.Scout:
                 InitializeScout();
                 break;
@@ -81,8 +78,11 @@ public class InteractionButton : MonoBehaviour
             case Interaction.Destroy:
                 InitializeDestroy();
                 break;
-            case Interaction.Entertainer:
-                InitializeEntertainer(entrainData);
+            case Interaction.Entertainment:
+                InitializeEntertainment(entertainData);
+                break;
+            case Interaction.RedirectScout:
+                InitializeRedirectScout(scout);
                 break;
         }
 
@@ -96,18 +96,10 @@ public class InteractionButton : MonoBehaviour
         LoadSprite(Interaction.Claim.ToString());
     }
 
-    private void InitializeTown()
-    {
-        _infraData = Resources.Load<InfrastructureData>(PATH_DATA_INFRA + Interaction.Town.ToString());
-        if (!ResourcesManager.Instance.CanAfford(_infraData.Costs) || !ExploitationManager.Instance.IsInfraAvailable(_infraData))
-            _renderer.color = UIManager.Instance.ColorCantAfford;
-        LoadSprite(Interaction.Town.ToString());
-    }
-
     private void InitializeScout()
     {
-        _unitData = Resources.Load<ScoutData>(PATH_DATA_UNIT + Interaction.Scout.ToString());
-        if (!ResourcesManager.Instance.CanAfford(_unitData.Costs) && ExplorationManager.Instance.FreeScouts == 0)
+        _scoutData = ExplorationManager.Instance.ScoutData;
+        if (ExplorationManager.Instance.CurrentScoutsCount >= ExplorationManager.Instance.ScoutsLimit)
             _renderer.color = UIManager.Instance.ColorCantAfford;
         LoadSprite(Interaction.Scout.ToString());
     }
@@ -125,45 +117,29 @@ public class InteractionButton : MonoBehaviour
         LoadSprite(Interaction.Destroy.ToString());
     }
 
-    private void InitializeEntertainer(EntertainerData data)
+    private void InitializeEntertainment(EntertainmentData data)
     {
-        _unitData = data;
-        if (!ResourcesManager.Instance.CanAfford(_unitData.Costs))
+        _entertainData = data;
+        if (!ResourcesManager.Instance.CanAfford(_entertainData.Costs))
             _renderer.color = UIManager.Instance.ColorCantAfford;
-        LoadSprite(data.EntertainerType.ToString());
+        LoadSprite(_entertainData.name);
+    }
+
+    private void InitializeRedirectScout(Scout scout)
+    {
+        _associatedScout = scout;
+        LoadSprite(Interaction.RedirectScout.ToString());
     }
 
     private void LoadSprite(string spriteName)
     {
-        Sprite sprite = Resources.Load<Sprite>(PATH_SPRITE_INTERACTION + spriteName);
+        Sprite sprite = Resources.Load<Sprite>(PATH_SPRITES_INTERACTION + spriteName);
         if (sprite == null)
         {
-            Debug.LogError("Sprite not found at path: " + PATH_SPRITE_INTERACTION + spriteName);
+            Debug.LogError("Sprite not found at path: " + PATH_SPRITES_INTERACTION + spriteName);
             return;
         }
         _renderer.sprite = sprite;
-    }
-
-    public GameObject GetPopUpPrefab()
-    {
-        switch (_interaction)
-        {
-            case Interaction.Claim:
-                return _popUpClaim;
-            case Interaction.Town:
-                return _popUpInfra;
-            case Interaction.Scout:
-                return _popUpScout;
-            case Interaction.Infrastructure:
-                return _popUpInfra;
-            case Interaction.Destroy:
-                return _popUpDestroy;
-            case Interaction.Entertainer:
-                return _popUpEntertainer;
-            default:
-                Debug.LogError("This interaction has no popup prefab assigned " + _interaction);
-                return null;
-        }
     }
 
     public void ShrinkAnimation(bool shrink)
@@ -187,6 +163,13 @@ public class InteractionButton : MonoBehaviour
 
     public void DestroyHighlightedClone()
     {
+        if (_highlightedClone == null)
+            return;
         _highlightedClone.GetComponent<Animator>().SetTrigger("Destroy");
+    }
+
+    public void DestroyInteractionButton()
+    {
+        _animator.SetTrigger("Death");
     }
 }
