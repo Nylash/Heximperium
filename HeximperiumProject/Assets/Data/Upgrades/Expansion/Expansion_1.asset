@@ -18,3 +18,4 @@ MonoBehaviour:
   _effect: {fileID: 11400000, guid: 5499293a2dc99ae4aa345a0c5dff3949, type: 2}
   _prerequisites: []
   _exclusiveNode: {fileID: 0}
+  _associatedSystem: 1

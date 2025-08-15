@@ -18,7 +18,7 @@ MonoBehaviour:
   _claimCost: 0
   _incomes:
   - resource: 1
-    value: 3
+    value: 5
   _availableInfrastructures: []
   _specialBehaviours:
   - {fileID: 11400000, guid: b8e368d6e4ac6784792087f9deeac7d6, type: 2}

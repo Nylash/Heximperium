@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98ad719e97de0f3438db15137b1b093b, type: 3}
-  m_Name: 1_Limit
+  m_Name: Explo_3_B_Speed
   m_EditorClassIdentifier: 
   _costs:
   - resource: 0
-    value: 15
-  _effect: {fileID: 11400000, guid: a08ac9100e6dac640aa0c8c5a8e1f093, type: 2}
-  _prerequisites: []
+    value: 20
+  _effect: {fileID: 11400000, guid: 1b0f5ca0efbd2934f8e49b77ff510cb0, type: 2}
+  _prerequisites:
+  - {fileID: 11400000, guid: cb81d2487176cfb4896b0dba89520c79, type: 2}
   _exclusiveNode: {fileID: 0}
+  _associatedSystem: 0

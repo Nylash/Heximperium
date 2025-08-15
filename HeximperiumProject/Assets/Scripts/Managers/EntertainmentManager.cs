@@ -128,8 +128,6 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         //Earn incomes of every claimed tiles
         foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
             ResourcesManager.Instance.UpdateResource(tile.Incomes, Transaction.Gain, tile);
-
-        ResourcesManager.Instance.CHEAT_RESOURCES();
     }
 
     protected override void ConfirmPhase()

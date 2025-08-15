@@ -19,3 +19,4 @@ MonoBehaviour:
   _prerequisites:
   - {fileID: 11400000, guid: 5bca2b90c1244fb428450aa7ebbf14d5, type: 2}
   _exclusiveNode: {fileID: 0}
+  _associatedSystem: 1
