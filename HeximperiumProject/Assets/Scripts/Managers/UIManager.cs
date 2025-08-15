@@ -388,6 +388,7 @@ public class UIManager : Singleton<UIManager>
 
     public void QuitGame()
     {
+        Application.OpenURL("https://forms.gle/oGGde8EdEBiKebiY9");
         Application.Quit();
     }
     #endregion

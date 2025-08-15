@@ -23,6 +23,7 @@ public class UI_MainMenu : MonoBehaviour
 
     public void QuitGame()
     {
+        Application.OpenURL("https://forms.gle/oGGde8EdEBiKebiY9");
         Application.Quit();
     }
 
