@@ -150,6 +150,8 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
                 }
             }
         }
+
+        ResourcesManager.Instance.CHEAT_RESOURCES();
     }
 
     protected override void ConfirmPhase()

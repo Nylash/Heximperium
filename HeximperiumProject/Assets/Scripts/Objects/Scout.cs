@@ -13,6 +13,7 @@ public class Scout : MonoBehaviour
     private Direction _direction;
     private Animator _animator;
     private Tile _currentTile;
+    private Tile _lastValidTile;
     private bool _hasDoneMoving;
     private float _yOffset;
     private bool _hasRedirected;
@@ -77,6 +78,7 @@ public class Scout : MonoBehaviour
     //Coroutine to move the scout at the end of exploration phase
     public IEnumerator Move()
     {
+        _lastValidTile = _currentTile;
         for (int i = 0; i < _speed; i++)
         {
             Vector3 pos = transform.localPosition;
@@ -92,6 +94,7 @@ public class Scout : MonoBehaviour
                 _hasDoneMoving = true;
                 yield break;
             }
+            _lastValidTile = _currentTile;
             _currentTile.Scouts.Add(this);
             transform.position = _currentTile.transform.position + new Vector3(0,_yOffset,0);
 
@@ -133,8 +136,11 @@ public class Scout : MonoBehaviour
             ExplorationManager.Instance.OnPhaseFinalized -= CheckLifeSpan;
             GameManager.Instance.OnEntertainmentPhaseStarted -= KillScout;
 
-            if(ExplorationManager.Instance.UpgradeScoutRevealOnDeathRadius != 0 && GameManager.Instance.CurrentPhase != Phase.Entertain)//Don't do the reveal if we are in Entertainment phase
-                RevealTilesRecursively(_currentTile, ExplorationManager.Instance.UpgradeScoutRevealOnDeathRadius);
+            Tile tileToReveal = _currentTile ?? _lastValidTile;
+            if (ExplorationManager.Instance.UpgradeScoutRevealOnDeathRadius != 0 &&
+                GameManager.Instance.CurrentPhase != Phase.Entertain &&
+                tileToReveal != null) //Don't do the reveal if we are in Entertainment phase
+                RevealTilesRecursively(tileToReveal, ExplorationManager.Instance.UpgradeScoutRevealOnDeathRadius);
 
             if (OnScoutRevealingTile != null)
                 foreach (var d in OnScoutRevealingTile.GetInvocationList())
