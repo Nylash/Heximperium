@@ -10,6 +10,11 @@ public class IncomeWhenScoutRevealTile : SpecialBehaviour
     {
         ExplorationManager.Instance.OnScoutSpawned -= behaviourTile.ListenerOnScoutSpawned_GainIncomeWhenScoutRevealTile;
         ExplorationManager.Instance.OnScoutSpawned += behaviourTile.ListenerOnScoutSpawned_GainIncomeWhenScoutRevealTile;
+
+        foreach (Scout scout in ExplorationManager.Instance.Scouts)
+        {
+            CheckScoutSpawned(behaviourTile, scout);
+        }
     }
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
@@ -24,10 +29,7 @@ public class IncomeWhenScoutRevealTile : SpecialBehaviour
 
     public void CheckScoutSpawned(Tile behaviourTile, Scout scout)
     {
-        if (scout.CurrentTile == behaviourTile)
-        {
-            scout.OnScoutRevealingTile += behaviourTile.ListenerOnScoutRevealingTile;
-        }
+        scout.OnScoutRevealingTile += behaviourTile.ListenerOnScoutRevealingTile;
     }
 
     public void TileRevealed(Tile behaviourTile)
