@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _income:
   - resource: 0
-    value: 1
+    value: 3
