@@ -873,6 +873,16 @@ public class PopUpManager : Singleton<PopUpManager>
         textObjects.Add(pointsText.GetComponent<RectTransform>());
         #endregion
 
+        #region COST
+        TextMeshProUGUI cost = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        cost.text = "Cost: " + button.EntertainData.Costs.CostToString();
+        if (!ResourcesManager.Instance.CanAfford(button.EntertainData.Costs))
+            cost.color = UIManager.Instance.ColorCantAfford;
+        cost.margin = _fullMargin;
+        textObjects.Add(cost.GetComponent<RectTransform>());
+        ClampTextWidth(cost);
+        #endregion
+
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>());
     }
