@@ -21127,7 +21127,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
-  _durationHoverForUI: 1
+  _durationHoverForUI: 0.5
+  _percentageOfTimerForVisualHint: 0.4
   _timerOverImage: {fileID: 896984897485514827}
   _offsetBetweenSeveralPopUps: 1
   _marginAtMinZoom: 45

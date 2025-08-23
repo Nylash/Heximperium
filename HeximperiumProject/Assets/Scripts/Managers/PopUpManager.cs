@@ -12,6 +12,7 @@ public class PopUpManager : Singleton<PopUpManager>
     [Header("_________________________________________________________")]
     [Header("Spawning Configuration")]
     [SerializeField] private float _durationHoverForUI = 1f;
+    [SerializeField][Range(0f,1f)] private float _percentageOfTimerForVisualHint = 0.75f;
     [SerializeField] private Image _timerOverImage;
     [SerializeField] private float _offsetBetweenSeveralPopUps = 1f;
     [SerializeField] private float _marginAtMinZoom = 45f;
@@ -62,7 +63,7 @@ public class PopUpManager : Singleton<PopUpManager>
             //Timer before spawning popup
             _hoverTimer += Time.deltaTime;
             // delay start
-            _delayedHoverTimer = _durationHoverForUI * .75f;
+            _delayedHoverTimer = _durationHoverForUI * _percentageOfTimerForVisualHint;
             // Fill is 0 until t >= t0, then rises linearly to 1 at t == d.
             _timerOverImage.fillAmount = Mathf.InverseLerp(_delayedHoverTimer, _durationHoverForUI, _hoverTimer);
 
@@ -120,7 +121,7 @@ public class PopUpManager : Singleton<PopUpManager>
             //Timer before spawning popup
             _hoverTimer += Time.deltaTime;
             // delay start
-            _delayedHoverTimer = _durationHoverForUI * 0.75f;
+            _delayedHoverTimer = _durationHoverForUI * _percentageOfTimerForVisualHint;
             // Fill is 0 until t >= t0, then rises linearly to 1 at t == d.
             _timerOverImage.fillAmount = Mathf.InverseLerp(_delayedHoverTimer, _durationHoverForUI, _hoverTimer);
             if (_hoverTimer >= _durationHoverForUI && _popUps.Count == 0)
