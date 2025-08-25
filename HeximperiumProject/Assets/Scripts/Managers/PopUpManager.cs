@@ -549,10 +549,7 @@ public class PopUpManager : Singleton<PopUpManager>
             TextMeshProUGUI enhancement = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
             if (tile.TileData is ResourceTileData resourceTileData)
             {
-                enhancement.text = "Can be upgraded to produce Special Resources and bringing a reduction to ";
-                //Resource tile only have one potential enhancement with a unique special behaviour
-                enhancement.text += (tile.TileData.AvailableInfrastructures[0].SpecialBehaviours[0] as SpecialResourcesCostReduction).AssociatedSystem;
-                enhancement.text += " oriented Infrastructures and Upgrades";
+                enhancement.text = "Can be upgraded to produce Special Resources";
             }
             else
             {

@@ -21,10 +21,6 @@ public class ResourcesManager : Singleton<ResourcesManager>
     private int _gold;
     private int _specialResources;
     //Reduction variables
-    private int _srReductionForExploration;
-    private int _srReductionForExpansion;
-    private int _srReductionForExploitation;
-    private int _srReductionForEntertainment;
     private int _entertainmentGoldReduction;
     #endregion
 
@@ -46,44 +42,6 @@ public class ResourcesManager : Singleton<ResourcesManager>
                 return _specialResources;
             default:
                 return 0;
-        }
-    }
-
-    public int GetSRReduction(Phase system)
-    {
-        switch (system)
-        {
-            case Phase.Explore:
-                return _srReductionForExploration;
-            case Phase.Expand:
-                return _srReductionForExpansion;
-            case Phase.Exploit:
-                return _srReductionForExploitation;
-            case Phase.Entertain:
-                return _srReductionForEntertainment;
-            default:
-                return 0;
-        }
-    }
-
-    public void SetSSRReduction(Phase system, int value)
-    {
-        switch (system)
-        {
-            case Phase.Explore:
-                _srReductionForExploration += value;
-                break;
-            case Phase.Expand:
-                _srReductionForExpansion += value;
-                break;
-            case Phase.Exploit:
-                _srReductionForExploitation += value;
-                break;
-            case Phase.Entertain:
-                _srReductionForEntertainment += value;
-                break;
-            default:
-                break;
         }
     }
     #endregion
