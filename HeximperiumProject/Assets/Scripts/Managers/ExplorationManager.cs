@@ -143,13 +143,13 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     {
         if (_currentScoutsCount < _scoutsLimit)
         {
-            //Highlight all tiles that are starting points for scouts
+            //Shows all tiles that are starting points for scouts
             foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
             {
                 if (tile.TileData is InfrastructureData data)
                 {
                     if (data.ScoutStartingPoint)
-                        tile.Highlight(true);
+                        tile.Animator.SetBool("Interactable", true);
                 }
             }
         }
@@ -161,13 +161,13 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     {
         _finalizingPhase = true;
 
-        //Unhighlight all tiles that were starting points for scouts
+        //Unshows all tiles that are starting points for scouts
         foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
         {
             if (tile.TileData is InfrastructureData data)
             {
                 if (data.ScoutStartingPoint)
-                    tile.Highlight(false);
+                    tile.Animator.SetBool("Interactable", false);
             }
         }
 

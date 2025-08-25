@@ -88,6 +88,7 @@ public class Tile : MonoBehaviour
     public int UniqueEntertainmentNeighborsCount_SE { get => _uniqueEntertainmentNeighborsCount_SE; set => _uniqueEntertainmentNeighborsCount_SE = value; }
     public int GroupID { get => _groupID; set => _groupID = value; }
     public Entertainment PreviousEntertainment { get => _previousEntertainment; }
+    public Animator Animator { get => _animator; }
     #endregion
 
     private void Awake()
@@ -176,10 +177,10 @@ public class Tile : MonoBehaviour
                 Debug.LogError("This tile has no material configured");
                 break;
             case 1:
-                GetComponent<Renderer>().material = _tileData.Visuals[0];
+                GetComponentInChildren<Renderer>().material = _tileData.Visuals[0];
                 break;
             default:
-                GetComponent<Renderer>().material = _tileData.Visuals[UnityEngine.Random.Range(0, _tileData.Visuals.Count)];
+                GetComponentInChildren<Renderer>().material = _tileData.Visuals[UnityEngine.Random.Range(0, _tileData.Visuals.Count)];
                 break;
         }
     }
