@@ -7,6 +7,7 @@ public class Scout : MonoBehaviour
 {
     #region CONFIGURATION
     [SerializeField] private ScoutData _data;
+    [SerializeField] private GameObject _lifeHintPrefab;
     #endregion
 
     #region VARIABLES
@@ -23,6 +24,7 @@ public class Scout : MonoBehaviour
     private int _revealRadius;
 
     private List<Renderer> _renderers = new List<Renderer>();
+    private List<GameObject> _lifeHints = new List<GameObject>();
     #endregion
 
     #region ACCESSORS
@@ -73,6 +75,8 @@ public class Scout : MonoBehaviour
         _revealRadius = _data.RevealRadius + ExplorationManager.Instance.BoostScoutRevealRadius;
 
         _yOffset = transform.position.y;
+
+        UpdateLifeHints();
     }
 
     //Coroutine to move the scout at the end of exploration phase
@@ -147,7 +151,9 @@ public class Scout : MonoBehaviour
                     OnScoutRevealingTile -= (Action<Tile>)d;
 
             Destroy(gameObject);
+            return;
         }
+        UpdateLifeHints();
     }
 
     private void KillScout()
@@ -210,6 +216,70 @@ public class Scout : MonoBehaviour
         foreach (Renderer item in _renderers)
         {
             item.enabled = visible;
+        }
+    }
+
+    public void UpdateLifeHints()
+    {
+        if (_lifespan != _lifeHints.Count)
+        {
+            foreach (GameObject lifeHint in _lifeHints)
+            {
+                _renderers.Remove(lifeHint.GetComponent<Renderer>());
+                Destroy(lifeHint);
+            }
+            _lifeHints.Clear();
+            for (int i = 0; i < _lifespan; i++)
+            {
+                GameObject lifeHint = Instantiate(_lifeHintPrefab, transform);
+                _lifeHints.Add(lifeHint);
+                _renderers.Add(lifeHint.GetComponent<Renderer>());
+            }
+        }
+
+        if (!GetComponent<Renderer>().enabled)
+        {
+            foreach (GameObject lifeHint in _lifeHints)
+            {
+                lifeHint.GetComponent<Renderer>().enabled = false;
+            }
+        }
+
+        PositionLifeHints();
+    }
+
+    private void PositionLifeHints()
+    {
+        switch (_lifeHints.Count)
+        {
+            case 1:
+                _lifeHints[0].transform.localPosition = new Vector3(0, -3.5f, -0.01f);
+                break;
+            case 2:
+                _lifeHints[0].transform.localPosition = new Vector3(0.75f, -3.1f, -0.01f);
+                _lifeHints[1].transform.localPosition = new Vector3(-0.75f, -3.1f, -0.01f);
+                break;
+            case 3:
+                _lifeHints[0].transform.localPosition = new Vector3(0, -3.5f, -0.01f);
+                _lifeHints[1].transform.localPosition = new Vector3(1.5f, -2.75f, -0.01f);
+                _lifeHints[2].transform.localPosition = new Vector3(-1.5f, -2.75f, -0.01f);
+                break;
+            case 4:
+                _lifeHints[0].transform.localPosition = new Vector3(0.75f, -3.1f, -0.01f);
+                _lifeHints[1].transform.localPosition = new Vector3(-0.75f, -3.1f, -0.01f);
+                _lifeHints[2].transform.localPosition = new Vector3(2.25f, -2.35f, -0.01f);
+                _lifeHints[3].transform.localPosition = new Vector3(-2.25f, -2.35f, -0.01f);
+                break;
+            case 5:
+                _lifeHints[0].transform.localPosition = new Vector3(0, -3.5f, -0.01f);
+                _lifeHints[1].transform.localPosition = new Vector3(1.5f, -2.75f, -0.01f);
+                _lifeHints[2].transform.localPosition = new Vector3(-1.5f, -2.75f, -0.01f);
+                _lifeHints[3].transform.localPosition = new Vector3(3, -2, -0.01f);
+                _lifeHints[4].transform.localPosition = new Vector3(-3, -2, -0.01f);
+                break;
+            default:
+                Debug.LogError("Too many life hints");
+                break;
         }
     }
 }

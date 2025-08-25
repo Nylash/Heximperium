@@ -75,7 +75,10 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         set
         {
             foreach (Scout scout in _scouts)
+            {
                 scout.Lifespan += (value - _boostScoutLifespan);
+                scout.UpdateLifeHints();
+            }
             _boostScoutLifespan = value;
         } 
     }
