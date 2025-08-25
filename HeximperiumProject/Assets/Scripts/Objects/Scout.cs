@@ -237,6 +237,14 @@ public class Scout : MonoBehaviour
             }
         }
 
+        if (!GetComponent<Renderer>().enabled)
+        {
+            foreach (GameObject lifeHint in _lifeHints)
+            {
+                lifeHint.GetComponent<Renderer>().enabled = false;
+            }
+        }
+
         PositionLifeHints();
     }
 

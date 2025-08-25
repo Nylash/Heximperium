@@ -119,7 +119,8 @@ public class UIManager : Singleton<UIManager>
 
         GameManager.Instance.OnEntertainmentPhaseStarted += UpdateUIForEntertainment;
 
-        GameManager.Instance.OnExplorationPhaseStarted += ForceScoutsToShow;
+        GameManager.Instance.OnExplorationPhaseStarted += () => ScoutsVisibility(true);
+        GameManager.Instance.OnExpansionPhaseStarted += () => ScoutsVisibility(false);
 
         GameManager.Instance.OnGameFinished += GameFinished;
 
@@ -279,11 +280,6 @@ public class UIManager : Singleton<UIManager>
         {
             item.ScoutVisibility(visible);
         }
-    }
-
-    private void ForceScoutsToShow()
-    {
-        ScoutsVisibility(true);
     }
     #endregion
 
