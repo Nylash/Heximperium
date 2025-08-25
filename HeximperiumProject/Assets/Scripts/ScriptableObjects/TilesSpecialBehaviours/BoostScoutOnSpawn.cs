@@ -36,6 +36,8 @@ public class BoostScoutOnSpawn : SpecialBehaviour
             scout.Speed += _boostSpeed;
             scout.Lifespan += _boostLifespan;
             scout.RevealRadius += _boostRevealRadius;
+
+            scout.UpdateLifeHints();
         }
     }
 
