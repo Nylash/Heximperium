@@ -46,6 +46,7 @@ public class UIManager : Singleton<UIManager>
     [Header("_________________________________________________________")]
     [Header("Menu")]
     [SerializeField] private GameObject _menu;
+    [SerializeField] private GameObject _confirmQuit;
     [SerializeField] private GameObject _endMenu;
     [SerializeField] private TextMeshProUGUI _endScore;
     [Header("_________________________________________________________")]
@@ -386,9 +387,13 @@ public class UIManager : Singleton<UIManager>
         SceneManager.LoadScene("MainMenu");
     }
 
+    public void ConfirmQuit()
+    {
+        _confirmQuit.SetActive(!_confirmQuit.activeSelf);
+    }
+
     public void QuitGame()
     {
-        Application.OpenURL("https://forms.gle/oGGde8EdEBiKebiY9");
         Application.Quit();
     }
     #endregion
