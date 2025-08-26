@@ -237,7 +237,8 @@ public class GameManager : Singleton<GameManager>
         }
 
         //Spawn highlight and call event
-        _selectionObject = Instantiate(_selectionPrefab, _selectedTile.transform.position + new Vector3(0, 0.01f, 0), Quaternion.identity);
+        _selectionObject = Instantiate(_selectionPrefab, _selectedTile.Visual);
+        _selectionObject.transform.localPosition += new Vector3(0, 0.03f, 0);
         OnNewTileSelected?.Invoke(_selectedTile);
     }
 

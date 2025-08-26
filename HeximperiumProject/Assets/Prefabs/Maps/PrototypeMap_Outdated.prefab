@@ -39432,7 +39432,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5126445087781762621}
   m_Layer: 0
-  m_Name: PrototypeMap
+  m_Name: PrototypeMap_Outdated
   m_TagString: Grid
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

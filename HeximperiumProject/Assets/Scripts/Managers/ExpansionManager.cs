@@ -7,7 +7,6 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     #region CONFIGURATION
     [Header("_________________________________________________________")]
     [SerializeField] private InfrastructureData _townData;
-    [SerializeField] private Transform _borderParent;
     [SerializeField] private Transform _claimedTilesParent;
     #endregion
 
@@ -23,7 +22,6 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     #endregion
 
     #region ACCESSORS
-    public Transform BorderParent { get => _borderParent; }
     public int ClaimPerTurn { get => _claimPerTurn; set => _claimPerTurn = value; }
     public List<Tile> ClaimedTiles { get => _claimedTiles; }
     public InfrastructureData TownData { get => _townData;}

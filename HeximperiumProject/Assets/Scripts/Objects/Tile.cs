@@ -9,6 +9,7 @@ public class Tile : MonoBehaviour
     #region CONFIGURATION
     [SerializeField] private GameObject _borderPrefab;
     [SerializeField] private GameObject _highlightPrefab;
+    [SerializeField] private Transform _visual;
     #endregion
 
     #region VARIABLES
@@ -89,6 +90,7 @@ public class Tile : MonoBehaviour
     public int GroupID { get => _groupID; set => _groupID = value; }
     public Entertainment PreviousEntertainment { get => _previousEntertainment; }
     public Animator Animator { get => _animator; }
+    public Transform Visual { get => _visual; }
     #endregion
 
     private void Awake()
@@ -108,6 +110,15 @@ public class Tile : MonoBehaviour
     }
 
     #region BASIC METHODS
+    public void InitializeTile(TileData data)
+    {
+        _initialData = data;
+        _tileData = data;
+        name = _tileData.TileName + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
+        _incomes = data.Incomes;
+        UpdateVisual();
+    }
+
     //Update the tile data and call every other methods that impact
     private void UpdateTileData(TileData value)
     {
@@ -154,8 +165,8 @@ public class Tile : MonoBehaviour
 
         _claimed = true;
         OnTileClaimed?.Invoke(this);
-        _border = Instantiate(_borderPrefab, transform.position, Quaternion.identity).GetComponent<Border>();
-        _border.transform.parent = ExpansionManager.Instance.BorderParent;
+        _border = Instantiate(_borderPrefab, _visual).GetComponent<Border>();
+        _border.transform.localPosition += new Vector3(0, 0.01f, 0);
         _border.GetComponent<Border>().associatedTile = this;
         _border.name = "Border" + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
     }
@@ -191,7 +202,8 @@ public class Tile : MonoBehaviour
         {
             if (_highlightObject != null)
                 return;
-            _highlightObject = Instantiate(_highlightPrefab, transform.position + new Vector3(0, 0.02f, 0), Quaternion.identity);
+            _highlightObject = Instantiate(_highlightPrefab, _visual);
+            _highlightObject.transform.localPosition += new Vector3(0, 0.05f, 0);
         }
         else if(_highlightObject != null)
         {
