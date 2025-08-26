@@ -19,6 +19,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
 
     #region VARIABLES
     private bool _finalizingPhase;
+    private List<Tile> _revealedTiles = new List<Tile>();
     //Scouts variables
     private List<Scout> _scouts = new List<Scout>();
     private int _scoutsLimit;
@@ -56,6 +57,8 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         {
             _scoutsLimit = value;
             OnScoutsLimitModified?.Invoke();
+            if (GameManager.Instance.CurrentPhase == Phase.Explore)
+                AnimateInteractableTiles();
         }
     }
     public int CurrentScoutsCount
@@ -104,6 +107,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     public int UpgradeScoutRevealOnDeathRadius { get => _upgradeScoutRevealOnDeathRadius; set => _upgradeScoutRevealOnDeathRadius = value; }
     public bool UpgradeScoutIgnoreHazard { get => _upgradeScoutIgnoreHazard; set => _upgradeScoutIgnoreHazard = value; }
     public bool UpgradeScoutRedirectable { get => _upgradeScoutRedirectable; set => _upgradeScoutRedirectable = value; }
+    public List<Tile> RevealedTiles { get => _revealedTiles; }
     #endregion
 
     protected override void OnAwake()
@@ -141,18 +145,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     #region PHASE LOGIC
     protected override void StartPhase()
     {
-        if (_currentScoutsCount < _scoutsLimit)
-        {
-            //Shows all tiles that are starting points for scouts
-            foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
-            {
-                if (tile.TileData is InfrastructureData data)
-                {
-                    if (data.ScoutStartingPoint)
-                        tile.Animator.SetBool("Interactable", true);
-                }
-            }
-        }
+        AnimateInteractableTiles(true);
 
         ResourcesManager.Instance.CHEAT_RESOURCES();
     }
@@ -162,14 +155,11 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         _finalizingPhase = true;
 
         //Unshows all tiles that are starting points for scouts
-        foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
+        foreach (Tile tile in _tilesAnimated)
         {
-            if (tile.TileData is InfrastructureData data)
-            {
-                if (data.ScoutStartingPoint)
-                    tile.Animator.SetBool("Interactable", false);
-            }
+            tile.Animator.SetBool("Interactable", false);
         }
+        _tilesAnimated.Clear();
 
         foreach (Scout scout in _scouts)
         {
@@ -243,6 +233,8 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
             _choosingScoutDirection = true;
 
             OnScoutSpawned?.Invoke(_currentScout);
+
+            AnimateInteractableTiles();
         }
     }
 
@@ -322,4 +314,35 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         }
     }
     #endregion
+
+    public override void AnimateInteractableTiles(bool startAnim = false)
+    {
+        foreach (Tile tile in _tilesAnimated)
+        {
+            tile.Animator.SetBool("Interactable", false);
+        }
+        _tilesAnimated.Clear();
+
+        if (_currentScoutsCount < _scoutsLimit)
+        {
+            foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
+            {
+                if (tile.TileData is InfrastructureData data)
+                {
+                    if (data.ScoutStartingPoint)
+                    {
+                        _tilesAnimated.Add(tile);
+                    }
+                }
+            }
+        }
+
+        if (!startAnim)
+            return;
+
+        foreach (Tile tile in _tilesAnimated)
+        {
+            tile.Animator.SetBool("Interactable", true);
+        }
+    }
 }

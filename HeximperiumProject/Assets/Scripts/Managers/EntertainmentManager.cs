@@ -244,4 +244,6 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
             tile.GroupID = 0;
         }
     }
+    public override void AnimateInteractableTiles(bool startAnim = false)
+    { }
 }

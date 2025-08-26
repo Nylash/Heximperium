@@ -155,6 +155,7 @@ public class Tile : MonoBehaviour
             _animator.SetTrigger("InstantReveal");
         else
             _animator.SetTrigger("Reveal");
+        ExplorationManager.Instance.RevealedTiles.Add(this);
     }
 
     //Claim the tile and spawn the territory boundaries
@@ -307,6 +308,11 @@ public class Tile : MonoBehaviour
                 item.RollbackSpecialBehaviour(this);
             }
         }
+    }
+
+    public void SyncInteractableAnim()
+    {
+        GameManager.Instance.AnimateInteractableTiles();
     }
 
     // Call the specific listeners for each special behaviour, this is used to create a pair between the tile and the event inkover

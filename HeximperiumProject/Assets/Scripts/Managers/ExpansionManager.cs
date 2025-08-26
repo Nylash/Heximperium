@@ -28,8 +28,22 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     public int SavedClaimPerTurn { get => _savedClaimPerTurn; set => _savedClaimPerTurn = value; }
     public bool UpgradeTownAutoClaim { get => _upgradeTownAutoClaim; set => _upgradeTownAutoClaim = value; }
     public bool UpgradeTownsGenerateClaim { get => _upgradeTownsGenerateClaim; set => _upgradeTownsGenerateClaim = value; }
-    public bool UpgradeHazardClaimReduction { get => _upgradeHazardClaimReduction; set => _upgradeHazardClaimReduction = value; }
-    public bool UpgradeClaimRange { get => _upgradeClaimRange; set => _upgradeClaimRange = value; }
+    public bool UpgradeHazardClaimReduction { get => _upgradeHazardClaimReduction;
+        set
+        {
+            _upgradeHazardClaimReduction = value;
+            if (GameManager.Instance.CurrentPhase == Phase.Expand)
+                AnimateInteractableTiles();
+        }
+    }
+    public bool UpgradeClaimRange { get => _upgradeClaimRange;
+        set
+        {
+            _upgradeClaimRange = value;
+            if (GameManager.Instance.CurrentPhase == Phase.Expand)
+                AnimateInteractableTiles();
+        } 
+    }
     #endregion
 
     #region EVENTS
@@ -68,6 +82,8 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
                 }
             }
         }
+
+        AnimateInteractableTiles(true);
     }
 
     protected override void ConfirmPhase()
@@ -80,6 +96,12 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
         }
         else
             ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim, Transaction.Spent);
+
+        foreach (Tile tile in _tilesAnimated)
+        {
+            tile.Animator.SetBool("Interactable", false);
+        }
+        _tilesAnimated.Clear();
 
         GameManager.Instance.UnselectTile();
 
@@ -148,6 +170,8 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
             _claimedTiles.Add(tile);
             tile.transform.parent = _claimedTilesParent;
             OnTileClaimed?.Invoke(tile);
+
+            AnimateInteractableTiles();
         }
     }
 
@@ -173,8 +197,55 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
                         ClaimTile(neighbor, true);
                     }
                 }
+
+                AnimateInteractableTiles();
             }
         }
     }
     #endregion
+
+    public override void AnimateInteractableTiles(bool startAnim = false)
+    {
+        foreach (Tile tile in _tilesAnimated)
+        {
+            tile.Animator.SetBool("Interactable", false);
+        }
+        _tilesAnimated.Clear();
+
+        foreach (Tile tile in ExplorationManager.Instance.RevealedTiles)
+        {
+            if (tile.Claimed)
+            {
+                if (tile.TileData is not BasicTileData)
+                    continue;
+                else if (ResourcesManager.Instance.CanAfford(_townData.Costs) && ExploitationManager.Instance.IsInfraAvailable(_townData))
+                {
+                    _tilesAnimated.Add(tile);
+                }
+            }
+            else
+            {
+                if (tile.IsOneNeighborClaimed() || (_upgradeClaimRange && tile.IsOneNeighborOfNeighborClaimed()))
+                {
+                    if (ResourcesManager.Instance.CanAffordClaim(tile.TileData.ClaimCost))
+                    {
+                        _tilesAnimated.Add(tile);
+                        continue;
+                    }
+                }
+                if (tile.TileData is BasicTileData && ResourcesManager.Instance.CanAfford(_townData.Costs) && ExploitationManager.Instance.IsInfraAvailable(_townData))
+                {
+                    _tilesAnimated.Add(tile);
+                }
+            }
+        }
+
+        if (!startAnim)
+            return;
+
+        foreach (Tile tile in _tilesAnimated)
+        {
+            tile.Animator.SetBool("Interactable", true);
+        }
+    }
 }

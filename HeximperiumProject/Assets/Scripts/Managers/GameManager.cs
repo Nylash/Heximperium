@@ -124,6 +124,31 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    public void AnimateInteractableTiles()
+    {
+        switch (_currentPhase)
+        {
+            case Phase.Explore:
+                foreach (Tile tile in ExplorationManager.Instance.TilesAnimated)
+                {
+                    if (!tile.Animator.GetBool("Interactable"))
+                        tile.Animator.SetBool("Interactable", true);
+                }
+                break;
+            case Phase.Expand:
+                foreach (Tile tile in ExpansionManager.Instance.TilesAnimated)
+                {
+                    if (!tile.Animator.GetBool("Interactable"))
+                        tile.Animator.SetBool("Interactable", true);
+                }
+                break;
+            case Phase.Exploit:
+                break;
+            case Phase.Entertain:
+                break;
+        }
+    }
+
     #region INITIALIZATION
     //Tmp until save and game setting logic
     private void InitializeGame()
