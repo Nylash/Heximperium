@@ -7,9 +7,9 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
 {
     protected List<Vector3> _interactionPositions = new List<Vector3>();
     protected List<GameObject> _buttons = new List<GameObject>();
-    protected List<Tile> _tilesAnimated = new List<Tile>();
+    protected List<Tile> _animatedTiles = new List<Tile>();
 
-    public List<Tile> TilesAnimated { get => _tilesAnimated; }
+    public List<Tile> TilesAnimated { get => _animatedTiles; }
 
     public event Action OnPhaseFinalized;
 

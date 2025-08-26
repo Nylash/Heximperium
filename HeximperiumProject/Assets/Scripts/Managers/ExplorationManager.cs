@@ -155,11 +155,11 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         _finalizingPhase = true;
 
         //Unshows all tiles that are starting points for scouts
-        foreach (Tile tile in _tilesAnimated)
+        foreach (Tile tile in _animatedTiles)
         {
             tile.Animator.SetBool("Interactable", false);
         }
-        _tilesAnimated.Clear();
+        _animatedTiles.Clear();
 
         foreach (Scout scout in _scouts)
         {
@@ -317,11 +317,11 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
 
     public override void AnimateInteractableTiles(bool startAnim = false)
     {
-        foreach (Tile tile in _tilesAnimated)
+        foreach (Tile tile in _animatedTiles)
         {
             tile.Animator.SetBool("Interactable", false);
         }
-        _tilesAnimated.Clear();
+        _animatedTiles.Clear();
 
         if (_currentScoutsCount < _scoutsLimit)
         {
@@ -331,7 +331,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
                 {
                     if (data.ScoutStartingPoint)
                     {
-                        _tilesAnimated.Add(tile);
+                        _animatedTiles.Add(tile);
                     }
                 }
             }
@@ -340,7 +340,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         if (!startAnim)
             return;
 
-        foreach (Tile tile in _tilesAnimated)
+        foreach (Tile tile in _animatedTiles)
         {
             tile.Animator.SetBool("Interactable", true);
         }

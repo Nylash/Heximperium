@@ -97,11 +97,11 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
         else
             ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim, Transaction.Spent);
 
-        foreach (Tile tile in _tilesAnimated)
+        foreach (Tile tile in _animatedTiles)
         {
             tile.Animator.SetBool("Interactable", false);
         }
-        _tilesAnimated.Clear();
+        _animatedTiles.Clear();
 
         GameManager.Instance.UnselectTile();
 
@@ -206,11 +206,11 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
 
     public override void AnimateInteractableTiles(bool startAnim = false)
     {
-        foreach (Tile tile in _tilesAnimated)
+        foreach (Tile tile in _animatedTiles)
         {
             tile.Animator.SetBool("Interactable", false);
         }
-        _tilesAnimated.Clear();
+        _animatedTiles.Clear();
 
         foreach (Tile tile in ExplorationManager.Instance.RevealedTiles)
         {
@@ -220,7 +220,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
                     continue;
                 else if (ResourcesManager.Instance.CanAfford(_townData.Costs) && ExploitationManager.Instance.IsInfraAvailable(_townData))
                 {
-                    _tilesAnimated.Add(tile);
+                    _animatedTiles.Add(tile);
                 }
             }
             else
@@ -229,13 +229,13 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
                 {
                     if (ResourcesManager.Instance.CanAffordClaim(tile.TileData.ClaimCost))
                     {
-                        _tilesAnimated.Add(tile);
+                        _animatedTiles.Add(tile);
                         continue;
                     }
                 }
                 if (tile.TileData is BasicTileData && ResourcesManager.Instance.CanAfford(_townData.Costs) && ExploitationManager.Instance.IsInfraAvailable(_townData))
                 {
-                    _tilesAnimated.Add(tile);
+                    _animatedTiles.Add(tile);
                 }
             }
         }
@@ -243,7 +243,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
         if (!startAnim)
             return;
 
-        foreach (Tile tile in _tilesAnimated)
+        foreach (Tile tile in _animatedTiles)
         {
             tile.Animator.SetBool("Interactable", true);
         }
