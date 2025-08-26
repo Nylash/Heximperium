@@ -83,7 +83,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
             }
         }
 
-        AnimateInteractableTiles(true);
+        AnimateInteractableTiles();
     }
 
     protected override void ConfirmPhase()
@@ -204,7 +204,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     }
     #endregion
 
-    public override void AnimateInteractableTiles(bool startAnim = false)
+    public override void AnimateInteractableTiles()
     {
         foreach (Tile tile in _animatedTiles)
         {
@@ -239,9 +239,6 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
                 }
             }
         }
-
-        if (!startAnim)
-            return;
 
         foreach (Tile tile in _animatedTiles)
         {

@@ -310,11 +310,6 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public void SyncInteractableAnim()
-    {
-        GameManager.Instance.AnimateInteractableTiles();
-    }
-
     // Call the specific listeners for each special behaviour, this is used to create a pair between the tile and the event inkover
     #region SPECIFIC LISTENERS FOR BEHAVIOURS
     #region ON ENTERTAINMENT MODIFIED

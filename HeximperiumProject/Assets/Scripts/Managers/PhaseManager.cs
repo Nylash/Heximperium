@@ -48,5 +48,5 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
         }
     }
 
-    public abstract void AnimateInteractableTiles(bool startAnim = false);
+    public abstract void AnimateInteractableTiles();
 }

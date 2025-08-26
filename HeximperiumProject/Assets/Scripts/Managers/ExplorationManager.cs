@@ -145,7 +145,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     #region PHASE LOGIC
     protected override void StartPhase()
     {
-        AnimateInteractableTiles(true);
+        AnimateInteractableTiles();
 
         ResourcesManager.Instance.CHEAT_RESOURCES();
     }
@@ -315,7 +315,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     }
     #endregion
 
-    public override void AnimateInteractableTiles(bool startAnim = false)
+    public override void AnimateInteractableTiles()
     {
         foreach (Tile tile in _animatedTiles)
         {
@@ -336,9 +336,6 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
                 }
             }
         }
-
-        if (!startAnim)
-            return;
 
         foreach (Tile tile in _animatedTiles)
         {
