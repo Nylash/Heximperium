@@ -162,7 +162,7 @@ public class Tile : MonoBehaviour
     public void ClaimTile()
     {
         if (!_revealed)
-            RevealTile(false);
+            RevealTile(true);
 
         _claimed = true;
         OnTileClaimed?.Invoke(this);
