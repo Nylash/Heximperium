@@ -10,8 +10,6 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
     protected List<Tile> _animatedTiles = new List<Tile>();
     protected Coroutine _interactableTilesCoroutine;
 
-    public List<Tile> TilesAnimated { get => _animatedTiles; }
-
     public event Action OnPhaseFinalized;
 
     protected abstract void StartPhase();
@@ -54,7 +52,10 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
     protected void StopAnimationInteractableTiles()
     {
         if (_interactableTilesCoroutine != null)
+        {
             StopCoroutine(_interactableTilesCoroutine);
+            _interactableTilesCoroutine = null;
+        }
 
         foreach (Tile tile in _animatedTiles)
         {
