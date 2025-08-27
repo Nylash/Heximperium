@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -98,11 +97,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
         else
             ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim, Transaction.Spent);
 
-        foreach (Tile tile in _animatedTiles)
-        {
-            tile.Animator.SetBool("Interactable", false);
-        }
-        _animatedTiles.Clear();
+        StopAnimationInteractableTiles();
 
         GameManager.Instance.UnselectTile();
 
@@ -208,21 +203,12 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
 
     public override void AnimateInteractableTiles()
     {
-        bool animWasPlaying = false;
-        AnimatorStateInfo stateInfo = default;
-        float progress = 0f;
-        if (_animatedTiles.Count > 0)
-        {
-            stateInfo = _animatedTiles[0].Animator.GetCurrentAnimatorStateInfo(0);
-            progress = stateInfo.normalizedTime % 1f;
-            animWasPlaying = true;
-        }
+        bool animWasPlaying;
+        float progress;
+        AnimatorStateInfo stateInfo;
+        SyncAnimationInteractableTiles(out animWasPlaying, out stateInfo, out progress);
 
-        foreach (Tile tile in _animatedTiles)
-        {
-            tile.Animator.SetBool("Interactable", false);
-        }
-        _animatedTiles.Clear();
+        StopAnimationInteractableTiles();
 
         foreach (Tile tile in ExplorationManager.Instance.RevealedTiles)
         {
@@ -252,17 +238,6 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
             }
         }
 
-        StartCoroutine(PlayInteractableAnimation(animWasPlaying, progress, stateInfo));
-    }
-
-    private IEnumerator PlayInteractableAnimation(bool animWasPlaying, float progress, AnimatorStateInfo stateInfo)
-    {
-        yield return new WaitForEndOfFrame();
-        foreach (Tile tile in _animatedTiles)
-        {
-            tile.Animator.SetBool("Interactable", true);
-            if (animWasPlaying)
-                tile.Animator.Play(stateInfo.shortNameHash, 0, progress);
-        }
+        _interactableTilesCoroutine = StartCoroutine(PlayInteractableAnimation(animWasPlaying, progress, stateInfo));
     }
 }
