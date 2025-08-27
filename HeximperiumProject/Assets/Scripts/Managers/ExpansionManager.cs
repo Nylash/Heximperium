@@ -158,7 +158,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
         _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Infrastructure, _townData));
     }
 
-    public void ClaimTile(Tile tile, bool freeClaim)
+    public void ClaimTile(Tile tile, bool freeClaim, bool claimFromTownInteraction = false)
     {
         if (tile.Claimed)
             return;
@@ -172,7 +172,8 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
             tile.transform.parent = _claimedTilesParent;
             OnTileClaimed?.Invoke(tile);
 
-            AnimateInteractableTiles();
+            if (!claimFromTownInteraction)
+                AnimateInteractableTiles();
         }
     }
 
@@ -184,7 +185,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
             {
                 // Start by claiming the tile if needed
                 if (!tile.Claimed)
-                    ClaimTile(tile, true);
+                    ClaimTile(tile, true, true);
 
                 ExploitationManager.Instance.BuildInfrastructure(tile, _townData);
                 UIManager.Instance.UpdateTownLimit();
@@ -195,7 +196,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
                     {
                         if (!neighbor)
                             continue;
-                        ClaimTile(neighbor, true);
+                        ClaimTile(neighbor, true, true);
                     }
                 }
 
@@ -216,12 +217,6 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
             progress = stateInfo.normalizedTime % 1f;
             animWasPlaying = true;
         }
-
-        foreach (Tile tile in _animatedTiles)
-        {
-            tile.Animator.SetBool("Interactable", false);
-        }
-        _animatedTiles.Clear();
 
         foreach (Tile tile in _animatedTiles)
         {
