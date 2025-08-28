@@ -154,7 +154,9 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     {
         _finalizingPhase = true;
 
+        SyncAnimationInteractableTiles();
         StopAnimationInteractableTiles();
+        _syncAnimationFromPreviousPhase = true;
 
         foreach (Scout scout in _scouts)
         {
@@ -206,7 +208,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     }
 
     #region INTERACTION
-    public void SpawnScout(Tile tile, bool freeScout = false)
+    public void SpawnScout(Tile tile, bool freeScout = false, bool fromInteraction = false)
     {
         if(_currentScoutsCount < _scoutsLimit)
         {
@@ -229,7 +231,8 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
 
             OnScoutSpawned?.Invoke(_currentScout);
 
-            AnimateInteractableTiles();
+            if (fromInteraction)
+                AnimateInteractableTiles();
         }
     }
 
@@ -312,10 +315,15 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
 
     public override void AnimateInteractableTiles()
     {
-        bool animWasPlaying;
-        float progress;
-        AnimatorStateInfo stateInfo;
-        SyncAnimationInteractableTiles(out animWasPlaying, out stateInfo, out progress);
+        if (_syncAnimationFromPreviousPhase)
+        {
+            _animWasPlaying = ExploitationManager.Instance.AnimWasPlaying;
+            _stateInfo = ExploitationManager.Instance.StateInfo;
+            _progress = ExploitationManager.Instance.Progress;
+            _syncAnimationFromPreviousPhase = false;
+        }
+        else
+            SyncAnimationInteractableTiles();
 
         StopAnimationInteractableTiles();
 
@@ -333,6 +341,6 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
             }
         }
 
-        _interactableTilesCoroutine = StartCoroutine(PlayInteractableAnimation(animWasPlaying, progress, stateInfo));
+        _interactableTilesCoroutine = StartCoroutine(PlayInteractableAnimation(_animWasPlaying, _progress, _stateInfo));
     }
 }

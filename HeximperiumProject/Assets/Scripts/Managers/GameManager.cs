@@ -257,16 +257,16 @@ public class GameManager : Singleton<GameManager>
         switch (button.Interaction)
         {
             case Interaction.Claim:
-                ExpansionManager.Instance.ClaimTile(button.AssociatedTile, false);
+                ExpansionManager.Instance.ClaimTile(button.AssociatedTile, false, true);
                 break;
             case Interaction.Scout:
-                ExplorationManager.Instance.SpawnScout(button.AssociatedTile);
+                ExplorationManager.Instance.SpawnScout(button.AssociatedTile, false, true);
                 break;
             case Interaction.Infrastructure:
                 if(_currentPhase == Phase.Expand)
-                    ExpansionManager.Instance.BuildTown(button.AssociatedTile);
+                    ExpansionManager.Instance.BuildTown(button.AssociatedTile, true);
                 else
-                    ExploitationManager.Instance.BuildInfrastructure(button.AssociatedTile, button.InfrastructureData);
+                    ExploitationManager.Instance.BuildInfrastructure(button.AssociatedTile, button.InfrastructureData, true);
                 break;
             case Interaction.Destroy:
                 if(_currentPhase == Phase.Exploit)

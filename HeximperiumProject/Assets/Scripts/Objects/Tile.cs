@@ -172,7 +172,6 @@ public class Tile : MonoBehaviour
         _border.name = "Border" + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
     }
 
-
     //Called when a tile is claimed
     public void CheckBorder()
     {
@@ -226,6 +225,22 @@ public class Tile : MonoBehaviour
             if (_scoutCounter != null)
                 Destroy(_scoutCounter.gameObject);
         }
+    }
+
+    public bool TileEnhanceable()
+    {
+        if (!_revealed)
+            return false;
+        if (!_claimed)
+            return false;
+        if (_tileData.AvailableInfrastructures.Count == 0)
+            return false;
+        foreach (InfrastructureData data in _tileData.AvailableInfrastructures)
+        {
+            if(ResourcesManager.Instance.CanAfford(data.Costs))
+                return true;
+        }
+        return false;
     }
     #endregion
 

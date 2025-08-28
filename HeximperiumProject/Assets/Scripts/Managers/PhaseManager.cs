@@ -7,8 +7,18 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
 {
     protected List<Vector3> _interactionPositions = new List<Vector3>();
     protected List<GameObject> _buttons = new List<GameObject>();
+
+    //Variables for animated tiles
     protected List<Tile> _animatedTiles = new List<Tile>();
     protected Coroutine _interactableTilesCoroutine;
+    protected bool _animWasPlaying = false;
+    protected AnimatorStateInfo _stateInfo = default;
+    protected float _progress = 0f;
+    protected bool _syncAnimationFromPreviousPhase = true;
+
+    public bool AnimWasPlaying { get => _animWasPlaying; }
+    public AnimatorStateInfo StateInfo { get => _stateInfo; }
+    public float Progress { get => _progress; }
 
     public event Action OnPhaseFinalized;
 
@@ -76,16 +86,16 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
         _interactableTilesCoroutine = null;
     }
 
-    protected void SyncAnimationInteractableTiles(out bool animWasPlaying, out AnimatorStateInfo stateInfo, out float progress)
+    protected void SyncAnimationInteractableTiles()
     {
-        animWasPlaying = false;
-        stateInfo = default;
-        progress = 0f;
+        _animWasPlaying = false;
+        _stateInfo = default;
+        _progress = 0f;
         if (_animatedTiles.Count > 0)
         {
-            stateInfo = _animatedTiles[0].Animator.GetCurrentAnimatorStateInfo(0);
-            progress = stateInfo.normalizedTime % 1f;
-            animWasPlaying = true;
+            _stateInfo = _animatedTiles[0].Animator.GetCurrentAnimatorStateInfo(0);
+            _progress = _stateInfo.normalizedTime % 1f;
+            _animWasPlaying = true;
         }
     }
 }

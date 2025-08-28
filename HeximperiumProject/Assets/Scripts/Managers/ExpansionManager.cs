@@ -97,7 +97,9 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
         else
             ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim, Transaction.Spent);
 
+        SyncAnimationInteractableTiles();
         StopAnimationInteractableTiles();
+        _syncAnimationFromPreviousPhase = true;
 
         GameManager.Instance.UnselectTile();
 
@@ -153,7 +155,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
         _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Infrastructure, _townData));
     }
 
-    public void ClaimTile(Tile tile, bool freeClaim, bool claimFromTownInteraction = false)
+    public void ClaimTile(Tile tile, bool freeClaim, bool fromInteraction = false)
     {
         if (tile.Claimed)
             return;
@@ -167,12 +169,12 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
             tile.transform.parent = _claimedTilesParent;
             OnTileClaimed?.Invoke(tile);
 
-            if (!claimFromTownInteraction)
+            if (fromInteraction)
                 AnimateInteractableTiles();
         }
     }
 
-    public void BuildTown(Tile tile)
+    public void BuildTown(Tile tile, bool fromInteraction = false)
     {
         if (ExploitationManager.Instance.IsInfraAvailable(_townData))
         {
@@ -180,7 +182,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
             {
                 // Start by claiming the tile if needed
                 if (!tile.Claimed)
-                    ClaimTile(tile, true, true);
+                    ClaimTile(tile, true);
 
                 ExploitationManager.Instance.BuildInfrastructure(tile, _townData);
                 UIManager.Instance.UpdateTownLimit();
@@ -191,11 +193,12 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
                     {
                         if (!neighbor)
                             continue;
-                        ClaimTile(neighbor, true, true);
+                        ClaimTile(neighbor, true);
                     }
                 }
 
-                AnimateInteractableTiles();
+                if (fromInteraction)
+                    AnimateInteractableTiles();
             }
         }
     }
@@ -203,10 +206,15 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
 
     public override void AnimateInteractableTiles()
     {
-        bool animWasPlaying;
-        float progress;
-        AnimatorStateInfo stateInfo;
-        SyncAnimationInteractableTiles(out animWasPlaying, out stateInfo, out progress);
+        if (_syncAnimationFromPreviousPhase)
+        {
+            _animWasPlaying = ExplorationManager.Instance.AnimWasPlaying;
+            _stateInfo = ExplorationManager.Instance.StateInfo;
+            _progress = ExplorationManager.Instance.Progress;
+            _syncAnimationFromPreviousPhase = false;
+        }
+        else
+            SyncAnimationInteractableTiles();
 
         StopAnimationInteractableTiles();
 
@@ -238,6 +246,6 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
             }
         }
 
-        _interactableTilesCoroutine = StartCoroutine(PlayInteractableAnimation(animWasPlaying, progress, stateInfo));
+        _interactableTilesCoroutine = StartCoroutine(PlayInteractableAnimation(_animWasPlaying, _progress, _stateInfo));
     }
 }
