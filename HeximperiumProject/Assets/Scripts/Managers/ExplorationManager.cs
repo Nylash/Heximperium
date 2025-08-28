@@ -106,7 +106,15 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     }
     public int UpgradeScoutRevealOnDeathRadius { get => _upgradeScoutRevealOnDeathRadius; set => _upgradeScoutRevealOnDeathRadius = value; }
     public bool UpgradeScoutIgnoreHazard { get => _upgradeScoutIgnoreHazard; set => _upgradeScoutIgnoreHazard = value; }
-    public bool UpgradeScoutRedirectable { get => _upgradeScoutRedirectable; set => _upgradeScoutRedirectable = value; }
+    public bool UpgradeScoutRedirectable { 
+        get => _upgradeScoutRedirectable; 
+        set 
+        {
+            _upgradeScoutRedirectable = value;
+            if (GameManager.Instance.CurrentPhase == Phase.Explore)
+                AnimateInteractableTiles();
+        } 
+    }
     public List<Tile> RevealedTiles { get => _revealedTiles; }
     #endregion
 
@@ -243,6 +251,8 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         _tileRefForScoutDirection = tile;
         _choosingScoutDirection = true;
         scout.Animator.SetTrigger("Redirecting");
+
+        AnimateInteractableTiles();
     }
 
     private void ScoutInteraction(Tile tile, int positionIndex)
@@ -337,6 +347,16 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
                     {
                         _animatedTiles.Add(tile);
                     }
+                }
+            }
+        }
+        if (_upgradeScoutRedirectable)
+        {
+            foreach (Scout scout in _scouts)
+            {
+                if (!scout.HasRedirected)
+                {
+                    _animatedTiles.Add(scout.CurrentTile);
                 }
             }
         }

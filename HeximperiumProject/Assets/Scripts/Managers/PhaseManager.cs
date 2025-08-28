@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
     protected List<GameObject> _buttons = new List<GameObject>();
 
     //Variables for animated tiles
-    protected List<Tile> _animatedTiles = new List<Tile>();
+    protected HashSet<Tile> _animatedTiles = new HashSet<Tile>();
     protected Coroutine _interactableTilesCoroutine;
     protected bool _animWasPlaying = false;
     protected AnimatorStateInfo _stateInfo = default;
@@ -93,7 +94,7 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
         _progress = 0f;
         if (_animatedTiles.Count > 0)
         {
-            _stateInfo = _animatedTiles[0].Animator.GetCurrentAnimatorStateInfo(0);
+            _stateInfo = _animatedTiles.FirstOrDefault().Animator.GetCurrentAnimatorStateInfo(0);
             _progress = _stateInfo.normalizedTime % 1f;
             _animWasPlaying = true;
         }
