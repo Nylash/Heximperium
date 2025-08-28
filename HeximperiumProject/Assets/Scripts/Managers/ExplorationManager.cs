@@ -12,7 +12,6 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     [SerializeField] private float _awaitTimeScoutMovement = 0.25f;
     [Header("_________________________________________________________")]
     [Header("Scouts Related Objects")]
-    [SerializeField] private Transform _scoutsParent;
     [SerializeField] private GameObject _scoutPrefab;
     [SerializeField] private GameObject _scoutCounterPrefab;
     #endregion
@@ -222,7 +221,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         {
             _currentScout = Instantiate(_scoutPrefab, 
                 tile.transform.position + _scoutPrefab.transform.localPosition,
-                _scoutPrefab.transform.rotation, _scoutsParent).GetComponent<Scout>();
+                _scoutPrefab.transform.rotation, tile.Visual).GetComponent<Scout>();
             _currentScout.CurrentTile = tile;
             _scouts.Add(_currentScout);
 
