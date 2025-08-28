@@ -128,10 +128,16 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         //Earn incomes of every claimed tiles
         foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
             ResourcesManager.Instance.UpdateResource(tile.Incomes, Transaction.Gain, tile);
+
+        AnimateInteractableTiles();
     }
 
     protected override void ConfirmPhase()
     {
+        SyncAnimationInteractableTiles();
+        StopAnimationInteractableTiles();
+        _syncAnimationFromPreviousPhase = true;
+
         GameManager.Instance.UnselectTile();
 
         StartCoroutine(PhaseFinalized());
@@ -197,6 +203,8 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
             currentEntertainment.Initialize(tile, data);
             tile.Entertainment = currentEntertainment;
             OnEntertainmentSpawned?.Invoke(currentEntertainment);
+
+            AnimateInteractableTiles();
         }
     }
 
@@ -208,6 +216,8 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         tile.Entertainment = null;
         //Call the check empty group after the Entertainment assignation, so the event and its listener is done before
         CheckEmptyGroup(tile);
+
+        AnimateInteractableTiles();
     }
     #endregion
 
@@ -244,6 +254,41 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
             tile.GroupID = 0;
         }
     }
+
+    private bool IsAtLeastOneEntertainmentBuyable()
+    {
+        foreach (EntertainmentData data in _entertainmentsData)
+        {
+            if (ResourcesManager.Instance.CanAfford(data.Costs))
+                return true;
+        }
+        return false;
+    }
+
     public override void AnimateInteractableTiles()
-    { }
+    {
+        if (_syncAnimationFromPreviousPhase)
+        {
+            _animWasPlaying = ExploitationManager.Instance.AnimWasPlaying;
+            _stateInfo = ExploitationManager.Instance.StateInfo;
+            _progress = ExploitationManager.Instance.Progress;
+            _syncAnimationFromPreviousPhase = false;
+        }
+        else
+            SyncAnimationInteractableTiles();
+
+        StopAnimationInteractableTiles();
+
+        if (IsAtLeastOneEntertainmentBuyable())
+        {
+            foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
+            {
+                if (tile.Entertainment != null)
+                    continue;
+                _animatedTiles.Add(tile);
+            }
+        }
+
+        _interactableTilesCoroutine = StartCoroutine(PlayInteractableAnimation(_animWasPlaying, _progress, _stateInfo));
+    }
 }
