@@ -1298,7 +1298,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
   _townData: {fileID: 11400000, guid: c09b5b1323b68174bad1aea52735ddcc, type: 2}
-  _borderParent: {fileID: 0}
   _claimedTilesParent: {fileID: 525905276182878219}
 --- !u!114 &4571123148290906319
 MonoBehaviour:
@@ -1316,12 +1315,6 @@ MonoBehaviour:
   _infraAvailableCopies:
   - infrastructure: {fileID: 11400000, guid: c09b5b1323b68174bad1aea52735ddcc, type: 2}
     availableCopy: 1
-  - infrastructure: {fileID: 11400000, guid: b5e79191f4522cc4a81b4bb777d213c6, type: 2}
-    availableCopy: 4
-  - infrastructure: {fileID: 11400000, guid: 758e0bfcbc1c85b4f8d4064dfc028b50, type: 2}
-    availableCopy: 3
-  - infrastructure: {fileID: 11400000, guid: 4ee189cb8dd9a1b4584cdd486968e6c6, type: 2}
-    availableCopy: 2
 --- !u!114 &1793441645777705967
 MonoBehaviour:
   m_ObjectHideFlags: 0
