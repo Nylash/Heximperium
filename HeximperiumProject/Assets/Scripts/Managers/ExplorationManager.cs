@@ -12,13 +12,13 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     [SerializeField] private float _awaitTimeScoutMovement = 0.25f;
     [Header("_________________________________________________________")]
     [Header("Scouts Related Objects")]
-    [SerializeField] private Transform _scoutsParent;
     [SerializeField] private GameObject _scoutPrefab;
     [SerializeField] private GameObject _scoutCounterPrefab;
     #endregion
 
     #region VARIABLES
     private bool _finalizingPhase;
+    private List<Tile> _revealedTiles = new List<Tile>();
     //Scouts variables
     private List<Scout> _scouts = new List<Scout>();
     private int _scoutsLimit;
@@ -56,6 +56,8 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         {
             _scoutsLimit = value;
             OnScoutsLimitModified?.Invoke();
+            if (GameManager.Instance.CurrentPhase == Phase.Explore)
+                AnimateInteractableTiles();
         }
     }
     public int CurrentScoutsCount
@@ -103,7 +105,16 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     }
     public int UpgradeScoutRevealOnDeathRadius { get => _upgradeScoutRevealOnDeathRadius; set => _upgradeScoutRevealOnDeathRadius = value; }
     public bool UpgradeScoutIgnoreHazard { get => _upgradeScoutIgnoreHazard; set => _upgradeScoutIgnoreHazard = value; }
-    public bool UpgradeScoutRedirectable { get => _upgradeScoutRedirectable; set => _upgradeScoutRedirectable = value; }
+    public bool UpgradeScoutRedirectable { 
+        get => _upgradeScoutRedirectable; 
+        set 
+        {
+            _upgradeScoutRedirectable = value;
+            if (GameManager.Instance.CurrentPhase == Phase.Explore)
+                AnimateInteractableTiles();
+        } 
+    }
+    public List<Tile> RevealedTiles { get => _revealedTiles; }
     #endregion
 
     protected override void OnAwake()
@@ -141,18 +152,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     #region PHASE LOGIC
     protected override void StartPhase()
     {
-        if (_currentScoutsCount < _scoutsLimit)
-        {
-            //Highlight all tiles that are starting points for scouts
-            foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
-            {
-                if (tile.TileData is InfrastructureData data)
-                {
-                    if (data.ScoutStartingPoint)
-                        tile.Highlight(true);
-                }
-            }
-        }
+        AnimateInteractableTiles();
 
         ResourcesManager.Instance.CHEAT_RESOURCES();
     }
@@ -161,15 +161,9 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     {
         _finalizingPhase = true;
 
-        //Unhighlight all tiles that were starting points for scouts
-        foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
-        {
-            if (tile.TileData is InfrastructureData data)
-            {
-                if (data.ScoutStartingPoint)
-                    tile.Highlight(false);
-            }
-        }
+        SyncAnimationInteractableTiles();
+        StopAnimationInteractableTiles();
+        _syncAnimationFromPreviousPhase = true;
 
         foreach (Scout scout in _scouts)
         {
@@ -221,13 +215,13 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     }
 
     #region INTERACTION
-    public void SpawnScout(Tile tile, bool freeScout = false)
+    public void SpawnScout(Tile tile, bool freeScout = false, bool fromInteraction = false)
     {
         if(_currentScoutsCount < _scoutsLimit)
         {
             _currentScout = Instantiate(_scoutPrefab, 
                 tile.transform.position + _scoutPrefab.transform.localPosition,
-                _scoutPrefab.transform.rotation, _scoutsParent).GetComponent<Scout>();
+                _scoutPrefab.transform.rotation, tile.Visual).GetComponent<Scout>();
             _currentScout.CurrentTile = tile;
             _scouts.Add(_currentScout);
 
@@ -243,6 +237,9 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
             _choosingScoutDirection = true;
 
             OnScoutSpawned?.Invoke(_currentScout);
+
+            if (fromInteraction)
+                AnimateInteractableTiles();
         }
     }
 
@@ -253,6 +250,8 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         _tileRefForScoutDirection = tile;
         _choosingScoutDirection = true;
         scout.Animator.SetTrigger("Redirecting");
+
+        AnimateInteractableTiles();
     }
 
     private void ScoutInteraction(Tile tile, int positionIndex)
@@ -322,4 +321,45 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         }
     }
     #endregion
+
+    public override void AnimateInteractableTiles()
+    {
+        if (_syncAnimationFromPreviousPhase)
+        {
+            _animWasPlaying = ExploitationManager.Instance.AnimWasPlaying;
+            _stateInfo = ExploitationManager.Instance.StateInfo;
+            _progress = ExploitationManager.Instance.Progress;
+            _syncAnimationFromPreviousPhase = false;
+        }
+        else
+            SyncAnimationInteractableTiles();
+
+        StopAnimationInteractableTiles();
+
+        if (_currentScoutsCount < _scoutsLimit)
+        {
+            foreach (Tile tile in ExploitationManager.Instance.Infrastructures)
+            {
+                if (tile.TileData is InfrastructureData data)
+                {
+                    if (data.ScoutStartingPoint)
+                    {
+                        _animatedTiles.Add(tile);
+                    }
+                }
+            }
+        }
+        if (_upgradeScoutRedirectable)
+        {
+            foreach (Scout scout in _scouts)
+            {
+                if (!scout.HasRedirected)
+                {
+                    _animatedTiles.Add(scout.CurrentTile);
+                }
+            }
+        }
+
+        _interactableTilesCoroutine = StartCoroutine(PlayInteractableAnimation(_animWasPlaying, _progress, _stateInfo));
+    }
 }

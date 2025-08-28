@@ -158,7 +158,12 @@ public class PopUpManager : Singleton<PopUpManager>
                             if (GameManager.Instance.CurrentPhase == Phase.Exploit)
                                 ButtonDestroyPopUp("Destroy " + button.AssociatedTile.TileData.TileName);
                             else
-                                ButtonDestroyPopUp("Remove " + button.AssociatedTile.Entertainment.Data.Type.ToCustomString());
+                            {
+                                if (button.AssociatedTile.Entertainment == null)
+                                    ButtonDestroyPopUp("Remove the entertainment");
+                                else
+                                    ButtonDestroyPopUp("Remove " + button.AssociatedTile.Entertainment.Data.Type.ToCustomString());
+                            }
                             break;
                         case Interaction.Entertainment:
                             ButtonEntertainmentPopUp(button);

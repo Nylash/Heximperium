@@ -9,6 +9,7 @@ public class Tile : MonoBehaviour
     #region CONFIGURATION
     [SerializeField] private GameObject _borderPrefab;
     [SerializeField] private GameObject _highlightPrefab;
+    [SerializeField] private Transform _visual;
     #endregion
 
     #region VARIABLES
@@ -88,6 +89,8 @@ public class Tile : MonoBehaviour
     public int UniqueEntertainmentNeighborsCount_SE { get => _uniqueEntertainmentNeighborsCount_SE; set => _uniqueEntertainmentNeighborsCount_SE = value; }
     public int GroupID { get => _groupID; set => _groupID = value; }
     public Entertainment PreviousEntertainment { get => _previousEntertainment; }
+    public Animator Animator { get => _animator; }
+    public Transform Visual { get => _visual; }
     #endregion
 
     private void Awake()
@@ -107,6 +110,15 @@ public class Tile : MonoBehaviour
     }
 
     #region BASIC METHODS
+    public void InitializeTile(TileData data)
+    {
+        _initialData = data;
+        _tileData = data;
+        name = _tileData.TileName + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
+        _incomes = data.Incomes;
+        UpdateVisual();
+    }
+
     //Update the tile data and call every other methods that impact
     private void UpdateTileData(TileData value)
     {
@@ -143,22 +155,22 @@ public class Tile : MonoBehaviour
             _animator.SetTrigger("InstantReveal");
         else
             _animator.SetTrigger("Reveal");
+        ExplorationManager.Instance.RevealedTiles.Add(this);
     }
 
     //Claim the tile and spawn the territory boundaries
     public void ClaimTile()
     {
         if (!_revealed)
-            RevealTile(false);
+            RevealTile(true);
 
         _claimed = true;
         OnTileClaimed?.Invoke(this);
-        _border = Instantiate(_borderPrefab, transform.position, Quaternion.identity).GetComponent<Border>();
-        _border.transform.parent = ExpansionManager.Instance.BorderParent;
+        _border = Instantiate(_borderPrefab, _visual).GetComponent<Border>();
+        _border.transform.localPosition += new Vector3(0, 0.01f, 0);
         _border.GetComponent<Border>().associatedTile = this;
         _border.name = "Border" + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
     }
-
 
     //Called when a tile is claimed
     public void CheckBorder()
@@ -176,10 +188,10 @@ public class Tile : MonoBehaviour
                 Debug.LogError("This tile has no material configured");
                 break;
             case 1:
-                GetComponent<Renderer>().material = _tileData.Visuals[0];
+                GetComponentInChildren<Renderer>().material = _tileData.Visuals[0];
                 break;
             default:
-                GetComponent<Renderer>().material = _tileData.Visuals[UnityEngine.Random.Range(0, _tileData.Visuals.Count)];
+                GetComponentInChildren<Renderer>().material = _tileData.Visuals[UnityEngine.Random.Range(0, _tileData.Visuals.Count)];
                 break;
         }
     }
@@ -190,7 +202,8 @@ public class Tile : MonoBehaviour
         {
             if (_highlightObject != null)
                 return;
-            _highlightObject = Instantiate(_highlightPrefab, transform.position + new Vector3(0, 0.02f, 0), Quaternion.identity);
+            _highlightObject = Instantiate(_highlightPrefab, _visual);
+            _highlightObject.transform.localPosition += new Vector3(0, 0.05f, 0);
         }
         else if(_highlightObject != null)
         {
@@ -212,6 +225,22 @@ public class Tile : MonoBehaviour
             if (_scoutCounter != null)
                 Destroy(_scoutCounter.gameObject);
         }
+    }
+
+    public bool TileEnhanceable()
+    {
+        if (!_revealed)
+            return false;
+        if (!_claimed)
+            return false;
+        if (_tileData.AvailableInfrastructures.Count == 0)
+            return false;
+        foreach (InfrastructureData data in _tileData.AvailableInfrastructures)
+        {
+            if(ResourcesManager.Instance.CanAfford(data.Costs))
+                return true;
+        }
+        return false;
     }
     #endregion
 
