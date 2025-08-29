@@ -159,6 +159,7 @@ public class UIManager : Singleton<UIManager>
         UpdateResourceUI(Resource.Gold, ResourcesManager.Instance.GetResourceStock(Resource.Gold));
         UpdateResourceUI(Resource.SpecialResources, ResourcesManager.Instance.GetResourceStock(Resource.SpecialResources));
         UpdateTownLimit();
+        UpdateTurnCounterText(1);
     }
 
     #region RESOURCES BAR UI
@@ -341,9 +342,9 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    private void UpdateTurnCounterText(int turnCounter)
+    public void UpdateTurnCounterText(int turnCounter)
     {
-        _turnCounterText.text = "Turn : " + turnCounter;
+        _turnCounterText.text = "Turn : " + turnCounter + "/" + GameManager.Instance.TurnLimit;
     }
 
     private void EnableRenderers(GameObject item, bool enable)
