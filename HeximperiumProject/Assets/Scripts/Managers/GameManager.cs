@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -28,6 +29,7 @@ public class GameManager : Singleton<GameManager>
     private bool _waitingPhaseFinalization;
     private Phase _currentPhase;
     private int _turnCounter = 1;
+    private bool _lastTurn = false;
     //Game state
     private bool _gamePaused = true;
     private bool _tutorialLockingPhase = false;
@@ -45,6 +47,7 @@ public class GameManager : Singleton<GameManager>
     public event Action OnEntertainmentPhaseEnded;
     public event Action<Tile> OnNewTileSelected;
     public event Action OnTileUnselected;
+    public event Action OnLastTurnStarted;
     public event Action OnGameFinished;
     #endregion
 
@@ -63,6 +66,7 @@ public class GameManager : Singleton<GameManager>
     public bool TutorialLockingPhase { get => _tutorialLockingPhase; set => _tutorialLockingPhase = value; }
     public Tile SelectedTile { get => _selectedTile; }
     public int TurnLimit { get => _turnLimit; set => _turnLimit = value; }
+    public bool LastTurn { get => _lastTurn; }
     #endregion
 
     private void OnEnable() => _inputActions.Player.Enable();
@@ -311,6 +315,17 @@ public class GameManager : Singleton<GameManager>
 
     private void PhaseFinalized()
     {
+        StartCoroutine(PhaseFinalizedCo());
+    }
+
+    private IEnumerator PhaseFinalizedCo()
+    {
+        // Ensure at least one frame passes (optional, but avoids race conditions)
+        yield return null;
+
+        // Wait until the UI animation flag clears
+        yield return new WaitUntil(() => !UIManager.Instance.UiPhaseInAnimation);
+
         _waitingPhaseFinalization = false;
 
         _currentPhase = GetNextPhase(_currentPhase);
@@ -319,7 +334,7 @@ public class GameManager : Singleton<GameManager>
         {
             OnGameFinished?.Invoke();
             GameManager.Instance.GamePaused = true;
-            return;
+            yield break;
         }
 
         //New turn logic
@@ -332,6 +347,11 @@ public class GameManager : Singleton<GameManager>
             else
             {
                 _turnCounter++;
+                if (_turnCounter == _turnLimit)
+                {
+                    _lastTurn = true;
+                    OnLastTurnStarted?.Invoke();
+                }
                 OnNewTurn?.Invoke(_turnCounter);
             }
         }

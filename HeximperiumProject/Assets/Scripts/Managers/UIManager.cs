@@ -84,6 +84,7 @@ public class UIManager : Singleton<UIManager>
     #region VARIABLES
     private Transform _mainCanvas;
     private bool _areUnitsVisible;
+    private bool _uiPhaseInAnimation;
     #endregion
 
     #region ACCESSORS
@@ -104,6 +105,8 @@ public class UIManager : Singleton<UIManager>
     public Button ButtonEndPhase { get => _buttonEndPhase; }
     public Transform PopUpParent { get => _popUpParent; }
     public GameObject UpgradesMenuObject { get => _upgradesMenu; }
+    public Color ColorEntertain { get => _colorTopEntertain; }
+    public bool UiPhaseInAnimation { get => _uiPhaseInAnimation; set => _uiPhaseInAnimation = value; }
     #endregion
 
     protected override void OnAwake()
