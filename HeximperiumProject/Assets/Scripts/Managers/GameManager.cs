@@ -105,7 +105,7 @@ public class GameManager : Singleton<GameManager>
         _isPointerOverUI = EventSystem.current.IsPointerOverGameObject();
     }
 
-    public void  InteractionButtonsFade(bool fade)
+    public void InteractionButtonsFade(bool fade)
     {
         switch (_currentPhase)
         {

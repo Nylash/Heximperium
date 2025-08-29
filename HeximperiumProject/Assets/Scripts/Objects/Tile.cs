@@ -7,13 +7,19 @@ using System;
 public class Tile : MonoBehaviour
 {
     #region CONFIGURATION
+    [Header("_________________________________________________________")]
+    [Header("Configuration")]
     [SerializeField] private GameObject _borderPrefab;
     [SerializeField] private GameObject _highlightPrefab;
     [SerializeField] private Transform _visual;
+    [SerializeField] private SpriteRenderer _infraLvlRenderer;
+    [SerializeField] private Sprite[] _spriteInfraLvl = new Sprite[3];
     #endregion
 
     #region VARIABLES
     //Remove the serializedField when the map creation is fixed
+    [Header("_________________________________________________________")]
+    [Header("Map Generation Only")]
     [SerializeField] private TileData _tileData;
     [SerializeField] private Vector2 _coordinate;
     [SerializeField] private List<ResourceToIntMap> _incomes = new List<ResourceToIntMap>();
@@ -26,6 +32,7 @@ public class Tile : MonoBehaviour
     private Border _border;
     private Animator _animator;
     private GameObject _highlightObject;
+    private int _currentInfraLevel = 0;
     //Scouts
     private List<Scout> _scouts = new List<Scout>();
     private TextMeshPro _scoutCounter;
@@ -126,7 +133,10 @@ public class Tile : MonoBehaviour
 
         //Set the new income
         if (value is InfrastructureData)
+        {
             Incomes = Utilities.MergeResourceToIntMaps(_incomes, value.Incomes);
+            _currentInfraLevel++;
+        }
         else
         {
             //We are going back to the initial data (basic tile, resource tile or hazardous tile) so we reset the income
@@ -134,6 +144,7 @@ public class Tile : MonoBehaviour
             //If the preivous data is an infra we were on an enhanced infra so we need to remove the base infra income too
             if(_previousData is InfrastructureData)
                 Incomes = Utilities.SubtractResourceToIntMaps(_incomes, _previousData.Incomes);
+            _currentInfraLevel = 0;
         }
 
         name = value.TileName + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
@@ -192,6 +203,23 @@ public class Tile : MonoBehaviour
                 break;
             default:
                 GetComponentInChildren<Renderer>().material = _tileData.Visuals[UnityEngine.Random.Range(0, _tileData.Visuals.Count)];
+                break;
+        }
+        switch (_currentInfraLevel)
+        {
+            case 0:
+                _infraLvlRenderer.sprite = null;
+                break;
+            case 1:
+                _infraLvlRenderer.sprite = _spriteInfraLvl[0];
+                break;
+            case 2:
+                _infraLvlRenderer.sprite = _spriteInfraLvl[1];
+                break;
+            case 3:
+                _infraLvlRenderer.sprite = _spriteInfraLvl[2];
+                break;
+            default:
                 break;
         }
     }
