@@ -134,10 +134,6 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
 
     protected override void ConfirmPhase()
     {
-        SyncAnimationInteractableTiles();
-        StopAnimationInteractableTiles();
-        _syncAnimationFromPreviousPhase = true;
-
         GameManager.Instance.UnselectTile();
 
         StartCoroutine(PhaseFinalized());

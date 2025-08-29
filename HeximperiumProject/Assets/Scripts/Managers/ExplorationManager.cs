@@ -161,10 +161,6 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     {
         _finalizingPhase = true;
 
-        SyncAnimationInteractableTiles();
-        StopAnimationInteractableTiles();
-        _syncAnimationFromPreviousPhase = true;
-
         foreach (Scout scout in _scouts)
         {
             StartCoroutine(scout.Move());

@@ -60,6 +60,13 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
 
     public abstract void AnimateInteractableTiles();
 
+    public void EndPhaseStopAnimation()
+    {
+        SyncAnimationInteractableTiles();
+        StopAnimationInteractableTiles();
+        _syncAnimationFromPreviousPhase = true;
+    }
+
     protected void StopAnimationInteractableTiles()
     {
         if (_interactableTilesCoroutine != null)

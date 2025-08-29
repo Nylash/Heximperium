@@ -326,6 +326,8 @@ public class GameManager : Singleton<GameManager>
         // Wait until the UI animation flag clears
         yield return new WaitUntil(() => !UIManager.Instance.UiPhaseInAnimation);
 
+        SyncTilesAnimation();
+
         _waitingPhaseFinalization = false;
 
         _currentPhase = GetNextPhase(_currentPhase);
@@ -403,6 +405,27 @@ public class GameManager : Singleton<GameManager>
                 break;
             case Phase.Entertain:
                 OnEntertainmentPhaseEnded?.Invoke();
+                break;
+        }
+    }
+
+    private void SyncTilesAnimation()
+    {
+        switch (_currentPhase)
+        {
+            case Phase.Explore:
+                ExplorationManager.Instance.EndPhaseStopAnimation();
+                break;
+            case Phase.Expand:
+                ExpansionManager.Instance.EndPhaseStopAnimation();
+                break;
+            case Phase.Exploit:
+                ExploitationManager.Instance.EndPhaseStopAnimation();
+                break;
+            case Phase.Entertain:
+                EntertainmentManager.Instance.EndPhaseStopAnimation();
+                break;
+            default:
                 break;
         }
     }

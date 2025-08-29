@@ -97,10 +97,6 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
         else
             ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim, Transaction.Spent);
 
-        SyncAnimationInteractableTiles();
-        StopAnimationInteractableTiles();
-        _syncAnimationFromPreviousPhase = true;
-
         GameManager.Instance.UnselectTile();
 
         StartCoroutine(PhaseFinalized());
