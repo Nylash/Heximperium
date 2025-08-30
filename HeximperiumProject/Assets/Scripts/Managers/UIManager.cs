@@ -274,7 +274,7 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    private void ScoutsVisibility(bool visible)
+    public void ScoutsVisibility(bool visible)
     {
         _areUnitsVisible = visible;
 

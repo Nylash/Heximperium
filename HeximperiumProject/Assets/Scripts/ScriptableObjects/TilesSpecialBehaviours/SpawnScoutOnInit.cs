@@ -5,6 +5,7 @@ public class SpawnScoutOnInit : SpecialBehaviour
 {
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
     {
+        UIManager.Instance.ScoutsVisibility(true);
         ExplorationManager.Instance.SpawnScout(behaviourTile, true);
     }
 

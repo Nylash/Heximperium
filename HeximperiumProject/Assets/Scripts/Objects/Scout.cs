@@ -18,6 +18,7 @@ public class Scout : MonoBehaviour
     private bool _hasDoneMoving;
     private float _yOffset;
     private bool _hasRedirected;
+    private bool _isFreeScout;
     //Gameplay variables
     private int _speed;
     private int _lifespan;
@@ -68,11 +69,12 @@ public class Scout : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
-    public void InitializeScout()
+    public void InitializeScout(bool freeScout)
     {
         _speed = _data.Speed + ExplorationManager.Instance.BoostScoutSpeed;
         _lifespan = _data.Lifespan + ExplorationManager.Instance.BoostScoutLifespan;
         _revealRadius = _data.RevealRadius + ExplorationManager.Instance.BoostScoutRevealRadius;
+        _isFreeScout = freeScout;
 
         _yOffset = transform.position.y;
 
@@ -132,7 +134,8 @@ public class Scout : MonoBehaviour
         if (_lifespan <= 0)
         {
             ExplorationManager.Instance.Scouts.Remove(this);
-            ExplorationManager.Instance.CurrentScoutsCount--;
+            if (!_isFreeScout)
+                ExplorationManager.Instance.CurrentScoutsCount--;
             if(_currentTile != null)
             {
                 _currentTile.Scouts.Remove(this);

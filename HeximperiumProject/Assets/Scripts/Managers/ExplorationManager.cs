@@ -228,7 +228,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
             _tileRefForScoutDirection = tile;
             tile.UpdateScoutCounter();
 
-            _currentScout.InitializeScout();
+            _currentScout.InitializeScout(freeScout);
 
             _choosingScoutDirection = true;
 
