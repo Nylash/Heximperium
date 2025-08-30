@@ -962,9 +962,18 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region COST
         TextMeshProUGUI cost = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        cost.text = "Cost: " + button.InfrastructureData.Costs.CostToString();
-        if (!ResourcesManager.Instance.CanAfford(button.InfrastructureData.Costs))
-            cost.color = UIManager.Instance.ColorCantAfford;
+        if (GameManager.Instance.CurrentPhase == Phase.Expand)
+        {
+            cost.text = "Cost: " + button.InfrastructureData.ClaimCost + "<sprite name=\"Claim_Emoji\">" + "(" + ResourcesManager.Instance.Claim + ")";
+            if (!ResourcesManager.Instance.CanAffordClaim(button.InfrastructureData.ClaimCost))
+                cost.color = UIManager.Instance.ColorCantAfford;
+        }
+        else
+        {
+            cost.text = "Cost: " + button.InfrastructureData.Costs.CostToString();
+            if (!ResourcesManager.Instance.CanAfford(button.InfrastructureData.Costs))
+                cost.color = UIManager.Instance.ColorCantAfford;
+        }
         cost.margin = _fullMargin;
         textObjects.Add(cost.GetComponent<RectTransform>());
         ClampTextWidth(cost);

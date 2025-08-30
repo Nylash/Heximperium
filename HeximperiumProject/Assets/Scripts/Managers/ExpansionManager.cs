@@ -174,13 +174,14 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     {
         if (ExploitationManager.Instance.IsInfraAvailable(_townData))
         {
-            if (ResourcesManager.Instance.CanAfford(_townData.Costs))
+            if (ResourcesManager.Instance.CanAffordClaim(_townData.ClaimCost))
             {
                 // Start by claiming the tile if needed
                 if (!tile.Claimed)
                     ClaimTile(tile, true);
 
                 ExploitationManager.Instance.BuildInfrastructure(tile, _townData);
+                ResourcesManager.Instance.UpdateClaim(_townData.ClaimCost, Transaction.Spent);
                 UIManager.Instance.UpdateTownLimit();
 
                 if (_upgradeTownAutoClaim)
@@ -220,7 +221,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
             {
                 if (tile.TileData is not BasicTileData)
                     continue;
-                else if (ResourcesManager.Instance.CanAfford(_townData.Costs) && ExploitationManager.Instance.IsInfraAvailable(_townData))
+                else if (ResourcesManager.Instance.CanAffordClaim(_townData.ClaimCost) && ExploitationManager.Instance.IsInfraAvailable(_townData))
                 {
                     _animatedTiles.Add(tile);
                 }
@@ -235,7 +236,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
                         continue;
                     }
                 }
-                if (tile.TileData is BasicTileData && ResourcesManager.Instance.CanAfford(_townData.Costs) && ExploitationManager.Instance.IsInfraAvailable(_townData))
+                if (tile.TileData is BasicTileData && ResourcesManager.Instance.CanAffordClaim(_townData.ClaimCost) && ExploitationManager.Instance.IsInfraAvailable(_townData))
                 {
                     _animatedTiles.Add(tile);
                 }

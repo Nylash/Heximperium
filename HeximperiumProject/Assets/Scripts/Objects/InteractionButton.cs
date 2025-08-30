@@ -107,7 +107,9 @@ public class InteractionButton : MonoBehaviour
     private void InitializeInfrastructure(InfrastructureData infraData)
     {
         _infraData = infraData;
-        if (!ResourcesManager.Instance.CanAfford(_infraData.Costs) || !ExploitationManager.Instance.IsInfraAvailable(infraData))
+        if (!ResourcesManager.Instance.CanAfford(_infraData.Costs) 
+            || !ResourcesManager.Instance.CanAffordClaim(_infraData.ClaimCost)
+            || !ExploitationManager.Instance.IsInfraAvailable(infraData))
             _renderer.color = UIManager.Instance.ColorCantAfford;
         LoadSprite(infraData.name);
     }
