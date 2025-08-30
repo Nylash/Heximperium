@@ -326,7 +326,7 @@ public class GameManager : Singleton<GameManager>
 
     private IEnumerator PhaseFinalizedCo()
     {
-        // Ensure at least one frame passes (optional, but avoids race conditions)
+        // Ensure at least one frame passes
         yield return null;
 
         // Wait until the UI animation flag clears

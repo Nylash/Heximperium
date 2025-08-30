@@ -18,9 +18,9 @@ public class UIPhase_SpriteRotator : MonoBehaviour
 
         _positions = new Image[4] { _north, _west, _south, _east };
 
-        GameManager.Instance.OnExplorationPhaseEnded += () => StartAnimation();
-        GameManager.Instance.OnExpansionPhaseEnded += () => StartAnimation();
-        GameManager.Instance.OnExploitationPhaseEnded += () => StartAnimation();
+        ExplorationManager.Instance.OnPhaseFinalized += () => StartAnimation();
+        ExpansionManager.Instance.OnPhaseFinalized += () => StartAnimation();
+        ExploitationManager.Instance.OnPhaseFinalized += () => StartAnimation();
         GameManager.Instance.OnLastTurnStarted += () => OnLastTurn();
     }
 
@@ -32,8 +32,8 @@ public class UIPhase_SpriteRotator : MonoBehaviour
 
     private void OnLastTurn()
     {
-        GameManager.Instance.OnExpansionPhaseEnded += () => SetScoreImg();
-        GameManager.Instance.OnExploitationPhaseEnded += () => HideLastSprite();
+        ExpansionManager.Instance.OnPhaseFinalized += () => SetScoreImg();
+        ExploitationManager.Instance.OnPhaseFinalized += () => HideLastSprite();
     }
 
     private void SetScoreImg()
