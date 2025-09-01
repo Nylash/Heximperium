@@ -14,6 +14,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private Transform _visual;
     [SerializeField] private SpriteRenderer _infraLvlRenderer;
     [SerializeField] private Sprite[] _spriteInfraLvl = new Sprite[3];
+    [SerializeField] private Animator _claimTintAnimator;
     #endregion
 
     #region VARIABLES
@@ -180,6 +181,7 @@ public class Tile : MonoBehaviour
         _border = Instantiate(_borderPrefab, _visual).GetComponent<Border>();
         _border.transform.localPosition += new Vector3(0, 0.01f, 0);
         _border.GetComponent<Border>().associatedTile = this;
+        _claimTintAnimator.SetTrigger("Claim");
         _border.name = "Border" + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
     }
 

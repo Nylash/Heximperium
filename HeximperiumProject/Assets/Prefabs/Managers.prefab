@@ -266,7 +266,7 @@ MonoBehaviour:
   _tilePrefab: {fileID: 5751803865783233614, guid: 8438ded482f00494aa769242da2958cd, type: 3}
   _emptyMap: {fileID: 3026037459454811544, guid: 8e788ee934d5849459ad1a6b7658af73, type: 3}
   _mapRadius: 12
-  _predefinedMap: {fileID: 6729108137961097247, guid: e4ec996dd3516894e9b5320ddb636898, type: 3}
+  _predefinedMap: {fileID: 6251481457565531390, guid: 8b9d2f8ec1dec7848b1d37de0ee09b46, type: 3}
   _mapDictionnary:
     tiles:
     - {x: -6, y: -12}
