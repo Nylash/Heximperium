@@ -323,7 +323,6 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         if (_syncAnimationFromPreviousPhase)
         {
             _animWasPlaying = ExploitationManager.Instance.AnimWasPlaying;
-            _stateInfo = ExploitationManager.Instance.StateInfo;
             _progress = ExploitationManager.Instance.Progress;
             _syncAnimationFromPreviousPhase = false;
         }
@@ -356,6 +355,6 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
             }
         }
 
-        _interactableTilesCoroutine = StartCoroutine(PlayInteractableAnimation(_animWasPlaying, _progress, _stateInfo));
+        _interactableTilesCoroutine = StartCoroutine(PlayInteractableAnimation(_animWasPlaying, _progress));
     }
 }
