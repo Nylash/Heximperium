@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using System.Linq;
 
 public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
 {
@@ -11,14 +10,16 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
 
     //Variables for animated tiles
     protected HashSet<Tile> _animatedTiles = new HashSet<Tile>();
+    protected Dictionary<Tile, Vector3> _initialPositions = new Dictionary<Tile, Vector3>();
     protected Coroutine _interactableTilesCoroutine;
     protected bool _animWasPlaying = false;
-    protected AnimatorStateInfo _stateInfo = default;
     protected float _progress = 0f;
     protected bool _syncAnimationFromPreviousPhase = true;
+    protected float _bounceStartTime = 0f;
+    protected const float _bouncePeriod = 1f;
+    protected const float _bounceHeight = 0.1f;
 
     public bool AnimWasPlaying { get => _animWasPlaying; }
-    public AnimatorStateInfo StateInfo { get => _stateInfo; }
     public float Progress { get => _progress; }
 
     public event Action OnPhaseFinalized;
@@ -77,33 +78,51 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
 
         foreach (Tile tile in _animatedTiles)
         {
-            tile.Animator.SetBool("Interactable", false);
+            if (_initialPositions.TryGetValue(tile, out Vector3 pos))
+            {
+                tile.Visual.localPosition = pos;
+            }
         }
         _animatedTiles.Clear();
+        _initialPositions.Clear();
     }
 
-    protected IEnumerator PlayInteractableAnimation(bool animWasPlaying, float progress, AnimatorStateInfo stateInfo)
+    protected IEnumerator PlayInteractableAnimation(bool animWasPlaying, float progress)
     {
-        yield return new WaitForEndOfFrame();
+        yield return null;
+        _bounceStartTime = Time.time - progress * _bouncePeriod;
         foreach (Tile tile in _animatedTiles)
         {
-            tile.Animator.SetBool("Interactable", true);
-            if (animWasPlaying)
-                tile.Animator.Play(stateInfo.shortNameHash, 0, progress);
+            if (!_initialPositions.ContainsKey(tile))
+                _initialPositions[tile] = tile.Visual.localPosition;
+        }
+
+        while (_animatedTiles.Count > 0)
+        {
+            float phase = (Time.time - _bounceStartTime) / _bouncePeriod;
+            float offset = Mathf.Sin(phase * Mathf.PI * 2f) * _bounceHeight;
+            foreach (Tile tile in _animatedTiles)
+            {
+                if (_initialPositions.TryGetValue(tile, out Vector3 basePos))
+                {
+                    tile.Visual.localPosition = new Vector3(basePos.x, basePos.y + offset, basePos.z);
+                }
+            }
+            yield return null;
         }
         _interactableTilesCoroutine = null;
     }
 
     protected void SyncAnimationInteractableTiles()
     {
-        _animWasPlaying = false;
-        _stateInfo = default;
-        _progress = 0f;
-        if (_animatedTiles.Count > 0)
+        _animWasPlaying = _animatedTiles.Count > 0;
+        if (_animWasPlaying)
         {
-            _stateInfo = _animatedTiles.FirstOrDefault().Animator.GetCurrentAnimatorStateInfo(0);
-            _progress = _stateInfo.normalizedTime % 1f;
-            _animWasPlaying = true;
+            _progress = ((Time.time - _bounceStartTime) / _bouncePeriod) % 1f;
+        }
+        else
+        {
+            _progress = 0f;
         }
     }
 }
