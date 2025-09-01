@@ -266,25 +266,20 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         if (_syncAnimationFromPreviousPhase)
         {
             _animWasPlaying = ExploitationManager.Instance.AnimWasPlaying;
-            _stateInfo = ExploitationManager.Instance.StateInfo;
             _progress = ExploitationManager.Instance.Progress;
             _syncAnimationFromPreviousPhase = false;
         }
-        else
-            SyncAnimationInteractableTiles();
-
-        StopAnimationInteractableTiles();
+        HashSet<Tile> newTiles = new HashSet<Tile>();
 
         if (IsAtLeastOneEntertainmentBuyable())
         {
             foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
             {
-                if (tile.Entertainment != null)
-                    continue;
-                _animatedTiles.Add(tile);
+                if (tile.Entertainment == null)
+                    newTiles.Add(tile);
             }
         }
 
-        _interactableTilesCoroutine = StartCoroutine(PlayInteractableAnimation(_animWasPlaying, _progress, _stateInfo));
+        ApplyAnimatedTiles(newTiles);
     }
 }

@@ -323,14 +323,10 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         if (_syncAnimationFromPreviousPhase)
         {
             _animWasPlaying = ExploitationManager.Instance.AnimWasPlaying;
-            _stateInfo = ExploitationManager.Instance.StateInfo;
             _progress = ExploitationManager.Instance.Progress;
             _syncAnimationFromPreviousPhase = false;
         }
-        else
-            SyncAnimationInteractableTiles();
-
-        StopAnimationInteractableTiles();
+        HashSet<Tile> newTiles = new HashSet<Tile>();
 
         if (_currentScoutsCount < _scoutsLimit)
         {
@@ -340,7 +336,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
                 {
                     if (data.ScoutStartingPoint)
                     {
-                        _animatedTiles.Add(tile);
+                        newTiles.Add(tile);
                     }
                 }
             }
@@ -351,11 +347,11 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
             {
                 if (!scout.HasRedirected)
                 {
-                    _animatedTiles.Add(scout.CurrentTile);
+                    newTiles.Add(scout.CurrentTile);
                 }
             }
         }
 
-        _interactableTilesCoroutine = StartCoroutine(PlayInteractableAnimation(_animWasPlaying, _progress, _stateInfo));
+        ApplyAnimatedTiles(newTiles);
     }
 }

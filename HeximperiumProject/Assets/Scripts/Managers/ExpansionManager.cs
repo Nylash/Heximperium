@@ -206,14 +206,10 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
         if (_syncAnimationFromPreviousPhase)
         {
             _animWasPlaying = ExplorationManager.Instance.AnimWasPlaying;
-            _stateInfo = ExplorationManager.Instance.StateInfo;
             _progress = ExplorationManager.Instance.Progress;
             _syncAnimationFromPreviousPhase = false;
         }
-        else
-            SyncAnimationInteractableTiles();
-
-        StopAnimationInteractableTiles();
+        HashSet<Tile> newTiles = new HashSet<Tile>();
 
         foreach (Tile tile in ExplorationManager.Instance.RevealedTiles)
         {
@@ -223,7 +219,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
                     continue;
                 else if (ResourcesManager.Instance.CanAffordClaim(_townData.ClaimCost) && ExploitationManager.Instance.IsInfraAvailable(_townData))
                 {
-                    _animatedTiles.Add(tile);
+                    newTiles.Add(tile);
                 }
             }
             else
@@ -232,17 +228,17 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
                 {
                     if (ResourcesManager.Instance.CanAffordClaim(tile.TileData.ClaimCost))
                     {
-                        _animatedTiles.Add(tile);
+                        newTiles.Add(tile);
                         continue;
                     }
                 }
                 if (tile.TileData is BasicTileData && ResourcesManager.Instance.CanAffordClaim(_townData.ClaimCost) && ExploitationManager.Instance.IsInfraAvailable(_townData))
                 {
-                    _animatedTiles.Add(tile);
+                    newTiles.Add(tile);
                 }
             }
         }
 
-        _interactableTilesCoroutine = StartCoroutine(PlayInteractableAnimation(_animWasPlaying, _progress, _stateInfo));
+        ApplyAnimatedTiles(newTiles);
     }
 }
