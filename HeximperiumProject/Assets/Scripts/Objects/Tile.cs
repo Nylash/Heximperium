@@ -36,6 +36,7 @@ public class Tile : MonoBehaviour
     private int _currentInfraLevel = 0;
     private Coroutine _interactionCoroutine;
     private TileInteractionAnimationState _interactionAnimationState = TileInteractionAnimationState.None;
+    private Vector3 _interactionBaseLocalPosition;
     //Scouts
     private List<Scout> _scouts = new List<Scout>();
     private TextMeshPro _scoutCounter;
@@ -103,6 +104,7 @@ public class Tile : MonoBehaviour
     public Transform Visual { get => _visual; }
     public Coroutine InteractionCoroutine { get => _interactionCoroutine; set => _interactionCoroutine = value; }
     public TileInteractionAnimationState InteractionAnimationState { get => _interactionAnimationState; set => _interactionAnimationState = value; }
+    public Vector3 InteractionBaseLocalPosition { get => _interactionBaseLocalPosition; set => _interactionBaseLocalPosition = value; }
     #endregion
 
     private void Awake()

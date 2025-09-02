@@ -14,7 +14,7 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
     private HashSet<Tile> _stoppingAnimationTiles = new HashSet<Tile>();
     private bool _animWasPlaying = false;
     private float _progress = 0f;
-    private float _bounceStartTime = 0f;
+    private Dictionary<Tile, float> _bounceStartTimes = new Dictionary<Tile, float>();
     private const float _bouncePeriod = 2f;
     private const float _bounceHeight = 0.05f;
     private const float _returnDuration = 0.15f;// Make sure this is lower than UIPhase animation rotation duration to avoid needing sync between phases
@@ -67,6 +67,7 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
             _stoppingAnimationTiles.Add(tile);
             tile.InteractionAnimationState = TileInteractionAnimationState.Stopping;
             _animatedTiles.Remove(tile);
+            _bounceStartTimes.Remove(tile);
         }
 
         if (endOfPhase)
@@ -86,6 +87,10 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
             {
                 _animatedTiles.Add(tile);
                 tile.InteractionAnimationState = TileInteractionAnimationState.Animating;
+                if (!_bounceStartTimes.ContainsKey(tile))
+                {
+                    _bounceStartTimes[tile] = Time.time - _progress * _bouncePeriod;
+                }
                 tile.InteractionCoroutine = StartCoroutine(AnimationInteraction(tile));
             }
         }
@@ -99,6 +104,10 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
                 }
                 _animatedTiles.Add(tile);
                 tile.InteractionAnimationState = TileInteractionAnimationState.Animating;
+                if (!_bounceStartTimes.ContainsKey(tile))
+                {
+                    _bounceStartTimes[tile] = Time.time - _progress * _bouncePeriod;
+                }
                 tile.InteractionCoroutine = StartCoroutine(AnimationInteraction(tile));
             }
             foreach (Tile tile in _stoppingAnimationTiles)
@@ -112,15 +121,16 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
     {
         float elapsed = 0f;
         Vector3 start = tile.Visual.localPosition;
+        Vector3 basePos = tile.InteractionBaseLocalPosition;
         while (elapsed < _returnDuration)
         {
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / _returnDuration);
-            tile.Visual.localPosition = Vector3.Lerp(start, Vector3.zero, t);
+            tile.Visual.localPosition = Vector3.Lerp(start, basePos, t);
             yield return null;
         }
 
-        tile.Visual.localPosition = Vector3.zero;// Correct any floating point errors
+        tile.Visual.localPosition = basePos;// Correct any floating point errors
         tile.InteractionCoroutine = null;
         tile.InteractionAnimationState = TileInteractionAnimationState.None;
         _stoppingAnimationTiles.Remove(tile);
@@ -128,15 +138,18 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
 
     private IEnumerator AnimationInteraction(Tile tile)
     {
+        Vector3 basePos = tile.Visual.localPosition;
+        tile.InteractionBaseLocalPosition = basePos;
+
         yield return null;
 
-        _bounceStartTime = Time.time - _progress * _bouncePeriod;
+        float startTime = _bounceStartTimes[tile];
 
         while (tile.InteractionAnimationState == TileInteractionAnimationState.Animating)
         {
-            float phase = (Time.time - _bounceStartTime) / _bouncePeriod;
+            float phase = (Time.time - startTime) / _bouncePeriod;
             float offset = Mathf.Sin(phase * Mathf.PI * 2f) * _bounceHeight;
-            tile.Visual.localPosition = new Vector3(tile.Visual.localPosition.x, tile.Visual.localPosition.y + offset, tile.Visual.localPosition.z);
+            tile.Visual.localPosition = basePos + new Vector3(0f, offset, 0f);
             yield return null;
         }
     }
@@ -146,7 +159,15 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
         _animWasPlaying = _animatedTiles.Count > 0;
         if (_animWasPlaying)
         {
-            _progress = ((Time.time - _bounceStartTime) / _bouncePeriod) % 1f;
+            Tile tile = _animatedTiles.First();
+            if (_bounceStartTimes.TryGetValue(tile, out float startTime))
+            {
+                _progress = ((Time.time - startTime) / _bouncePeriod) % 1f;
+            }
+            else
+            {
+                _progress = 0f;
+            }
         }
         else
         {
