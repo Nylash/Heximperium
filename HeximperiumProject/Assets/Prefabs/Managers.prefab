@@ -266,7 +266,7 @@ MonoBehaviour:
   _tilePrefab: {fileID: 5751803865783233614, guid: 8438ded482f00494aa769242da2958cd, type: 3}
   _emptyMap: {fileID: 3026037459454811544, guid: 8e788ee934d5849459ad1a6b7658af73, type: 3}
   _mapRadius: 12
-  _predefinedMap: {fileID: 6251481457565531390, guid: 8b9d2f8ec1dec7848b1d37de0ee09b46, type: 3}
+  _predefinedMap: {fileID: 4969115435468964975, guid: ed7eca3d5051a5e43a4f0dff6dc2068e, type: 3}
   _mapDictionnary:
     tiles:
     - {x: -6, y: -12}
@@ -925,7 +925,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
     - {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
     - {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
-    - {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
+    - {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
     - {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
     - {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
     - {fileID: 11400000, guid: c81ae4899e5770740944c34ce98060ae, type: 2}
@@ -948,7 +948,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
     - {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
     - {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
-    - {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
+    - {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
     - {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
     - {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
     - {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
@@ -1097,7 +1097,7 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
     - {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
     - {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
-    - {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
+    - {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
     - {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
     - {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
     - {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
@@ -1250,7 +1250,6 @@ MonoBehaviour:
   _baseScoutsLimit: 1
   _awaitTimeScoutMovement: 1
   _scoutPrefab: {fileID: 5066032661868510455, guid: 6df47c3f9f6c2a247be0ff0800c84d61, type: 3}
-  _scoutCounterPrefab: {fileID: 1835970567070459480, guid: 53d981b0fda10094ca17866fb80ecf99, type: 3}
 --- !u!114 &5152465035945284524
 MonoBehaviour:
   m_ObjectHideFlags: 0

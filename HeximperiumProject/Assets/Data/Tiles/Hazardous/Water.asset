@@ -15,8 +15,7 @@ MonoBehaviour:
   _name: Water
   _visuals:
   - {fileID: 2100000, guid: 0ca2f32323c98a949aa45fbf6b47d03e, type: 2}
-  _claimCost: 2
+  _claimCost: 999
   _incomes: []
-  _availableInfrastructures:
-  - {fileID: 11400000, guid: fb5a95d0d24473e428959d7d1ca2f553, type: 2}
+  _availableInfrastructures: []
   _specialBehaviours: []

@@ -525,10 +525,12 @@ public class PopUpManager : Singleton<PopUpManager>
         if (tile.TileData is HazardousTileData && !tile.Claimed)
         {
             TextMeshProUGUI slow = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            slow.text = "Slow down scouts, slow removed when tile is claimed";
+            slow.text = "Slow down scouts, cannot be claimed";
             slow.margin = _horizontalMargin;
             textObjects.Add(slow.GetComponent<RectTransform>());
             ClampTextWidth(slow);
+            slow.fontStyle = FontStyles.Italic;
+            slow.alignment = TextAlignmentOptions.Center;
         }
         #endregion
 
@@ -594,7 +596,7 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         #region CLAIM COST
-        if (!tile.Claimed)
+        if (!tile.Claimed && tile.TileData is not HazardousTileData)
         {
             TextMeshProUGUI claimStatus = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
             claimStatus.text = "Claim cost: " + tile.TileData.ClaimCost + "<sprite name=\"Claim_Emoji\">";

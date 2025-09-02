@@ -131,13 +131,19 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
         //We can only claimed tiles adjacent to already claimed tiles (except if we got the upgrade)
         if (tile.IsOneNeighborClaimed())
         {
-            ClaimInteraction(tile, 1);
-            OnClaimableTileSelected?.Invoke();
+            if (tile.TileData is not HazardousTileData)
+            {
+                ClaimInteraction(tile, 1);
+                OnClaimableTileSelected?.Invoke();
+            }
         }
         else if (_upgradeClaimRange)
         {
-            if (tile.IsOneNeighborOfNeighborClaimed())
-                ClaimInteraction(tile, 1);
+            if (tile.TileData is not HazardousTileData)
+            {
+                if (tile.IsOneNeighborOfNeighborClaimed())
+                    ClaimInteraction(tile, 1);
+            }
         }
     }
 
@@ -156,6 +162,8 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     public void ClaimTile(Tile tile, bool freeClaim, bool fromInteraction = false)
     {
         if (tile.Claimed)
+            return;
+        if (tile.TileData is HazardousTileData)
             return;
 
         if (ResourcesManager.Instance.CanAffordClaim(tile.TileData.ClaimCost) || freeClaim)
@@ -225,10 +233,13 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
             {
                 if (tile.IsOneNeighborClaimed() || (_upgradeClaimRange && tile.IsOneNeighborOfNeighborClaimed()))
                 {
-                    if (ResourcesManager.Instance.CanAffordClaim(tile.TileData.ClaimCost))
+                    if (tile.TileData is not HazardousTileData)
                     {
-                        tilesToAnimate.Add(tile);
-                        continue;
+                        if (ResourcesManager.Instance.CanAffordClaim(tile.TileData.ClaimCost))
+                        {
+                            tilesToAnimate.Add(tile);
+                            continue;
+                        }
                     }
                 }
                 if (tile.TileData is BasicTileData && ResourcesManager.Instance.CanAffordClaim(_townData.ClaimCost) && ExploitationManager.Instance.IsInfraAvailable(_townData))

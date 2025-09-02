@@ -16,8 +16,7 @@ MonoBehaviour:
   _visuals:
   - {fileID: 2100000, guid: 7c0788e88d1a3194f8ae596dcb77ec93, type: 2}
   - {fileID: 2100000, guid: 488279b5020d5854daf2e61b9b050126, type: 2}
-  _claimCost: 2
+  _claimCost: 999
   _incomes: []
-  _availableInfrastructures:
-  - {fileID: 11400000, guid: 10ace27f9c8e2ed4e9f3b16ba4aafc02, type: 2}
+  _availableInfrastructures: []
   _specialBehaviours: []
