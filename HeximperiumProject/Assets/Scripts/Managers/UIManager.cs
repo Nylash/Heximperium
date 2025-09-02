@@ -110,6 +110,7 @@ public class UIManager : Singleton<UIManager>
     public GameObject UpgradesMenuObject { get => _upgradesMenu; }
     public Color ColorEntertain { get => _colorTopEntertain; }
     public bool UiPhaseInAnimation { get => _uiPhaseInAnimation; set => _uiPhaseInAnimation = value; }
+    public Animator ScoutHint { get => _scoutHint; }
     #endregion
 
     protected override void OnAwake()
@@ -131,8 +132,6 @@ public class UIManager : Singleton<UIManager>
         GameManager.Instance.OnGameFinished += GameFinished;
 
         ExplorationManager.Instance.OnScoutsLimitModified += UpdateScoutLimit;
-        ExplorationManager.Instance.OnScoutSpawned += scout => _scoutHint.SetTrigger("Show");
-        ExplorationManager.Instance.OnScoutDirectedOrCancelled += () => _scoutHint.SetTrigger("Hide");
 
         EntertainmentManager.Instance.OnScoreUpdated += () => _scoreText.text = EntertainmentManager.Instance.Score.ToString();
 

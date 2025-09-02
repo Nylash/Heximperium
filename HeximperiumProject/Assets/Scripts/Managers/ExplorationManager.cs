@@ -38,7 +38,6 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     #region EVENTS
     public event Action OnScoutsLimitModified;
     public event Action<Scout> OnScoutSpawned;
-    public event Action OnScoutDirectedOrCancelled;
     //Tutorial events
     public event Action OnTownSelected;
     public event Action OnScoutDirected;
@@ -233,6 +232,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
             _choosingScoutDirection = true;
 
             OnScoutSpawned?.Invoke(_currentScout);
+            UIManager.Instance.ScoutHint.SetTrigger("Show");
 
             if (fromInteraction)
                 AnimateInteractableTiles();
@@ -246,6 +246,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         _tileRefForScoutDirection = tile;
         _choosingScoutDirection = true;
         scout.Animator.SetTrigger("Redirecting");
+        UIManager.Instance.ScoutHint.SetTrigger("RedirectShow");
 
         AnimateInteractableTiles();
     }
@@ -268,7 +269,9 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         _currentScout.Direction = GetAngleForScout();
         _tileRefForScoutDirection = null;
         if (!_currentScout.HasRedirected)// We were spawning a new scout
-            OnScoutDirectedOrCancelled?.Invoke();
+            UIManager.Instance.ScoutHint.SetTrigger("Hide");
+        else
+            UIManager.Instance.ScoutHint.SetTrigger("RedirectHide");
         _currentScout = null;
         OnScoutDirected?.Invoke();
         
@@ -290,7 +293,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
             _tileRefForScoutDirection = null;
             _currentScout = null;
 
-            OnScoutDirectedOrCancelled?.Invoke();
+            UIManager.Instance.ScoutHint.SetTrigger("Hide");
         }
     }
 
