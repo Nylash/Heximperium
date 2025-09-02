@@ -15,7 +15,7 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
     private bool _animWasPlaying = false;
     private float _progress = 0f;
     private Dictionary<Tile, float> _bounceStartTimes = new Dictionary<Tile, float>();
-    private const float _bouncePeriod = 2f;
+    private const float _bouncePeriod = 1f;
     private const float _bounceHeight = 0.05f;
     private const float _returnDuration = 0.15f;// Make sure this is lower than UIPhase animation rotation duration to avoid needing sync between phases
 
@@ -121,16 +121,15 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
     {
         float elapsed = 0f;
         Vector3 start = tile.Visual.localPosition;
-        Vector3 basePos = tile.InteractionBaseLocalPosition;
         while (elapsed < _returnDuration)
         {
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / _returnDuration);
-            tile.Visual.localPosition = Vector3.Lerp(start, basePos, t);
+            tile.Visual.localPosition = Vector3.Lerp(start, Vector3.zero, t);
             yield return null;
         }
 
-        tile.Visual.localPosition = basePos;// Correct any floating point errors
+        tile.Visual.localPosition = Vector3.zero;// Correct any floating point errors
         tile.InteractionCoroutine = null;
         tile.InteractionAnimationState = TileInteractionAnimationState.None;
         _stoppingAnimationTiles.Remove(tile);
@@ -139,7 +138,6 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
     private IEnumerator AnimationInteraction(Tile tile)
     {
         Vector3 basePos = tile.Visual.localPosition;
-        tile.InteractionBaseLocalPosition = basePos;
 
         yield return null;
 
