@@ -166,6 +166,8 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
             StartCoroutine(scout.Move());
         }
 
+        StopAllAnimations(true);
+
         GameManager.Instance.UnselectTile();
     }
     #endregion
@@ -320,16 +322,10 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
 
     public override void AnimateInteractableTiles()
     {
-        if (_syncAnimationFromPreviousPhase)
-        {
-            _animWasPlaying = ExploitationManager.Instance.AnimWasPlaying;
-            _progress = ExploitationManager.Instance.Progress;
-            _syncAnimationFromPreviousPhase = false;
-        }
-        else
-            SyncAnimationInteractableTiles();
+        SyncAnimationInteractableTiles();
+        StopAllAnimations();
 
-        StopAnimationInteractableTiles();
+        HashSet<Tile> tilesToAnimate = new HashSet<Tile>();
 
         if (_currentScoutsCount < _scoutsLimit)
         {
@@ -339,7 +335,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
                 {
                     if (data.ScoutStartingPoint)
                     {
-                        _animatedTiles.Add(tile);
+                        tilesToAnimate.Add(tile);
                     }
                 }
             }
@@ -350,11 +346,11 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
             {
                 if (!scout.HasRedirected)
                 {
-                    _animatedTiles.Add(scout.CurrentTile);
+                    tilesToAnimate.Add(scout.CurrentTile);
                 }
             }
         }
 
-        _interactableTilesCoroutine = StartCoroutine(PlayInteractableAnimation(_animWasPlaying, _progress));
+        LaunchAnimation(tilesToAnimate);
     }
 }

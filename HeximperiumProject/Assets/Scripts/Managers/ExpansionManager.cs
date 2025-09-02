@@ -99,6 +99,8 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
 
         GameManager.Instance.UnselectTile();
 
+        StopAllAnimations(true);
+
         StartCoroutine(PhaseFinalized());
     }
     #endregion
@@ -203,16 +205,10 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
 
     public override void AnimateInteractableTiles()
     {
-        if (_syncAnimationFromPreviousPhase)
-        {
-            _animWasPlaying = ExplorationManager.Instance.AnimWasPlaying;
-            _progress = ExplorationManager.Instance.Progress;
-            _syncAnimationFromPreviousPhase = false;
-        }
-        else
-            SyncAnimationInteractableTiles();
+        SyncAnimationInteractableTiles();
+        StopAllAnimations();
 
-        StopAnimationInteractableTiles();
+        HashSet<Tile> tilesToAnimate = new HashSet<Tile>();
 
         foreach (Tile tile in ExplorationManager.Instance.RevealedTiles)
         {
@@ -222,7 +218,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
                     continue;
                 else if (ResourcesManager.Instance.CanAffordClaim(_townData.ClaimCost) && ExploitationManager.Instance.IsInfraAvailable(_townData))
                 {
-                    _animatedTiles.Add(tile);
+                    tilesToAnimate.Add(tile);
                 }
             }
             else
@@ -231,17 +227,17 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
                 {
                     if (ResourcesManager.Instance.CanAffordClaim(tile.TileData.ClaimCost))
                     {
-                        _animatedTiles.Add(tile);
+                        tilesToAnimate.Add(tile);
                         continue;
                     }
                 }
                 if (tile.TileData is BasicTileData && ResourcesManager.Instance.CanAffordClaim(_townData.ClaimCost) && ExploitationManager.Instance.IsInfraAvailable(_townData))
                 {
-                    _animatedTiles.Add(tile);
+                    tilesToAnimate.Add(tile);
                 }
             }
         }
 
-        _interactableTilesCoroutine = StartCoroutine(PlayInteractableAnimation(_animWasPlaying, _progress));
+        LaunchAnimation(tilesToAnimate);
     }
 }

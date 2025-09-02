@@ -136,6 +136,8 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     {
         GameManager.Instance.UnselectTile();
 
+        StopAllAnimations(true);
+
         StartCoroutine(PhaseFinalized());
     }
     #endregion
@@ -263,16 +265,10 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
 
     public override void AnimateInteractableTiles()
     {
-        if (_syncAnimationFromPreviousPhase)
-        {
-            _animWasPlaying = ExploitationManager.Instance.AnimWasPlaying;
-            _progress = ExploitationManager.Instance.Progress;
-            _syncAnimationFromPreviousPhase = false;
-        }
-        else
-            SyncAnimationInteractableTiles();
+        SyncAnimationInteractableTiles();
+        StopAllAnimations();
 
-        StopAnimationInteractableTiles();
+        HashSet<Tile> tilesToAnimate = new HashSet<Tile>();
 
         if (IsAtLeastOneEntertainmentBuyable())
         {
@@ -280,10 +276,10 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
             {
                 if (tile.Entertainment != null)
                     continue;
-                _animatedTiles.Add(tile);
+                tilesToAnimate.Add(tile);
             }
         }
 
-        _interactableTilesCoroutine = StartCoroutine(PlayInteractableAnimation(_animWasPlaying, _progress));
+        LaunchAnimation(tilesToAnimate);
     }
 }

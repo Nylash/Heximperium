@@ -34,6 +34,8 @@ public class Tile : MonoBehaviour
     private Animator _animator;
     private GameObject _highlightObject;
     private int _currentInfraLevel = 0;
+    private Coroutine _interactionCoroutine;
+    private TileInteractionAnimationState _interactionAnimationState = TileInteractionAnimationState.None;
     //Scouts
     private List<Scout> _scouts = new List<Scout>();
     private TextMeshPro _scoutCounter;
@@ -99,6 +101,8 @@ public class Tile : MonoBehaviour
     public Entertainment PreviousEntertainment { get => _previousEntertainment; }
     public Animator Animator { get => _animator; }
     public Transform Visual { get => _visual; }
+    public Coroutine InteractionCoroutine { get => _interactionCoroutine; set => _interactionCoroutine = value; }
+    public TileInteractionAnimationState InteractionAnimationState { get => _interactionAnimationState; set => _interactionAnimationState = value; }
     #endregion
 
     private void Awake()

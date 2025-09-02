@@ -1,7 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using System;
 
 public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
 {
@@ -9,18 +10,14 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
     protected List<GameObject> _buttons = new List<GameObject>();
 
     //Variables for animated tiles
-    protected HashSet<Tile> _animatedTiles = new HashSet<Tile>();
-    protected Dictionary<Tile, Vector3> _initialPositions = new Dictionary<Tile, Vector3>();
-    protected Coroutine _interactableTilesCoroutine;
-    protected bool _animWasPlaying = false;
-    protected float _progress = 0f;
-    protected bool _syncAnimationFromPreviousPhase = true;
-    protected float _bounceStartTime = 0f;
-    protected const float _bouncePeriod = 1f;
-    protected const float _bounceHeight = 0.1f;
-
-    public bool AnimWasPlaying { get => _animWasPlaying; }
-    public float Progress { get => _progress; }
+    private HashSet<Tile> _animatedTiles = new HashSet<Tile>();
+    private HashSet<Tile> _stoppingAnimationTiles = new HashSet<Tile>();
+    private bool _animWasPlaying = false;
+    private float _progress = 0f;
+    private float _bounceStartTime = 0f;
+    private const float _bouncePeriod = 2f;
+    private const float _bounceHeight = 0.05f;
+    private const float _returnDuration = 0.15f;// Make sure this is lower than UIPhase animation rotation duration to avoid needing sync between phases
 
     public event Action OnPhaseFinalized;
 
@@ -59,58 +56,89 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
         }
     }
 
+    #region TILE INTERACTION ANIMATION
     public abstract void AnimateInteractableTiles();
 
-    public void EndPhaseStopAnimation()
+    protected void StopAllAnimations(bool endOfPhase = false)
     {
-        SyncAnimationInteractableTiles();
-        StopAnimationInteractableTiles();
-        _syncAnimationFromPreviousPhase = true;
-    }
-
-    protected void StopAnimationInteractableTiles()
-    {
-        if (_interactableTilesCoroutine != null)
+        while (_animatedTiles.Count > 0)
         {
-            StopCoroutine(_interactableTilesCoroutine);
-            _interactableTilesCoroutine = null;
+            Tile tile = _animatedTiles.First();
+            _stoppingAnimationTiles.Add(tile);
+            tile.InteractionAnimationState = TileInteractionAnimationState.Stopping;
+            _animatedTiles.Remove(tile);
         }
 
-        foreach (Tile tile in _animatedTiles)
+        if (endOfPhase)
         {
-            if (_initialPositions.TryGetValue(tile, out Vector3 pos))
+            foreach (Tile tile in _stoppingAnimationTiles)
             {
-                tile.Visual.localPosition = pos;
+                tile.InteractionCoroutine = StartCoroutine(StopAnimationInteraction(tile));
             }
         }
-        _animatedTiles.Clear();
-        _initialPositions.Clear();
     }
 
-    protected IEnumerator PlayInteractableAnimation(bool animWasPlaying, float progress)
+    protected void LaunchAnimation(HashSet<Tile> tiles)
     {
-        yield return null;
-        _bounceStartTime = Time.time - progress * _bouncePeriod;
-        foreach (Tile tile in _animatedTiles)
+        if (_stoppingAnimationTiles.Count == 0)
         {
-            if (!_initialPositions.ContainsKey(tile))
-                _initialPositions[tile] = tile.Visual.localPosition;
+            foreach (Tile tile in tiles)
+            {
+                _animatedTiles.Add(tile);
+                tile.InteractionAnimationState = TileInteractionAnimationState.Animating;
+                tile.InteractionCoroutine = StartCoroutine(AnimationInteraction(tile));
+            }
+        }
+        else
+        {
+            foreach (Tile tile in tiles)
+            {
+                if (_stoppingAnimationTiles.Contains(tile))
+                {
+                    _stoppingAnimationTiles.Remove(tile);
+                }
+                _animatedTiles.Add(tile);
+                tile.InteractionAnimationState = TileInteractionAnimationState.Animating;
+                tile.InteractionCoroutine = StartCoroutine(AnimationInteraction(tile));
+            }
+            foreach (Tile tile in _stoppingAnimationTiles)
+            {
+                tile.InteractionCoroutine = StartCoroutine(StopAnimationInteraction(tile));
+            }
+        }
+    }
+
+    private IEnumerator StopAnimationInteraction(Tile tile)
+    {
+        float elapsed = 0f;
+        Vector3 start = tile.Visual.localPosition;
+        while (elapsed < _returnDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / _returnDuration);
+            tile.Visual.localPosition = Vector3.Lerp(start, Vector3.zero, t);
+            yield return null;
         }
 
-        while (_animatedTiles.Count > 0)
+        tile.Visual.localPosition = Vector3.zero;// Correct any floating point errors
+        tile.InteractionCoroutine = null;
+        tile.InteractionAnimationState = TileInteractionAnimationState.None;
+        _stoppingAnimationTiles.Remove(tile);
+    }
+
+    private IEnumerator AnimationInteraction(Tile tile)
+    {
+        yield return null;
+
+        _bounceStartTime = Time.time - _progress * _bouncePeriod;
+
+        while (tile.InteractionAnimationState == TileInteractionAnimationState.Animating)
         {
             float phase = (Time.time - _bounceStartTime) / _bouncePeriod;
             float offset = Mathf.Sin(phase * Mathf.PI * 2f) * _bounceHeight;
-            foreach (Tile tile in _animatedTiles)
-            {
-                if (_initialPositions.TryGetValue(tile, out Vector3 basePos))
-                {
-                    tile.Visual.localPosition = new Vector3(basePos.x, basePos.y + offset, basePos.z);
-                }
-            }
+            tile.Visual.localPosition = new Vector3(tile.Visual.localPosition.x, tile.Visual.localPosition.y + offset, tile.Visual.localPosition.z);
             yield return null;
         }
-        _interactableTilesCoroutine = null;
     }
 
     protected void SyncAnimationInteractableTiles()
@@ -125,4 +153,5 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
             _progress = 0f;
         }
     }
+    #endregion
 }

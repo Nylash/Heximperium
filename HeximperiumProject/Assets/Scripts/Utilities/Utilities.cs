@@ -287,4 +287,9 @@ public enum UpgradeStatus
 {
     LockedByPrerequisites, LockedByExclusive, CantAfford, Unlocked, Unlockable
 }
+
+public enum TileInteractionAnimationState
+{
+    None, Animating, Stopping
+}
 #endregion
