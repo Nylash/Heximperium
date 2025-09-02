@@ -64,6 +64,12 @@ public class Scout : MonoBehaviour
         GameManager.Instance.OnEntertainmentPhaseStarted += KillScout;
     }
 
+    private void OnDestroy()
+    {
+        ExplorationManager.Instance.OnPhaseFinalized -= CheckLifeSpan;
+        GameManager.Instance.OnEntertainmentPhaseStarted -= KillScout;
+    }
+
     private void Start()
     {
         _animator = GetComponent<Animator>();
