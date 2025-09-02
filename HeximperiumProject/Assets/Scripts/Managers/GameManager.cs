@@ -84,6 +84,7 @@ public class GameManager : Singleton<GameManager>
         _inputActions = new InputSystem_Actions();
 
         _inputActions.Player.LeftClick.performed += ctx => LeftClickAction();
+        _inputActions.Player.RightClick.performed += ctx => RightClickAction();
         _inputActions.Player.ConfirmPhase.performed += ctx => ConfirmPhase();
         _inputActions.Player.Menu.performed += ctx => UIManager.Instance.OpenCloseMenu();
 
@@ -227,6 +228,19 @@ public class GameManager : Singleton<GameManager>
             {
                 InteractWithButton(_mouseRayHit.collider.gameObject.GetComponent<InteractionButton>());
             }
+        }
+    }
+
+    private void RightClickAction()
+    {
+        if (_gamePaused)
+            return;
+
+        //Specific behaviour with scouts instancing
+        if (ExplorationManager.Instance.ChoosingScoutDirection)
+        {
+            ExplorationManager.Instance.CancelScout();
+            return;
         }
     }
 

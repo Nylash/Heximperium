@@ -13,7 +13,6 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     [Header("_________________________________________________________")]
     [Header("Scouts Related Objects")]
     [SerializeField] private GameObject _scoutPrefab;
-    [SerializeField] private GameObject _scoutCounterPrefab;
     #endregion
 
     #region VARIABLES
@@ -39,6 +38,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     #region EVENTS
     public event Action OnScoutsLimitModified;
     public event Action<Scout> OnScoutSpawned;
+    public event Action OnScoutDirectedOrCancelled;
     //Tutorial events
     public event Action OnTownSelected;
     public event Action OnScoutDirected;
@@ -46,7 +46,6 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
 
     #region ACCESSORS
     public bool ChoosingScoutDirection { get => _choosingScoutDirection;}
-    public GameObject ScoutCounterPrefab { get => _scoutCounterPrefab;}
     public float AwaitTimeScoutMovement { get => _awaitTimeScoutMovement;}
     public List<Scout> Scouts { get => _scouts;}
     public int ScoutsLimit
@@ -228,7 +227,6 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
 
             tile.Scouts.Add(_currentScout);
             _tileRefForScoutDirection = tile;
-            tile.UpdateScoutCounter();
 
             _currentScout.InitializeScout(freeScout);
 
@@ -269,8 +267,31 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         _choosingScoutDirection = false;
         _currentScout.Direction = GetAngleForScout();
         _tileRefForScoutDirection = null;
+        if (!_currentScout.HasRedirected)// We were spawning a new scout
+            OnScoutDirectedOrCancelled?.Invoke();
         _currentScout = null;
         OnScoutDirected?.Invoke();
+        
+    }
+
+    public void CancelScout()
+    {
+        if (_currentScout.HasRedirected)// We were redirecting a scout, no cancel
+        {
+            return;
+        }
+        else// We were spawning a new scout, we need to remove it
+        {
+            _choosingScoutDirection = false;
+            _currentScout.CurrentTile.Scouts.Remove(_currentScout);
+            _scouts.Remove(_currentScout);
+            Destroy(_currentScout.gameObject);
+            CurrentScoutsCount--;
+            _tileRefForScoutDirection = null;
+            _currentScout = null;
+
+            OnScoutDirectedOrCancelled?.Invoke();
+        }
     }
 
     private Direction GetAngleForScout()

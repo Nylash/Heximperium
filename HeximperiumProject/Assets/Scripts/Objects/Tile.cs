@@ -38,7 +38,6 @@ public class Tile : MonoBehaviour
     private TileInteractionAnimationState _interactionAnimationState = TileInteractionAnimationState.None;
     //Scouts
     private List<Scout> _scouts = new List<Scout>();
-    private TextMeshPro _scoutCounter;
     //Entertainment variables
     private Entertainment _entertainment;
     private Entertainment _previousEntertainment;//Only stay one frame (because the ref is deleted) but needed to clean the group (BoostByZone special effect)
@@ -242,22 +241,6 @@ public class Tile : MonoBehaviour
         else if(_highlightObject != null)
         {
             _highlightObject.GetComponent<Animator>().SetTrigger("Destroy");
-        }
-    }
-
-    //Method used manage the scout counter of the tile (if there is several scouts on the same tile)
-    public void UpdateScoutCounter()
-    {
-        if (_scouts.Count >= 2)
-        {
-            if (_scoutCounter == null)
-                _scoutCounter = Instantiate(ExplorationManager.Instance.ScoutCounterPrefab, transform).GetComponent<TextMeshPro>();
-            _scoutCounter.text = _scouts.Count.ToString();
-        }
-        else
-        {
-            if (_scoutCounter != null)
-                Destroy(_scoutCounter.gameObject);
         }
     }
 

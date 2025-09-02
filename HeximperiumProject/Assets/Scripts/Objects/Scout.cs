@@ -24,7 +24,7 @@ public class Scout : MonoBehaviour
     private int _lifespan;
     private int _revealRadius;
 
-    private List<Renderer> _renderers = new List<Renderer>();
+    private HashSet<Renderer> _renderers = new HashSet<Renderer>();
     private List<GameObject> _lifeHints = new List<GameObject>();
     #endregion
 
@@ -91,7 +91,6 @@ public class Scout : MonoBehaviour
 
             //Move from ancient tile to new
             _currentTile.Scouts.Remove(this);
-            _currentTile.UpdateScoutCounter();
             //New tile
             _currentTile = _currentTile.Neighbors[(int)_direction];
             if (_currentTile == null)
@@ -118,7 +117,6 @@ public class Scout : MonoBehaviour
 
             yield return new WaitForSeconds(ExplorationManager.Instance.AwaitTimeScoutMovement);
         }
-        _currentTile.UpdateScoutCounter();
 
         _hasDoneMoving = true;
         _hasRedirected = false;
@@ -139,7 +137,6 @@ public class Scout : MonoBehaviour
             if(_currentTile != null)
             {
                 _currentTile.Scouts.Remove(this);
-                _currentTile.UpdateScoutCounter();
             }
             ExplorationManager.Instance.OnPhaseFinalized -= CheckLifeSpan;
             GameManager.Instance.OnEntertainmentPhaseStarted -= KillScout;

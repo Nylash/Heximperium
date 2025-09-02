@@ -60,7 +60,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject _scoreUI;
     [SerializeField] private TextMeshProUGUI _scoreText;
     [Header("_________________________________________________________")]
-    [Header("UpgradesMenu")]
+    [Header("Upgrades Menu")]
     [SerializeField] private GameObject _upgradesMenuButton;
     [SerializeField] private GameObject _upgradesMenu;
     [SerializeField] private List<UpgradeTree> _upgradeTrees = new List<UpgradeTree>();
@@ -79,6 +79,9 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private RectTransform _vfxAnchorClaim;
     [SerializeField] private RectTransform _vfxAnchorGold;
     [SerializeField] private RectTransform _vfxAnchorSR;
+    [Header("_________________________________________________________")]
+    [Header("Various Objects")]
+    [SerializeField] private Animator _scoutHint;
     #endregion
 
     #region VARIABLES
@@ -128,6 +131,8 @@ public class UIManager : Singleton<UIManager>
         GameManager.Instance.OnGameFinished += GameFinished;
 
         ExplorationManager.Instance.OnScoutsLimitModified += UpdateScoutLimit;
+        ExplorationManager.Instance.OnScoutSpawned += scout => _scoutHint.SetTrigger("Show");
+        ExplorationManager.Instance.OnScoutDirectedOrCancelled += () => _scoutHint.SetTrigger("Hide");
 
         EntertainmentManager.Instance.OnScoreUpdated += () => _scoreText.text = EntertainmentManager.Instance.Score.ToString();
 
