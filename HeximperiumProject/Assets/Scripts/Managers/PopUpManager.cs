@@ -37,9 +37,6 @@ public class PopUpManager : Singleton<PopUpManager>
     private Dictionary<SpecialBehaviour, Tile> _highlightingBehaviours = new Dictionary<SpecialBehaviour, Tile>();
     private Dictionary<SpecialEffect, Tile> _highlightingEffects = new Dictionary<SpecialEffect, Tile>();
     private float _maxAllowed;
-    private InteractionButton _clonedButton;
-
-    public InteractionButton ClonedButton { get => _clonedButton; set => _clonedButton = value; }
     #endregion
 
     private void Start()
@@ -140,9 +137,7 @@ public class PopUpManager : Singleton<PopUpManager>
                 }
                 else if (obj.GetComponent<InteractionButton>() is InteractionButton button)
                 {
-                    _clonedButton = button;
-                    button.CreateHighlightedClone();
-                    GameManager.Instance.InteractionButtonsFade(true);
+                    GameManager.Instance.InteractionButtonsFade(true, button.gameObject);
                     switch (button.Interaction)
                     {
                         case Interaction.Claim:
@@ -192,7 +187,7 @@ public class PopUpManager : Singleton<PopUpManager>
         _timerOverImage.fillAmount = 0.0f;
         _delayedHoverTimer = 0.0f;
         _timerOverImage.enabled = true;
-        GameManager.Instance.InteractionButtonsFade(false);
+        GameManager.Instance.InteractionButtonsFade(false, null);
 
         if (_popUps.Count > 0)
         {
@@ -217,11 +212,6 @@ public class PopUpManager : Singleton<PopUpManager>
                 item.Key.HighlightImpactedEntertainment(item.Value, false);
             }
             _highlightingEffects.Clear();
-        }
-        if (_clonedButton)
-        {
-            _clonedButton.DestroyHighlightedClone();
-            _clonedButton = null;
         }
     }
     #endregion

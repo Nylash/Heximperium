@@ -36,11 +36,6 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
 
     protected void TileUnselected()
     {
-        if (PopUpManager.Instance.ClonedButton)
-        {
-            PopUpManager.Instance.ClonedButton.DestroyHighlightedClone();
-            PopUpManager.Instance.ClonedButton = null;
-        }
         foreach (GameObject button in _buttons)
         {
             button.GetComponent<InteractionButton>().DestroyInteractionButton();
@@ -48,10 +43,11 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
         _buttons.Clear();
     }
 
-    public void ButtonsFade(bool fade)
+    public void ButtonsFade(bool fade, GameObject focusedButton)
     {
         foreach (GameObject item in _buttons)
         {
+            if (item == focusedButton) continue;
             item.GetComponent<InteractionButton>().FadeAnimation(fade);
         }
     }

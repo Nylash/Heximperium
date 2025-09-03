@@ -25,7 +25,6 @@ public class InteractionButton : MonoBehaviour
     private ScoutData _scoutData;
     private EntertainmentData _entertainData;
     private Animator _animator;
-    private GameObject _highlightedClone;
     private Scout _associatedScout;
     #endregion
 
@@ -153,21 +152,6 @@ public class InteractionButton : MonoBehaviour
     public void FadeAnimation(bool fade)
     {
         _animator.SetBool("Fade", fade);
-    }
-
-    public void CreateHighlightedClone()
-    {
-        _highlightedClone = Instantiate(_highlightedInteractionPrefab, _associatedTile.transform.position + new Vector3(0, 0.2f, 0), Quaternion.identity);
-        _highlightedClone.GetComponent<MeshRenderer>().material.mainTexture = GetComponent<MeshRenderer>().material.mainTexture;
-        _highlightedClone.GetComponentInChildren<SpriteRenderer>().color = _renderer.color;
-        _highlightedClone.GetComponentInChildren<SpriteRenderer>().sprite = _renderer.sprite;
-    }
-
-    public void DestroyHighlightedClone()
-    {
-        if (_highlightedClone == null)
-            return;
-        _highlightedClone.GetComponent<Animator>().SetTrigger("Destroy");
     }
 
     public void DestroyInteractionButton()

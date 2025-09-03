@@ -116,21 +116,21 @@ public class GameManager : Singleton<GameManager>
         _isPointerOverUI = EventSystem.current.IsPointerOverGameObject();
     }
 
-    public void InteractionButtonsFade(bool fade)
+    public void InteractionButtonsFade(bool fade, GameObject focusedButton)
     {
         switch (_currentPhase)
         {
             case Phase.Explore:
-                ExplorationManager.Instance.ButtonsFade(fade);
+                ExplorationManager.Instance.ButtonsFade(fade, focusedButton);
                 break;
             case Phase.Expand:
-                ExpansionManager.Instance.ButtonsFade(fade);
+                ExpansionManager.Instance.ButtonsFade(fade, focusedButton);
                 break;
             case Phase.Exploit:
-                ExploitationManager.Instance.ButtonsFade(fade);
+                ExploitationManager.Instance.ButtonsFade(fade, focusedButton);
                 break;
             case Phase.Entertain:
-                EntertainmentManager.Instance.ButtonsFade(fade);
+                EntertainmentManager.Instance.ButtonsFade(fade, focusedButton);
                 break;
         }
     }
