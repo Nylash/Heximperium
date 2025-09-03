@@ -10,8 +10,6 @@ public class JuiceManager : Singleton<JuiceManager>
     [SerializeField] private Material _srMat;
     [SerializeField] private Material _claimMat;
     [SerializeField] private Material _scoreMat;
-    [SerializeField] private Color _gainGoldScoreColor;
-    [SerializeField] private Color _gainClaimColor;
     [SerializeField] private GameObject _spawnUnitVFX;
     [SerializeField] private GameObject _dustInfraVFX;
     [Header("_________________________________________________________")]
@@ -30,7 +28,7 @@ public class JuiceManager : Singleton<JuiceManager>
         ExplorationManager.Instance.OnScoutSpawned += scout => SpawnUnitVFX(scout.CurrentTile);
         EntertainmentManager.Instance.OnEntertainmentSpawned += ent => SpawnUnitVFX(ent.Tile);
 
-        EntertainmentManager.Instance.OnScoreGained += (tile, value) => PlayResourceVFX(tile, value, _scoreMat, _gainGoldScoreColor);
+        EntertainmentManager.Instance.OnScoreGained += (tile, value) => PlayResourceVFX(tile, value, _scoreMat, UIManager.Instance.ColorExpand);
         EntertainmentManager.Instance.OnScoreLost += (tile, value) => PlayResourceVFX(tile, value, _scoreMat, UIManager.Instance.ColorCantAfford);
 
         ResourcesManager.Instance.OnGoldGained += (tile, value) => ResourceGain(tile, value, Resource.Gold);
@@ -53,9 +51,9 @@ public class JuiceManager : Singleton<JuiceManager>
         {
             case Resource.Gold:
                 if (tile)
-                    PlayResourceVFX(tile, value, _goldMat, _gainGoldScoreColor);
+                    PlayResourceVFX(tile, value, _goldMat, UIManager.Instance.ColorExploit);
                 else
-                    PlayUIResourceVFX(value, _goldMat, UIManager.Instance.VfxAnchorGold, _gainGoldScoreColor);
+                    PlayUIResourceVFX(value, _goldMat, UIManager.Instance.VfxAnchorGold, UIManager.Instance.ColorExploit);
                 break;
             case Resource.SpecialResources:
                 if (tile)
@@ -65,9 +63,9 @@ public class JuiceManager : Singleton<JuiceManager>
                 break;
             default:
                 if (tile)
-                    PlayResourceVFX(tile, value, _claimMat, _gainClaimColor);
+                    PlayResourceVFX(tile, value, _claimMat, UIManager.Instance.ColorExpand);
                 else
-                    PlayUIResourceVFX(value, _claimMat, UIManager.Instance.VfxAnchorClaim, _gainClaimColor);
+                    PlayUIResourceVFX(value, _claimMat, UIManager.Instance.VfxAnchorClaim, UIManager.Instance.ColorExpand);
                 break;
         }
     }

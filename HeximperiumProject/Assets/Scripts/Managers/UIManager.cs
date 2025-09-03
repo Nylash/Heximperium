@@ -19,23 +19,22 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Color _colorCantAfford;
     [Header("_________________________________________________________")]
     [Header("Phase UI")]
-    [SerializeField] private TextMeshProUGUI _currentPhaseText;
     [SerializeField] private TextMeshProUGUI _confirmPhaseButtonText;
     [SerializeField] private TextMeshProUGUI _turnCounterText;
-    [SerializeField] private Material _materialBack;
-    [SerializeField] private Color _colorTopExplo;
+    [SerializeField] private Color _colorExplo;
     [SerializeField] private Color _colorBotExplo;
-    [SerializeField] private Color _colorTopExpand;
+    [SerializeField] private Color _colorExpand;
     [SerializeField] private Color _colorBotExpand;
-    [SerializeField] private Color _colorTopExploit;
+    [SerializeField] private Color _colorExploit;
     [SerializeField] private Color _colorBotExploit;
-    [SerializeField] private Color _colorTopEntertain;
+    [SerializeField] private Color _colorEntertain;
     [SerializeField] private Color _colorBotEntertain;
     [SerializeField] private Animator _popUpExploPhase;
     [SerializeField] private Animator _popUpExpandPhase;
     [SerializeField] private Animator _popUpExploitPhase;
     [SerializeField] private Animator _popUpEntertainPhase;
     [SerializeField] private Button _buttonEndPhase;
+    [SerializeField] private List<Image> _phaseBorders;
     [Header("_________________________________________________________")]
     [Header("Units visibility UI")]
     [SerializeField] private Image _visibilityImage;
@@ -108,9 +107,12 @@ public class UIManager : Singleton<UIManager>
     public Button ButtonEndPhase { get => _buttonEndPhase; }
     public Transform PopUpParent { get => _popUpParent; }
     public GameObject UpgradesMenuObject { get => _upgradesMenu; }
-    public Color ColorEntertain { get => _colorTopEntertain; }
+    public Color ColorEntertain { get => _colorEntertain; }
     public bool UiPhaseInAnimation { get => _uiPhaseInAnimation; set => _uiPhaseInAnimation = value; }
     public Animator ScoutHint { get => _scoutHint; }
+    public Color ColorExpand { get => _colorExpand; }
+    public Color ColorExploit { get => _colorExploit; }
+    public Color ColorExplo { get => _colorExplo; }
     #endregion
 
     protected override void OnAwake()
@@ -297,10 +299,12 @@ public class UIManager : Singleton<UIManager>
         GameManager.Instance.ConfirmPhase();
     }
     
-    public void ForceExploMat()
+    public void ForceExploColor()
     {
-        _materialBack.SetColor("_ColorTop", _colorTopExplo);
-        _materialBack.SetColor("_ColorBottom", _colorBotExplo);
+        foreach (Image item in _phaseBorders)
+        {
+            item.color = _colorExplo;
+        }
     }
 
     private void UpdatePhaseUI()
@@ -308,40 +312,41 @@ public class UIManager : Singleton<UIManager>
         switch (GameManager.Instance.CurrentPhase)
         {
             case Phase.Explore:
-                _currentPhaseText.text = "Explore";
                 _confirmPhaseButtonText.text = "End Phase";
-                _materialBack.SetColor("_ColorTop", _colorTopExplo);
-                _materialBack.SetColor("_ColorBottom", _colorBotExplo);
-                EnableRenderers(_popUpEntertainPhase.gameObject, false);
-                EnableRenderers(_popUpExploPhase.gameObject, true);
-                _popUpExploPhase.SetTrigger("PopUp");
+                foreach (Image item in _phaseBorders)
+                {
+                    item.color = _colorExplo;
+                }
+                if (GameManager.Instance.TurnCounter != 1)
+                    _popUpExploitPhase.SetTrigger("Hide");
+                _popUpExploPhase.SetTrigger("Show");
                 break;
             case Phase.Expand:
-                _currentPhaseText.text = "Expand";
                 _confirmPhaseButtonText.text = "End Phase";
-                _materialBack.SetColor("_ColorTop", _colorTopExpand);
-                _materialBack.SetColor("_ColorBottom", _colorBotExpand);
-                EnableRenderers(_popUpExploPhase.gameObject, false);
-                EnableRenderers(_popUpExpandPhase.gameObject, true);
-                _popUpExpandPhase.SetTrigger("PopUp");
+                foreach (Image item in _phaseBorders)
+                {
+                    item.color = _colorExpand;
+                }
+                _popUpExploPhase.SetTrigger("Hide");
+                _popUpExpandPhase.SetTrigger("Show");
                 break;
             case Phase.Exploit:
-                _currentPhaseText.text = "Exploit";
                 _confirmPhaseButtonText.text = "End Turn";
-                _materialBack.SetColor("_ColorTop", _colorTopExploit);
-                _materialBack.SetColor("_ColorBottom", _colorBotExploit);
-                EnableRenderers(_popUpExpandPhase.gameObject, false);
-                EnableRenderers(_popUpExploitPhase.gameObject, true);
-                _popUpExploitPhase.SetTrigger("PopUp");
+                foreach (Image item in _phaseBorders)
+                {
+                    item.color = _colorExploit;
+                }
+                _popUpExpandPhase.SetTrigger("Hide");
+                _popUpExploitPhase.SetTrigger("Show");
                 break;
             case Phase.Entertain:
-                _currentPhaseText.text = "Entertain";
                 _confirmPhaseButtonText.text = "End Game";
-                _materialBack.SetColor("_ColorTop", _colorTopEntertain);
-                _materialBack.SetColor("_ColorBottom", _colorBotEntertain);
-                EnableRenderers(_popUpExploitPhase.gameObject, false);
-                EnableRenderers(_popUpEntertainPhase.gameObject, true);
-                _popUpEntertainPhase.SetTrigger("PopUp");
+                foreach (Image item in _phaseBorders)
+                {
+                    item.color = _colorEntertain;
+                }
+                _popUpExploitPhase.SetTrigger("Hide");
+                _popUpEntertainPhase.SetTrigger("Show");
                 break;
         }
     }
@@ -349,15 +354,6 @@ public class UIManager : Singleton<UIManager>
     public void UpdateTurnCounterText(int turnCounter)
     {
         _turnCounterText.text = "Turn : " + turnCounter + "/" + GameManager.Instance.TurnLimit;
-    }
-
-    private void EnableRenderers(GameObject item, bool enable)
-    {
-        item.GetComponent<Image>().enabled = enable;
-        foreach (TextMeshProUGUI t in item.GetComponentsInChildren<TextMeshProUGUI>()) 
-        {
-            t.enabled = enable;
-        }
     }
     #endregion
 

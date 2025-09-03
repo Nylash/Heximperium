@@ -13,6 +13,7 @@ TagManager:
   - VisibilityUI
   - UpgradeNodeUI
   - ScoreUI
+  - CarnivalistUI
   layers:
   - Default
   - TransparentFX

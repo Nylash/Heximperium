@@ -134,7 +134,7 @@ public class TutorialManager : Singleton<TutorialManager>
     /// </summary>
     protected override void OnAwake()
     {
-        UIManager.Instance.ForceExploMat();
+        UIManager.Instance.ForceExploColor();
 
         if (LoadingManager.Instance != null)
             LoadingManager.Instance.OnLoadingDone += ShowIntro;
