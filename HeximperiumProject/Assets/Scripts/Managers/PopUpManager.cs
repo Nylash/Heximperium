@@ -434,14 +434,6 @@ public class PopUpManager : Singleton<PopUpManager>
         textObjects.Add(garden.GetComponent<RectTransform>());
         #endregion
 
-        #region CONVERTED POINTS
-        TextMeshProUGUI converted = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        converted.text = "Points from savings: +" + EntertainmentManager.Instance.ConvertedPoints + "<sprite name=\"Point_Emoji\">";
-        converted.margin = _horizontalMargin;
-        ClampTextWidth(converted);
-        textObjects.Add(converted.GetComponent<RectTransform>());
-        #endregion
-
         SetPopUpContentAnchors(textObjects);
         PositionPopupRelativeToUI(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>());
     }

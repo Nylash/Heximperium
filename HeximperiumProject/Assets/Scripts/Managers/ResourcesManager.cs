@@ -64,7 +64,6 @@ public class ResourcesManager : Singleton<ResourcesManager>
         Debug.LogWarning("USING CHEAT !");
         UpdateResource(Resource.Gold, 5000, Transaction.Gain);
         UpdateResource(Resource.SpecialResources, 1000, Transaction.Gain);
-        UpdateCarnivalist(100, Transaction.Gain);
     }
 
     #region UPDATE RESOURCES
@@ -185,10 +184,10 @@ public class ResourcesManager : Singleton<ResourcesManager>
         }
     }
 
-    public void SpendAllResources()
+    public void SpendConvertedResources(int goldConverted, int srConverted)
     {
-        UpdateResource(Resource.Gold, GetResourceStock(Resource.Gold), Transaction.Spent);
-        UpdateResource(Resource.SpecialResources, GetResourceStock(Resource.SpecialResources), Transaction.Spent);
+        UpdateResource(Resource.Gold, goldConverted, Transaction.Spent);
+        UpdateResource(Resource.SpecialResources, srConverted, Transaction.Spent);
     }
     #endregion
 

@@ -1301,8 +1301,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 849a92dd76cb59441979aca05a80c78b, type: 2}
   _entertainmentPrefab: {fileID: 2250239871940816137, guid: f8a7db839ca7e72408cdfe24431d42ae, type: 3}
   _entertainmentsParent: {fileID: 4984853090335579157}
-  _pointForOneGold: 0.3
-  _pointForOneSR: 0.8
+  _goldForOneCarnivalist: 500
+  _SrForOneCarnivalist: 100
+  _emptyDataForString: {fileID: 11400000, guid: bf11d146802000e448e6786568695e15, type: 2}
 --- !u!114 &5058650393401128906
 MonoBehaviour:
   m_ObjectHideFlags: 0

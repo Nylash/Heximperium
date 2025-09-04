@@ -12,14 +12,14 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     [SerializeField] private Transform _entertainmentsParent;
     [Header("_________________________________________________________")]
     [Header("Resources Conversion")]
-    [SerializeField] private float _pointForOneGold;
-    [SerializeField] private float _pointForOneSR;
+    [SerializeField] private int _goldForOneCarnivalist = 500;
+    [SerializeField] private int _SrForOneCarnivalist = 100;
+    [SerializeField] private TileData _emptyDataForString;
     #endregion
 
     #region VARIABLES
     private List<Entertainment> _entertainments = new List<Entertainment>();
     private int _score;
-    private int _convertedPoints;
     private Dictionary<int, List<Entertainment>> _groupBoost = new Dictionary<int, List<Entertainment>>(); //Use for BoostByZoneSize special effect, <GroupID, Entertainments>
     private Dictionary<int, int> _groupBoostCount = new Dictionary<int, int>(); //Use for BoostByZoneSize special effect, <GroupID, Count>
     #endregion
@@ -29,7 +29,6 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     public int Score { get => _score; }
     public Dictionary<int, List<Entertainment>> GroupBoost { get => _groupBoost; }
     public Dictionary<int, int> GroupBoostCount { get => _groupBoostCount; }
-    public int ConvertedPoints { get => _convertedPoints; }
 
     public int GetPointsFromMinstrelStage()
     {
@@ -116,18 +115,14 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     #region PHASE LOGIC
     protected override void StartPhase()
     {
-        //Convert savings into points
-        float goldIntoPoints = _pointForOneGold * ResourcesManager.Instance.GetResourceStock(Resource.Gold);
-        float srIntoPoints = _pointForOneSR * ResourcesManager.Instance.GetResourceStock(Resource.SpecialResources);
-        _score += Mathf.RoundToInt(goldIntoPoints) + Mathf.RoundToInt(srIntoPoints);
-        OnScoreUpdated?.Invoke();
-        ResourcesManager.Instance.SpendAllResources();
+        //Convert savings into carnivalists
+        int goldCarnivalist = ResourcesManager.Instance.GetResourceStock(Resource.Gold) / _goldForOneCarnivalist;
+        int srCarnivalist = ResourcesManager.Instance.GetResourceStock(Resource.SpecialResources) / _SrForOneCarnivalist;
 
-        _convertedPoints = _score;
+        ResourcesManager.Instance.SpendConvertedResources(goldCarnivalist * _goldForOneCarnivalist, srCarnivalist * _SrForOneCarnivalist);
 
-        //Earn incomes of every claimed tiles
-        foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
-            ResourcesManager.Instance.UpdateResource(tile.Incomes, Transaction.Gain, tile);
+        ResourcesManager.Instance.UpdateCarnivalist(goldCarnivalist + srCarnivalist, Transaction.Gain);
+        ResourcesManager.Instance.UpdateCarnivalistSource(_emptyDataForString, goldCarnivalist + srCarnivalist, Transaction.Gain);
 
         AnimateInteractableTiles();
     }
