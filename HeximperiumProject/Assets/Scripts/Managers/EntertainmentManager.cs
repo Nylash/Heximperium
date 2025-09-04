@@ -188,9 +188,9 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         if (tile.Entertainment != null)
             return;
 
-        if (ResourcesManager.Instance.CanAfford(data.Costs))
+        if (ResourcesManager.Instance.CanAffordCarnivalist(data.CarnivalistCost))
         {
-            ResourcesManager.Instance.UpdateResource(data.Costs, Transaction.Spent);
+            ResourcesManager.Instance.UpdateCarnivalist(data.CarnivalistCost, Transaction.Spent);
 
             Entertainment currentEntertainment = Instantiate(_entertainmentPrefab,
                 tile.transform.position + _entertainmentPrefab.transform.localPosition,
@@ -257,7 +257,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     {
         foreach (EntertainmentData data in _entertainmentsData)
         {
-            if (ResourcesManager.Instance.CanAfford(data.Costs))
+            if (ResourcesManager.Instance.CanAffordCarnivalist(data.CarnivalistCost))
                 return true;
         }
         return false;

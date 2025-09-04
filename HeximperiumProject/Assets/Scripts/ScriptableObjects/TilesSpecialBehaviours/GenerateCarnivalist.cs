@@ -8,11 +8,13 @@ public class GenerateCarnivalist : SpecialBehaviour
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
     {
         ResourcesManager.Instance.UpdateCarnivalist(_carnivalistQuantity, Transaction.Gain, behaviourTile);
+        ResourcesManager.Instance.UpdateCarnivalistSource(behaviourTile.TileData, _carnivalistQuantity, Transaction.Gain);
     }
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
         ResourcesManager.Instance.UpdateCarnivalist(_carnivalistQuantity, Transaction.Spent, behaviourTile);
+        ResourcesManager.Instance.UpdateCarnivalistSource(behaviourTile.TileData, _carnivalistQuantity, Transaction.Spent);
     }
 
     public override void HighlightImpactedTile(Tile behaviourTile, bool show)

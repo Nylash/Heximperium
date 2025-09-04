@@ -14,7 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 0
   _basePoints: 5
-  _costs:
-  - resource: 0
-    value: 10
+  _carnivalistCost: 1
   _specialEffect: {fileID: 0}

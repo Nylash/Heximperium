@@ -29,7 +29,7 @@ public class JuiceManager : Singleton<JuiceManager>
         ExplorationManager.Instance.OnScoutSpawned += scout => SpawnUnitVFX(scout.CurrentTile);
         EntertainmentManager.Instance.OnEntertainmentSpawned += ent => SpawnUnitVFX(ent.Tile);
 
-        EntertainmentManager.Instance.OnScoreGained += (tile, value) => PlayResourceVFX(tile, value, _scoreMat, UIManager.Instance.ColorExpand);
+        EntertainmentManager.Instance.OnScoreGained += (tile, value) => PlayResourceVFX(tile, value, _scoreMat, UIManager.Instance.ColorEntertain);
         EntertainmentManager.Instance.OnScoreLost += (tile, value) => PlayResourceVFX(tile, value, _scoreMat, UIManager.Instance.ColorCantAfford);
 
         ResourcesManager.Instance.OnGoldGained += (tile, value) => ResourceGain(tile, value, ExtendedResource.Gold);

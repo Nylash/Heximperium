@@ -124,10 +124,13 @@ public class UIManager : Singleton<UIManager>
 
         GameManager.Instance.OnNewTurn += UpdateTurnCounterText;
 
-        GameManager.Instance.OnExplorationPhaseStarted += UpdatePhaseUI;
-        GameManager.Instance.OnExpansionPhaseStarted += UpdatePhaseUI;
-        GameManager.Instance.OnExploitationPhaseStarted += UpdatePhaseUI;
-        GameManager.Instance.OnEntertainmentPhaseStarted += UpdatePhaseUI;
+        GameManager.Instance.OnExplorationPhaseStarted += NewPhaseStarted;
+        ExplorationManager.Instance.OnPhaseFinalized += () => PhaseEnded(Phase.Explore);
+        GameManager.Instance.OnExpansionPhaseStarted += NewPhaseStarted;
+        ExpansionManager.Instance.OnPhaseFinalized += () => PhaseEnded(Phase.Expand);
+        GameManager.Instance.OnExploitationPhaseStarted += NewPhaseStarted;
+        ExploitationManager.Instance.OnPhaseFinalized += () => PhaseEnded(Phase.Exploit);
+        GameManager.Instance.OnEntertainmentPhaseStarted += NewPhaseStarted;
 
         GameManager.Instance.OnEntertainmentPhaseStarted += UpdateUIForEntertainment;
 
@@ -316,7 +319,25 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    private void UpdatePhaseUI()
+    private void PhaseEnded(Phase endedPhase)
+    {
+        switch (endedPhase)
+        {
+            case Phase.Explore:
+                _popUpExploPhase.SetTrigger("Hide");
+                break;
+            case Phase.Expand:
+                _popUpExpandPhase.SetTrigger("Hide");
+                break;
+            case Phase.Exploit:
+                _popUpExploitPhase.SetTrigger("Hide");
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void NewPhaseStarted()
     {
         switch (GameManager.Instance.CurrentPhase)
         {
@@ -326,8 +347,6 @@ public class UIManager : Singleton<UIManager>
                 {
                     item.color = _colorExplo;
                 }
-                if (GameManager.Instance.TurnCounter != 1)
-                    _popUpExploitPhase.SetTrigger("Hide");
                 _popUpExploPhase.SetTrigger("Show");
                 break;
             case Phase.Expand:
@@ -336,7 +355,6 @@ public class UIManager : Singleton<UIManager>
                 {
                     item.color = _colorExpand;
                 }
-                _popUpExploPhase.SetTrigger("Hide");
                 _popUpExpandPhase.SetTrigger("Show");
                 break;
             case Phase.Exploit:
@@ -345,7 +363,6 @@ public class UIManager : Singleton<UIManager>
                 {
                     item.color = _colorExploit;
                 }
-                _popUpExpandPhase.SetTrigger("Hide");
                 _popUpExploitPhase.SetTrigger("Show");
                 break;
             case Phase.Entertain:
@@ -354,7 +371,6 @@ public class UIManager : Singleton<UIManager>
                 {
                     item.color = _colorEntertain;
                 }
-                _popUpExploitPhase.SetTrigger("Hide");
                 _popUpEntertainPhase.SetTrigger("Show");
                 break;
         }

@@ -21,15 +21,12 @@ public class ResourcesManager : Singleton<ResourcesManager>
     private int _gold;
     private int _specialResources;
     private int _carnivalist;
-    //Reduction variables
-    private int _entertainmentGoldReduction;
     //Tracking dictionaries
     private Dictionary<TileData, int> _carnivalistSources = new Dictionary<TileData, int>();
     #endregion
 
     #region ACCESSORS
     public int Claim { get => _claim; }
-    public int EntertainmentGoldReduction { get => _entertainmentGoldReduction; set => _entertainmentGoldReduction = value; }
     public List<ResourceToIntMap> TradeBuyCost { get => _tradeBuyCost; }
     public List<ResourceToIntMap> TradeBuyGain { get => _tradeBuyGain; }
     public List<ResourceToIntMap> TradeSellCost { get => _tradeSellCost; }
@@ -67,6 +64,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
         Debug.LogWarning("USING CHEAT !");
         UpdateResource(Resource.Gold, 5000, Transaction.Gain);
         UpdateResource(Resource.SpecialResources, 1000, Transaction.Gain);
+        UpdateCarnivalist(100, Transaction.Gain);
     }
 
     #region UPDATE RESOURCES
@@ -146,9 +144,8 @@ public class ResourcesManager : Singleton<ResourcesManager>
         }
     }
 
-    public void UpdateCarnivalist(int value, Transaction transaction, Tile tile)
+    public void UpdateCarnivalist(int value, Transaction transaction, Tile tile = null)
     {
-        UpdateCarnivalistSource(tile.TileData, value, transaction);
         if (transaction == Transaction.Spent)
             value = -value;
         _carnivalist += value;
@@ -167,7 +164,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
         }
     }
 
-    private void UpdateCarnivalistSource(TileData source, int value, Transaction transaction)
+    public void UpdateCarnivalistSource(TileData source, int value, Transaction transaction)
     {
         switch (transaction)
         {
@@ -199,6 +196,14 @@ public class ResourcesManager : Singleton<ResourcesManager>
     public bool CanAffordClaim(int claim)
     {
         if (_claim - claim >= 0)
+            return true;
+        else
+            return false;
+    }
+
+    public bool CanAffordCarnivalist(int carnivalist)
+    {
+        if (_carnivalist - carnivalist >= 0)
             return true;
         else
             return false;
