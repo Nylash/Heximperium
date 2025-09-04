@@ -268,6 +268,11 @@ public enum Resource
     Gold, SpecialResources
 }
 
+public enum ExtendedResource
+{
+    Gold, SpecialResources, Claim, Carnivalist
+}
+
 public enum Transaction
 {
     Gain, Spent

@@ -20,17 +20,19 @@ public class ResourcesManager : Singleton<ResourcesManager>
     private int _claim;
     private int _gold;
     private int _specialResources;
-    //Reduction variables
-    private int _entertainmentGoldReduction;
+    private int _carnivalist;
+    //Tracking dictionaries
+    private Dictionary<TileData, int> _carnivalistSources = new Dictionary<TileData, int>();
     #endregion
 
     #region ACCESSORS
     public int Claim { get => _claim; }
-    public int EntertainmentGoldReduction { get => _entertainmentGoldReduction; set => _entertainmentGoldReduction = value; }
     public List<ResourceToIntMap> TradeBuyCost { get => _tradeBuyCost; }
     public List<ResourceToIntMap> TradeBuyGain { get => _tradeBuyGain; }
     public List<ResourceToIntMap> TradeSellCost { get => _tradeSellCost; }
     public List<ResourceToIntMap> TradeSellGain { get => _tradeSellGain; }
+    public int Carnivalist { get => _carnivalist; }
+    public Dictionary<TileData, int> CarnivalistSources { get => _carnivalistSources; }
 
     public int GetResourceStock(Resource resource)
     {
@@ -50,9 +52,11 @@ public class ResourcesManager : Singleton<ResourcesManager>
     public event Action<Tile, int> OnGoldGained;
     public event Action<Tile, int> OnSpecialResourcesGained;
     public event Action<Tile, int> OnClaimGained;
+    public event Action<Tile, int> OnCarnivalistGained;
     public event Action<int> OnGoldSpent;
     public event Action<int> OnSpecialResourcesSpent;
     public event Action<int> OnClaimSpent;
+    public event Action<int> OnCarnivalistSpent;
     #endregion
 
     public void CHEAT_RESOURCES()
@@ -139,10 +143,51 @@ public class ResourcesManager : Singleton<ResourcesManager>
         }
     }
 
-    public void SpendAllResources()
+    public void UpdateCarnivalist(int value, Transaction transaction, Tile tile = null)
     {
-        UpdateResource(Resource.Gold, GetResourceStock(Resource.Gold), Transaction.Spent);
-        UpdateResource(Resource.SpecialResources, GetResourceStock(Resource.SpecialResources), Transaction.Spent);
+        if (transaction == Transaction.Spent)
+            value = -value;
+        _carnivalist += value;
+        if (_carnivalist < 0)
+            _carnivalist = 0;
+        UIManager.Instance.UpdateCarnivalistUI(_carnivalist);
+
+        switch (transaction)
+        {
+            case Transaction.Gain:
+                OnCarnivalistGained?.Invoke(tile, value);
+                break;
+            case Transaction.Spent:
+                OnCarnivalistSpent?.Invoke(Mathf.Abs(value));
+                break;
+        }
+    }
+
+    public void UpdateCarnivalistSource(TileData source, int value, Transaction transaction)
+    {
+        switch (transaction)
+        {
+            case Transaction.Gain:
+                if (!_carnivalistSources.ContainsKey(source))
+                    _carnivalistSources.Add(source, 0);
+                _carnivalistSources[source] += value;
+                break;
+            case Transaction.Spent:
+                if (!_carnivalistSources.ContainsKey(source))
+                    Debug.LogError("Trying to spend carnivalist from a source that doesn't exist in the dictionary");
+                _carnivalistSources[source] -= value;
+                if (_carnivalistSources[source] <= 0)
+                    _carnivalistSources.Remove(source);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void SpendConvertedResources(int goldConverted, int srConverted)
+    {
+        UpdateResource(Resource.Gold, goldConverted, Transaction.Spent);
+        UpdateResource(Resource.SpecialResources, srConverted, Transaction.Spent);
     }
     #endregion
 
@@ -150,6 +195,14 @@ public class ResourcesManager : Singleton<ResourcesManager>
     public bool CanAffordClaim(int claim)
     {
         if (_claim - claim >= 0)
+            return true;
+        else
+            return false;
+    }
+
+    public bool CanAffordCarnivalist(int carnivalist)
+    {
+        if (_carnivalist - carnivalist >= 0)
             return true;
         else
             return false;

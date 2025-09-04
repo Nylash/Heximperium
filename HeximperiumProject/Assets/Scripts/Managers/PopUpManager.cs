@@ -93,6 +93,9 @@ public class PopUpManager : Singleton<PopUpManager>
                     case "ScoreUI":
                         ScorePopUp();
                         break;
+                    case "CarnivalistUI":
+                        CarnivalistPopUp();
+                        break;
                     case "Untagged":
                         break;
                     default:
@@ -237,6 +240,8 @@ public class PopUpManager : Singleton<PopUpManager>
         detail.text = "Can be upgrades with specifics enhancements and upgrades";
         detail.margin = _horizontalMargin;
         ClampTextWidth(detail);
+        detail.alignment = TextAlignmentOptions.Center;
+        detail.fontStyle = FontStyles.Italic;
         textObjects.Add(detail.GetComponent<RectTransform>());
         #endregion
 
@@ -287,7 +292,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
-        title.text = "Claim";
+        title.text = "Claims";
         title.margin = _fullMargin;
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
@@ -429,12 +434,47 @@ public class PopUpManager : Singleton<PopUpManager>
         textObjects.Add(garden.GetComponent<RectTransform>());
         #endregion
 
-        #region CONVERTED POINTS
-        TextMeshProUGUI converted = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        converted.text = "Points from savings: +" + EntertainmentManager.Instance.ConvertedPoints + "<sprite name=\"Point_Emoji\">";
-        converted.margin = _horizontalMargin;
-        ClampTextWidth(converted);
-        textObjects.Add(converted.GetComponent<RectTransform>());
+        SetPopUpContentAnchors(textObjects);
+        PositionPopupRelativeToUI(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>());
+    }
+
+    private void CarnivalistPopUp()
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        #region TITLE
+        TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
+        title.text = "Carnivalists";
+        title.margin = _fullMargin;
+        textObjects.Add(title.GetComponent<RectTransform>());
+        #endregion
+
+        #region DETAIL
+        TextMeshProUGUI detail = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        detail.text = "Carnivalists are used during the Grand Jubilee";
+        detail.margin = _horizontalMargin;
+        ClampTextWidth(detail);
+        detail.alignment = TextAlignmentOptions.Center;
+        detail.fontStyle = FontStyles.Italic;
+        textObjects.Add(detail.GetComponent<RectTransform>());
+        #endregion
+
+        #region SOURCE
+        if (ResourcesManager.Instance.CarnivalistSources.Count > 0)
+        {
+            foreach (KeyValuePair<TileData, int> pair in ResourcesManager.Instance.CarnivalistSources)
+            {
+                TextMeshProUGUI source = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+                source.text = pair.Key.TileName + ": " + pair.Value + "<sprite name=\"Carnivalist_Emoji\">";
+                source.margin = _horizontalMargin;
+                ClampTextWidth(source);
+                textObjects.Add(source.GetComponent<RectTransform>());
+            }
+        }
         #endregion
 
         SetPopUpContentAnchors(textObjects);
@@ -870,8 +910,8 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region COST
         TextMeshProUGUI cost = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        cost.text = "Cost: " + button.EntertainData.Costs.CostToString();
-        if (!ResourcesManager.Instance.CanAfford(button.EntertainData.Costs))
+        cost.text = "Cost: " + button.EntertainData.CarnivalistCost + "<sprite name=\"Carnivalist_Emoji\">";
+        if (!ResourcesManager.Instance.CanAffordCarnivalist(button.EntertainData.CarnivalistCost))
             cost.color = UIManager.Instance.ColorCantAfford;
         cost.margin = _fullMargin;
         textObjects.Add(cost.GetComponent<RectTransform>());

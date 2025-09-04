@@ -9,7 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66ef08c6eada594489b23b551bd648ab, type: 3}
-  m_Name: ReduceEntertainmentGoldCost_SB
+  m_Script: {fileID: 11500000, guid: 02c008b3c4c3a7041807076b3594d034, type: 3}
+  m_Name: EmptyDataForConvertedCarnivalists
   m_EditorClassIdentifier: 
-  _reduction: 1
+  _name: Converted savings
+  _visuals: []
+  _claimCost: 0
+  _incomes: []
+  _availableInfrastructures: []
+  _specialBehaviours: []

@@ -16,6 +16,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TextMeshProUGUI _townsLimitText;
     [SerializeField] private TextMeshProUGUI _goldText;
     [SerializeField] private TextMeshProUGUI _srText;
+    [SerializeField] private TextMeshProUGUI _carnivalistText;
     [SerializeField] private Color _colorCantAfford;
     [Header("_________________________________________________________")]
     [Header("Phase UI")]
@@ -78,6 +79,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private RectTransform _vfxAnchorClaim;
     [SerializeField] private RectTransform _vfxAnchorGold;
     [SerializeField] private RectTransform _vfxAnchorSR;
+    [SerializeField] private RectTransform _vfxAnchorCarnivalist;
     [Header("_________________________________________________________")]
     [Header("Various Objects")]
     [SerializeField] private Animator _scoutHint;
@@ -113,6 +115,7 @@ public class UIManager : Singleton<UIManager>
     public Color ColorExpand { get => _colorExpand; }
     public Color ColorExploit { get => _colorExploit; }
     public Color ColorExplo { get => _colorExplo; }
+    public RectTransform VfxAnchorCarnivalist { get => _vfxAnchorCarnivalist; }
     #endregion
 
     protected override void OnAwake()
@@ -121,10 +124,13 @@ public class UIManager : Singleton<UIManager>
 
         GameManager.Instance.OnNewTurn += UpdateTurnCounterText;
 
-        GameManager.Instance.OnExplorationPhaseStarted += UpdatePhaseUI;
-        GameManager.Instance.OnExpansionPhaseStarted += UpdatePhaseUI;
-        GameManager.Instance.OnExploitationPhaseStarted += UpdatePhaseUI;
-        GameManager.Instance.OnEntertainmentPhaseStarted += UpdatePhaseUI;
+        GameManager.Instance.OnExplorationPhaseStarted += NewPhaseStarted;
+        ExplorationManager.Instance.OnPhaseFinalized += () => PhaseEnded(Phase.Explore);
+        GameManager.Instance.OnExpansionPhaseStarted += NewPhaseStarted;
+        ExpansionManager.Instance.OnPhaseFinalized += () => PhaseEnded(Phase.Expand);
+        GameManager.Instance.OnExploitationPhaseStarted += NewPhaseStarted;
+        ExploitationManager.Instance.OnPhaseFinalized += () => PhaseEnded(Phase.Exploit);
+        GameManager.Instance.OnEntertainmentPhaseStarted += NewPhaseStarted;
 
         GameManager.Instance.OnEntertainmentPhaseStarted += UpdateUIForEntertainment;
 
@@ -162,6 +168,7 @@ public class UIManager : Singleton<UIManager>
     {
         UpdateScoutLimit();
         UpdateClaimUI(ResourcesManager.Instance.Claim);
+        UpdateCarnivalistUI(ResourcesManager.Instance.Carnivalist);
         UpdateResourceUI(Resource.Gold, ResourcesManager.Instance.GetResourceStock(Resource.Gold));
         UpdateResourceUI(Resource.SpecialResources, ResourcesManager.Instance.GetResourceStock(Resource.SpecialResources));
         UpdateTownLimit();
@@ -177,6 +184,11 @@ public class UIManager : Singleton<UIManager>
     public void UpdateClaimUI(int value)
     {
         _claimText.text = value.ToString();
+    }
+
+    public void UpdateCarnivalistUI(int value)
+    {
+        _carnivalistText.text = value.ToString();
     }
 
     public void UpdateResourceUI(Resource resource, int value)
@@ -307,7 +319,25 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    private void UpdatePhaseUI()
+    private void PhaseEnded(Phase endedPhase)
+    {
+        switch (endedPhase)
+        {
+            case Phase.Explore:
+                _popUpExploPhase.SetTrigger("Hide");
+                break;
+            case Phase.Expand:
+                _popUpExpandPhase.SetTrigger("Hide");
+                break;
+            case Phase.Exploit:
+                _popUpExploitPhase.SetTrigger("Hide");
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void NewPhaseStarted()
     {
         switch (GameManager.Instance.CurrentPhase)
         {
@@ -317,8 +347,6 @@ public class UIManager : Singleton<UIManager>
                 {
                     item.color = _colorExplo;
                 }
-                if (GameManager.Instance.TurnCounter != 1)
-                    _popUpExploitPhase.SetTrigger("Hide");
                 _popUpExploPhase.SetTrigger("Show");
                 break;
             case Phase.Expand:
@@ -327,7 +355,6 @@ public class UIManager : Singleton<UIManager>
                 {
                     item.color = _colorExpand;
                 }
-                _popUpExploPhase.SetTrigger("Hide");
                 _popUpExpandPhase.SetTrigger("Show");
                 break;
             case Phase.Exploit:
@@ -336,7 +363,6 @@ public class UIManager : Singleton<UIManager>
                 {
                     item.color = _colorExploit;
                 }
-                _popUpExpandPhase.SetTrigger("Hide");
                 _popUpExploitPhase.SetTrigger("Show");
                 break;
             case Phase.Entertain:
@@ -345,7 +371,6 @@ public class UIManager : Singleton<UIManager>
                 {
                     item.color = _colorEntertain;
                 }
-                _popUpExploitPhase.SetTrigger("Hide");
                 _popUpEntertainPhase.SetTrigger("Show");
                 break;
         }
