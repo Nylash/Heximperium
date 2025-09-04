@@ -22,6 +22,6 @@ public class GenerateCarnivalist : SpecialBehaviour
 
     public override string GetBehaviourDescription()
     {
-        return $"Recruit {_carnivalistQuantity}<sprite name=\"Point_Emoji\">";
+        return $"Recruit {_carnivalistQuantity}<sprite name=\"Carnivalist_Emoji\">";
     }
 }

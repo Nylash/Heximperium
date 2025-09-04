@@ -23,6 +23,8 @@ public class ResourcesManager : Singleton<ResourcesManager>
     private int _carnivalist;
     //Reduction variables
     private int _entertainmentGoldReduction;
+    //Tracking dictionaries
+    private Dictionary<TileData, int> _carnivalistSources = new Dictionary<TileData, int>();
     #endregion
 
     #region ACCESSORS
@@ -33,6 +35,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
     public List<ResourceToIntMap> TradeSellCost { get => _tradeSellCost; }
     public List<ResourceToIntMap> TradeSellGain { get => _tradeSellGain; }
     public int Carnivalist { get => _carnivalist; }
+    public Dictionary<TileData, int> CarnivalistSources { get => _carnivalistSources; }
 
     public int GetResourceStock(Resource resource)
     {
@@ -143,8 +146,9 @@ public class ResourcesManager : Singleton<ResourcesManager>
         }
     }
 
-    public void UpdateCarnivalist(int value, Transaction transaction, Tile tile = null)
+    public void UpdateCarnivalist(int value, Transaction transaction, Tile tile)
     {
+        UpdateCarnivalistSource(tile.TileData, value, transaction);
         if (transaction == Transaction.Spent)
             value = -value;
         _carnivalist += value;
@@ -159,6 +163,27 @@ public class ResourcesManager : Singleton<ResourcesManager>
                 break;
             case Transaction.Spent:
                 OnCarnivalistSpent?.Invoke(Mathf.Abs(value));
+                break;
+        }
+    }
+
+    private void UpdateCarnivalistSource(TileData source, int value, Transaction transaction)
+    {
+        switch (transaction)
+        {
+            case Transaction.Gain:
+                if (!_carnivalistSources.ContainsKey(source))
+                    _carnivalistSources.Add(source, 0);
+                _carnivalistSources[source] += value;
+                break;
+            case Transaction.Spent:
+                if (!_carnivalistSources.ContainsKey(source))
+                    Debug.LogError("Trying to spend carnivalist from a source that doesn't exist in the dictionary");
+                _carnivalistSources[source] -= value;
+                if (_carnivalistSources[source] <= 0)
+                    _carnivalistSources.Remove(source);
+                break;
+            default:
                 break;
         }
     }
