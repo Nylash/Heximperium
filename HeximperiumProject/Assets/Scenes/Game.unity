@@ -271,7 +271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
   _cameraMovementSpeed: 5
-  _cameraDragSpeed: 2
+  _cameraDragSpeed: 0.5
   _edgePanMargin: 2
   _edgePanSpeed: 3
   _cameraZoomSpeed: 25
