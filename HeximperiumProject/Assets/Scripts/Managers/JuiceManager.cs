@@ -9,6 +9,7 @@ public class JuiceManager : Singleton<JuiceManager>
     [SerializeField] private Material _goldMat;
     [SerializeField] private Material _srMat;
     [SerializeField] private Material _claimMat;
+    [SerializeField] private Material _carnivalistMat;
     [SerializeField] private Material _scoreMat;
     [SerializeField] private GameObject _spawnUnitVFX;
     [SerializeField] private GameObject _dustInfraVFX;
@@ -31,12 +32,14 @@ public class JuiceManager : Singleton<JuiceManager>
         EntertainmentManager.Instance.OnScoreGained += (tile, value) => PlayResourceVFX(tile, value, _scoreMat, UIManager.Instance.ColorExpand);
         EntertainmentManager.Instance.OnScoreLost += (tile, value) => PlayResourceVFX(tile, value, _scoreMat, UIManager.Instance.ColorCantAfford);
 
-        ResourcesManager.Instance.OnGoldGained += (tile, value) => ResourceGain(tile, value, Resource.Gold);
+        ResourcesManager.Instance.OnGoldGained += (tile, value) => ResourceGain(tile, value, ExtendedResource.Gold);
         ResourcesManager.Instance.OnGoldSpent += (value) => PlayUIResourceVFX(value, _goldMat, UIManager.Instance.VfxAnchorGold, UIManager.Instance.ColorCantAfford);
-        ResourcesManager.Instance.OnSpecialResourcesGained += (tile, value) => ResourceGain(tile, value, Resource.SpecialResources);
+        ResourcesManager.Instance.OnSpecialResourcesGained += (tile, value) => ResourceGain(tile, value, ExtendedResource.SpecialResources);
         ResourcesManager.Instance.OnSpecialResourcesSpent += (value) => PlayUIResourceVFX(value, _srMat, UIManager.Instance.VfxAnchorSR, UIManager.Instance.ColorCantAfford);
-        ResourcesManager.Instance.OnClaimGained += (tile, value) => ResourceGain(tile, value, (Resource)999);//Call with 999 to land on the default case and avoiding doing a method just for Claims
+        ResourcesManager.Instance.OnClaimGained += (tile, value) => ResourceGain(tile, value, ExtendedResource.Claim);
         ResourcesManager.Instance.OnClaimSpent += (value) => PlayUIResourceVFX(value, _claimMat, UIManager.Instance.VfxAnchorClaim, UIManager.Instance.ColorCantAfford);
+        ResourcesManager.Instance.OnCarnivalistGained += (tile, value) => ResourceGain(tile, value, ExtendedResource.Carnivalist);
+        ResourcesManager.Instance.OnCarnivalistSpent += (value) => PlayUIResourceVFX(value, _carnivalistMat, UIManager.Instance.VfxAnchorCarnivalist, UIManager.Instance.ColorCantAfford);
 
         GameManager.Instance.OnGameFinished += EndGameVFX;
 
@@ -45,27 +48,33 @@ public class JuiceManager : Singleton<JuiceManager>
     }
 
     #region GAMEPLAY VFX
-    private void ResourceGain(Tile tile, int value, Resource resource)
+    private void ResourceGain(Tile tile, int value, ExtendedResource resource)
     {
         switch (resource)
         {
-            case Resource.Gold:
+            case ExtendedResource.Gold:
                 if (tile)
                     PlayResourceVFX(tile, value, _goldMat, UIManager.Instance.ColorExploit);
                 else
                     PlayUIResourceVFX(value, _goldMat, UIManager.Instance.VfxAnchorGold, UIManager.Instance.ColorExploit);
                 break;
-            case Resource.SpecialResources:
+            case ExtendedResource.SpecialResources:
                 if (tile)
                     PlayResourceVFX(tile, value, _srMat, Color.white);
                 else
                     PlayUIResourceVFX(value, _srMat, UIManager.Instance.VfxAnchorSR, Color.white);
                 break;
-            default:
+            case ExtendedResource.Claim:
                 if (tile)
                     PlayResourceVFX(tile, value, _claimMat, UIManager.Instance.ColorExpand);
                 else
                     PlayUIResourceVFX(value, _claimMat, UIManager.Instance.VfxAnchorClaim, UIManager.Instance.ColorExpand);
+                break;
+            case ExtendedResource.Carnivalist:
+                if (tile)
+                    PlayResourceVFX(tile, value, _carnivalistMat, UIManager.Instance.ColorEntertain);
+                else
+                    PlayUIResourceVFX(value, _carnivalistMat, UIManager.Instance.VfxAnchorCarnivalist, UIManager.Instance.ColorEntertain);
                 break;
         }
     }

@@ -16,6 +16,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TextMeshProUGUI _townsLimitText;
     [SerializeField] private TextMeshProUGUI _goldText;
     [SerializeField] private TextMeshProUGUI _srText;
+    [SerializeField] private TextMeshProUGUI _carnivalistText;
     [SerializeField] private Color _colorCantAfford;
     [Header("_________________________________________________________")]
     [Header("Phase UI")]
@@ -78,6 +79,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private RectTransform _vfxAnchorClaim;
     [SerializeField] private RectTransform _vfxAnchorGold;
     [SerializeField] private RectTransform _vfxAnchorSR;
+    [SerializeField] private RectTransform _vfxAnchorCarnivalist;
     [Header("_________________________________________________________")]
     [Header("Various Objects")]
     [SerializeField] private Animator _scoutHint;
@@ -113,6 +115,7 @@ public class UIManager : Singleton<UIManager>
     public Color ColorExpand { get => _colorExpand; }
     public Color ColorExploit { get => _colorExploit; }
     public Color ColorExplo { get => _colorExplo; }
+    public RectTransform VfxAnchorCarnivalist { get => _vfxAnchorCarnivalist; }
     #endregion
 
     protected override void OnAwake()
@@ -162,6 +165,7 @@ public class UIManager : Singleton<UIManager>
     {
         UpdateScoutLimit();
         UpdateClaimUI(ResourcesManager.Instance.Claim);
+        UpdateCarnivalistUI(ResourcesManager.Instance.Carnivalist);
         UpdateResourceUI(Resource.Gold, ResourcesManager.Instance.GetResourceStock(Resource.Gold));
         UpdateResourceUI(Resource.SpecialResources, ResourcesManager.Instance.GetResourceStock(Resource.SpecialResources));
         UpdateTownLimit();
@@ -177,6 +181,11 @@ public class UIManager : Singleton<UIManager>
     public void UpdateClaimUI(int value)
     {
         _claimText.text = value.ToString();
+    }
+
+    public void UpdateCarnivalistUI(int value)
+    {
+        _carnivalistText.text = value.ToString();
     }
 
     public void UpdateResourceUI(Resource resource, int value)

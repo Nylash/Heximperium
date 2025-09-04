@@ -18,14 +18,14 @@ MonoBehaviour:
   _claimCost: 0
   _incomes:
   - resource: 0
-    value: 7
+    value: 4
   _availableInfrastructures: []
-  _specialBehaviours: []
+  _specialBehaviours:
+  - {fileID: 11400000, guid: 4514e2c40dc07f94a9949c29e6d24726, type: 2}
   _costs:
   - resource: 1
     value: 3
   - resource: 0
     value: 5
-  _associatedSystem: 2
   _scoutStartingPoint: 0
   isTown: 0

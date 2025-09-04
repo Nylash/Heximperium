@@ -20,6 +20,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
     private int _claim;
     private int _gold;
     private int _specialResources;
+    private int _carnivalist;
     //Reduction variables
     private int _entertainmentGoldReduction;
     #endregion
@@ -31,6 +32,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
     public List<ResourceToIntMap> TradeBuyGain { get => _tradeBuyGain; }
     public List<ResourceToIntMap> TradeSellCost { get => _tradeSellCost; }
     public List<ResourceToIntMap> TradeSellGain { get => _tradeSellGain; }
+    public int Carnivalist { get => _carnivalist; }
 
     public int GetResourceStock(Resource resource)
     {
@@ -50,9 +52,11 @@ public class ResourcesManager : Singleton<ResourcesManager>
     public event Action<Tile, int> OnGoldGained;
     public event Action<Tile, int> OnSpecialResourcesGained;
     public event Action<Tile, int> OnClaimGained;
+    public event Action<Tile, int> OnCarnivalistGained;
     public event Action<int> OnGoldSpent;
     public event Action<int> OnSpecialResourcesSpent;
     public event Action<int> OnClaimSpent;
+    public event Action<int> OnCarnivalistSpent;
     #endregion
 
     public void CHEAT_RESOURCES()
@@ -135,6 +139,26 @@ public class ResourcesManager : Singleton<ResourcesManager>
                 break;
             case Transaction.Spent:
                 OnClaimSpent?.Invoke(Mathf.Abs(value));
+                break;
+        }
+    }
+
+    public void UpdateCarnivalist(int value, Transaction transaction, Tile tile = null)
+    {
+        if (transaction == Transaction.Spent)
+            value = -value;
+        _carnivalist += value;
+        if (_carnivalist < 0)
+            _carnivalist = 0;
+        UIManager.Instance.UpdateCarnivalistUI(_carnivalist);
+
+        switch (transaction)
+        {
+            case Transaction.Gain:
+                OnCarnivalistGained?.Invoke(tile, value);
+                break;
+            case Transaction.Spent:
+                OnCarnivalistSpent?.Invoke(Mathf.Abs(value));
                 break;
         }
     }
