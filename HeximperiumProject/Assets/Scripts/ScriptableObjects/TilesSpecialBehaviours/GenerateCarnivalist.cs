@@ -5,6 +5,8 @@ public class GenerateCarnivalist : SpecialBehaviour
 {
     [SerializeField] private int _carnivalistQuantity;
 
+    public int CarnivalistQuantity { get => _carnivalistQuantity; }
+
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
     {
         ResourcesManager.Instance.UpdateCarnivalist(_carnivalistQuantity, Transaction.Gain, behaviourTile);

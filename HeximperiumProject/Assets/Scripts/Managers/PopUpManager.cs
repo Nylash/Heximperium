@@ -96,6 +96,9 @@ public class PopUpManager : Singleton<PopUpManager>
                     case "CarnivalistUI":
                         CarnivalistPopUp();
                         break;
+                    case "ShowIncomeUI":
+                        ShowIncomePopUp();
+                        break;
                     case "Untagged":
                         break;
                     default:
@@ -475,6 +478,29 @@ public class PopUpManager : Singleton<PopUpManager>
                 textObjects.Add(source.GetComponent<RectTransform>());
             }
         }
+        #endregion
+
+        SetPopUpContentAnchors(textObjects);
+        PositionPopupRelativeToUI(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>());
+    }
+
+    private void ShowIncomePopUp()
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        #region DETAIL
+        TextMeshProUGUI detail = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        if (UIManager.Instance.AreIncomesShown)
+            detail.text = "Hide tiles' incomes and bonuses";
+        else
+            detail.text = "Show tiles' incomes and bonuses";
+        detail.margin = _horizontalMargin;
+        ClampTextWidth(detail);
+        textObjects.Add(detail.GetComponent<RectTransform>());
         #endregion
 
         SetPopUpContentAnchors(textObjects);

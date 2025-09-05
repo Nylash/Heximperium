@@ -71,6 +71,11 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject _markerExclusiveUpgrade;
     [SerializeField] private Sprite _markerExclusiveUpgradeLocked;
     [Header("_________________________________________________________")]
+    [Header("Show Income button")]
+    [SerializeField] private Image _showIncomeButton;
+    [SerializeField] private Sprite _showIncomeOff;
+    [SerializeField] private Sprite _showIncomeOn;
+    [Header("_________________________________________________________")]
     [Header("VFX Anchors")]
     [SerializeField] private RectTransform _vfxAnchorEndConfetti1;
     [SerializeField] private RectTransform _vfxAnchorEndConfetti2;
@@ -86,9 +91,9 @@ public class UIManager : Singleton<UIManager>
     #endregion
 
     #region VARIABLES
-    private Transform _mainCanvas;
     private bool _areUnitsVisible;
     private bool _uiPhaseInAnimation;
+    private bool _areIncomesShown;
     #endregion
 
     #region ACCESSORS
@@ -116,12 +121,11 @@ public class UIManager : Singleton<UIManager>
     public Color ColorExploit { get => _colorExploit; }
     public Color ColorExplo { get => _colorExplo; }
     public RectTransform VfxAnchorCarnivalist { get => _vfxAnchorCarnivalist; }
+    public bool AreIncomesShown { get => _areIncomesShown; }
     #endregion
 
     protected override void OnAwake()
     {
-        _mainCanvas = GetComponent<Transform>();
-
         GameManager.Instance.OnNewTurn += UpdateTurnCounterText;
 
         GameManager.Instance.OnExplorationPhaseStarted += NewPhaseStarted;
@@ -472,4 +476,14 @@ public class UIManager : Singleton<UIManager>
             tree.nodes = tree.treeObject.GetComponentsInChildren<UI_UpgradeNode>().ToList();
     }
     #endregion
+
+    public void SwitchIncomesVisibility()
+    {
+        _areIncomesShown = !_areIncomesShown;
+        _showIncomeButton.sprite = _areIncomesShown ? _showIncomeOn : _showIncomeOff;
+        foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
+        {
+            tile.ShowIncomeUI(_areIncomesShown);
+        }
+    }
 }

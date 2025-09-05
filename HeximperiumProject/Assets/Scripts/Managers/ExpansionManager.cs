@@ -16,7 +16,6 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     private int _savedClaimPerTurn;
     //Upgrades variables
     private bool _upgradeTownAutoClaim;
-    private bool _upgradeTownsGenerateClaim;
     private bool _upgradeHazardClaimReduction;
     private bool _upgradeClaimRange;
     #endregion
@@ -24,10 +23,9 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     #region ACCESSORS
     public int ClaimPerTurn { get => _claimPerTurn; set => _claimPerTurn = value; }
     public List<Tile> ClaimedTiles { get => _claimedTiles; }
-    public InfrastructureData TownData { get => _townData;}
+    public InfrastructureData NewTownData { get => _townData;}
     public int SavedClaimPerTurn { get => _savedClaimPerTurn; set => _savedClaimPerTurn = value; }
     public bool UpgradeTownAutoClaim { get => _upgradeTownAutoClaim; set => _upgradeTownAutoClaim = value; }
-    public bool UpgradeTownsGenerateClaim { get => _upgradeTownsGenerateClaim; set => _upgradeTownsGenerateClaim = value; }
     public bool UpgradeHazardClaimReduction { get => _upgradeHazardClaimReduction;
         set
         {
@@ -67,20 +65,9 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     {
         ResourcesManager.Instance.UpdateClaim(_claimPerTurn, Transaction.Gain);
 
-        if (_upgradeTownsGenerateClaim)
+        foreach (Tile tile in _claimedTiles)
         {
-            foreach (Tile tile in ExploitationManager.Instance.Infrastructures)
-            {
-                if (tile.TileData is InfrastructureData infra)
-                {
-                    if (infra.IsTown)
-                        ResourcesManager.Instance.UpdateClaim(1, Transaction.Gain, tile);
-                }
-                else
-                {
-                    Debug.LogError("TileData is not an InfrastructureData on tile: " + tile.name + " and yet it is in the Infrastructures list.");
-                }
-            }
+            ResourcesManager.Instance.UpdateClaim(tile.ClaimIncome, Transaction.Gain);
         }
 
         AnimateInteractableTiles();

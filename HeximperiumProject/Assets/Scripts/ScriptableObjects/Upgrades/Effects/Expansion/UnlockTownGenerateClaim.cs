@@ -5,7 +5,20 @@ public class UnlockTownGenerateClaim : UpgradeEffect
 {
     public override void ApplyEffect()
     {
-        ExpansionManager.Instance.UpgradeTownsGenerateClaim = true;
+        foreach (Tile tile in ExploitationManager.Instance.Infrastructures)
+        {
+            if (tile.TileData is InfrastructureData infraData && infraData.IsTown)
+            {
+                tile.ClaimIncome += 1;
+            }
+        }
+        ExploitationManager.Instance.OnInfraBuilded += (Tile tile) =>
+        {
+            if (tile.TileData == ExpansionManager.Instance.NewTownData)
+            {
+                tile.ClaimIncome += 1;
+            }
+        };
     }
 
     public override string GetEffectDescription()

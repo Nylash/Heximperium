@@ -163,6 +163,11 @@ public static class Utilities
         return incomeString;
     }
 
+    public static int? GetValueFor(this List<ResourceToIntMap> incomes, Resource resource)
+    {
+        return incomes.FirstOrDefault(r => r.resource == resource)?.value;
+    }
+
     public static string CostToString(this List<ResourceToIntMap> incomes)
     {
         string costString = string.Empty;

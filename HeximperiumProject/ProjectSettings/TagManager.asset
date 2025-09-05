@@ -14,6 +14,7 @@ TagManager:
   - UpgradeNodeUI
   - ScoreUI
   - CarnivalistUI
+  - ShowIncomeUI
   layers:
   - Default
   - TransparentFX

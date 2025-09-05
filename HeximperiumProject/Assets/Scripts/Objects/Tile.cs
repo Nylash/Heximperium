@@ -1,8 +1,8 @@
-using UnityEngine;
-using TMPro;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
+using TMPro;
+using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
@@ -15,6 +15,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private SpriteRenderer _infraLvlRenderer;
     [SerializeField] private Sprite[] _spriteInfraLvl = new Sprite[3];
     [SerializeField] private Animator _claimTintAnimator;
+    [SerializeField] private TextMeshPro[] _incomesUI = new TextMeshPro[6];
     #endregion
 
     #region VARIABLES
@@ -25,6 +26,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private Vector2 _coordinate;
     [SerializeField] private List<ResourceToIntMap> _incomes = new List<ResourceToIntMap>();
 
+    private int _claimIncome = 0;
     private Tile[] _neighbors = new Tile[6];
     private TileData _initialData;
     private TileData _previousData;
@@ -72,6 +74,8 @@ public class Tile : MonoBehaviour
         {
             OnIncomeModified?.Invoke(this, _incomes, value);
             _incomes = value;
+            if (UIManager.Instance.AreIncomesShown)
+                ShowIncomeUI(true);
         }
     }
     public TileData InitialData { get => _initialData; set => _initialData = value; }
@@ -102,6 +106,16 @@ public class Tile : MonoBehaviour
     public Transform Visual { get => _visual; }
     public Coroutine InteractionCoroutine { get => _interactionCoroutine; set => _interactionCoroutine = value; }
     public TileInteractionAnimationState InteractionAnimationState { get => _interactionAnimationState; set => _interactionAnimationState = value; }
+    public int ClaimIncome
+    {
+        get => _claimIncome;
+        set
+        {
+            _claimIncome = value;
+            if (UIManager.Instance.AreIncomesShown)
+                ShowIncomeUI(true);
+        }
+    }
     #endregion
 
     private void Awake()
@@ -159,6 +173,8 @@ public class Tile : MonoBehaviour
 
         UpdateSpecialBehaviours();
 
+        if (UIManager.Instance.AreIncomesShown)
+            ShowIncomeUI(true);
         OnTileDataModified?.Invoke(this);
     }
 
@@ -186,6 +202,9 @@ public class Tile : MonoBehaviour
         _border.GetComponent<Border>().associatedTile = this;
         _claimTintAnimator.SetTrigger("Claim");
         _border.name = "Border" + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
+
+        if (UIManager.Instance.AreIncomesShown)
+            ShowIncomeUI(true);
     }
 
     //Called when a tile is claimed
@@ -258,6 +277,62 @@ public class Tile : MonoBehaviour
                 return true;
         }
         return false;
+    }
+
+    public void ShowIncomeUI(bool show)
+    {
+        // Hide them all, to avoid leftovers
+        foreach (TextMeshPro income in _incomesUI)
+            income.transform.parent.gameObject.SetActive(false);
+
+        if (!show) return;
+
+        int count = 0;
+
+        if (_tileData.SpecialBehaviours.Any(b => b is BoostScoutsLimit))
+        {
+            _incomesUI[count].text = "1<sprite name=\"Scout_Emoji\">";
+            _incomesUI[count].transform.parent.gameObject.SetActive(true);
+            count++;
+        }
+
+        if (_claimIncome > 0)
+        {
+            _incomesUI[count].text = "+" + _claimIncome + "<sprite name=\"Claim_Emoji\">";
+            _incomesUI[count].transform.parent.gameObject.SetActive(true);
+            count++;
+        }
+
+        if (_tileData.SpecialBehaviours.Any(b => b is BoostTownsLimit))
+        {
+            _incomesUI[count].text = "1<sprite name=\"Town_Emoji\">";
+            _incomesUI[count].transform.parent.gameObject.SetActive(true);
+            count++;
+        }
+
+        var goldIncome = _incomes.GetValueFor(Resource.Gold);
+        if (goldIncome is int value)
+        {
+            _incomesUI[count].text = "+" + value + "<sprite name=\"Gold_Emoji\">";
+            _incomesUI[count].transform.parent.gameObject.SetActive(true);
+            count++;
+        }
+
+        var srIncome = _incomes.GetValueFor(Resource.SpecialResources);
+        if (srIncome is int val)
+        {
+            _incomesUI[count].text = "+" + val + "<sprite name=\"SR_Emoji\">";
+            _incomesUI[count].transform.parent.gameObject.SetActive(true);
+            count++;
+        }
+
+        var generateCarnivalist = _tileData.SpecialBehaviours.OfType<GenerateCarnivalist>().FirstOrDefault();
+        if (generateCarnivalist != null)
+        {
+            _incomesUI[count].text = generateCarnivalist.CarnivalistQuantity + "<sprite name=\"Carnivalist_Emoji\">";
+            _incomesUI[count].transform.parent.gameObject.SetActive(true);
+            count++;
+        }
     }
     #endregion
 
