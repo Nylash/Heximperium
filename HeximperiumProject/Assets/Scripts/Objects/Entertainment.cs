@@ -62,7 +62,10 @@ public class Entertainment : MonoBehaviour
         if (transaction == Transaction.Spent)
             value = -value;
 
-        _points += value; 
+        _points += value;
+
+        if (UIManager.Instance.AreIncomesShown)
+            _tile.ShowIncomeUI(true);
     }
 
     public void DestroyEntertainment()

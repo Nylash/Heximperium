@@ -125,6 +125,14 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         ResourcesManager.Instance.UpdateCarnivalistSource(_emptyDataForString, goldCarnivalist + srCarnivalist, Transaction.Gain);
 
         AnimateInteractableTiles();
+
+        if (UIManager.Instance.AreIncomesShown)
+        {
+            foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
+            {
+                tile.ShowIncomeUI(true);
+            }
+        }
     }
 
     protected override void ConfirmPhase()

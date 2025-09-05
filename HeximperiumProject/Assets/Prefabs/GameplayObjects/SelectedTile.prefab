@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1374311604036627735}
   - component: {fileID: 2429642331386192002}
   - component: {fileID: 3466618659377669653}
+  - component: {fileID: 8846093512307207676}
   m_Layer: 0
   m_Name: SelectedTile
   m_TagString: Untagged
@@ -122,3 +123,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4b581977f1aebf46ada4ff3963f8b97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8846093512307207676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5751803865783233614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b3d5bd140fa19642a3c5973b19704cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sortingOrder: 1

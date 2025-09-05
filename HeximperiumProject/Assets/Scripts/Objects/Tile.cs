@@ -93,6 +93,9 @@ public class Tile : MonoBehaviour
                 _previousEntertainmentData = null;
             _entertainment = value;
             OnEntertainmentModified?.Invoke(this);
+
+            if (UIManager.Instance.AreIncomesShown)
+                ShowIncomeUI(true);
         }  
     }
     public TileData PreviousData { get => _previousData; }
@@ -286,6 +289,16 @@ public class Tile : MonoBehaviour
             income.transform.parent.gameObject.SetActive(false);
 
         if (!show) return;
+
+        if (GameManager.Instance.CurrentPhase == Phase.Entertain)
+        {
+            if (_entertainment != null)
+            {
+                _incomesUI[0].text = _entertainment.Points + "<sprite name=\"Point_Emoji\">";
+                _incomesUI[0].transform.parent.gameObject.SetActive(true);
+            }
+            return;
+        }
 
         int count = 0;
 
