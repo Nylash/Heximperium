@@ -41,6 +41,7 @@ public class Tile : MonoBehaviour
     //Scouts
     private List<Scout> _scouts = new List<Scout>();
     //Entertainment variables
+    private bool _allowEntertainment;
     private Entertainment _entertainment;
     private Entertainment _previousEntertainment;//Only stay one frame (because the ref is deleted) but needed to clean the group (BoostByZone special effect)
     private EntertainmentData _previousEntertainmentData;
@@ -119,6 +120,8 @@ public class Tile : MonoBehaviour
                 ShowIncomeUI(true);
         }
     }
+
+    public bool AllowEntertainment { get => _allowEntertainment; set => _allowEntertainment = value; }
     #endregion
 
     private void Awake()
@@ -346,6 +349,25 @@ public class Tile : MonoBehaviour
             _incomesUI[count].transform.parent.gameObject.SetActive(true);
             count++;
         }
+    }
+
+    public bool CanReceiveEntertainment()
+    {
+        if (!_claimed)
+            return false;
+        if (_allowEntertainment)
+            return true;
+        if (EntertainmentManager.Instance.UpgradeMinstrelStageOnNeighbor)
+        {
+            foreach (Tile neighbor in _neighbors)
+            {
+                if (!neighbor)
+                    continue;
+                if (neighbor.Entertainment != null)
+                    return true;
+            }
+        }
+        return false;
     }
     #endregion
 
