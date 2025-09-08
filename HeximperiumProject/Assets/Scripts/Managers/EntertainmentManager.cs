@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class EntertainmentManager : PhaseManager<EntertainmentManager>
 {
@@ -171,10 +172,13 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
             }
             else
             {
-                _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, _entertainmentsData.Count);
-                for (int i = 0; i < _entertainmentsData.Count; i++)
+                if (tile.CanReceiveEntertainment())
                 {
-                    EntertainmentInteraction(tile, i, _entertainmentsData[i]);
+                    _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, _entertainmentsData.Count);
+                    for (int i = 0; i < _entertainmentsData.Count; i++)
+                    {
+                        EntertainmentInteraction(tile, i, _entertainmentsData[i]);
+                    }
                 }
             }
         }
@@ -278,12 +282,10 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
 
         HashSet<Tile> tilesToAnimate = new HashSet<Tile>();
 
-        if (IsAtLeastOneEntertainmentBuyable())
+        foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
         {
-            foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
+            if (tile.CanReceiveEntertainment() && tile.Entertainment == null)
             {
-                if (tile.Entertainment != null)
-                    continue;
                 tilesToAnimate.Add(tile);
             }
         }
