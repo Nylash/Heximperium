@@ -150,6 +150,8 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     #region PHASE LOGIC
     protected override void StartPhase()
     {
+        GameManager.Instance.UnselectTile();
+
         AnimateInteractableTiles();
 
         ResourcesManager.Instance.CHEAT_RESOURCES();

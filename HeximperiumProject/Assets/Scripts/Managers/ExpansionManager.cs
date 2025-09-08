@@ -63,6 +63,8 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     #region PHASE LOGIC
     protected override void StartPhase()
     {
+        GameManager.Instance.UnselectTile();
+
         ResourcesManager.Instance.UpdateClaim(_claimPerTurn, Transaction.Gain);
 
         foreach (Tile tile in _claimedTiles)

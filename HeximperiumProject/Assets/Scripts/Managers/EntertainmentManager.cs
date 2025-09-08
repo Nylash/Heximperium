@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class EntertainmentManager : PhaseManager<EntertainmentManager>
 {
@@ -22,6 +23,8 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     private int _score;
     private Dictionary<int, List<Entertainment>> _groupBoost = new Dictionary<int, List<Entertainment>>(); //Use for BoostByZoneSize special effect, <GroupID, Entertainments>
     private Dictionary<int, int> _groupBoostCount = new Dictionary<int, int>(); //Use for BoostByZoneSize special effect, <GroupID, Count>
+    // Upgrade variables
+    private bool _upgradeMinstrelStageOnNeighbor;
     #endregion
 
     #region ACCESSORS
@@ -29,6 +32,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     public int Score { get => _score; }
     public Dictionary<int, List<Entertainment>> GroupBoost { get => _groupBoost; }
     public Dictionary<int, int> GroupBoostCount { get => _groupBoostCount; }
+    public bool UpgradeMinstrelStageOnNeighbor { get => _upgradeMinstrelStageOnNeighbor; set => _upgradeMinstrelStageOnNeighbor = value; }
 
     public int GetPointsFromMinstrelStage()
     {
@@ -115,6 +119,8 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     #region PHASE LOGIC
     protected override void StartPhase()
     {
+        GameManager.Instance.UnselectTile();
+
         //Convert savings into carnivalists
         int goldCarnivalist = ResourcesManager.Instance.GetResourceStock(Resource.Gold) / _goldForOneCarnivalist;
         int srCarnivalist = ResourcesManager.Instance.GetResourceStock(Resource.SpecialResources) / _SrForOneCarnivalist;
@@ -130,7 +136,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         {
             foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
             {
-                tile.ShowIncomeUI(true);
+                tile.ShowIncomeUI(true);//Refresh the income UI if needed to only show the score income
             }
         }
     }
@@ -166,10 +172,13 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
             }
             else
             {
-                _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, _entertainmentsData.Count);
-                for (int i = 0; i < _entertainmentsData.Count; i++)
+                if (tile.CanReceiveEntertainment())
                 {
-                    EntertainmentInteraction(tile, i, _entertainmentsData[i]);
+                    _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, _entertainmentsData.Count);
+                    for (int i = 0; i < _entertainmentsData.Count; i++)
+                    {
+                        EntertainmentInteraction(tile, i, _entertainmentsData[i]);
+                    }
                 }
             }
         }
@@ -273,12 +282,10 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
 
         HashSet<Tile> tilesToAnimate = new HashSet<Tile>();
 
-        if (IsAtLeastOneEntertainmentBuyable())
+        foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
         {
-            foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
+            if (tile.CanReceiveEntertainment() && tile.Entertainment == null)
             {
-                if (tile.Entertainment != null)
-                    continue;
                 tilesToAnimate.Add(tile);
             }
         }

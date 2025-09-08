@@ -22,11 +22,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c0d2e932331af9d479c1f0c0450c852d, type: 2}
   - {fileID: 11400000, guid: 74b903bf6b0fe0049950a02c6e4f5bf5, type: 2}
   - {fileID: 11400000, guid: 992b3b78f74b485428ba17ed26623160, type: 2}
+  - {fileID: 11400000, guid: c5d3b56297aed8546b01ebaecac6d3c9, type: 2}
   _costs:
   - resource: 0
     value: 30
   - resource: 1
     value: 15
-  _associatedSystem: 1
   _scoutStartingPoint: 1
   isTown: 1
