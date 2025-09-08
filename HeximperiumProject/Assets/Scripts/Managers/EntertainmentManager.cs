@@ -118,6 +118,8 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     #region PHASE LOGIC
     protected override void StartPhase()
     {
+        GameManager.Instance.UnselectTile();
+
         //Convert savings into carnivalists
         int goldCarnivalist = ResourcesManager.Instance.GetResourceStock(Resource.Gold) / _goldForOneCarnivalist;
         int srCarnivalist = ResourcesManager.Instance.GetResourceStock(Resource.SpecialResources) / _SrForOneCarnivalist;

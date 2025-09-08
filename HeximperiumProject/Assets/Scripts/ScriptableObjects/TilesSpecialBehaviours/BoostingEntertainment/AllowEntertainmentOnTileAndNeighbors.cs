@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Linq;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/Special Behaviour/AllowEntertainmentOnTileAndNeighbors")]
 public class AllowEntertainmentOnTileAndNeighbors : SpecialBehaviour
@@ -16,12 +17,19 @@ public class AllowEntertainmentOnTileAndNeighbors : SpecialBehaviour
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
-        behaviourTile.AllowEntertainment = false;
+        if (behaviourTile.Neighbors.All(n =>
+            !(n?.TileData?.SpecialBehaviours?.Any(b => b is AllowEntertainmentOnTileAndNeighbors) ?? false)))
+        {
+            behaviourTile.AllowEntertainment = false;
+        }
         foreach (Tile tile in behaviourTile.Neighbors)
         {
-            if (!tile)
-                continue;
-            tile.AllowEntertainment = false;
+            if (tile.Neighbors
+                .Where(n => n != null && n != behaviourTile) // skip null and the behaviourTile itself
+                .All(n => !n.TileData?.SpecialBehaviours?.Any(b => b is AllowEntertainmentOnTileAndNeighbors) ?? true))
+            {
+                tile.AllowEntertainment = false;
+            }
         }
     }
 
