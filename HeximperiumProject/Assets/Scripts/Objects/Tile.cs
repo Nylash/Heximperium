@@ -16,6 +16,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private Sprite[] _spriteInfraLvl = new Sprite[3];
     [SerializeField] private Animator _claimTintAnimator;
     [SerializeField] private TextMeshPro[] _incomesUI = new TextMeshPro[6];
+    [SerializeField] private GameObject _allowEntHint;
     #endregion
 
     #region VARIABLES
@@ -121,7 +122,16 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public bool AllowEntertainment { get => _allowEntertainment; set => _allowEntertainment = value; }
+    public bool AllowEntertainment 
+    { 
+        get => _allowEntertainment;
+        set
+        {
+            _allowEntertainment = value;
+            if (UIManager.Instance.AreEntPlacementShown)
+                ShowEntPlacementUI(true);
+        }
+    }
     #endregion
 
     private void Awake()
@@ -193,6 +203,8 @@ public class Tile : MonoBehaviour
         else
             _animator.SetTrigger("Reveal");
         ExplorationManager.Instance.RevealedTiles.Add(this);
+        if (UIManager.Instance.AreEntPlacementShown)
+            ShowEntPlacementUI(true);
     }
 
     //Claim the tile and spawn the territory boundaries
@@ -283,6 +295,13 @@ public class Tile : MonoBehaviour
                 return true;
         }
         return false;
+    }
+
+    public void ShowEntPlacementUI(bool show)
+    {
+        if (_tileData is HazardousTileData)
+            return;
+        _allowEntHint.SetActive(show && _allowEntertainment);
     }
 
     public void ShowIncomeUI(bool show)

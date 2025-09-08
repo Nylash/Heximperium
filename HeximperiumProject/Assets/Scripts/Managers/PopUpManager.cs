@@ -99,6 +99,9 @@ public class PopUpManager : Singleton<PopUpManager>
                     case "ShowIncomeUI":
                         ShowIncomePopUp();
                         break;
+                    case "ShowEntPlacementUI":
+                        ShowEntPlacementPopUp();
+                        break;
                     case "Untagged":
                         break;
                     default:
@@ -498,6 +501,29 @@ public class PopUpManager : Singleton<PopUpManager>
             detail.text = "Hide tiles' incomes and bonuses";
         else
             detail.text = "Show tiles' incomes and bonuses";
+        detail.margin = _horizontalMargin;
+        ClampTextWidth(detail);
+        textObjects.Add(detail.GetComponent<RectTransform>());
+        #endregion
+
+        SetPopUpContentAnchors(textObjects);
+        PositionPopupRelativeToUI(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>());
+    }
+
+    private void ShowEntPlacementPopUp()
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        #region DETAIL
+        TextMeshProUGUI detail = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        if (UIManager.Instance.AreEntPlacementShown)
+            detail.text = "Hide which tiles can receive an entertainment";
+        else
+            detail.text = "Show which tiles can receive an entertainment";
         detail.margin = _horizontalMargin;
         ClampTextWidth(detail);
         textObjects.Add(detail.GetComponent<RectTransform>());

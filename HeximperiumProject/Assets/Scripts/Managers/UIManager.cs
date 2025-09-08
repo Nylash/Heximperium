@@ -76,6 +76,11 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Sprite _showIncomeOff;
     [SerializeField] private Sprite _showIncomeOn;
     [Header("_________________________________________________________")]
+    [Header("Show Entertainment Placement button")]
+    [SerializeField] private Image _showEntPlacementButton;
+    [SerializeField] private Sprite _showEntPlacementOff;
+    [SerializeField] private Sprite _showEntPlacementOn;
+    [Header("_________________________________________________________")]
     [Header("VFX Anchors")]
     [SerializeField] private RectTransform _vfxAnchorEndConfetti1;
     [SerializeField] private RectTransform _vfxAnchorEndConfetti2;
@@ -94,6 +99,7 @@ public class UIManager : Singleton<UIManager>
     private bool _areUnitsVisible;
     private bool _uiPhaseInAnimation;
     private bool _areIncomesShown;
+    private bool _areEntPlacementShown;
     #endregion
 
     #region ACCESSORS
@@ -122,6 +128,7 @@ public class UIManager : Singleton<UIManager>
     public Color ColorExplo { get => _colorExplo; }
     public RectTransform VfxAnchorCarnivalist { get => _vfxAnchorCarnivalist; }
     public bool AreIncomesShown { get => _areIncomesShown; }
+    public bool AreEntPlacementShown { get => _areEntPlacementShown; }
     #endregion
 
     protected override void OnAwake()
@@ -484,6 +491,16 @@ public class UIManager : Singleton<UIManager>
         foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
         {
             tile.ShowIncomeUI(_areIncomesShown);
+        }
+    }
+
+    public void SwitchEntPlacementVisibility()
+    {
+        _areEntPlacementShown = !_areEntPlacementShown;
+        _showEntPlacementButton.sprite = _areEntPlacementShown ? _showEntPlacementOn : _showEntPlacementOff;
+        foreach (Tile tile in ExplorationManager.Instance.RevealedTiles)
+        {
+            tile.ShowEntPlacementUI(_areEntPlacementShown);
         }
     }
 }

@@ -24,6 +24,10 @@ public class AllowEntertainmentOnTileAndNeighbors : SpecialBehaviour
         }
         foreach (Tile tile in behaviourTile.Neighbors)
         {
+            if (!tile)
+                continue;
+            if (tile.TileData.SpecialBehaviours.Any(b => b is AllowEntertainmentOnTileAndNeighbors))
+                continue; // skip if the tile itself has the behaviour
             if (tile.Neighbors
                 .Where(n => n != null && n != behaviourTile) // skip null and the behaviourTile itself
                 .All(n => !n.TileData?.SpecialBehaviours?.Any(b => b is AllowEntertainmentOnTileAndNeighbors) ?? true))

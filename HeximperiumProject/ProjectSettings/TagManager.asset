@@ -15,6 +15,7 @@ TagManager:
   - ScoreUI
   - CarnivalistUI
   - ShowIncomeUI
+  - ShowEntPlacementUI
   layers:
   - Default
   - TransparentFX

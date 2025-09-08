@@ -136,7 +136,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         {
             foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
             {
-                tile.ShowIncomeUI(true);
+                tile.ShowIncomeUI(true);//Refresh the income UI if needed to only show the score income
             }
         }
     }
