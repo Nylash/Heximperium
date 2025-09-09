@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e0e460f401a6ce44ad84d3534c37a05, type: 3}
   m_Name: ExplorersLodge
   m_EditorClassIdentifier: 
-  _name: Explorer's Lodge
+  _name: Explorers' Lodge
   _visuals:
   - {fileID: 2100000, guid: 4d61b2e3a8f20e14da6f3daa37a5460d, type: 2}
   _claimCost: 0
@@ -27,6 +27,5 @@ MonoBehaviour:
     value: 15
   - resource: 1
     value: 5
-  _associatedSystem: 0
   _scoutStartingPoint: 1
   isTown: 0

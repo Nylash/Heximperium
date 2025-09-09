@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e0e460f401a6ce44ad84d3534c37a05, type: 3}
-  m_Name: FreeholdFarm
+  m_Name: ArtistsLodge
   m_EditorClassIdentifier: 
-  _name: Freehold Farm
+  _name: "Artists\u2019 Lodge"
   _visuals:
-  - {fileID: 2100000, guid: baef852a1d6098743918a012a2553ddc, type: 2}
+  - {fileID: 2100000, guid: d214c5239ee4ee8408948c5f67b7742c, type: 2}
   _claimCost: 0
   _incomes: []
   _availableInfrastructures: []
   _specialBehaviours:
-  - {fileID: 11400000, guid: 4514e2c40dc07f94a9949c29e6d24726, type: 2}
+  - {fileID: 11400000, guid: 904d1da95731ade43925d48349e98890, type: 2}
   _costs:
-  - resource: 1
-    value: 3
   - resource: 0
+    value: 15
+  - resource: 1
     value: 5
-  _scoutStartingPoint: 0
+  _scoutStartingPoint: 1
   isTown: 0
