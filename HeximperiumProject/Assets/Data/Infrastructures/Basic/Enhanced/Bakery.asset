@@ -16,18 +16,15 @@ MonoBehaviour:
   _visuals:
   - {fileID: 2100000, guid: 6608476933607b547b593c2607c22a4e, type: 2}
   _claimCost: 0
-  _incomes:
-  - resource: 0
-    value: 2
+  _incomes: []
   _availableInfrastructures: []
   _specialBehaviours:
   - {fileID: 11400000, guid: 7ca701c08f762dd4fa86300725250759, type: 2}
-  - {fileID: 11400000, guid: 6fabc2e4c20bf6c45b52939c5b163946, type: 2}
+  - {fileID: 11400000, guid: 5ea923d5c0890a7429ed21224313dbfb, type: 2}
   _costs:
   - resource: 0
     value: 10
   - resource: 1
     value: 5
-  _associatedSystem: 3
   _scoutStartingPoint: 0
   isTown: 0

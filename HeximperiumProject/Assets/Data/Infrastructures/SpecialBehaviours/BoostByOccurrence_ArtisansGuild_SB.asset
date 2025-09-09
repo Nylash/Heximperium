@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BoostByOccurrence_ArtisansGuild_SB
   m_EditorClassIdentifier: 
   _boost:
-  - resource: 0
+  - resource: 1
     value: 2
   _tilesBoosting:
   - {fileID: 11400000, guid: 3d0ee4608b263f74aaa46646c1cf3360, type: 2}

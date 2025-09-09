@@ -585,6 +585,14 @@ public class Tile : MonoBehaviour
             behaviour.CheckNewInfra(this, tile);
         }
     }
+
+    public void ListenerOnInfraBuilded_GenerateCarnivalistPerOccurrenceInEmpire(Tile tile)
+    {
+        foreach (GenerateCarnivalistPerOccurrenceInEmpire behaviour in _tileData.SpecialBehaviours.OfType<GenerateCarnivalistPerOccurrenceInEmpire>())
+        {
+            behaviour.CheckNewInfra(this, tile);
+        }
+    }
     #endregion
 
     #region ON INFRA DESTROYED
@@ -599,6 +607,14 @@ public class Tile : MonoBehaviour
     public void ListenerOnInfraDestroyed_BoostInfraOnEmpire(Tile tile)
     {
         foreach (BoostInfraOnEmpire behaviour in _tileData.SpecialBehaviours.OfType<BoostInfraOnEmpire>())
+        {
+            behaviour.CheckDestroyedInfra(this, tile);
+        }
+    }
+
+    public void ListenerOnInfraDestroyed_GenerateCarnivalistPerOccurrenceInEmpire(Tile tile)
+    {
+        foreach (GenerateCarnivalistPerOccurrenceInEmpire behaviour in _tileData.SpecialBehaviours.OfType<GenerateCarnivalistPerOccurrenceInEmpire>())
         {
             behaviour.CheckDestroyedInfra(this, tile);
         }

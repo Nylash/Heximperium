@@ -19,12 +19,11 @@ MonoBehaviour:
   _incomes: []
   _availableInfrastructures: []
   _specialBehaviours:
-  - {fileID: 11400000, guid: 9f090d230cd54f147ab9062e67dffc7c, type: 2}
+  - {fileID: 11400000, guid: 904d1da95731ade43925d48349e98890, type: 2}
   _costs:
   - resource: 0
     value: 15
   - resource: 1
     value: 5
-  _associatedSystem: 2
   _scoutStartingPoint: 1
   isTown: 0

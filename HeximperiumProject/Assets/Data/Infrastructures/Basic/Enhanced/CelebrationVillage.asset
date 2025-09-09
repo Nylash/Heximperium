@@ -22,7 +22,6 @@ MonoBehaviour:
   _availableInfrastructures: []
   _specialBehaviours:
   - {fileID: 11400000, guid: 76410f1dec70a074289e3002308e9c1d, type: 2}
-  - {fileID: 11400000, guid: 9145ea0cccce1fc469c31cb7cc1a08fe, type: 2}
   - {fileID: 11400000, guid: c5d3b56297aed8546b01ebaecac6d3c9, type: 2}
   _costs:
   - resource: 0
