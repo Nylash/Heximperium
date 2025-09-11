@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e0e460f401a6ce44ad84d3534c37a05, type: 3}
   m_Name: ArtisansGuild
   m_EditorClassIdentifier: 
-  _name: Artisan's Guild
+  _name: Artisans' Guild
   _visuals:
   - {fileID: 2100000, guid: 018b779632352854abb2592fc3b80569, type: 2}
   _claimCost: 0
@@ -26,6 +26,5 @@ MonoBehaviour:
     value: 30
   - resource: 1
     value: 20
-  _associatedSystem: 2
   _scoutStartingPoint: 0
   isTown: 0

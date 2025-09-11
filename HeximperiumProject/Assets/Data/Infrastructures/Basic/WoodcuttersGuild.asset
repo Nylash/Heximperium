@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e0e460f401a6ce44ad84d3534c37a05, type: 3}
   m_Name: WoodcuttersGuild
   m_EditorClassIdentifier: 
-  _name: Woodcutter's Guild
+  _name: Woodcutters' Guild
   _visuals:
   - {fileID: 2100000, guid: efaa11eb061fa744fa7114434ac0f02e, type: 2}
   _claimCost: 0
@@ -25,6 +25,5 @@ MonoBehaviour:
   _costs:
   - resource: 0
     value: 50
-  _associatedSystem: 4
   _scoutStartingPoint: 0
   isTown: 0
