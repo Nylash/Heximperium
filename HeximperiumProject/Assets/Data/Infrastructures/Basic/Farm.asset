@@ -15,6 +15,12 @@ MonoBehaviour:
   _name: Farm
   _visuals:
   - {fileID: 2100000, guid: 03239661f465b8d499e4e85aa1565a72, type: 2}
+  _visualsProps:
+  - tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
+    gameObjects:
+    - {fileID: 7327463751232812884, guid: 7fc9ac74d2a4af84c8643a8d622a086e, type: 3}
+    - {fileID: 4015410276726741152, guid: 157d5d6886c9b0247afbbfc2e89e6182, type: 3}
+    - {fileID: 2235760403202036222, guid: 905de7937e828944bab74ea8bf5be9d5, type: 3}
   _claimCost: 0
   _incomes:
   - resource: 0
@@ -26,6 +32,5 @@ MonoBehaviour:
   _costs:
   - resource: 0
     value: 5
-  _associatedSystem: 4
   _scoutStartingPoint: 0
   isTown: 0
