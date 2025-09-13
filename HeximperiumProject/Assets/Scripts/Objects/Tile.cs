@@ -187,6 +187,7 @@ public class Tile : MonoBehaviour
         _tileData = value;
 
         UpdateVisual();
+        UpdateVisualAssets();
 
         UpdateSpecialBehaviours();
 
@@ -199,7 +200,9 @@ public class Tile : MonoBehaviour
     public void RevealTile(bool skipAnim)
     {
         _revealed = true;
+        //Remove updateVisual later (already done at the map generation)
         UpdateVisual();
+        UpdateVisualAssets();
         if (skipAnim)
             _animator.SetTrigger("InstantReveal");
         else
@@ -236,32 +239,18 @@ public class Tile : MonoBehaviour
 
     //Change tile's visual based on the tile data
     private void UpdateVisual()
-    {
-        if (_visualAssets != null)
-            DestroyImmediate(_visualAssets);
-        foreach (TileDataToGameObjectsMap item in _tileData.VisualsProps)
+    {      
+        switch (_tileData.Visuals.Count)
         {
-            if (item.tileData == _initialData)
-            {
-                _visualAssets = Instantiate(item.gameObjects[UnityEngine.Random.Range(0, item.gameObjects.Count)], _visual);
+            case 0:
+                Debug.LogError("This tile has no material configured");
                 break;
-            }
-        }
-        
-        if (_visualAssets == null)
-        {
-            switch (_tileData.Visuals.Count)
-            {
-                case 0:
-                    Debug.LogError("This tile has no material configured");
-                    break;
-                case 1:
-                    GetComponentInChildren<Renderer>().material = _tileData.Visuals[0];
-                    break;
-                default:
-                    GetComponentInChildren<Renderer>().material = _tileData.Visuals[UnityEngine.Random.Range(0, _tileData.Visuals.Count)];
-                    break;
-            }
+            case 1:
+                GetComponentInChildren<Renderer>().material = _tileData.Visuals[0];
+                break;
+            default:
+                GetComponentInChildren<Renderer>().material = _tileData.Visuals[UnityEngine.Random.Range(0, _tileData.Visuals.Count)];
+                break;
         }
 
         switch (_currentInfraLevel)
@@ -281,6 +270,21 @@ public class Tile : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    private void UpdateVisualAssets()
+    {
+        if (_visualAssets != null)
+            DestroyImmediate(_visualAssets);
+        foreach (TileDataToGameObjectsMap item in _tileData.VisualsProps)
+        {
+            if (item.tileData == _initialData)
+            {
+                _visualAssets = Instantiate(item.gameObjects[UnityEngine.Random.Range(0, item.gameObjects.Count)], _visual);
+                return;
+            }
+        }
+        Debug.LogWarning("No visual asset found for this initial tile data");
     }
 
     public void Highlight(bool show)

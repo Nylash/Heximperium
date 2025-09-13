@@ -14,7 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Fairground Farm
   _visuals:
-  - {fileID: 2100000, guid: baef852a1d6098743918a012a2553ddc, type: 2}
+  - {fileID: 2100000, guid: 3cfe066665d98054f99e6fe27dc97d2e, type: 2}
+  _visualsProps:
+  - tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
+    gameObjects:
+    - {fileID: 872582116211086779, guid: a6ffbcf359081c14db0bfdb402fc3790, type: 3}
+    - {fileID: 7924492901767921207, guid: 4ad814a563246e74e8e1924402010441, type: 3}
+    - {fileID: 617286352476988055, guid: 188ecc25b4ecd6a41b5c433db513c47c, type: 3}
   _claimCost: 0
   _incomes: []
   _availableInfrastructures: []
