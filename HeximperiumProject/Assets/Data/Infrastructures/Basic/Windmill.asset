@@ -14,7 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Windmill
   _visuals:
-  - {fileID: 2100000, guid: 4900a9191f0121042b81899b5944fbd2, type: 2}
+  - {fileID: 2100000, guid: 3cfe066665d98054f99e6fe27dc97d2e, type: 2}
+  _visualsProps:
+  - tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
+    gameObjects:
+    - {fileID: 7099082296070587068, guid: 6e6585355e08c2043b1237c16c16e37c, type: 3}
+    - {fileID: 3125673475958931018, guid: 8d60e7c13ce3ce04b912fa258baf1b82, type: 3}
+    - {fileID: 7896435326915999199, guid: 956df01f9820568408421d0f666f05f8, type: 3}
   _claimCost: 0
   _incomes: []
   _availableInfrastructures:
@@ -25,6 +31,5 @@ MonoBehaviour:
   _costs:
   - resource: 0
     value: 20
-  _associatedSystem: 4
   _scoutStartingPoint: 0
   isTown: 0

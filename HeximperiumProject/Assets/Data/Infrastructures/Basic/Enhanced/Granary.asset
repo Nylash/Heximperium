@@ -14,7 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Granary
   _visuals:
-  - {fileID: 2100000, guid: 0ef428988f14c604c96c393972d739a0, type: 2}
+  - {fileID: 2100000, guid: 3cfe066665d98054f99e6fe27dc97d2e, type: 2}
+  _visualsProps:
+  - tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
+    gameObjects:
+    - {fileID: 5094749673602047845, guid: bd6ca6b6754186e40bcb1a6f994a2ef3, type: 3}
+    - {fileID: 2593654748599898978, guid: 9aa72e0ea75893948ab059f992dc97bd, type: 3}
+    - {fileID: 1674385259837660509, guid: bd986ed2e28765149965ce452c5ab322, type: 3}
   _claimCost: 0
   _incomes: []
   _availableInfrastructures: []
@@ -26,6 +32,5 @@ MonoBehaviour:
     value: 10
   - resource: 1
     value: 5
-  _associatedSystem: 2
   _scoutStartingPoint: 0
   isTown: 0

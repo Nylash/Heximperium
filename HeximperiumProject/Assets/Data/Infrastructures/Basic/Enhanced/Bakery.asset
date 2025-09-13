@@ -14,7 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Bakery
   _visuals:
-  - {fileID: 2100000, guid: 6608476933607b547b593c2607c22a4e, type: 2}
+  - {fileID: 2100000, guid: 3cfe066665d98054f99e6fe27dc97d2e, type: 2}
+  _visualsProps:
+  - tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
+    gameObjects:
+    - {fileID: 7757558575308624261, guid: 9bfb1c7aacda6824e9029e202c61e025, type: 3}
+    - {fileID: 949354672189566237, guid: 229957e755c18cf4a8af88824fc22b43, type: 3}
+    - {fileID: 1839879335587340086, guid: 4d40e20e22574e94cb0730cd408184f0, type: 3}
   _claimCost: 0
   _incomes: []
   _availableInfrastructures: []
