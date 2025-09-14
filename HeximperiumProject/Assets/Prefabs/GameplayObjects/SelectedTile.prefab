@@ -135,4 +135,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b3d5bd140fa19642a3c5973b19704cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sortingOrder: 3
+  sortingOrder: 4
