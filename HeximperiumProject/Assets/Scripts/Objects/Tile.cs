@@ -274,6 +274,9 @@ public class Tile : MonoBehaviour
 
     private void UpdateVisualAssets()
     {
+        if (_tileData is HazardousTileData)
+            _claimTintAnimator.gameObject.SetActive(false);
+
         if (_visualAssets != null)
             DestroyImmediate(_visualAssets);
         foreach (TileDataToGameObjectsMap item in _tileData.VisualsProps)

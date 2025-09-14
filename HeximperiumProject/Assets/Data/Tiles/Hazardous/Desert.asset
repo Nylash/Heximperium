@@ -21,6 +21,8 @@ MonoBehaviour:
     - {fileID: 8600583711594694674, guid: 71a005e22eecf0440a9e187afef72319, type: 3}
     - {fileID: 8871372332098266512, guid: ffa7621a934553242bde35d7f5de8e16, type: 3}
     - {fileID: 5194137940415283514, guid: 1f22598a8f6c9c74ba676e9b87350665, type: 3}
+    - {fileID: 5194137940415283514, guid: d9177a52de2400046804cb7ba035856a, type: 3}
+    - {fileID: 5194137940415283514, guid: b08e935c464a380449e53db078d76121, type: 3}
   _claimCost: 999
   _incomes: []
   _availableInfrastructures: []
