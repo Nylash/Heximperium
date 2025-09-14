@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Desert
   _visuals:
-  - {fileID: 2100000, guid: b32ab3d85f55de34898b768a0b08af42, type: 2}
+  - {fileID: 2100000, guid: 22a123ab97f14bc40a28bd9f60cb68d7, type: 2}
   _visualsProps:
   - tileData: {fileID: 11400000}
     gameObjects:
