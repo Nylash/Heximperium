@@ -14,7 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Forest
   _visuals:
-  - {fileID: 2100000, guid: e6b96fa77398b29419670ed5197c8598, type: 2}
+  - {fileID: 2100000, guid: 22a123ab97f14bc40a28bd9f60cb68d7, type: 2}
+  _visualsProps:
+  - tileData: {fileID: 11400000}
+    gameObjects:
+    - {fileID: 8158725270209530402, guid: 0b7810f93874fa94493a48f3fe627eea, type: 3}
+    - {fileID: 8158725270209530402, guid: 68ea1b7f4c916e64989227f5c60ca70f, type: 3}
+    - {fileID: 8158725270209530402, guid: 61b6e318da4086d4f81cd9f4203f0044, type: 3}
+    - {fileID: 8158725270209530402, guid: 3f5ac90c1ae44dd49a81535e8f8a9cc3, type: 3}
   _claimCost: 1
   _incomes:
   - resource: 0
