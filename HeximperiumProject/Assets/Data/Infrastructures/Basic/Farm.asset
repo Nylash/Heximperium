@@ -18,9 +18,14 @@ MonoBehaviour:
   _visualsProps:
   - tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
     gameObjects:
-    - {fileID: 2552249218583624802, guid: fd0d05972328a2346a3ebd8f9b098a06, type: 3}
+    - {fileID: 2552249218583624802, guid: d6c0e3911df89f64480c06d15f4d0c2b, type: 3}
     - {fileID: 1652856020609071217, guid: 27794f49be568844893dc10cfc95405e, type: 3}
     - {fileID: 8773080276154021164, guid: 11bd6df2bc3d90743ac7210e89261012, type: 3}
+  - tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
+    gameObjects:
+    - {fileID: 2552249218583624802, guid: fd0d05972328a2346a3ebd8f9b098a06, type: 3}
+    - {fileID: 1652856020609071217, guid: 3f5d8159852cf2d4688cd4664ff9334e, type: 3}
+    - {fileID: 8773080276154021164, guid: 8f4cddc7ac71e4c42a9298b221b1793f, type: 3}
   _claimCost: 0
   _incomes:
   - resource: 0
