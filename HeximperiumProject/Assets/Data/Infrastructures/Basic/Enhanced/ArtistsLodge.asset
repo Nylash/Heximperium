@@ -14,7 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: "Artists\u2019 Lodge"
   _visuals:
-  - {fileID: 2100000, guid: d214c5239ee4ee8408948c5f67b7742c, type: 2}
+  - {fileID: 2100000, guid: 3cfe066665d98054f99e6fe27dc97d2e, type: 2}
+  _visualsProps:
+  - tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
+    gameObjects:
+    - {fileID: 2409735166145990899, guid: 1c9050daef4ad3347803b91cc156990e, type: 3}
+    - {fileID: 1025440659110098287, guid: ad0ae7c16dbc5224a88f99a024dfb69b, type: 3}
+    - {fileID: 2595231975576907424, guid: 93f310ff1f5ee42429054f0d186035dc, type: 3}
   _claimCost: 0
   _incomes: []
   _availableInfrastructures: []
