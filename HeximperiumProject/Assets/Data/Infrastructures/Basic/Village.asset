@@ -14,7 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Village
   _visuals:
-  - {fileID: 2100000, guid: 2195a56c6c99e1145a168891e49ee914, type: 2}
+  - {fileID: 2100000, guid: 3cfe066665d98054f99e6fe27dc97d2e, type: 2}
+  _visualsProps:
+  - tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
+    gameObjects:
+    - {fileID: 8423898707722998552, guid: f863e3f2e972c9342806c52ae0f7449c, type: 3}
+    - {fileID: 1051064245752906490, guid: c44890f4fb3f3cb4e8ff63ba690e7e69, type: 3}
   _claimCost: 0
   _incomes: []
   _availableInfrastructures:
@@ -25,6 +30,5 @@ MonoBehaviour:
   _costs:
   - resource: 0
     value: 40
-  _associatedSystem: 4
   _scoutStartingPoint: 0
   isTown: 0
