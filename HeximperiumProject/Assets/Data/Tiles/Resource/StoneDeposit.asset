@@ -14,7 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Stone deposit
   _visuals:
-  - {fileID: 2100000, guid: 34b3497913f16e64191acc69ccf00926, type: 2}
+  - {fileID: 2100000, guid: 22a123ab97f14bc40a28bd9f60cb68d7, type: 2}
+  _visualsProps:
+  - tileData: {fileID: 11400000}
+    gameObjects:
+    - {fileID: 8158725270209530402, guid: 7f42d98e819baf44086373e53dcebc85, type: 3}
+    - {fileID: 8158725270209530402, guid: 1f4d1e5c1035e434a9917f5d443df1fe, type: 3}
   _claimCost: 1
   _incomes: []
   _availableInfrastructures:
