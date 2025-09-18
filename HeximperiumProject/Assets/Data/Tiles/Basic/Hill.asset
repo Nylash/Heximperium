@@ -14,7 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Hill
   _visuals:
-  - {fileID: 2100000, guid: a4c37c8376ee9a549b38016f7f88a4fa, type: 2}
+  - {fileID: 2100000, guid: 22a123ab97f14bc40a28bd9f60cb68d7, type: 2}
+  _visualsProps:
+  - tileData: {fileID: 11400000}
+    gameObjects:
+    - {fileID: 8158725270209530402, guid: f26c4e6bb1d17a546afb7aa467332808, type: 3}
+    - {fileID: 8158725270209530402, guid: 2fffc988dc0a66c4696418cb5fb168f8, type: 3}
+    - {fileID: 8158725270209530402, guid: dd155fd995627f64a90058d64949e72a, type: 3}
+    - {fileID: 8158725270209530402, guid: a005618c8d9ff0743b8977ddff7847c8, type: 3}
   _claimCost: 1
   _incomes:
   - resource: 0

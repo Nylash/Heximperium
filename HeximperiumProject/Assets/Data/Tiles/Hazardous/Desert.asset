@@ -14,7 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Desert
   _visuals:
-  - {fileID: 2100000, guid: b32ab3d85f55de34898b768a0b08af42, type: 2}
+  - {fileID: 2100000, guid: 22a123ab97f14bc40a28bd9f60cb68d7, type: 2}
+  _visualsProps:
+  - tileData: {fileID: 11400000}
+    gameObjects:
+    - {fileID: 8600583711594694674, guid: 71a005e22eecf0440a9e187afef72319, type: 3}
+    - {fileID: 8871372332098266512, guid: ffa7621a934553242bde35d7f5de8e16, type: 3}
+    - {fileID: 5194137940415283514, guid: 1f22598a8f6c9c74ba676e9b87350665, type: 3}
+    - {fileID: 5194137940415283514, guid: d9177a52de2400046804cb7ba035856a, type: 3}
+    - {fileID: 5194137940415283514, guid: b08e935c464a380449e53db078d76121, type: 3}
   _claimCost: 999
   _incomes: []
   _availableInfrastructures: []

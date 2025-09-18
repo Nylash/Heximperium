@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Artisans' Guild
   _visuals:
-  - {fileID: 2100000, guid: 018b779632352854abb2592fc3b80569, type: 2}
+  - {fileID: 2100000, guid: 22a123ab97f14bc40a28bd9f60cb68d7, type: 2}
+  _visualsProps:
+  - tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
+    gameObjects:
+    - {fileID: 8158725270209530402, guid: 7ce09cbc4fbfe5449ba4e08f55c1cc6a, type: 3}
   _claimCost: 0
   _incomes: []
   _availableInfrastructures: []

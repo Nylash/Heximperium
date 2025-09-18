@@ -6,7 +6,8 @@ public class TileData : ScriptableObject
     [Header("_________________________________________________________")]
     [Header("Base Settings")]
     [SerializeField] private string _name;
-    [SerializeField] private List<Material> _visuals;
+    [Tooltip("Each entry should correspond to a specific base tile then the visual for the current tile on that base tile")]
+    [SerializeField] private List<TileDataToGameObjectsMap> _visualsProps;
     [SerializeField] private int _claimCost;
     [SerializeField] private List<ResourceToIntMap> _incomes = new List<ResourceToIntMap>();
     [SerializeField] private List<InfrastructureData> _availableInfrastructures = new List<InfrastructureData>();
@@ -19,5 +20,5 @@ public class TileData : ScriptableObject
     public List<ResourceToIntMap> Incomes { get => _incomes; }
     public List<InfrastructureData> AvailableInfrastructures { get => _availableInfrastructures; }
     public List<SpecialBehaviour> SpecialBehaviours { get => _specialBehaviours; }
-    public List<Material> Visuals { get => _visuals; }
+    public List<TileDataToGameObjectsMap> VisualsProps { get => _visualsProps; }
 }

@@ -14,7 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Mountain
   _visuals:
-  - {fileID: 2100000, guid: c591919293bd663489e702d457fbd9ca, type: 2}
+  - {fileID: 2100000, guid: 22a123ab97f14bc40a28bd9f60cb68d7, type: 2}
+  _visualsProps:
+  - tileData: {fileID: 11400000}
+    gameObjects:
+    - {fileID: 556477090950592858, guid: cfca6c28a5d36d44785627e4d501ed9f, type: 3}
+    - {fileID: 3580663831961333119, guid: a70494502dd9d794a9720cb797930fe5, type: 3}
+    - {fileID: 3104120112233118319, guid: 3ff19940e1cf6a741aff8092ef45da9b, type: 3}
   _claimCost: 999
   _incomes: []
   _availableInfrastructures: []

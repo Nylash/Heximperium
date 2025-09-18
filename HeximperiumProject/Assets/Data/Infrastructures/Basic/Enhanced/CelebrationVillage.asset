@@ -14,7 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Celebration Village
   _visuals:
-  - {fileID: 2100000, guid: d6af5422638b3994083129b04ecc882d, type: 2}
+  - {fileID: 2100000, guid: 22a123ab97f14bc40a28bd9f60cb68d7, type: 2}
+  _visualsProps:
+  - tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
+    gameObjects:
+    - {fileID: 2446921586629792782, guid: cd19332bb48f61f43bc3cf91c99fd6a2, type: 3}
+    - {fileID: 6529021713494344442, guid: 454aad11d5066664bb2108c24651d793, type: 3}
+  - tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
+    gameObjects:
+    - {fileID: 2446921586629792782, guid: df4973e150ae8b94a8fa5e1c4eb25be4, type: 3}
+    - {fileID: 6529021713494344442, guid: 5523b5c2ecf772640b607c842dc23df9, type: 3}
   _claimCost: 0
   _incomes: []
   _availableInfrastructures: []
