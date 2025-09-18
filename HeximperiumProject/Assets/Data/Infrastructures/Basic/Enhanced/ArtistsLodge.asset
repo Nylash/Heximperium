@@ -21,6 +21,11 @@ MonoBehaviour:
     - {fileID: 2409735166145990899, guid: 1c9050daef4ad3347803b91cc156990e, type: 3}
     - {fileID: 1025440659110098287, guid: ad0ae7c16dbc5224a88f99a024dfb69b, type: 3}
     - {fileID: 2595231975576907424, guid: 93f310ff1f5ee42429054f0d186035dc, type: 3}
+  - tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
+    gameObjects:
+    - {fileID: 2409735166145990899, guid: 997ac5e7a1e090345bc27c4fbba61f1a, type: 3}
+    - {fileID: 1025440659110098287, guid: 81290faa8271fe54a9fe4c9de4ef1f0b, type: 3}
+    - {fileID: 2595231975576907424, guid: 36d8600b13603bd4b8a2befa8bce4e05, type: 3}
   _claimCost: 0
   _incomes: []
   _availableInfrastructures: []
