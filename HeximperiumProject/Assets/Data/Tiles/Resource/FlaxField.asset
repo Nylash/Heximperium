@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Flax field
   _visuals:
-  - {fileID: 2100000, guid: 148571d90e527af4b9cb822cc20eb8cf, type: 2}
+  - {fileID: 2100000, guid: 22a123ab97f14bc40a28bd9f60cb68d7, type: 2}
+  _visualsProps:
+  - tileData: {fileID: 11400000}
+    gameObjects:
+    - {fileID: 8158725270209530402, guid: ef65816f63f889440bdfa3a06591a296, type: 3}
   _claimCost: 1
   _incomes: []
   _availableInfrastructures:

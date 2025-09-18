@@ -14,7 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: New Town
   _visuals:
-  - {fileID: 2100000, guid: f0ec0984d60d35d4f9f678b9dfd8dc50, type: 2}
+  - {fileID: 2100000, guid: 22a123ab97f14bc40a28bd9f60cb68d7, type: 2}
+  _visualsProps:
+  - tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
+    gameObjects:
+    - {fileID: 8158725270209530402, guid: f3dc6a73d524e3a499f702e49d0cdf49, type: 3}
+  - tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
+    gameObjects:
+    - {fileID: 8158725270209530402, guid: f3dc6a73d524e3a499f702e49d0cdf49, type: 3}
+  - tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
+    gameObjects:
+    - {fileID: 8158725270209530402, guid: f3dc6a73d524e3a499f702e49d0cdf49, type: 3}
   _claimCost: 4
   _incomes: []
   _availableInfrastructures:

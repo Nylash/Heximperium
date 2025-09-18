@@ -19,7 +19,7 @@ MonoBehaviour:
   - tileData: {fileID: 11400000}
     gameObjects:
     - {fileID: 8158725270209530402, guid: 7f42d98e819baf44086373e53dcebc85, type: 3}
-    - {fileID: 8158725270209530402, guid: 1f4d1e5c1035e434a9917f5d443df1fe, type: 3}
+    - {fileID: 8158725270209530402, guid: ee8cacb4e824c434d8fc485528115491, type: 3}
   _claimCost: 1
   _incomes: []
   _availableInfrastructures:
