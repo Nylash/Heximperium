@@ -1063,6 +1063,30 @@ public class PopUpManager : Singleton<PopUpManager>
         ClampTextWidth(cost);
         #endregion
 
+        #region AVAILABILITY
+        if (ExploitationManager.Instance.DoesInfraLimitExist(button.InfrastructureData))
+        {
+            TextMeshProUGUI availability = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            int existingCount = ExploitationManager.Instance.GetAvailableInfraCopies(button.InfrastructureData);
+            if (existingCount > 0)
+            {
+                if (existingCount == 1)
+                    availability.text = "1 copy available";
+                else
+                    availability.text = existingCount + " copies available";
+            }
+            else
+            {
+                availability.text = "No available copy";
+                availability.color = UIManager.Instance.ColorCantAfford;
+            }
+            availability.margin = _fullMargin;
+            textObjects.Add(availability.GetComponent<RectTransform>());
+            availability.fontStyle = FontStyles.Italic;
+            availability.alignment = TextAlignmentOptions.MidlineRight;
+        }
+        #endregion
+
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>());
     }
