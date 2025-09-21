@@ -206,6 +206,8 @@ public class Tile : MonoBehaviour
         ExplorationManager.Instance.RevealedTiles.Add(this);
         if (UIManager.Instance.AreEntPlacementShown)
             ShowEntPlacementUI(true);
+        if (UIManager.Instance.AreIncomesShown)
+            ShowIncomeUI(true);
     }
 
     //Claim the tile and spawn the territory boundaries
@@ -221,9 +223,6 @@ public class Tile : MonoBehaviour
         _border.GetComponent<Border>().associatedTile = this;
         _claimTintAnimator.SetTrigger("Claim");
         _border.name = "Border" + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
-
-        if (UIManager.Instance.AreIncomesShown)
-            ShowIncomeUI(true);
     }
 
     //Called when a tile is claimed
@@ -549,14 +548,6 @@ public class Tile : MonoBehaviour
         foreach (BoostByUniqueInfraNeighbors behaviour in _tileData.SpecialBehaviours.OfType<BoostByUniqueInfraNeighbors>())
         {
             behaviour.CheckNewData(this);
-        }
-    }
-
-    public void ListenerOnTileDataModified_BoostNeighborsWithInfraIncome(Tile tile)
-    {
-        foreach (BoostNeighborsWithInfraIncome behaviour in _tileData.SpecialBehaviours.OfType<BoostNeighborsWithInfraIncome>())
-        {
-            behaviour.CheckNewData(tile);
         }
     }
     #endregion

@@ -163,6 +163,18 @@ public static class Utilities
         return incomeString;
     }
 
+    public static string ToCustomString(this List<InfraDataToIntMap> limits)
+    {
+        string limitsString = string.Empty;
+        for (int i = 0; i < limits.Count; i++)
+        {
+            if (i > 0)
+                limitsString += " & ";
+            limitsString += limits[i].infrastructure.TileName + " by " + limits[i].availableCopy;
+        }
+        return limitsString;
+    }
+
     public static int? GetValueFor(this List<ResourceToIntMap> incomes, Resource resource)
     {
         return incomes.FirstOrDefault(r => r.resource == resource)?.value;
