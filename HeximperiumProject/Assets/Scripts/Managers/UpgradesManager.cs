@@ -1,48 +1,20 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
 
 public class UpgradesManager : Singleton<UpgradesManager>
 {
-    private List<UpgradeNodeData> _unlockedNodes = new List<UpgradeNodeData>();
+    [SerializeField] private List<UpgradeEffect> _upgrades = new List<UpgradeEffect>();
 
-    public Action<UI_UpgradeNode> OnNodeUnlocked;
+    private HashSet<UpgradeEffect> _appliedUpgrades = new HashSet<UpgradeEffect>();
+    private HashSet<UpgradeEffect> _remainingUpgrades = new HashSet<UpgradeEffect>();
 
-    public void UnlockNode(UI_UpgradeNode node)
+    public void UnlockUpgrade(UpgradeEffect upgrade)
     {
-        if (CanUnlockNode(node.NodeData) == UpgradeStatus.Unlockable)
-        {
-            ResourcesManager.Instance.UpdateResource(node.NodeData.Costs, Transaction.Spent);
-            _unlockedNodes.Add(node.NodeData);
-            node.NodeData.Effect.ApplyEffect();
+        _appliedUpgrades.Add(upgrade);
+        _remainingUpgrades.Remove(upgrade);
+        upgrade.ApplyEffect();
 
-            foreach (UI_UpgradeNode n in UIManager.Instance.ActivatedTree.nodes)
-                n.UpdateVisual();
-
-            OnNodeUnlocked?.Invoke(node);
-            PopUpManager.Instance.ResetPopUp(null);//Reset popup to avoid showing non updated information
-        }
-    }
-
-    public UpgradeStatus CanUnlockNode(UpgradeNodeData node)
-    {
-        if (_unlockedNodes.Contains(node))
-            return UpgradeStatus.Unlocked;
-
-        if (node.Prerequisites.Count > 0 && !_unlockedNodes.Any(item => node.Prerequisites.Contains(item)))
-            return UpgradeStatus.LockedByPrerequisites;
-
-        if (_unlockedNodes.Contains(node.ExclusiveNode))
-            return UpgradeStatus.LockedByExclusive;
-
-        if (ResourcesManager.Instance.CanAfford(node.Costs))
-            return UpgradeStatus.Unlockable;
-        else
-            return UpgradeStatus.CantAfford;
-    }
-
-    public bool IsNodeUnlocked(UpgradeNodeData node)
-    {
-        return node == null ? false : _unlockedNodes.Contains(node);
+        PopUpManager.Instance.ResetPopUp(null);
+        UIManager.Instance.UpgradesMenu();
     }
 }

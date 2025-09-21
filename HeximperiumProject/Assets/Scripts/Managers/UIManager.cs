@@ -63,13 +63,6 @@ public class UIManager : Singleton<UIManager>
     [Header("Upgrades Menu")]
     [SerializeField] private GameObject _upgradesMenuButton;
     [SerializeField] private GameObject _upgradesMenu;
-    [SerializeField] private List<UpgradeTree> _upgradeTrees = new List<UpgradeTree>();
-    [SerializeField] private UpgradeTree _activatedTree;
-    [SerializeField] private Color _colorLocked;
-    [SerializeField] private Color _colorUnlocked;
-    [SerializeField] private Sprite _spriteButtonUnlocked;
-    [SerializeField] private GameObject _markerExclusiveUpgrade;
-    [SerializeField] private Sprite _markerExclusiveUpgradeLocked;
     [Header("_________________________________________________________")]
     [Header("Show Income button")]
     [SerializeField] private Image _showIncomeButton;
@@ -104,12 +97,6 @@ public class UIManager : Singleton<UIManager>
 
     #region ACCESSORS
     public Color ColorCantAfford { get => _colorCantAfford;}
-    public Color ColorLocked { get => _colorLocked; }
-    public Color ColorUnlocked { get => _colorUnlocked; }
-    public UpgradeTree ActivatedTree { get => _activatedTree; }
-    public Sprite SpriteUnlocked { get => _spriteButtonUnlocked; }
-    public GameObject MarkerExclusiveUpgrade { get => _markerExclusiveUpgrade; }
-    public Sprite MarkerExclusiveUpgradeLocked { get => _markerExclusiveUpgradeLocked; }
     public RectTransform VfxAnchorEndConfetti1 { get => _vfxAnchorEndConfetti1; }
     public RectTransform VfxAnchorEndConfetti2 { get => _vfxAnchorEndConfetti2; }
     public RectTransform VfxAnchorEndFirework1 { get => _vfxAnchorEndFirework1; }
@@ -448,39 +435,8 @@ public class UIManager : Singleton<UIManager>
                 TradeMenu();
             _upgradesMenu.SetActive(true);
             GameManager.Instance.GamePaused = true;
-            foreach (UpgradeTree tree in _upgradeTrees)
-            {
-                if (tree.treeObject.activeSelf)
-                {
-                    _activatedTree = tree;
-                    tree.nodes.ForEach(node => node.UpdateVisual());
-                    break;
-                }
-            }
+            // Show current upgrades
         }
-    }
-
-    public void ShowUpgradeTree(GameObject associatedTree)
-    {
-        associatedTree.SetActive(true);
-
-        foreach (UpgradeTree tree in _upgradeTrees)
-        {
-            if (tree.treeObject == associatedTree)
-            {
-                _activatedTree = tree;
-                tree.nodes.ForEach(node => node.UpdateVisual());
-            }
-            if (tree.treeObject != associatedTree)
-                tree.treeObject.SetActive(false);
-        }
-    }
-
-    [ContextMenu("Fill Trees List")]
-    private void FillTreesList()
-    {
-        foreach (UpgradeTree tree in _upgradeTrees)
-            tree.nodes = tree.treeObject.GetComponentsInChildren<UI_UpgradeNode>().ToList();
     }
     #endregion
 
