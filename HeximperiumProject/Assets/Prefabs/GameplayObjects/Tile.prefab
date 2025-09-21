@@ -1150,6 +1150,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a78530b5a240cfe47a5ce8890c96de42, type: 3}
   - {fileID: 21300000, guid: 013d610285255e24a8f3018f3dacc8cd, type: 3}
   - {fileID: 21300000, guid: 483e9158d88358c449ef0e8ffb3fa9ec, type: 3}
+  - {fileID: 21300000, guid: ce42f15555ff8dc40a3003aefe29863e, type: 3}
+  - {fileID: 21300000, guid: 4523d8b375adc074cba8acb9e9119dbb, type: 3}
   _claimTintAnimator: {fileID: 4147578946394413475}
   _incomesUI:
   - {fileID: 6650557253474678237}

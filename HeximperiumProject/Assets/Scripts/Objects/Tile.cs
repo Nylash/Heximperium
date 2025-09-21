@@ -250,6 +250,12 @@ public class Tile : MonoBehaviour
             case 3:
                 _infraLvlRenderer.sprite = _spriteInfraLvl[2];
                 break;
+            case 4:
+                _infraLvlRenderer.sprite = _spriteInfraLvl[3];
+                break;
+            case 5:
+                _infraLvlRenderer.sprite = _spriteInfraLvl[4];
+                break;
             default:
                 break;
         }
