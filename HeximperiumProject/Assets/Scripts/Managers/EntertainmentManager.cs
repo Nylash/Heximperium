@@ -200,9 +200,9 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         if (tile.Entertainment != null)
             return;
 
-        if (ResourcesManager.Instance.CanAffordCarnivalist(data.CarnivalistCost))
+        if (ResourcesManager.Instance.CanAffordCarnivalist(data.GetActualCarnivalistCost(tile)))
         {
-            ResourcesManager.Instance.UpdateCarnivalist(data.CarnivalistCost, Transaction.Spent);
+            ResourcesManager.Instance.UpdateCarnivalist(data.GetActualCarnivalistCost(tile), Transaction.Spent);
 
             Entertainment currentEntertainment = Instantiate(_entertainmentPrefab,
                 tile.transform.position + _entertainmentPrefab.transform.localPosition,
@@ -265,16 +265,6 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         }
     }
 
-    private bool IsAtLeastOneEntertainmentBuyable()
-    {
-        foreach (EntertainmentData data in _entertainmentsData)
-        {
-            if (ResourcesManager.Instance.CanAffordCarnivalist(data.CarnivalistCost))
-                return true;
-        }
-        return false;
-    }
-
     public override void AnimateInteractableTiles()
     {
         SyncAnimationInteractableTiles();
@@ -286,7 +276,8 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         {
             if (tile.CanReceiveEntertainment() && tile.Entertainment == null)
             {
-                tilesToAnimate.Add(tile);
+                if (tile.CanAffordCheapestEntertainment())
+                    tilesToAnimate.Add(tile);
             }
         }
 

@@ -121,7 +121,7 @@ public class InteractionButton : MonoBehaviour
     private void InitializeEntertainment(EntertainmentData data)
     {
         _entertainData = data;
-        if (!ResourcesManager.Instance.CanAffordCarnivalist(_entertainData.CarnivalistCost))
+        if (!ResourcesManager.Instance.CanAffordCarnivalist(_entertainData.GetActualCarnivalistCost(_associatedTile)))
             _renderer.color = UIManager.Instance.ColorCantAfford;
         LoadSprite(_entertainData.name);
     }

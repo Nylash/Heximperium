@@ -28,6 +28,7 @@ MonoBehaviour:
   _availableInfrastructures:
   - {fileID: 11400000, guid: 4362278d09244264fae927f4b224e4cd, type: 2}
   _specialBehaviours:
+  - {fileID: 11400000, guid: c5d3b56297aed8546b01ebaecac6d3c9, type: 2}
   - {fileID: 11400000, guid: 8feedc24e3b92d94d9e3c2de57f971a4, type: 2}
   - {fileID: 11400000, guid: d03366de1ceb74b4a9771c55fbcfa401, type: 2}
   _costs:

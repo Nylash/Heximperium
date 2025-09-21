@@ -40,6 +40,7 @@ public class Tile : MonoBehaviour
     private Coroutine _interactionCoroutine;
     private TileInteractionAnimationState _interactionAnimationState = TileInteractionAnimationState.None;
     private GameObject _visualAssets;
+    private int _carnivalistCostReduction;
     //Scouts
     private List<Scout> _scouts = new List<Scout>();
     //Entertainment variables
@@ -133,6 +134,8 @@ public class Tile : MonoBehaviour
                 ShowEntPlacementUI(true);
         }
     }
+
+    public int CarnivalistCostReduction { get => _carnivalistCostReduction; set => _carnivalistCostReduction = value; }
     #endregion
 
     private void Awake()
@@ -397,6 +400,22 @@ public class Tile : MonoBehaviour
         }
         return false;
     }
+
+    public bool CanAffordCheapestEntertainment()//Cheapest entertainment costing 1 carnivalist
+    {
+        if (!_claimed)
+            return false;
+        if (!_allowEntertainment)
+            return false;
+        if (_carnivalistCostReduction > 0)
+            return true;
+        else
+        {
+            if (ResourcesManager.Instance.Carnivalist > 0)
+                return true;
+        }
+            return false;
+    }
     #endregion
 
     #region NEIGHBORS LOGIC
@@ -483,19 +502,11 @@ public class Tile : MonoBehaviour
     // Call the specific listeners for each special behaviour, this is used to create a pair between the tile and the event inkover
     #region SPECIFIC LISTENERS FOR BEHAVIOURS
     #region ON ENTERTAINMENT MODIFIED
-    public void ListenerOnEntertainmentModified_BoostNeighborEntertainments(Tile tile)
+    public void ListenerOnEntertainmentModified_BoostEntertainmentOnTileAndOnNeighbors(Tile tile)
     {
-        foreach (BoostNeighborEntertainments behaviour in _tileData.SpecialBehaviours.OfType<BoostNeighborEntertainments>())
+        foreach (BoostEntertainmentOnTileAndOnNeighbors behaviour in _tileData.SpecialBehaviours.OfType<BoostEntertainmentOnTileAndOnNeighbors>())
         {
             behaviour.CheckNewEntertainment(tile);
-        }
-    }
-
-    public void ListenerOnEntertainmentModified_BoostEntertainmentByUniqueNeighbors(Tile tile)
-    {
-        foreach (BoostEntertainmentByUniqueNeighbors behaviour in _tileData.SpecialBehaviours.OfType<BoostEntertainmentByUniqueNeighbors>())
-        {
-            behaviour.CheckNewEntertainment(this);
         }
     }
     #endregion
@@ -643,14 +654,6 @@ public class Tile : MonoBehaviour
         foreach (IncomePerSavedClaim behaviour in _tileData.SpecialBehaviours.OfType<IncomePerSavedClaim>())
         {
             behaviour.IncomeForSavedClaim(this, quantity);
-        }
-    }
-
-    public void ListenerOnEntertainmentSpawned(Entertainment ent)
-    {
-        foreach (BoostEntertainmentsOnEmpire behaviour in _tileData.SpecialBehaviours.OfType<BoostEntertainmentsOnEmpire>())
-        {
-            behaviour.CheckEntertainment(ent);
         }
     }
     #endregion

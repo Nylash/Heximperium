@@ -15,6 +15,13 @@ public class EntertainmentData : ScriptableObject
 
     public EntertainmentType Type { get => _type; }
     public int BasePoints { get => _basePoints; }
-    public int CarnivalistCost { get => _carnivalistCost; }
     public SpecialEffect SpecialEffect { get => _specialEffect; }
+
+    public int GetActualCarnivalistCost(Tile tile = null)
+    {
+        int cost = _carnivalistCost;
+        if (tile)
+            cost -= tile.CarnivalistCostReduction;
+        return Mathf.Max(cost, 0);
+    }
 }
