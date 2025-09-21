@@ -488,7 +488,7 @@ public class UIManager : Singleton<UIManager>
     {
         _areIncomesShown = !_areIncomesShown;
         _showIncomeButton.sprite = _areIncomesShown ? _showIncomeOn : _showIncomeOff;
-        foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
+        foreach (Tile tile in ExplorationManager.Instance.RevealedTiles)
         {
             tile.ShowIncomeUI(_areIncomesShown);
         }

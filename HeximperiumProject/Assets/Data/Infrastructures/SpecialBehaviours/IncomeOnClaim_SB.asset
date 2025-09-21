@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: IncomeOnClaim_SB
   m_EditorClassIdentifier: 
   _income:
-  - resource: 0
-    value: 3
+  - resource: 1
+    value: 1

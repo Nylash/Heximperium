@@ -962,8 +962,8 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region COST
         TextMeshProUGUI cost = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        cost.text = "Cost: " + button.EntertainData.CarnivalistCost + "<sprite name=\"Carnivalist_Emoji\">";
-        if (!ResourcesManager.Instance.CanAffordCarnivalist(button.EntertainData.CarnivalistCost))
+        cost.text = "Cost: " + button.EntertainData.GetActualCarnivalistCost(button.AssociatedTile) + "<sprite name=\"Carnivalist_Emoji\">";
+        if (!ResourcesManager.Instance.CanAffordCarnivalist(button.EntertainData.GetActualCarnivalistCost(button.AssociatedTile)))
             cost.color = UIManager.Instance.ColorCantAfford;
         cost.margin = _fullMargin;
         textObjects.Add(cost.GetComponent<RectTransform>());

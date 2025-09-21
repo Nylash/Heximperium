@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e0e460f401a6ce44ad84d3534c37a05, type: 3}
+  m_Name: CarnivalPalace
+  m_EditorClassIdentifier: 
+  _name: Carnival Palace
+  _visualsProps:
+  - tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
+    gameObjects:
+    - {fileID: 8158725270209530402, guid: 6b32601f0a0b78649a37e032b38e4732, type: 3}
+  - tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
+    gameObjects:
+    - {fileID: 8158725270209530402, guid: 6b32601f0a0b78649a37e032b38e4732, type: 3}
+  - tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
+    gameObjects:
+    - {fileID: 8158725270209530402, guid: 6b32601f0a0b78649a37e032b38e4732, type: 3}
+  _claimCost: 0
+  _incomes: []
+  _availableInfrastructures: []
+  _specialBehaviours:
+  - {fileID: 11400000, guid: c5d3b56297aed8546b01ebaecac6d3c9, type: 2}
+  - {fileID: 11400000, guid: 3b37bf1c038c63440a3050bccc7909f2, type: 2}
+  - {fileID: 11400000, guid: 1584d04cc41f69b4f8295eb57a768101, type: 2}
+  - {fileID: 11400000, guid: 2a52bd76f28a74d41a28c9f217465b9a, type: 2}
+  _costs:
+  - resource: 0
+    value: 300
+  - resource: 1
+    value: 50
+  _scoutStartingPoint: 1
+  isTown: 1
