@@ -16,7 +16,6 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     private int _savedClaimPerTurn;
     //Upgrades variables
     private bool _upgradeTownAutoClaim;
-    private bool _upgradeHazardClaimReduction;
     private bool _upgradeClaimRange;
     #endregion
 
@@ -26,14 +25,6 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     public InfrastructureData NewTownData { get => _townData;}
     public int SavedClaimPerTurn { get => _savedClaimPerTurn; set => _savedClaimPerTurn = value; }
     public bool UpgradeTownAutoClaim { get => _upgradeTownAutoClaim; set => _upgradeTownAutoClaim = value; }
-    public bool UpgradeHazardClaimReduction { get => _upgradeHazardClaimReduction;
-        set
-        {
-            _upgradeHazardClaimReduction = value;
-            if (GameManager.Instance.CurrentPhase == Phase.Expand)
-                AnimateInteractableTiles();
-        }
-    }
     public bool UpgradeClaimRange { get => _upgradeClaimRange;
         set
         {

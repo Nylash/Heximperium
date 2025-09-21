@@ -10,6 +10,6 @@ public class UnlockScoutIgnoreHazard : UpgradeEffect
 
     public override string GetEffectDescription()
     {
-        return "Scouts ignore slow penalty from Hazardous tiles (Mountain, Desert, Swamp & Water)";
+        return "Scouts ignore slow penalty from Mountain, Desert, Swamp and Water tiles";
     }
 }

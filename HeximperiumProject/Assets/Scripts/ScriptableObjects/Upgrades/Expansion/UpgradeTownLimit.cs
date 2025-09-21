@@ -5,11 +5,11 @@ public class UpgradeTownLimit : UpgradeEffect
 {
     public override void ApplyEffect()
     {
-        ExploitationManager.Instance.UpdateTownLimit(1);
+        ExploitationManager.Instance.UpdateTownLimit(3);
     }
 
     public override string GetEffectDescription()
     {
-        return "+1 Towns limit";
+        return "+3 Towns limit";
     }
 }
