@@ -493,6 +493,7 @@ public class UIManager : Singleton<UIManager>
             _expandLockImage.sprite = _unlockSprite;
             _exploitLockImage.sprite = _unlockSprite;
             _entertainLockImage.sprite = _unlockSprite;
+            _rerollButton.GetComponentInChildren<TextMeshProUGUI>().text = "Reroll 4";
             _upgradesChoiceMenuObject.SetActive(true);
             GameManager.Instance.GamePaused = true;
         }

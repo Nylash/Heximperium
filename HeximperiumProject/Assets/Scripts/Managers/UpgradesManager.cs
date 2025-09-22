@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class UpgradesManager : Singleton<UpgradesManager>
 {
-    [SerializeField] private List<int> _turnsForUpgradesChoice = new List<int> { 3, 7, 11, 15, 19, 23};
+    [SerializeField] private List<int> _turnsForUpgradesChoice = new List<int>();
     [SerializeField] private List<UpgradeEffect> _exploUpgrades = new List<UpgradeEffect>();
     [SerializeField] private List<UpgradeEffect> _expandUpgrades = new List<UpgradeEffect>();
     [SerializeField] private List<UpgradeEffect> _exploitUpgrades = new List<UpgradeEffect>();
@@ -19,6 +19,11 @@ public class UpgradesManager : Singleton<UpgradesManager>
     private UpgradeEffect _currentExploitUpgrade;
     private UpgradeEffect _currentEntertainUpgrade;
 
+    protected override void OnAwake()
+    {
+        GameManager.Instance.OnNewTurn += CheckNewTurnValue;
+    }
+
     private void Start()
     {
         _remainingExploUpgrades.AddRange(_exploUpgrades);
@@ -27,6 +32,12 @@ public class UpgradesManager : Singleton<UpgradesManager>
         _remainingEntertainUpgrades.AddRange(_entertainUpgrades);
 
         StartUpgradesChoice();
+    }
+
+    private void CheckNewTurnValue(int newTurn)
+    {
+        if (_turnsForUpgradesChoice.Contains(newTurn))
+            StartUpgradesChoice();
     }
 
     private void UnlockUpgrade(UpgradeEffect upgrade)
