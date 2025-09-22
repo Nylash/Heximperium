@@ -1323,6 +1323,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
+  _turnsForUpgradesChoice: 03000000070000000b0000000f0000001300000017000000
+  _exploUpgrades:
+  - {fileID: 11400000, guid: be918e0534b7ba24c8c364ff11c3ada7, type: 2}
+  - {fileID: 11400000, guid: f544113399635e742b38b7a11a858d67, type: 2}
+  _expandUpgrades:
+  - {fileID: 11400000, guid: be918e0534b7ba24c8c364ff11c3ada7, type: 2}
+  - {fileID: 11400000, guid: f544113399635e742b38b7a11a858d67, type: 2}
+  _exploitUpgrades:
+  - {fileID: 11400000, guid: be918e0534b7ba24c8c364ff11c3ada7, type: 2}
+  - {fileID: 11400000, guid: f544113399635e742b38b7a11a858d67, type: 2}
+  _entertainUpgrades:
+  - {fileID: 11400000, guid: be918e0534b7ba24c8c364ff11c3ada7, type: 2}
+  - {fileID: 11400000, guid: f544113399635e742b38b7a11a858d67, type: 2}
 --- !u!114 &8672858755679527012
 MonoBehaviour:
   m_ObjectHideFlags: 0

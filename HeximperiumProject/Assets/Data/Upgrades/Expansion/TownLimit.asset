@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9c17c7159a247549b910996adde3726, type: 3}
   m_Name: TownLimit
   m_EditorClassIdentifier: 
-  _effectText: +1 Towns limit
+  EffectName: Imperial Mandate
