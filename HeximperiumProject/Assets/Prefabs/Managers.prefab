@@ -1305,6 +1305,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3394aecefc4c86f4181481cb52b87e79, type: 2}
   - {fileID: 11400000, guid: 1fa42f8e81df55d4593e8a963a2d53a7, type: 2}
   - {fileID: 11400000, guid: 849a92dd76cb59441979aca05a80c78b, type: 2}
+  _minstrelData: {fileID: 11400000, guid: c7c0d52522766474a97afa468b4b42c9, type: 2}
   _entertainmentPrefab: {fileID: 2250239871940816137, guid: f8a7db839ca7e72408cdfe24431d42ae, type: 3}
   _entertainmentsParent: {fileID: 4984853090335579157}
   _goldForOneCarnivalist: 500
@@ -1333,8 +1334,7 @@ MonoBehaviour:
   _exploitUpgrades:
   - {fileID: 11400000, guid: 4c3339807635fe54498a308196167a81, type: 2}
   _entertainUpgrades:
-  - {fileID: 11400000, guid: be918e0534b7ba24c8c364ff11c3ada7, type: 2}
-  - {fileID: 11400000, guid: f544113399635e742b38b7a11a858d67, type: 2}
+  - {fileID: 11400000, guid: 6bc9e8b0e1dc67c4f96dabc3c249e0ce, type: 2}
 --- !u!114 &8672858755679527012
 MonoBehaviour:
   m_ObjectHideFlags: 0

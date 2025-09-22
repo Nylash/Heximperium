@@ -401,20 +401,13 @@ public class Tile : MonoBehaviour
         return false;
     }
 
-    public bool CanAffordCheapestEntertainment()//Cheapest entertainment costing 1 carnivalist
+    public bool CanAffordCheapestEntertainment()
     {
         if (!_claimed)
             return false;
-        if (!_allowEntertainment)
-            return false;
-        if (_carnivalistCostReduction > 0)
+        if (EntertainmentManager.Instance.MinstrelData.GetActualCarnivalistCost(this) <= ResourcesManager.Instance.Carnivalist)
             return true;
-        else
-        {
-            if (ResourcesManager.Instance.Carnivalist > 0)
-                return true;
-        }
-            return false;
+        return false;
     }
     #endregion
 
