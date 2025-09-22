@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b739f4be153d874f960d7da6e0d54bf, type: 3}
   m_Name: TownAutoClaim
   m_EditorClassIdentifier: 
-  _effectText: Founding a Town automatically claim the 6 surrounding tiles
+  EffectName: Frontier Charter

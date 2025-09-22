@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d04f4cdd12745d489f1abe7bc1e0f20, type: 3}
   m_Name: TownGenerateClaim
   m_EditorClassIdentifier: 
-  _effectText: Each Town generates +1 Claim per turn
+  EffectName: Colonial Office

@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf74cfe28b97bce40b9d8599375193cb, type: 3}
   m_Name: ScoutDeathReveal
   m_EditorClassIdentifier: 
-  _effectText: When a Scout reaches the end of its lifespan, he reveals all tiles
-    in a 3-tiles radius
+  EffectName: Last Sight
   _deathRevealRadius: 3

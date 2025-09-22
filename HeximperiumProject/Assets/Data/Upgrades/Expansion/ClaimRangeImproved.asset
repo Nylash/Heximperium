@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98588cf4065ce6d4cb5227c9c983ef44, type: 3}
   m_Name: ClaimRangeImproved
   m_EditorClassIdentifier: 
-  _effectText: Allow claiming tiles that are up to 1 tile away from your current
-    territory
+  EffectName: "Pioneer\u2019s Reach"
