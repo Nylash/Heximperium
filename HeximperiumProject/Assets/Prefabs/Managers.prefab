@@ -1331,8 +1331,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: be918e0534b7ba24c8c364ff11c3ada7, type: 2}
   - {fileID: 11400000, guid: f544113399635e742b38b7a11a858d67, type: 2}
   _exploitUpgrades:
-  - {fileID: 11400000, guid: be918e0534b7ba24c8c364ff11c3ada7, type: 2}
-  - {fileID: 11400000, guid: f544113399635e742b38b7a11a858d67, type: 2}
+  - {fileID: 11400000, guid: 4c3339807635fe54498a308196167a81, type: 2}
   _entertainUpgrades:
   - {fileID: 11400000, guid: be918e0534b7ba24c8c364ff11c3ada7, type: 2}
   - {fileID: 11400000, guid: f544113399635e742b38b7a11a858d67, type: 2}
