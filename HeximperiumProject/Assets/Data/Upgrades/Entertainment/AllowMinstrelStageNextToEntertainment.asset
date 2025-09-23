@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: AllowMinstrelStageNextToEntertainment
   m_EditorClassIdentifier: 
   EffectName: Minstrel Tradition
+  AssociatedSystem: 3

@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: ScoutDeathReveal
   m_EditorClassIdentifier: 
   EffectName: Last Sight
+  AssociatedSystem: 0
   _deathRevealRadius: 3

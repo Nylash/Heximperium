@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: ScoutIgnoreHazard
   m_EditorClassIdentifier: 
   EffectName: "Trailblazer\u2019s Training"
+  AssociatedSystem: 0

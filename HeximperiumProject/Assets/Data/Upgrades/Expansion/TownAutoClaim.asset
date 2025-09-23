@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: TownAutoClaim
   m_EditorClassIdentifier: 
   EffectName: Frontier Charter
+  AssociatedSystem: 1

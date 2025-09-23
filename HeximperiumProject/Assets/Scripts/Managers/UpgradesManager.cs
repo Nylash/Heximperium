@@ -47,6 +47,8 @@ public class UpgradesManager : Singleton<UpgradesManager>
 
         PopUpManager.Instance.ResetPopUp(null);
         UIManager.Instance.UpgradesChoiceMenu();
+
+        UIManager.Instance.FillUpgradesList(_appliedUpgrades.Count, _appliedUpgrades[_appliedUpgrades.Count - 1]);
     }
 
     private void StartUpgradesChoice()
@@ -139,5 +141,14 @@ public class UpgradesManager : Singleton<UpgradesManager>
                 _remainingEntertainUpgrades.Remove(_currentEntertainUpgrade);
                 break;
         }
+    }
+
+    public int GetNextUpgradeTurn()
+    {
+        if (_appliedUpgrades.Count >= _turnsForUpgradesChoice.Count)
+            return -1;
+        if (_turnsForUpgradesChoice[_appliedUpgrades.Count] > GameManager.Instance.TurnLimit)
+            return -1;
+        return _turnsForUpgradesChoice[_appliedUpgrades.Count];
     }
 }

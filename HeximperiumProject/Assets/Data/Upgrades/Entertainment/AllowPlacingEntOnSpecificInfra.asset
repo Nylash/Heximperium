@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: AllowPlacingEntOnSpecificInfra
   m_EditorClassIdentifier: 
   EffectName: Harvest Fair
+  AssociatedSystem: 3
   _specificTilesAllowingEntertainment:
   - {fileID: 11400000, guid: 2343a704b58abda4dbeead80ff882353, type: 2}
   - {fileID: 11400000, guid: 4e8ee20a776700a43b1e6df15478b4cc, type: 2}

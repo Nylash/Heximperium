@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: BoostSpecificEntIfEnoughIdenticalNeighbors
   m_EditorClassIdentifier: 
   EffectName: Emperor's Feast
+  AssociatedSystem: 3
   _boostAmount: 20
   _entData: {fileID: 11400000, guid: 3394aecefc4c86f4181481cb52b87e79, type: 2}
   _requiredIdenticalNeighbors: 3

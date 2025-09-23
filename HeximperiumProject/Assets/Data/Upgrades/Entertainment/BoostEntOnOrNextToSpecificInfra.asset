@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: BoostEntOnOrNextToSpecificInfra
   m_EditorClassIdentifier: 
   EffectName: Royal Influence
+  AssociatedSystem: 3
   _boostAmount: 5
   _specificInfraBoostingEntertainment:
   - {fileID: 11400000, guid: c09b5b1323b68174bad1aea52735ddcc, type: 2}

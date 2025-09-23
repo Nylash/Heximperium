@@ -63,6 +63,13 @@ public class UIManager : Singleton<UIManager>
     [Header("Upgrades Menu")]
     [SerializeField] private GameObject _upgradesMenuButton;
     [SerializeField] private GameObject _upgradesMenu;
+    [SerializeField] private TextMeshProUGUI _counterForNextUpgrade;
+    [SerializeField] private TextMeshProUGUI _upgrade1;
+    [SerializeField] private TextMeshProUGUI _upgrade2;
+    [SerializeField] private TextMeshProUGUI _upgrade3;
+    [SerializeField] private TextMeshProUGUI _upgrade4;
+    [SerializeField] private TextMeshProUGUI _upgrade5;
+    [SerializeField] private TextMeshProUGUI _upgrade6;
     [Header("_________________________________________________________")]
     [Header("Upgrades Choice Menu")]
     [SerializeField] private GameObject _upgradesChoiceMenuObject;
@@ -417,6 +424,7 @@ public class UIManager : Singleton<UIManager>
     public void UpdateTurnCounterText(int turnCounter)
     {
         _turnCounterText.text = "Turn : " + turnCounter + "/" + GameManager.Instance.TurnLimit;
+        UpdateTurnCounterBeforeNextUpgrade(turnCounter);
     }
     #endregion
 
@@ -467,15 +475,12 @@ public class UIManager : Singleton<UIManager>
         if (_upgradesMenu.activeSelf)
         {
             _upgradesMenu.GetComponent<Animator>().SetTrigger("Fold");
-            GameManager.Instance.GamePaused = false;
         }
         else
         {
             if (_tradeMenu.activeSelf)
                 TradeMenu();
             _upgradesMenu.SetActive(true);
-            GameManager.Instance.GamePaused = true;
-            // Show current upgrades
         }
     }
 
@@ -581,6 +586,50 @@ public class UIManager : Singleton<UIManager>
         _rerollButton.interactable = false;
         _rerollButton.GetComponentInChildren<TextMeshProUGUI>().text = "Reroll used";
     }
+
+    public void FillUpgradesList(int upgradeNumber, UpgradeEffect upgrade)
+    {
+        switch (upgradeNumber)
+        {
+            case 1:
+                _upgrade1.text = upgrade.EffectName;
+                _upgrade1.color = GetColorOfPhase(upgrade.AssociatedSystem);
+                break;
+            case 2:
+                _upgrade2.text = upgrade.EffectName;
+                _upgrade2.color = GetColorOfPhase(upgrade.AssociatedSystem);
+                break;
+            case 3:
+                _upgrade3.text = upgrade.EffectName;
+                _upgrade3.color = GetColorOfPhase(upgrade.AssociatedSystem);
+                break;
+            case 4:
+                _upgrade4.text = upgrade.EffectName;
+                _upgrade4.color = GetColorOfPhase(upgrade.AssociatedSystem);
+                break;
+            case 5:
+                _upgrade5.text = upgrade.EffectName;
+                _upgrade5.color = GetColorOfPhase(upgrade.AssociatedSystem);
+                break;
+            case 6:
+                _upgrade6.text = upgrade.EffectName;
+                _upgrade6.color = GetColorOfPhase(upgrade.AssociatedSystem);
+                break;
+            default:
+                Debug.LogError("Shouldn't reach 7 upgrades.");
+                break;
+        }
+        UpdateTurnCounterBeforeNextUpgrade(GameManager.Instance.TurnCounter);
+    }
+
+    private void UpdateTurnCounterBeforeNextUpgrade(int currentTurn)
+    {
+        int nextTurn = UpgradesManager.Instance.GetNextUpgradeTurn();
+        if (nextTurn == -1)
+            _counterForNextUpgrade.text = "No more Upgrades";
+        else
+            _counterForNextUpgrade.text = "Next upgrade in " + (nextTurn - currentTurn) + " turns";
+    }
     #endregion
 
     public void SwitchIncomesVisibility()
@@ -601,5 +650,17 @@ public class UIManager : Singleton<UIManager>
         {
             tile.ShowEntPlacementUI(_areEntPlacementShown);
         }
+    }
+
+    public Color GetColorOfPhase(Phase phase)
+    {
+        return phase switch
+        {
+            Phase.Explore => _colorExplo,
+            Phase.Expand => _colorExpand,
+            Phase.Exploit => _colorExploit,
+            Phase.Entertain => _colorEntertain,
+            _ => Color.white,
+        };
     }
 }

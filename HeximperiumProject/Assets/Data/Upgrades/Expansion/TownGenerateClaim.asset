@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: TownGenerateClaim
   m_EditorClassIdentifier: 
   EffectName: Colonial Office
+  AssociatedSystem: 1

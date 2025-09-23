@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: BoostSpecifcEntForUnclaimedNeighbors
   m_EditorClassIdentifier: 
   EffectName: Whispers Beyond
+  AssociatedSystem: 3
   _boostAmount: 20
   _specificEntBoosted: {fileID: 11400000, guid: 849a92dd76cb59441979aca05a80c78b, type: 2}

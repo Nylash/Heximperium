@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: TownLimit
   m_EditorClassIdentifier: 
   EffectName: Imperial Mandate
+  AssociatedSystem: 1

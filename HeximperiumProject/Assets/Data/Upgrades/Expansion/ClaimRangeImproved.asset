@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: ClaimRangeImproved
   m_EditorClassIdentifier: 
   EffectName: "Pioneer\u2019s Reach"
+  AssociatedSystem: 1
