@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -82,6 +81,14 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Sprite _lockSprite;
     [SerializeField] private Sprite _unlockSprite;
     [SerializeField] private Button _rerollButton;
+    [SerializeField] private Button _exploLockButton;
+    [SerializeField] private Button _expandLockButton;
+    [SerializeField] private Button _exploitLockButton;
+    [SerializeField] private Button _entertainLockButton;
+    [SerializeField] private List<Image> _exploLockLines;
+    [SerializeField] private List<Image> _expandLockLines;
+    [SerializeField] private List<Image> _exploitLockLines;
+    [SerializeField] private List<Image> _entertainLockLines;
     [Header("_________________________________________________________")]
     [Header("Show Income button")]
     [SerializeField] private Image _showIncomeButton;
@@ -483,7 +490,13 @@ public class UIManager : Singleton<UIManager>
         {
             if (_tradeMenu.activeSelf)
                 TradeMenu();
+            if (_upgradesMenu.activeSelf)
+                UpgradesMenu();
             _rerollButton.interactable = true;
+            _exploLockButton.interactable = true;
+            _expandLockButton.interactable = true;
+            _exploitLockButton.interactable = true;
+            _entertainLockButton.interactable = true;
             _alreadyReroll = false;
             _exploLockState = false;
             _expandLockState = false;
@@ -493,6 +506,14 @@ public class UIManager : Singleton<UIManager>
             _expandLockImage.sprite = _unlockSprite;
             _exploitLockImage.sprite = _unlockSprite;
             _entertainLockImage.sprite = _unlockSprite;
+            foreach (Image line in _exploLockLines)
+                line.enabled = true;
+            foreach (Image line in _expandLockLines)
+                line.enabled = true;
+            foreach (Image line in _exploitLockLines)
+                line.enabled = true;
+            foreach (Image line in _entertainLockLines)
+                line.enabled = true;
             _rerollButton.GetComponentInChildren<TextMeshProUGUI>().text = "Reroll 4";
             _upgradesChoiceMenuObject.SetActive(true);
             GameManager.Instance.GamePaused = true;
@@ -506,24 +527,31 @@ public class UIManager : Singleton<UIManager>
 
     public void SwitchUpgradeLockState(int phase)
     {
-        Image clickedLock = EventSystem.current.currentSelectedGameObject.GetComponent<Button>().GetComponent<Image>();
         switch ((Phase)phase)
         {
             case Phase.Explore:
                 _exploLockState = !_exploLockState;
-                clickedLock.sprite = _exploLockState ? _lockSprite : _unlockSprite;
+                _exploLockButton.GetComponent<Image>().sprite = _exploLockState ? _lockSprite : _unlockSprite;
+                foreach (Image line in _exploLockLines)
+                    line.enabled = !_exploLockState;
                 break;
             case Phase.Expand:
                 _expandLockState = !_expandLockState;
-                clickedLock.sprite = _expandLockState ? _lockSprite : _unlockSprite;
+                _expandLockButton.GetComponent<Image>().sprite = _expandLockState ? _lockSprite : _unlockSprite;
+                foreach (Image line in _expandLockLines)
+                    line.enabled = !_expandLockState;
                 break;
             case Phase.Exploit:
                 _exploitLockState = !_exploitLockState;
-                clickedLock.sprite = _exploitLockState ? _lockSprite : _unlockSprite;
+                _exploitLockButton.GetComponent<Image>().sprite = _exploitLockState ? _lockSprite : _unlockSprite;
+                foreach (Image line in _exploitLockLines)
+                    line.enabled = !_exploitLockState;
                 break;
             case Phase.Entertain:
                 _entertainLockState = !_entertainLockState;
-                clickedLock.sprite = _entertainLockState ? _lockSprite : _unlockSprite;
+                _entertainLockButton.GetComponent<Image>().sprite = _entertainLockState ? _lockSprite : _unlockSprite;
+                foreach (Image line in _entertainLockLines)
+                    line.enabled = !_entertainLockState;
                 break;
         }
         int count = new[] { _exploLockState, _expandLockState, _exploitLockState, _entertainLockState }.Count(b => !b);
@@ -546,7 +574,12 @@ public class UIManager : Singleton<UIManager>
             UpgradesManager.Instance.RerollUpgradesChoice(Phase.Entertain);
 
         _alreadyReroll = true;
+        _exploLockButton.interactable = false;
+        _expandLockButton.interactable = false;
+        _exploitLockButton.interactable = false;
+        _entertainLockButton.interactable = false;
         _rerollButton.interactable = false;
+        _rerollButton.GetComponentInChildren<TextMeshProUGUI>().text = "Reroll used";
     }
     #endregion
 

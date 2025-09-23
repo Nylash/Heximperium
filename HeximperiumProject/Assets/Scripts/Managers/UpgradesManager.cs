@@ -73,32 +73,44 @@ public class UpgradesManager : Singleton<UpgradesManager>
         {
             case Phase.Explore:
                 UpgradeEffect newExploEffect = _remainingExploUpgrades[Random.Range(0, _remainingExploUpgrades.Count)];
-                while (newExploEffect == _currentExploUpgrade)
-                    newExploEffect = _remainingExploUpgrades[Random.Range(0, _remainingExploUpgrades.Count)];
+                if (_remainingExploUpgrades.Count > 1)
+                {
+                    while (newExploEffect == _currentExploUpgrade)
+                        newExploEffect = _remainingExploUpgrades[Random.Range(0, _remainingExploUpgrades.Count)];
+                }
                 _currentExploUpgrade = newExploEffect;
                 UIManager.Instance.ExploChoiceTitle.text = _currentExploUpgrade.EffectName;
                 UIManager.Instance.ExploChoiceDetail.text = _currentExploUpgrade.GetEffectDescription();
                 break;
             case Phase.Expand:
                 UpgradeEffect newExpandEffect = _remainingExpandUpgrades[Random.Range(0, _remainingExpandUpgrades.Count)];
-                while (newExpandEffect == _currentExpandUpgrade)
-                    newExpandEffect = _remainingExpandUpgrades[Random.Range(0, _remainingExpandUpgrades.Count)];
+                if (_remainingExpandUpgrades.Count > 1)
+                {
+                    while (newExpandEffect == _currentExpandUpgrade)
+                        newExpandEffect = _remainingExpandUpgrades[Random.Range(0, _remainingExpandUpgrades.Count)];
+                }
                 _currentExpandUpgrade = newExpandEffect;
                 UIManager.Instance.ExpandChoiceTitle.text = _currentExpandUpgrade.EffectName;
                 UIManager.Instance.ExpandChoiceDetail.text = _currentExpandUpgrade.GetEffectDescription();
                 break;
             case Phase.Exploit:
                 UpgradeEffect newExploitEffect = _remainingExploitpgrades[Random.Range(0, _remainingExploitpgrades.Count)];
-                while (newExploitEffect == _currentExploitUpgrade)
-                    newExploitEffect = _remainingExploitpgrades[Random.Range(0, _remainingExploitpgrades.Count)];
+                if (_remainingExploitpgrades.Count > 1)
+                {
+                    while (newExploitEffect == _currentExploitUpgrade)
+                        newExploitEffect = _remainingExploitpgrades[Random.Range(0, _remainingExploitpgrades.Count)];
+                }
                 _currentExploitUpgrade = newExploitEffect;
                 UIManager.Instance.ExploitChoiceTitle.text = _currentExploitUpgrade.EffectName;
                 UIManager.Instance.ExploitChoiceDetail.text = _currentExploitUpgrade.GetEffectDescription();
                 break;
             case Phase.Entertain:
                 UpgradeEffect newEntertainEffect = _remainingEntertainUpgrades[Random.Range(0, _remainingEntertainUpgrades.Count)];
-                while (newEntertainEffect == _currentEntertainUpgrade)
-                    newEntertainEffect = _remainingEntertainUpgrades[Random.Range(0, _remainingEntertainUpgrades.Count)];
+                if (_remainingEntertainUpgrades.Count > 1)
+                {
+                    while (newEntertainEffect == _currentEntertainUpgrade)
+                        newEntertainEffect = _remainingEntertainUpgrades[Random.Range(0, _remainingEntertainUpgrades.Count)];
+                }
                 _currentEntertainUpgrade = newEntertainEffect;
                 UIManager.Instance.EntertainChoiceTitle.text = _currentEntertainUpgrade.EffectName;
                 UIManager.Instance.EntertainChoiceDetail.text = _currentEntertainUpgrade.GetEffectDescription();
