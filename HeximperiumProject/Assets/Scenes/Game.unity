@@ -593,10 +593,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5058650393401128906, guid: b67b6ca7df07e5640bffb0e62167570d, type: 3}
-      propertyPath: '_entertainUpgrades.Array.data[0]'
-      value: 
-      objectReference: {fileID: 11400000, guid: e88555ebf7544a444bc615a81e4ac7ea, type: 2}
     - target: {fileID: 6989854815427043266, guid: b67b6ca7df07e5640bffb0e62167570d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -640,14 +636,6 @@ PrefabInstance:
     - target: {fileID: 8076696492868688798, guid: b67b6ca7df07e5640bffb0e62167570d, type: 3}
       propertyPath: m_Name
       value: Managers
-      objectReference: {fileID: 0}
-    - target: {fileID: 8667163343139708830, guid: b67b6ca7df07e5640bffb0e62167570d, type: 3}
-      propertyPath: _turnLimit
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8667163343139708830, guid: b67b6ca7df07e5640bffb0e62167570d, type: 3}
-      propertyPath: _baseClaimPerTurn
-      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

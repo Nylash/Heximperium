@@ -91,6 +91,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
 
     #region EVENTS
     public event Action<Entertainment> OnEntertainmentSpawned;
+    public event Action<EntertainmentData, Tile> OnEntertainmentRemoved;
     public event Action OnScoreUpdated;
     public event Action<Tile, int> OnScoreGained;
     public Action<Tile, int> OnScoreLost;//Directly called by Entertainment when it lose points (or by the manager on destroy)
@@ -233,10 +234,12 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
 
     public void DestroyEntertainment(Tile tile)
     {
+        EntertainmentData removedEntertainmentData = tile.Entertainment.Data;
         OnScoreLost?.Invoke(tile, tile.Entertainment.Points);
         tile.Entertainment.DestroyEntertainment();
         _entertainments.Remove(tile.Entertainment);
         tile.Entertainment = null;
+        OnEntertainmentRemoved?.Invoke(removedEntertainmentData, tile);
         //Call the check empty group after the Entertainment assignation, so the event and its listener is done before
         CheckEmptyGroup(tile);
 

@@ -12,6 +12,8 @@ public class Entertainment : MonoBehaviour
     private SpriteRenderer _renderer;
     private int _points;
     private int _pointsBuffer;
+    // Upgrade variables
+    private bool _boostedByIdenticalNeighbors;
     #endregion
 
     #region ACCESSORS
@@ -19,6 +21,7 @@ public class Entertainment : MonoBehaviour
     public Tile Tile { get => _tile; set => _tile = value; }
     public SpriteRenderer Renderer { get => _renderer; }
     public int Points { get => _points; }
+    public bool BoostedByIdenticalNeighbors { get => _boostedByIdenticalNeighbors; set => _boostedByIdenticalNeighbors = value; }
     #endregion
 
     private void Awake()
