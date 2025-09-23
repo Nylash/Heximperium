@@ -27,6 +27,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     private Dictionary<int, int> _groupBoostCount = new Dictionary<int, int>(); //Use for BoostByZoneSize special effect, <GroupID, Count>
     // Upgrade variables
     private bool _upgradeMinstrelStageOnNeighbor;
+    private AllowEntertainmentOnSpecificInfra _upgradeAllowEntOnSpecificInfra;
     #endregion
 
     #region ACCESSORS
@@ -36,6 +37,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     public Dictionary<int, int> GroupBoostCount { get => _groupBoostCount; }
     public bool UpgradeMinstrelStageOnNeighbor { get => _upgradeMinstrelStageOnNeighbor; set => _upgradeMinstrelStageOnNeighbor = value; }
     public EntertainmentData MinstrelData { get => _minstrelData; }
+    public AllowEntertainmentOnSpecificInfra UpgradeAllowEntOnSpecificInfra { get => _upgradeAllowEntOnSpecificInfra; set => _upgradeAllowEntOnSpecificInfra = value; }
 
     public int GetPointsFromMinstrelStage()
     {

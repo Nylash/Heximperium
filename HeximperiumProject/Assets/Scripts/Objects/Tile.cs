@@ -130,6 +130,11 @@ public class Tile : MonoBehaviour
         set
         {
             _allowEntertainment = value;
+            if (!_allowEntertainment)
+            {
+                if (EntertainmentManager.Instance.UpgradeAllowEntOnSpecificInfra != null)
+                    EntertainmentManager.Instance.UpgradeAllowEntOnSpecificInfra.CheckData(this);
+            }
             if (UIManager.Instance.AreEntPlacementShown)
                 ShowEntPlacementUI(true);
         }
