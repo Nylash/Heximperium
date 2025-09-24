@@ -803,9 +803,19 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region AVAILABILITY
         TextMeshProUGUI availability = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        availability.text = (ExplorationManager.Instance.ScoutsLimit - ExplorationManager.Instance.CurrentScoutsCount) + " Scout(s) available";
-        if (ExplorationManager.Instance.CurrentScoutsCount >= ExplorationManager.Instance.ScoutsLimit)
+        int availableCount = ExplorationManager.Instance.ScoutsLimit - ExplorationManager.Instance.CurrentScoutsCount;
+        if (availableCount > 0)
+        {
+            if (availableCount == 1)
+                availability.text = "1 Scout available";
+            else
+                availability.text = availableCount + " Scouts available";
+        }
+        else
+        {
+            availability.text = "No available Scout";
             availability.color = UIManager.Instance.ColorCantAfford;
+        }
         availability.margin = _fullMargin;
         textObjects.Add(availability.GetComponent<RectTransform>());
         availability.fontStyle = FontStyles.Italic;
