@@ -323,6 +323,9 @@ public class Tile : MonoBehaviour
 
     public void ShowIncomeUI(bool show)
     {
+        if (_tileData is HazardousTileData)
+            return;
+
         // Hide them all, to avoid leftovers
         foreach (TextMeshPro income in _incomesUI)
             income.transform.parent.gameObject.SetActive(false);

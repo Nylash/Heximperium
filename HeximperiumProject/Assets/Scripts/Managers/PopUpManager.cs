@@ -560,6 +560,12 @@ public class PopUpManager : Singleton<PopUpManager>
             ClampTextWidth(slow);
             slow.fontStyle = FontStyles.Italic;
             slow.alignment = TextAlignmentOptions.Center;
+
+            SetPopUpContentAnchors(textObjects);
+            PositionPopup(popUp.GetComponent<RectTransform>());
+
+            // No need to go further, hazardous tile have no other info
+            return;
         }
         #endregion
 
