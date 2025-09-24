@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Scriptable Objects/Upgrades Tree/Expansion/UnlockClaimRangeImproved")]
+[CreateAssetMenu(menuName = "Scriptable Objects/Upgrades/Expansion/UnlockClaimRangeImproved")]
 public class UnlockClaimRangeImproved : UpgradeEffect
 {
     public override void ApplyEffect()

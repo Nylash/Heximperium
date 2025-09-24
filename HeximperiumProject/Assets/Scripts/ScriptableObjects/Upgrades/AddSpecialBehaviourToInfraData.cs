@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Scriptable Objects/Upgrades Tree/AddSpecialBehaviourToInfraData")]
+[CreateAssetMenu(menuName = "Scriptable Objects/Upgrades/AddSpecialBehaviourToInfraData")]
 public class AddSpecialBehaviourToInfraData : UpgradeEffect
 {
     [SerializeField] private List<InfrastructureData> _boostedInfra = new List<InfrastructureData>();

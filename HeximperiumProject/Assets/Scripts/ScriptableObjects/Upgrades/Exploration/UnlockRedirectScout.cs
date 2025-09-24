@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Scriptable Objects/Upgrades Tree/Exploration/UnlockRedirectScout")]
+[CreateAssetMenu(menuName = "Scriptable Objects/Upgrades/Exploration/UnlockRedirectScout")]
 public class UnlockRedirectScout : UpgradeEffect
 {
     public override void ApplyEffect()

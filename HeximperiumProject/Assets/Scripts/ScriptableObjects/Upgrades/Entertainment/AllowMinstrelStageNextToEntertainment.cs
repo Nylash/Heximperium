@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Scriptable Objects/Upgrades Tree/Entertainment/AllowMinstrelStageNextToEntertainment")]
+[CreateAssetMenu(menuName = "Scriptable Objects/Upgrades/Entertainment/AllowMinstrelStageNextToEntertainment")]
 public class AllowMinstrelStageNextToEntertainment : UpgradeEffect
 {
     public override void ApplyEffect()

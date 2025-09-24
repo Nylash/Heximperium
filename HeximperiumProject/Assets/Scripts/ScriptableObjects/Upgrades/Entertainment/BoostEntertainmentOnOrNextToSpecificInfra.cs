@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Scriptable Objects/Upgrades Tree/Entertainment/BoostEntertainmentOnOrNextToSpecificInfra")]
+[CreateAssetMenu(menuName = "Scriptable Objects/Upgrades/Entertainment/BoostEntertainmentOnOrNextToSpecificInfra")]
 public class BoostEntertainmentOnOrNextToSpecificInfra : UpgradeEffect
 {
     [SerializeField] private int _boostAmount = 1;

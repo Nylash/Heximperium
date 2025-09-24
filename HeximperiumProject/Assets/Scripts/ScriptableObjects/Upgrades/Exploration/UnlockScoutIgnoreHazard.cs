@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Scriptable Objects/Upgrades Tree/Exploration/UnlockScoutIgnoreHazard")]
+[CreateAssetMenu(menuName = "Scriptable Objects/Upgrades/Exploration/UnlockScoutIgnoreHazard")]
 public class UnlockScoutIgnoreHazard : UpgradeEffect
 {
     public override void ApplyEffect()

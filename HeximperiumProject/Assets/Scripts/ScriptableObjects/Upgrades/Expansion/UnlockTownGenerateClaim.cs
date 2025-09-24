@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Scriptable Objects/Upgrades Tree/Expansion/UnlockTownGenerateClaim")]
+[CreateAssetMenu(menuName = "Scriptable Objects/Upgrades/Expansion/UnlockTownGenerateClaim")]
 public class UnlockTownGenerateClaim : UpgradeEffect
 {
     public override void ApplyEffect()

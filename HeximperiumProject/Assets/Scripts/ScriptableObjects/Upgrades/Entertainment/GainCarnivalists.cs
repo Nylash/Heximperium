@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Scriptable Objects/Upgrades Tree/Entertainment/GainCarnivalists")]
+[CreateAssetMenu(menuName = "Scriptable Objects/Upgrades/Entertainment/GainCarnivalists")]
 public class GainCarnivalists : UpgradeEffect
 {
     [SerializeField] private int _carnivalistsToGain = 1;

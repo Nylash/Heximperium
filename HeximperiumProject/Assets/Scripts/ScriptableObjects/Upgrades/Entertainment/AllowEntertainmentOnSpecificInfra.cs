@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Scriptable Objects/Upgrades Tree/Entertainment/AllowEntertainmentOnSpecificInfra")]
+[CreateAssetMenu(menuName = "Scriptable Objects/Upgrades/Entertainment/AllowEntertainmentOnSpecificInfra")]
 public class AllowEntertainmentOnSpecificInfra : UpgradeEffect
 {
     [SerializeField] private List<InfrastructureData> _specificTilesAllowingEntertainment = new List<InfrastructureData>();

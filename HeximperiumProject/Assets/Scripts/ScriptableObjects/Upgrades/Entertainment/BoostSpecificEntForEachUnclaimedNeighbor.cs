@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Scriptable Objects/Upgrades Tree/Entertainment/BoostSpecificEntForEachUnclaimedNeighbor")]
+[CreateAssetMenu(menuName = "Scriptable Objects/Upgrades/Entertainment/BoostSpecificEntForEachUnclaimedNeighbor")]
 public class BoostSpecificEntForEachUnclaimedNeighbor : UpgradeEffect
 {
     [SerializeField] private int _boostAmount;

@@ -112,5 +112,13 @@ public class Entertainment : MonoBehaviour
             effect.CheckEntertainment(this, tile);
         }
     }
+
+    public void ListenerOnEntertainmentModified_BoostIfEnoughIdenticalNeighbors(Tile tile)
+    {
+        foreach (BoostIfEnoughIdenticalNeighbors effect in _data.SpecialEffects.OfType<BoostIfEnoughIdenticalNeighbors>())
+        {
+            effect.CheckEntertainment(this);
+        }
+    }
     #endregion
 }

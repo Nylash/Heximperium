@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Scriptable Objects/Upgrades Tree/Exploration/UnlockScoutDeathReveal")]
+[CreateAssetMenu(menuName = "Scriptable Objects/Upgrades/Exploration/UnlockScoutDeathReveal")]
 public class UnlockScoutDeathReveal : UpgradeEffect
 {
     [SerializeField] private int _deathRevealRadius;
