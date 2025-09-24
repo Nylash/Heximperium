@@ -9,13 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbd5a5759b1cd3b44b6dfee9717b5439, type: 3}
-  m_Name: BoostEntOnOrNextToSpecificInfra
+  m_Script: {fileID: 11500000, guid: 75ba2ce10a08bae449a388a39c83fccd, type: 3}
+  m_Name: AddBoostEntOnTileAndNeighborsToTown
   m_EditorClassIdentifier: 
   EffectName: Royal Influence
   AssociatedSystem: 3
-  _boostAmount: 5
-  _specificInfraBoostingEntertainment:
+  _boostedInfra:
   - {fileID: 11400000, guid: c09b5b1323b68174bad1aea52735ddcc, type: 2}
   - {fileID: 11400000, guid: 87cb7c2741b68e84e873d33599275430, type: 2}
   - {fileID: 11400000, guid: 7414533d68b41ca49983a5cad94887d9, type: 2}
@@ -29,3 +28,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3c623367cc1eff848b26c8220c26550c, type: 2}
   - {fileID: 11400000, guid: 1efb98835b4c40b479f8ea22e1c5923d, type: 2}
   - {fileID: 11400000, guid: 7779112bfa5302a45a2ff81eaa8b58bb, type: 2}
+  _specialBehaviour: {fileID: 11400000, guid: c83437b2937e48f4ab3e2cab80c32f62, type: 2}
