@@ -3,20 +3,33 @@ using System.Collections.Generic;
 public static class RuntimeManager
 {
     private static readonly HashSet<TileData> tileDataInstances = new HashSet<TileData>();
+    private static readonly HashSet<EntertainmentData> entertainmentDataInstances = new HashSet<EntertainmentData>();
 
-    public static void RegisterTileDataInstance(TileData instance)
+    public static void RegisterDataInstance(TileData instance)
     {
         tileDataInstances.Add(instance);
     }
 
-    public static void UnregisterTileDataInstance(TileData instance)
+    public static void RegisterDataInstance(EntertainmentData instance)
+    {
+        entertainmentDataInstances.Add(instance);
+    }
+
+    public static void UnregisterDataInstance(TileData instance)
     {
         tileDataInstances.Remove(instance);
     }
 
-    public static void ResetAllTileDataInstances()
+    public static void UnregisterDataInstance(EntertainmentData instance)
     {
-        foreach (var instance in tileDataInstances)
+        entertainmentDataInstances.Remove(instance);
+    }
+
+    public static void ResetAllDataInstances()
+    {
+        foreach (TileData instance in tileDataInstances)
+            instance.ResetRuntimeSpecialBehaviour();
+        foreach (EntertainmentData instance in entertainmentDataInstances)
             instance.ResetRuntimeSpecialBehaviour();
     }
 }

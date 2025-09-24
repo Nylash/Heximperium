@@ -36,7 +36,7 @@ public class MapManager : Singleton<MapManager>
     void Start()
     {
         // Reset all runtime special behaviour in case of a new game after one modifying them
-        RuntimeManager.ResetAllTileDataInstances();
+        RuntimeManager.ResetAllDataInstances();
 
         if (_predefinedMap != null)
         {

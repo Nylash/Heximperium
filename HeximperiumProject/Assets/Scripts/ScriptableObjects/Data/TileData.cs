@@ -27,13 +27,13 @@ public class TileData : ScriptableObject
     // Manage runtime list of special behaviours
     private void OnEnable()
     {
-        RuntimeManager.RegisterTileDataInstance(this);
+        RuntimeManager.RegisterDataInstance(this);
         ResetRuntimeSpecialBehaviour();
     }
 
     private void OnDisable()
     {
-        RuntimeManager.UnregisterTileDataInstance(this);
+        RuntimeManager.UnregisterDataInstance(this);
     }
 
     public void ResetRuntimeSpecialBehaviour()
