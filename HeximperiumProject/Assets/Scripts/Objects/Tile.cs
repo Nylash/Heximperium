@@ -290,7 +290,10 @@ public class Tile : MonoBehaviour
             if (_highlightObject != null)
                 return;
             _highlightObject = Instantiate(_highlightPrefab, _visual);
-            _highlightObject.transform.localPosition += new Vector3(0, 0.05f, 0);
+            if (Revealed)
+                _highlightObject.transform.localPosition += new Vector3(0, 0.05f, 0);
+            else
+                _highlightObject.transform.localPosition += new Vector3(0, -0.05f, 0);
         }
         else if(_highlightObject != null)
         {

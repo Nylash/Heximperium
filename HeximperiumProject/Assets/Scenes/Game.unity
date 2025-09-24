@@ -604,7 +604,7 @@ PrefabInstance:
     - target: {fileID: 5058650393401128906, guid: b67b6ca7df07e5640bffb0e62167570d, type: 3}
       propertyPath: '_entertainUpgrades.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: e613fb01f45caf442be82a97eb677b15, type: 2}
+      objectReference: {fileID: 11400000, guid: 4f4e5ab32c916c94c85d25513c59396b, type: 2}
     - target: {fileID: 6989854815427043266, guid: b67b6ca7df07e5640bffb0e62167570d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

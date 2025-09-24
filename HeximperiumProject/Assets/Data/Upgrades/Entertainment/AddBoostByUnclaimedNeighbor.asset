@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e848ba3582806845b22bb6e3f77134e, type: 3}
-  m_Name: BoostSpecifcEntForUnclaimedNeighbors
+  m_Script: {fileID: 11500000, guid: 8e1a2b570a35c064cbab961d0e2c86fe, type: 3}
+  m_Name: AddBoostByUnclaimedNeighbor
   m_EditorClassIdentifier: 
   EffectName: Whispers Beyond
   AssociatedSystem: 3
-  _boostAmount: 20
-  _specificEntBoosted: {fileID: 11400000, guid: 849a92dd76cb59441979aca05a80c78b, type: 2}
+  _boostedEnt:
+  - {fileID: 11400000, guid: 849a92dd76cb59441979aca05a80c78b, type: 2}
+  _specialEffect: {fileID: 11400000, guid: b6f393296080e22448a6a6058b86d9a1, type: 2}

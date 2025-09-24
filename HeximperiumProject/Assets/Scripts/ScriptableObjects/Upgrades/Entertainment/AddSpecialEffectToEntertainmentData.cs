@@ -23,6 +23,10 @@ public class AddSpecialEffectToEntertainmentData : UpgradeEffect
 
     public override string GetEffectDescription()
     {
-        return $"{_boostedEnt.ToCustomString()} gain \"{_specialEffect.GetBehaviourDescription()}\"";
+        return 
+            $"{_boostedEnt.ToCustomString()} " +
+            $"{(_boostedEnt.Count == 1 ? "gains" : "gain")} " +
+            $"\"{_specialEffect.GetBehaviourDescription()}\"";
+
     }
 }
