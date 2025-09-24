@@ -28,8 +28,8 @@ public static class RuntimeManager
     public static void ResetAllDataInstances()
     {
         foreach (TileData instance in tileDataInstances)
-            instance.ResetRuntimeSpecialBehaviour();
+            instance.ResetRuntimeValues();
         foreach (EntertainmentData instance in entertainmentDataInstances)
-            instance.ResetRuntimeSpecialBehaviour();
+            instance.ResetRuntimeSpecialEffects();
     }
 }

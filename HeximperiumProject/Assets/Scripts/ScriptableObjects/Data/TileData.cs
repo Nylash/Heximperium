@@ -16,10 +16,11 @@ public class TileData : ScriptableObject
     [SerializeField] private List<SpecialBehaviour> _specialBehaviours = new List<SpecialBehaviour>();
 
     private List<SpecialBehaviour> _runtimeSpecialBehaviours = new List<SpecialBehaviour>();
+    private List<ResourceToIntMap> _runtimeIncomes = new List<ResourceToIntMap>();
 
     public string TileName { get => _name; }
     public virtual int ClaimCost { get => _claimCost; }
-    public List<ResourceToIntMap> Incomes { get => _incomes; }
+    public List<ResourceToIntMap> Incomes { get => _runtimeIncomes; set => _runtimeIncomes = value; }
     public List<InfrastructureData> AvailableInfrastructures { get => _availableInfrastructures; }
     public List<SpecialBehaviour> SpecialBehaviours { get => _runtimeSpecialBehaviours; }
     public List<TileDataToGameObjectsMap> VisualsProps { get => _visualsProps; }
@@ -28,7 +29,7 @@ public class TileData : ScriptableObject
     private void OnEnable()
     {
         RuntimeManager.RegisterDataInstance(this);
-        ResetRuntimeSpecialBehaviour();
+        ResetRuntimeValues();
     }
 
     private void OnDisable()
@@ -36,8 +37,9 @@ public class TileData : ScriptableObject
         RuntimeManager.UnregisterDataInstance(this);
     }
 
-    public void ResetRuntimeSpecialBehaviour()
+    public void ResetRuntimeValues()
     {
         _runtimeSpecialBehaviours = new List<SpecialBehaviour>(_specialBehaviours);
+        _runtimeIncomes = new List<ResourceToIntMap>(_incomes);
     }
 }

@@ -31,7 +31,7 @@ public class EntertainmentData : ScriptableObject
     private void OnEnable()
     {
         RuntimeManager.RegisterDataInstance(this);
-        ResetRuntimeSpecialBehaviour();
+        ResetRuntimeSpecialEffects();
     }
 
     private void OnDisable()
@@ -39,7 +39,7 @@ public class EntertainmentData : ScriptableObject
         RuntimeManager.UnregisterDataInstance(this);
     }
 
-    public void ResetRuntimeSpecialBehaviour()
+    public void ResetRuntimeSpecialEffects()
     {
         _runtimeSpecialEffects = new List<SpecialEffect>(_specialEffects);
     }
