@@ -596,7 +596,7 @@ PrefabInstance:
     - target: {fileID: 5058650393401128906, guid: b67b6ca7df07e5640bffb0e62167570d, type: 3}
       propertyPath: '_exploitUpgrades.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: e78a3fd7debd81e418c92ae5cdb011a0, type: 2}
+      objectReference: {fileID: 11400000, guid: 37adf43a30b478a46a0ef988096dabb0, type: 2}
     - target: {fileID: 6989854815427043266, guid: b67b6ca7df07e5640bffb0e62167570d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
