@@ -41,6 +41,7 @@ public class Tile : MonoBehaviour
     private TileInteractionAnimationState _interactionAnimationState = TileInteractionAnimationState.None;
     private GameObject _visualAssets;
     private int _carnivalistCostReduction;
+    private int _recruitedCarnivalists; // variable only used for UI purposes
     //Scouts
     private List<Scout> _scouts = new List<Scout>();
     //Entertainment variables
@@ -141,6 +142,16 @@ public class Tile : MonoBehaviour
     }
 
     public int CarnivalistCostReduction { get => _carnivalistCostReduction; set => _carnivalistCostReduction = value; }
+    public int RecruitedCarnivalists 
+    {   
+        get => _recruitedCarnivalists;
+        set
+        {
+            _recruitedCarnivalists = value;
+            if (UIManager.Instance.AreIncomesShown)
+                ShowIncomeUI(true);
+        } 
+    }
     #endregion
 
     private void Awake()
@@ -347,9 +358,10 @@ public class Tile : MonoBehaviour
 
         int count = 0;
 
-        if (_tileData.SpecialBehaviours.Any(b => b is BoostScoutsLimit))
+        BoostScoutsLimit scoutBoost = _tileData.SpecialBehaviours.OfType<BoostScoutsLimit>().FirstOrDefault();
+        if (scoutBoost != null)
         {
-            _incomesUI[count].text = "1<sprite name=\"Scout_Emoji\">";
+            _incomesUI[count].text = scoutBoost.ScoutsIncrease + "<sprite name=\"Scout_Emoji\">";
             _incomesUI[count].transform.parent.gameObject.SetActive(true);
             count++;
         }
@@ -384,10 +396,9 @@ public class Tile : MonoBehaviour
             count++;
         }
 
-        var generateCarnivalist = _tileData.SpecialBehaviours.OfType<GenerateCarnivalist>().FirstOrDefault();
-        if (generateCarnivalist != null)
+        if (_recruitedCarnivalists > 0)
         {
-            _incomesUI[count].text = generateCarnivalist.CarnivalistQuantity + "<sprite name=\"Carnivalist_Emoji\">";
+            _incomesUI[count].text = _recruitedCarnivalists + "<sprite name=\"Carnivalist_Emoji\">";
             _incomesUI[count].transform.parent.gameObject.SetActive(true);
             count++;
         }

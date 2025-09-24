@@ -5,6 +5,8 @@ public class BoostScoutsLimit : SpecialBehaviour
 {
     [SerializeField] private int _scoutsIncrease = 1;
 
+    public int ScoutsIncrease { get => _scoutsIncrease; }
+
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
     {
         ExplorationManager.Instance.ScoutsLimit += _scoutsIncrease;
