@@ -1334,11 +1334,11 @@ MonoBehaviour:
   _exploitUpgrades:
   - {fileID: 11400000, guid: 4c3339807635fe54498a308196167a81, type: 2}
   _entertainUpgrades:
+  - {fileID: 11400000, guid: 4f4e5ab32c916c94c85d25513c59396b, type: 2}
+  - {fileID: 11400000, guid: 991d35afd200e5c44a5ad29817617ac6, type: 2}
+  - {fileID: 11400000, guid: e613fb01f45caf442be82a97eb677b15, type: 2}
   - {fileID: 11400000, guid: 6bc9e8b0e1dc67c4f96dabc3c249e0ce, type: 2}
   - {fileID: 11400000, guid: d708e569dd0ad89408ec7ec7183234cf, type: 2}
-  - {fileID: 11400000, guid: d4886983ce8de754b8ceaf90e9157750, type: 2}
-  - {fileID: 11400000, guid: e88555ebf7544a444bc615a81e4ac7ea, type: 2}
-  - {fileID: 11400000, guid: 5e046d4d9ec562143b126272afac555d, type: 2}
   - {fileID: 11400000, guid: cc89b6a5c08770143915e31789025bb2, type: 2}
 --- !u!114 &8672858755679527012
 MonoBehaviour:
