@@ -15,7 +15,7 @@ public class TileData : ScriptableObject
     [Header("Specific Settings")]
     [SerializeField] private List<SpecialBehaviour> _specialBehaviours = new List<SpecialBehaviour>();
 
-    [System.NonSerialized] private List<SpecialBehaviour> _runtimeSpecialBehaviours = new List<SpecialBehaviour>();
+    private List<SpecialBehaviour> _runtimeSpecialBehaviours = new List<SpecialBehaviour>();
 
     public string TileName { get => _name; }
     public virtual int ClaimCost { get => _claimCost; }
@@ -27,28 +27,17 @@ public class TileData : ScriptableObject
     // Manage runtime list of special behaviours
     private void OnEnable()
     {
-        _instances.Add(this);
-        ResetRuntime();
+        RuntimeManager.RegisterTileDataInstance(this);
+        ResetRuntimeSpecialBehaviour();
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
-        _instances.Remove(this);
+        RuntimeManager.UnregisterTileDataInstance(this);
     }
 
-    void ResetRuntime()
+    public void ResetRuntimeSpecialBehaviour()
     {
         _runtimeSpecialBehaviours = new List<SpecialBehaviour>(_specialBehaviours);
-    }
-
-    // Keep track of all live instances
-    private static readonly HashSet<TileData> _instances = new();
-
-    // Called automatically after each scene load
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    private static void ResetAfterSceneLoad()
-    {
-        foreach (var instance in _instances)
-            instance.ResetRuntime();
     }
 }

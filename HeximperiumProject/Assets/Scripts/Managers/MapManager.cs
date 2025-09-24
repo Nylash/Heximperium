@@ -35,7 +35,10 @@ public class MapManager : Singleton<MapManager>
 
     void Start()
     {
-        if(_predefinedMap != null)
+        // Reset all runtime special behaviour in case of a new game after one modifying them
+        RuntimeManager.ResetAllTileDataInstances();
+
+        if (_predefinedMap != null)
         {
             _grid = Instantiate(_predefinedMap).transform;
 
