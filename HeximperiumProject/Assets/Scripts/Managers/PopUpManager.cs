@@ -724,15 +724,18 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         #region EFFECT
-        if (ent.Data.SpecialEffect != null)
+        if (ent.Data.SpecialEffects.Count > 0)
         {
-            TextMeshProUGUI effectText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            effectText.text = ent.Data.SpecialEffect.GetBehaviourDescription();
-            effectText.margin = _horizontalMargin;
-            textObjects.Add(effectText.GetComponent<RectTransform>());
-            ClampTextWidth(effectText);
-            ent.Data.SpecialEffect.HighlightImpactedEntertainment(ent.Tile, true);
-            _highlightingEffects.Add(ent.Data.SpecialEffect, ent.Tile);
+            foreach (SpecialEffect effect in ent.Data.SpecialEffects)
+            {
+                TextMeshProUGUI effectText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+                effectText.text = effect.GetBehaviourDescription();
+                effectText.margin = _fullMargin;
+                textObjects.Add(effectText.GetComponent<RectTransform>());
+                ClampTextWidth(effectText);
+                effect.HighlightImpactedEntertainment(ent.Tile, true);
+                _highlightingEffects.Add(effect, ent.Tile);
+            }
         }
         #endregion
 
@@ -894,15 +897,18 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         #region EFFECT
-        if (button.EntertainData.SpecialEffect != null)
+        if (button.EntertainData.SpecialEffects.Count > 0)
         {
-            TextMeshProUGUI effectText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            effectText.text = button.EntertainData.SpecialEffect.GetBehaviourDescription();
-            effectText.margin = _horizontalMargin;
-            textObjects.Add(effectText.GetComponent<RectTransform>());
-            ClampTextWidth(effectText);
-            button.EntertainData.SpecialEffect.HighlightImpactedEntertainment(button.AssociatedTile, true);
-            _highlightingEffects.Add(button.EntertainData.SpecialEffect, button.AssociatedTile);
+            foreach (SpecialEffect effect in button.EntertainData.SpecialEffects)
+            {
+                TextMeshProUGUI effectText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+                effectText.text = effect.GetBehaviourDescription();
+                effectText.margin = _horizontalMargin;
+                textObjects.Add(effectText.GetComponent<RectTransform>());
+                ClampTextWidth(effectText);
+                effect.HighlightImpactedEntertainment(button.AssociatedTile, true);
+                _highlightingEffects.Add(effect, button.AssociatedTile);
+            }
         }
         #endregion
 

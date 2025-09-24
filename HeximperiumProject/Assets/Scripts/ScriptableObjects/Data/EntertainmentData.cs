@@ -11,11 +11,11 @@ public class EntertainmentData : ScriptableObject
     [SerializeField] private int _carnivalistCost;
     [Header("_________________________________________________________")]
     [Header("Optionnal Settings")]
-    [SerializeField] private SpecialEffect _specialEffect;
+    [SerializeField] private List<SpecialEffect> _specialEffects;
 
     public EntertainmentType Type { get => _type; }
     public int BasePoints { get => _basePoints; }
-    public SpecialEffect SpecialEffect { get => _specialEffect; }
+    public List<SpecialEffect> SpecialEffects { get => _specialEffects; }
 
     public int GetActualCarnivalistCost(Tile tile = null)
     {

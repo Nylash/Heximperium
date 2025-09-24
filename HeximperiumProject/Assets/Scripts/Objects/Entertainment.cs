@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class Entertainment : MonoBehaviour
@@ -50,8 +51,8 @@ public class Entertainment : MonoBehaviour
         _data = data;
         _renderer.sprite = Resources.Load<Sprite>(PATH_SPRITES_ENTERTAINMENT + data.name);
 
-        if (_data.SpecialEffect != null)
-            _data.SpecialEffect.InitializeSpecialEffect(this);
+        foreach (SpecialEffect effect in data.SpecialEffects)
+            effect.InitializeSpecialEffect(this);
 
         UpdatePoints(data.BasePoints, Transaction.Gain);
 
@@ -75,8 +76,8 @@ public class Entertainment : MonoBehaviour
     {
         EntertainmentManager.Instance.UpdateScore(_points, Transaction.Spent);//Since we remove the entertainment with all its, no need to rollback them on special effects
 
-        if (_data.SpecialEffect != null)
-            _data.SpecialEffect.RollbackSpecialEntertainment(this);
+        foreach (SpecialEffect effect in _data.SpecialEffects)
+            effect.RollbackSpecialEntertainment(this);
         _tile.UniqueEntertainmentNeighborsCount_SB = 0;
         _tile.UniqueEntertainmentNeighborsCount_SE = 0;
         Destroy(gameObject);
@@ -90,20 +91,26 @@ public class Entertainment : MonoBehaviour
     #region SPECIAL EFFECTS
     public void ListenerOnEntertainmentModified_BoostByNeighbors(Tile tile)
     {
-        if (_data.SpecialEffect is BoostByNeighbors effect)
+        foreach (BoostByNeighbors effect in _data.SpecialEffects.OfType<BoostByNeighbors>())
+        {
             effect.CheckEntertainment(this, tile);
+        }
     }
 
     public void ListenerOnEntertainmentModified_BoostByUniqueNeighbors(Tile tile)
     {
-        if (_data.SpecialEffect is BoostByUniqueNeighbors effect)
+        foreach (BoostByUniqueNeighbors effect in _data.SpecialEffects.OfType<BoostByUniqueNeighbors>())
+        {
             effect.CheckEntertainment(this);
+        }
     }
 
     public void ListenerOnEntertainmentModified_BoostByZoneSize(Tile tile)
     {
-        if (_data.SpecialEffect is BoostByZoneSize effect)
+        foreach (BoostByZoneSize effect in _data.SpecialEffects.OfType<BoostByZoneSize>())
+        {
             effect.CheckEntertainment(this, tile);
+        }
     }
     #endregion
 }
