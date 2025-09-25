@@ -37,7 +37,7 @@ public class TileData : ScriptableObject
         RuntimeManager.UnregisterDataInstance(this);
     }
 
-    public void ResetRuntimeValues()
+    public virtual void ResetRuntimeValues()
     {
         _runtimeSpecialBehaviours = new List<SpecialBehaviour>(_specialBehaviours);
         _runtimeIncomes = new List<ResourceToIntMap>(_incomes);

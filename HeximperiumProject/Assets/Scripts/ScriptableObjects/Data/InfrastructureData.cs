@@ -8,7 +8,15 @@ public class InfrastructureData : TileData
     [SerializeField] private bool _scoutStartingPoint;
     [SerializeField] private bool isTown;
 
-    public bool ScoutStartingPoint { get => _scoutStartingPoint; }
+    private bool _runtimeScoutStartingPoint;
+
+    public bool ScoutStartingPoint { get => _runtimeScoutStartingPoint; set => _runtimeScoutStartingPoint = value; }
     public List<ResourceToIntMap> Costs { get => _costs; }
     public bool IsTown { get => isTown; }
+
+    public override void ResetRuntimeValues()
+    {
+        base.ResetRuntimeValues();
+        _runtimeScoutStartingPoint = _scoutStartingPoint;
+    }
 }

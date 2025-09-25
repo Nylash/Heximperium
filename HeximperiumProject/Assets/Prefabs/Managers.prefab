@@ -1329,8 +1329,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: be918e0534b7ba24c8c364ff11c3ada7, type: 2}
   - {fileID: 11400000, guid: f544113399635e742b38b7a11a858d67, type: 2}
   _expandUpgrades:
+  - {fileID: 11400000, guid: 986b1eb0096f7984b859ef849171ed8c, type: 2}
+  - {fileID: 11400000, guid: c03cc2ef77f8a21458b582d59e72d866, type: 2}
+  - {fileID: 11400000, guid: 0a1aafe5925262d4394da83bfa2f947b, type: 2}
+  - {fileID: 11400000, guid: 258b8f23f5f43af40936bbf6d9aea113, type: 2}
+  - {fileID: 11400000, guid: 9a9e88ba4c96b0d4ea8c3a9a1b1165c8, type: 2}
   - {fileID: 11400000, guid: be918e0534b7ba24c8c364ff11c3ada7, type: 2}
-  - {fileID: 11400000, guid: f544113399635e742b38b7a11a858d67, type: 2}
   _exploitUpgrades:
   - {fileID: 11400000, guid: 3d1c4546cc905f0478ce2763b8710991, type: 2}
   - {fileID: 11400000, guid: e78a3fd7debd81e418c92ae5cdb011a0, type: 2}

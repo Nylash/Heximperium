@@ -594,13 +594,13 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 5058650393401128906, guid: b67b6ca7df07e5640bffb0e62167570d, type: 3}
-      propertyPath: _expandUpgrades.Array.size
+      propertyPath: _exploUpgrades.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5058650393401128906, guid: b67b6ca7df07e5640bffb0e62167570d, type: 3}
-      propertyPath: '_expandUpgrades.Array.data[0]'
+      propertyPath: '_exploUpgrades.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: 0a1aafe5925262d4394da83bfa2f947b, type: 2}
+      objectReference: {fileID: 11400000, guid: b62e185c215bd524e82e9456a5e79cad, type: 2}
     - target: {fileID: 6989854815427043266, guid: b67b6ca7df07e5640bffb0e62167570d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -644,10 +644,6 @@ PrefabInstance:
     - target: {fileID: 8076696492868688798, guid: b67b6ca7df07e5640bffb0e62167570d, type: 3}
       propertyPath: m_Name
       value: Managers
-      objectReference: {fileID: 0}
-    - target: {fileID: 8667163343139708830, guid: b67b6ca7df07e5640bffb0e62167570d, type: 3}
-      propertyPath: _baseClaimPerTurn
-      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
