@@ -193,7 +193,7 @@ public class TutorialManager : Singleton<TutorialManager>
 
         _step = TutorialStep.Explo1_ObjSelectTown;
         _explo1_ObjSelectTown.SetTrigger("Unfold");
-        ExplorationManager.Instance.OnTownSelected += OnTownSelected;
+        ExplorationManager.Instance.OnScoutStartingPointSelected += OnTownSelected;
     }
 
     /// <summary>
@@ -203,7 +203,7 @@ public class TutorialManager : Singleton<TutorialManager>
     private void OnTownSelected()
     {
         if (_step != TutorialStep.Explo1_ObjSelectTown) return;
-        ExplorationManager.Instance.OnTownSelected -= OnTownSelected;
+        ExplorationManager.Instance.OnScoutStartingPointSelected -= OnTownSelected;
         GameManager.Instance.OnTileUnselected += RollBackToObjSelectTown;
 
         _step = TutorialStep.Explo1_ObjScoutSpawn;
@@ -235,7 +235,7 @@ public class TutorialManager : Singleton<TutorialManager>
 
         GameManager.Instance.OnTileUnselected -= RollBackToObjSelectTown;
         ExplorationManager.Instance.OnScoutSpawned -= _scoutSpawnedHandler;
-        ExplorationManager.Instance.OnTownSelected += OnTownSelected;
+        ExplorationManager.Instance.OnScoutStartingPointSelected += OnTownSelected;
 
         _explo1_ObjScoutSpawn.SetTrigger("Fold");
         _explo1_ObjSelectTown.SetTrigger("Unfold");

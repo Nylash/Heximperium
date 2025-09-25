@@ -297,7 +297,7 @@ public enum Transaction
 
 public enum Interaction
 {
-    Claim, Scout, Infrastructure, Destroy, Entertainment, RedirectScout
+    Claim, Scout, Infrastructure, Destroy, Entertainment, RedirectScout, RevealAnywhere
 }
 
 public enum EntertainmentType

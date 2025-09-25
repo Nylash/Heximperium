@@ -246,8 +246,10 @@ public class GameManager : Singleton<GameManager>
 
     private void SelectTile(Tile tile)
     {
-        //We can only select revealed tiles
-        if (!tile.Revealed)
+        //We can only select revealed tiles except if we are in exploration phase and have the right upgrade
+        if (!tile.Revealed && 
+            !ExplorationManager.Instance.UpgradeRevealAnywhere && 
+            _currentPhase != Phase.Explore)
             return;
 
         _selectedTile = tile;
@@ -262,7 +264,10 @@ public class GameManager : Singleton<GameManager>
 
         //Spawn highlight and call event
         _selectionObject = Instantiate(_selectionPrefab, _selectedTile.Visual);
-        _selectionObject.transform.localPosition += new Vector3(0, 0.03f, 0);
+        if (tile.Revealed)
+            _selectionObject.transform.localPosition += new Vector3(0, 0.03f, 0);
+        else
+            _selectionObject.transform.localPosition += new Vector3(0, -0.03f, 0);
         OnNewTileSelected?.Invoke(_selectedTile);
     }
 
@@ -303,6 +308,9 @@ public class GameManager : Singleton<GameManager>
                 break;
             case Interaction.RedirectScout:
                 ExplorationManager.Instance.RedirectScout(button.AssociatedTile, button.AssociatedScout);
+                break;
+            case Interaction.RevealAnywhere:
+                ExplorationManager.Instance.RevealAnywhere(button.AssociatedTile);
                 break;
             default: 
                 Debug.LogError("This interaction is not handle : " +  button.Interaction);

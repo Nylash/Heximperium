@@ -3,6 +3,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.InputSystem.OnScreen.OnScreenStick;
 
 public class PopUpManager : Singleton<PopUpManager>
 {
@@ -173,7 +174,10 @@ public class PopUpManager : Singleton<PopUpManager>
                             ButtonEntertainmentPopUp(button);
                             break;
                         case Interaction.RedirectScout:
-                            ButtonRedirectScoutPopUp(button);
+                            ButtonRedirectScoutPopUp();
+                            break;
+                        case Interaction.RevealAnywhere:
+                            ButtonRevealAnywherePopUp();
                             break;
                         default:
                             Debug.LogWarning("PopUpManager: InteractionButton with no interaction type found " + button.Interaction);
@@ -818,7 +822,7 @@ public class PopUpManager : Singleton<PopUpManager>
         PositionPopup(popUp.GetComponent<RectTransform>());
     }
 
-    private void ButtonRedirectScoutPopUp(InteractionButton button)
+    private void ButtonRedirectScoutPopUp()
     {
         GameObject popUp;
         popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
@@ -826,10 +830,28 @@ public class PopUpManager : Singleton<PopUpManager>
 
         List<RectTransform> textObjects = new List<RectTransform>();
 
-        TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
-        title.text = "Redirect a Scout";
-        title.margin = _fullMargin;
-        textObjects.Add(title.GetComponent<RectTransform>());
+        TextMeshProUGUI text = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        text.text = "Redirect a Scout";
+        text.margin = _fullMargin;
+        textObjects.Add(text.GetComponent<RectTransform>());
+
+        SetPopUpContentAnchors(textObjects);
+        PositionPopup(popUp.GetComponent<RectTransform>());
+    }
+
+    private void ButtonRevealAnywherePopUp()
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        TextMeshProUGUI text = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        text.text = $"Reveal this tile and all those in a {ExplorationManager.Instance.UpgradeRevealAnywhere.RevealRadius}-tile radius";
+        text.margin = _fullMargin;
+        textObjects.Add(text.GetComponent<RectTransform>());
+        ClampTextWidth(text);
 
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>());

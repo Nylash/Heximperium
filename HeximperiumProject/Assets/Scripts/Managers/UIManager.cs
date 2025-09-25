@@ -119,6 +119,7 @@ public class UIManager : Singleton<UIManager>
     [Header("_________________________________________________________")]
     [Header("Various Objects")]
     [SerializeField] private Animator _scoutHint;
+    [SerializeField] private Animator _revealAnywhereHint;
     #endregion
 
     #region VARIABLES
@@ -163,6 +164,7 @@ public class UIManager : Singleton<UIManager>
     public TextMeshProUGUI ExploitChoiceDetail { get => _exploitChoiceDetail; }
     public TextMeshProUGUI EntertainChoiceTitle { get => _entertainChoiceTitle; }
     public TextMeshProUGUI EntertainChoiceDetail { get => _entertainChoiceDetail; }
+    public Animator RevealAnywhereHint { get => _revealAnywhereHint; }
     #endregion
 
     protected override void OnAwake()

@@ -1326,8 +1326,12 @@ MonoBehaviour:
   _persistentSingleton: 0
   _turnsForUpgradesChoice: 03000000070000000b0000000f00000013000000
   _exploUpgrades:
-  - {fileID: 11400000, guid: be918e0534b7ba24c8c364ff11c3ada7, type: 2}
+  - {fileID: 11400000, guid: 9a49a49ae690a184a9610a41818d887e, type: 2}
   - {fileID: 11400000, guid: f544113399635e742b38b7a11a858d67, type: 2}
+  - {fileID: 11400000, guid: f1b721afc3483824c811244a59cd309d, type: 2}
+  - {fileID: 11400000, guid: 56f9081094be368429faf99756898517, type: 2}
+  - {fileID: 11400000, guid: dcd91104925d7ea4bacd70a113e670da, type: 2}
+  - {fileID: 11400000, guid: b62e185c215bd524e82e9456a5e79cad, type: 2}
   _expandUpgrades:
   - {fileID: 11400000, guid: 986b1eb0096f7984b859ef849171ed8c, type: 2}
   - {fileID: 11400000, guid: c03cc2ef77f8a21458b582d59e72d866, type: 2}
