@@ -311,14 +311,6 @@ public class PopUpManager : Singleton<PopUpManager>
         textObjects.Add(income.GetComponent<RectTransform>());
         #endregion
 
-        #region SAVE
-        TextMeshProUGUI save = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        save.text = "Max stockable claim: " + ExpansionManager.Instance.SavedClaimPerTurn;
-        save.margin = _horizontalMargin;
-        ClampTextWidth(save);
-        textObjects.Add(save.GetComponent<RectTransform>());
-        #endregion
-
         SetPopUpContentAnchors(textObjects);
         PositionPopupRelativeToUI(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>());
     }

@@ -13,17 +13,16 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     #region VARIABLES
     private List<Tile> _claimedTiles = new List<Tile>();
     private int _claimPerTurn;
-    private int _savedClaimPerTurn;
     //Upgrades variables
     private bool _upgradeTownAutoClaim;
     private bool _upgradeClaimRange;
+    private bool _upgradeConserveClaims;
     #endregion
 
     #region ACCESSORS
     public int ClaimPerTurn { get => _claimPerTurn; set => _claimPerTurn = value; }
     public List<Tile> ClaimedTiles { get => _claimedTiles; }
     public InfrastructureData NewTownData { get => _townData;}
-    public int SavedClaimPerTurn { get => _savedClaimPerTurn; set => _savedClaimPerTurn = value; }
     public bool UpgradeTownAutoClaim { get => _upgradeTownAutoClaim; set => _upgradeTownAutoClaim = value; }
     public bool UpgradeClaimRange { get => _upgradeClaimRange;
         set
@@ -33,11 +32,12 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
                 AnimateInteractableTiles();
         } 
     }
+
+    public bool UpgradeConserveClaims { get => _upgradeConserveClaims; set => _upgradeConserveClaims = value; }
     #endregion
 
     #region EVENTS
     public event Action<Tile> OnTileClaimed;
-    public event Action<int> OnClaimSaved;
     //Tutorial events
     public event Action OnClaimableTileSelected;
     public event Action OnBasicTileSelected;
@@ -68,13 +68,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
 
     protected override void ConfirmPhase()
     {
-        if (_savedClaimPerTurn > 0)
-        {
-            if(ResourcesManager.Instance.Claim > _savedClaimPerTurn)
-                ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim - _savedClaimPerTurn, Transaction.Spent);
-            OnClaimSaved?.Invoke(ResourcesManager.Instance.Claim);
-        }
-        else
+        if (!_upgradeConserveClaims)
             ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim, Transaction.Spent);
 
         GameManager.Instance.UnselectTile();
