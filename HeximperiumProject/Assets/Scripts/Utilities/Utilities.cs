@@ -192,7 +192,7 @@ public static class Utilities
         return costString;
     }
 
-    public static string ToCustomString<T>(this List<T> data) where T : TileData
+    public static string ToCustomString<T>(this List<T> data, bool orInsteadOfAnd = false) where T : TileData
     {
         string res = string.Empty;
         for (int i = 0; i < data.Count; i++)
@@ -200,7 +200,12 @@ public static class Utilities
             if (i > 0)
             {
                 if (i == data.Count - 1)
-                    res += " & ";
+                {
+                    if (orInsteadOfAnd)
+                        res += " or ";
+                    else
+                        res += " & ";
+                }
                 else
                     res += ", ";
             }
