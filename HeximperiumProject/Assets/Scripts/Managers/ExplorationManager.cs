@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ExplorationManager : PhaseManager<ExplorationManager>
@@ -33,13 +34,15 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     private int _upgradeScoutRevealOnDeathRadius;
     private bool _upgradeScoutIgnoreHazard;
     private bool _upgradeScoutRedirectable;
+    private UnlockRevealAnywhere _upgradeRevealAnywhere;
+    private bool _hasUsedRevealAnywhereThisPhase;
     #endregion
 
     #region EVENTS
     public event Action OnScoutsLimitModified;
     public event Action<Scout> OnScoutSpawned;
     //Tutorial events
-    public event Action OnTownSelected;
+    public event Action OnScoutStartingPointSelected;
     public event Action OnScoutDirected;
     #endregion
 
@@ -113,6 +116,15 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         } 
     }
     public List<Tile> RevealedTiles { get => _revealedTiles; }
+    public UnlockRevealAnywhere UpgradeRevealAnywhere { 
+        get => _upgradeRevealAnywhere; 
+        set
+        {
+            _upgradeRevealAnywhere = value;
+            if (GameManager.Instance.CurrentPhase == Phase.Explore)
+                UIManager.Instance.RevealAnywhereHint.gameObject.SetActive(true);
+        }
+    }
     #endregion
 
     protected override void OnAwake()
@@ -150,6 +162,10 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     #region PHASE LOGIC
     protected override void StartPhase()
     {
+        _hasUsedRevealAnywhereThisPhase = false;
+        if (_upgradeRevealAnywhere)
+            UIManager.Instance.RevealAnywhereHint.gameObject.SetActive(true);
+
         GameManager.Instance.UnselectTile();
 
         AnimateInteractableTiles();
@@ -179,36 +195,51 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
 
         _interactionPositions.Clear();
 
+        List<Interaction> interactions = new List<Interaction>();
+
         if (_upgradeScoutRedirectable)
         {
             if(tile.Scouts.Count > 0)
             {
-                foreach (Scout scout in tile.Scouts)
-                {
-                    if (!scout.HasRedirected)
-                    {
-                        if(tile.TileData is InfrastructureData data && data.ScoutStartingPoint)
-                        {
-                            _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 2);
-                            ScoutInteraction(tile, 0);
-                            RedirectScoutInteraction(tile, 1, scout);
-                        }
-                        else
-                        {
-                            _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
-                            RedirectScoutInteraction(tile, 0, scout);
-                        }
-                        return;
-                    }
-                }
+                if (tile.Scouts?.FirstOrDefault(s => !s.HasRedirected))
+                    interactions.Add(Interaction.RedirectScout);
             }
+        }
+
+        if (_upgradeRevealAnywhere)
+        {
+            if (!_hasUsedRevealAnywhereThisPhase)
+                interactions.Add(Interaction.RevealAnywhere);
         }
 
         if (tile.TileData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
         {
-            _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
-            ScoutInteraction(tile, 0);
-            OnTownSelected?.Invoke();
+            interactions.Add(Interaction.Scout);
+            OnScoutStartingPointSelected?.Invoke();
+        }
+
+        if (interactions.Count == 0)
+            return;
+
+        _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, interactions.Count);
+        for (int i = 0; i < interactions.Count; i++)
+        {
+            switch (interactions[i])
+            {
+                case Interaction.Scout:
+                    ScoutInteraction(tile, i);
+                    break;
+                case Interaction.RedirectScout:
+                    Scout scout = tile.Scouts.FirstOrDefault(s => !s.HasRedirected);
+                    if (scout != null)
+                        RedirectScoutInteraction(tile, i, scout);
+                    break;
+                case Interaction.RevealAnywhere:
+                    RevealAnywhereInteraction(tile, i);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -253,6 +284,38 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         AnimateInteractableTiles();
     }
 
+    public void RevealAnywhere(Tile tile)
+    {
+        if (_upgradeRevealAnywhere && !_hasUsedRevealAnywhereThisPhase)
+        {
+            tile.RevealTile(false);
+            RevealTilesRecursively(tile, _upgradeRevealAnywhere.RevealRadius);
+            _hasUsedRevealAnywhereThisPhase = true;
+            UIManager.Instance.RevealAnywhereHint.SetTrigger("Hide");
+        }
+    }
+
+    // Clone of scout reveal method but without the event
+    private void RevealTilesRecursively(Tile currentTile, int depth)
+    {
+        if (depth <= 0)
+        {
+            return;
+        }
+
+        foreach (Tile neighbor in currentTile.Neighbors)
+        {
+            if (!neighbor)
+                continue;
+            if (!neighbor.Revealed)
+            {
+                neighbor.RevealTile(false);
+            }
+            // Recursively reveal the neighbors of the current neighbor
+            RevealTilesRecursively(neighbor, depth - 1);
+        }
+    }
+
     private void ScoutInteraction(Tile tile, int positionIndex)
     {
         _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Scout));
@@ -261,6 +324,11 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     private void RedirectScoutInteraction(Tile tile, int positionIndex, Scout scout)
     {
         _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.RedirectScout, null, null, scout));
+    }
+
+    private void RevealAnywhereInteraction(Tile tile, int positionIndex)
+    {
+        _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.RevealAnywhere));
     }
     #endregion
 
@@ -276,7 +344,6 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
             UIManager.Instance.ScoutHint.SetTrigger("RedirectHide");
         _currentScout = null;
         OnScoutDirected?.Invoke();
-        
     }
 
     public void CancelScout()

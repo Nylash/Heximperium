@@ -31,6 +31,7 @@ public class Tile : MonoBehaviour
     private Tile[] _neighbors = new Tile[6];
     private TileData _initialData;
     private TileData _previousData;
+    private TileData _targetData;
     private bool _revealed;
     private bool _claimed;
     private Border _border;
@@ -41,6 +42,7 @@ public class Tile : MonoBehaviour
     private TileInteractionAnimationState _interactionAnimationState = TileInteractionAnimationState.None;
     private GameObject _visualAssets;
     private int _carnivalistCostReduction;
+    private int _recruitedCarnivalists; // variable only used for UI purposes
     //Scouts
     private List<Scout> _scouts = new List<Scout>();
     //Entertainment variables
@@ -130,12 +132,29 @@ public class Tile : MonoBehaviour
         set
         {
             _allowEntertainment = value;
+            if (!_allowEntertainment)
+            {
+                if (EntertainmentManager.Instance.UpgradeAllowEntOnSpecificInfra != null)
+                    EntertainmentManager.Instance.UpgradeAllowEntOnSpecificInfra.CheckData(this);
+            }
             if (UIManager.Instance.AreEntPlacementShown)
                 ShowEntPlacementUI(true);
         }
     }
 
     public int CarnivalistCostReduction { get => _carnivalistCostReduction; set => _carnivalistCostReduction = value; }
+    public int RecruitedCarnivalists 
+    {   
+        get => _recruitedCarnivalists;
+        set
+        {
+            _recruitedCarnivalists = value;
+            if (UIManager.Instance.AreIncomesShown)
+                ShowIncomeUI(true);
+        } 
+    }
+
+    public TileData TargetData { get => _targetData; }
     #endregion
 
     private void Awake()
@@ -166,6 +185,8 @@ public class Tile : MonoBehaviour
     //Update the tile data and call every other methods that impact
     private void UpdateTileData(TileData value)
     {
+        _targetData = value;
+
         RollbackSpecialBehaviours();
 
         //Set the new income
@@ -187,6 +208,7 @@ public class Tile : MonoBehaviour
         name = value.TileName + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
         _previousData = _tileData;
         _tileData = value;
+        _targetData = null;
 
         UpdateVisual();
 
@@ -285,7 +307,10 @@ public class Tile : MonoBehaviour
             if (_highlightObject != null)
                 return;
             _highlightObject = Instantiate(_highlightPrefab, _visual);
-            _highlightObject.transform.localPosition += new Vector3(0, 0.05f, 0);
+            if (Revealed)
+                _highlightObject.transform.localPosition += new Vector3(0, 0.05f, 0);
+            else
+                _highlightObject.transform.localPosition += new Vector3(0, -0.05f, 0);
         }
         else if(_highlightObject != null)
         {
@@ -318,6 +343,9 @@ public class Tile : MonoBehaviour
 
     public void ShowIncomeUI(bool show)
     {
+        if (_tileData is HazardousTileData)
+            return;
+
         // Hide them all, to avoid leftovers
         foreach (TextMeshPro income in _incomesUI)
             income.transform.parent.gameObject.SetActive(false);
@@ -336,9 +364,10 @@ public class Tile : MonoBehaviour
 
         int count = 0;
 
-        if (_tileData.SpecialBehaviours.Any(b => b is BoostScoutsLimit))
+        BoostScoutsLimit scoutBoost = _tileData.SpecialBehaviours.OfType<BoostScoutsLimit>().FirstOrDefault();
+        if (scoutBoost != null)
         {
-            _incomesUI[count].text = "1<sprite name=\"Scout_Emoji\">";
+            _incomesUI[count].text = scoutBoost.ScoutsIncrease + "<sprite name=\"Scout_Emoji\">";
             _incomesUI[count].transform.parent.gameObject.SetActive(true);
             count++;
         }
@@ -373,10 +402,9 @@ public class Tile : MonoBehaviour
             count++;
         }
 
-        var generateCarnivalist = _tileData.SpecialBehaviours.OfType<GenerateCarnivalist>().FirstOrDefault();
-        if (generateCarnivalist != null)
+        if (_recruitedCarnivalists > 0)
         {
-            _incomesUI[count].text = generateCarnivalist.CarnivalistQuantity + "<sprite name=\"Carnivalist_Emoji\">";
+            _incomesUI[count].text = _recruitedCarnivalists + "<sprite name=\"Carnivalist_Emoji\">";
             _incomesUI[count].transform.parent.gameObject.SetActive(true);
             count++;
         }
@@ -401,20 +429,13 @@ public class Tile : MonoBehaviour
         return false;
     }
 
-    public bool CanAffordCheapestEntertainment()//Cheapest entertainment costing 1 carnivalist
+    public bool CanAffordCheapestEntertainment()
     {
         if (!_claimed)
             return false;
-        if (!_allowEntertainment)
-            return false;
-        if (_carnivalistCostReduction > 0)
+        if (EntertainmentManager.Instance.MinstrelData.GetActualCarnivalistCost(this) <= ResourcesManager.Instance.Carnivalist)
             return true;
-        else
-        {
-            if (ResourcesManager.Instance.Carnivalist > 0)
-                return true;
-        }
-            return false;
+        return false;
     }
     #endregion
 
@@ -571,14 +592,6 @@ public class Tile : MonoBehaviour
             behaviour.CheckScoutSpawned(this, scout);
         }
     }
-
-    public void ListenerOnScoutSpawned_GainIncomeWhenScoutRevealTile(Scout scout)
-    {
-        foreach (IncomeWhenScoutRevealTile behaviour in _tileData.SpecialBehaviours.OfType<IncomeWhenScoutRevealTile>())
-        {
-            behaviour.CheckScoutSpawned(this, scout);
-        }
-    }
     #endregion
 
     #region ON INFRA BUILDED
@@ -646,14 +659,6 @@ public class Tile : MonoBehaviour
         foreach (IncomeComingFromNeighbors behaviour in _tileData.SpecialBehaviours.OfType<IncomeComingFromNeighbors>())
         {
             behaviour.CheckNewIncome(this, tile, previousIncome, newIncome);
-        }
-    }
-
-    public void ListenerOnClaimSaved(int quantity)
-    {
-        foreach (IncomePerSavedClaim behaviour in _tileData.SpecialBehaviours.OfType<IncomePerSavedClaim>())
-        {
-            behaviour.IncomeForSavedClaim(this, quantity);
         }
     }
     #endregion

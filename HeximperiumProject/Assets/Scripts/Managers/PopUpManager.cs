@@ -3,6 +3,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.InputSystem.OnScreen.OnScreenStick;
 
 public class PopUpManager : Singleton<PopUpManager>
 {
@@ -87,8 +88,8 @@ public class PopUpManager : Singleton<PopUpManager>
                     case "VisibilityUI":
                         VisibilityPopUp();
                         break;
-                    case "UpgradeNodeUI":
-                        UpgradeNodePopUp(obj.GetComponent<UI_UpgradeNode>());
+                    case "UpgradeUI":
+                        UpgradePopUp(obj.GetComponent<UpgradeHolder>().UpgradeEffect);
                         break;
                     case "ScoreUI":
                         ScorePopUp();
@@ -173,7 +174,10 @@ public class PopUpManager : Singleton<PopUpManager>
                             ButtonEntertainmentPopUp(button);
                             break;
                         case Interaction.RedirectScout:
-                            ButtonRedirectScoutPopUp(button);
+                            ButtonRedirectScoutPopUp();
+                            break;
+                        case Interaction.RevealAnywhere:
+                            ButtonRevealAnywherePopUp();
                             break;
                         default:
                             Debug.LogWarning("PopUpManager: InteractionButton with no interaction type found " + button.Interaction);
@@ -309,14 +313,6 @@ public class PopUpManager : Singleton<PopUpManager>
         income.margin = _horizontalMargin;
         ClampTextWidth(income);
         textObjects.Add(income.GetComponent<RectTransform>());
-        #endregion
-
-        #region SAVE
-        TextMeshProUGUI save = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        save.text = "Max stockable claim: " + ExpansionManager.Instance.SavedClaimPerTurn;
-        save.margin = _horizontalMargin;
-        ClampTextWidth(save);
-        textObjects.Add(save.GetComponent<RectTransform>());
         #endregion
 
         SetPopUpContentAnchors(textObjects);
@@ -533,7 +529,7 @@ public class PopUpManager : Singleton<PopUpManager>
         PositionPopupRelativeToUI(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>());
     }
 
-    private void UpgradeNodePopUp(UI_UpgradeNode node)
+    private void UpgradePopUp(UpgradeEffect effect)
     {
         GameObject popUp;
         popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
@@ -541,45 +537,19 @@ public class PopUpManager : Singleton<PopUpManager>
 
         List<RectTransform> textObjects = new List<RectTransform>();
 
+        #region TITLE
+        TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
+        title.text = effect.EffectName;
+        title.margin = _fullMargin;
+        textObjects.Add(title.GetComponent<RectTransform>());
+        #endregion
+
         #region DETAIL
         TextMeshProUGUI detail = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        detail.text = node.NodeData.Effect.GetEffectDescription();
+        detail.text = effect.GetEffectDescription();
         detail.margin = _horizontalMargin;
         ClampTextWidth(detail);
         textObjects.Add(detail.GetComponent<RectTransform>());
-        #endregion
-
-        #region EXCLUSIVE
-        if (node.NodeData.ExclusiveNode != null)
-        {
-            TextMeshProUGUI exclusive = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            if (UpgradesManager.Instance.IsNodeUnlocked(node.NodeData.ExclusiveNode))
-            {
-                exclusive.text = "Locked by opposite node";
-                exclusive.color = UIManager.Instance.ColorCantAfford;
-            }
-            else
-            {
-                exclusive.text = "Choice node";
-            }
-            exclusive.margin = _fullMargin;
-            exclusive.fontStyle = FontStyles.Italic;
-            exclusive.alignment = TextAlignmentOptions.Center;
-            textObjects.Add(exclusive.GetComponent<RectTransform>());
-        }
-        #endregion
-
-        #region COST
-        if (!UpgradesManager.Instance.IsNodeUnlocked(node.NodeData) && !UpgradesManager.Instance.IsNodeUnlocked(node.NodeData.ExclusiveNode))
-        {
-            TextMeshProUGUI cost = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            cost.text = "Cost: " + node.NodeData.Costs.CostToString();
-            if (!ResourcesManager.Instance.CanAfford(node.NodeData.Costs))
-                cost.color = UIManager.Instance.ColorCantAfford;
-            cost.margin = _fullMargin;
-            textObjects.Add(cost.GetComponent<RectTransform>());
-            ClampTextWidth(cost);
-        }
         #endregion
 
         SetPopUpContentAnchors(textObjects);
@@ -613,6 +583,12 @@ public class PopUpManager : Singleton<PopUpManager>
             ClampTextWidth(slow);
             slow.fontStyle = FontStyles.Italic;
             slow.alignment = TextAlignmentOptions.Center;
+
+            SetPopUpContentAnchors(textObjects);
+            PositionPopup(popUp.GetComponent<RectTransform>());
+
+            // No need to go further, hazardous tile have no other info
+            return;
         }
         #endregion
 
@@ -771,15 +747,18 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         #region EFFECT
-        if (ent.Data.SpecialEffect != null)
+        if (ent.Data.SpecialEffects.Count > 0)
         {
-            TextMeshProUGUI effectText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            effectText.text = ent.Data.SpecialEffect.GetBehaviourDescription();
-            effectText.margin = _horizontalMargin;
-            textObjects.Add(effectText.GetComponent<RectTransform>());
-            ClampTextWidth(effectText);
-            ent.Data.SpecialEffect.HighlightImpactedEntertainment(ent.Tile, true);
-            _highlightingEffects.Add(ent.Data.SpecialEffect, ent.Tile);
+            foreach (SpecialEffect effect in ent.Data.SpecialEffects)
+            {
+                TextMeshProUGUI effectText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+                effectText.text = effect.GetBehaviourDescription();
+                effectText.margin = _fullMargin;
+                textObjects.Add(effectText.GetComponent<RectTransform>());
+                ClampTextWidth(effectText);
+                effect.HighlightImpactedEntertainment(ent.Tile, true);
+                _highlightingEffects.Add(effect, ent.Tile);
+            }
         }
         #endregion
 
@@ -847,9 +826,19 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region AVAILABILITY
         TextMeshProUGUI availability = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        availability.text = (ExplorationManager.Instance.ScoutsLimit - ExplorationManager.Instance.CurrentScoutsCount) + " Scout(s) available";
-        if (ExplorationManager.Instance.CurrentScoutsCount >= ExplorationManager.Instance.ScoutsLimit)
+        int availableCount = ExplorationManager.Instance.ScoutsLimit - ExplorationManager.Instance.CurrentScoutsCount;
+        if (availableCount > 0)
+        {
+            if (availableCount == 1)
+                availability.text = "1 Scout available";
+            else
+                availability.text = availableCount + " Scouts available";
+        }
+        else
+        {
+            availability.text = "No available Scout";
             availability.color = UIManager.Instance.ColorCantAfford;
+        }
         availability.margin = _fullMargin;
         textObjects.Add(availability.GetComponent<RectTransform>());
         availability.fontStyle = FontStyles.Italic;
@@ -860,7 +849,7 @@ public class PopUpManager : Singleton<PopUpManager>
         PositionPopup(popUp.GetComponent<RectTransform>());
     }
 
-    private void ButtonRedirectScoutPopUp(InteractionButton button)
+    private void ButtonRedirectScoutPopUp()
     {
         GameObject popUp;
         popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
@@ -868,10 +857,28 @@ public class PopUpManager : Singleton<PopUpManager>
 
         List<RectTransform> textObjects = new List<RectTransform>();
 
-        TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
-        title.text = "Redirect a Scout";
-        title.margin = _fullMargin;
-        textObjects.Add(title.GetComponent<RectTransform>());
+        TextMeshProUGUI text = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        text.text = "Redirect a Scout";
+        text.margin = _fullMargin;
+        textObjects.Add(text.GetComponent<RectTransform>());
+
+        SetPopUpContentAnchors(textObjects);
+        PositionPopup(popUp.GetComponent<RectTransform>());
+    }
+
+    private void ButtonRevealAnywherePopUp()
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        TextMeshProUGUI text = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        text.text = $"Reveal this tile and all those in a {ExplorationManager.Instance.UpgradeRevealAnywhere.RevealRadius}-tile radius";
+        text.margin = _fullMargin;
+        textObjects.Add(text.GetComponent<RectTransform>());
+        ClampTextWidth(text);
 
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>());
@@ -941,15 +948,18 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         #region EFFECT
-        if (button.EntertainData.SpecialEffect != null)
+        if (button.EntertainData.SpecialEffects.Count > 0)
         {
-            TextMeshProUGUI effectText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            effectText.text = button.EntertainData.SpecialEffect.GetBehaviourDescription();
-            effectText.margin = _horizontalMargin;
-            textObjects.Add(effectText.GetComponent<RectTransform>());
-            ClampTextWidth(effectText);
-            button.EntertainData.SpecialEffect.HighlightImpactedEntertainment(button.AssociatedTile, true);
-            _highlightingEffects.Add(button.EntertainData.SpecialEffect, button.AssociatedTile);
+            foreach (SpecialEffect effect in button.EntertainData.SpecialEffects)
+            {
+                TextMeshProUGUI effectText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+                effectText.text = effect.GetBehaviourDescription();
+                effectText.margin = _horizontalMargin;
+                textObjects.Add(effectText.GetComponent<RectTransform>());
+                ClampTextWidth(effectText);
+                effect.HighlightImpactedEntertainment(button.AssociatedTile, true);
+                _highlightingEffects.Add(effect, button.AssociatedTile);
+            }
         }
         #endregion
 

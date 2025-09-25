@@ -63,13 +63,39 @@ public class UIManager : Singleton<UIManager>
     [Header("Upgrades Menu")]
     [SerializeField] private GameObject _upgradesMenuButton;
     [SerializeField] private GameObject _upgradesMenu;
-    [SerializeField] private List<UpgradeTree> _upgradeTrees = new List<UpgradeTree>();
-    [SerializeField] private UpgradeTree _activatedTree;
-    [SerializeField] private Color _colorLocked;
-    [SerializeField] private Color _colorUnlocked;
-    [SerializeField] private Sprite _spriteButtonUnlocked;
-    [SerializeField] private GameObject _markerExclusiveUpgrade;
-    [SerializeField] private Sprite _markerExclusiveUpgradeLocked;
+    [SerializeField] private TextMeshProUGUI _counterForNextUpgrade;
+    [SerializeField] private TextMeshProUGUI _upgrade1;
+    [SerializeField] private TextMeshProUGUI _upgrade2;
+    [SerializeField] private TextMeshProUGUI _upgrade3;
+    [SerializeField] private TextMeshProUGUI _upgrade4;
+    [SerializeField] private TextMeshProUGUI _upgrade5;
+    [SerializeField] private TextMeshProUGUI _upgrade6;
+    [Header("_________________________________________________________")]
+    [Header("Upgrades Choice Menu")]
+    [SerializeField] private GameObject _upgradesChoiceMenuObject;
+    [SerializeField] private TextMeshProUGUI _exploChoiceTitle;
+    [SerializeField] private TextMeshProUGUI _exploChoiceDetail;
+    [SerializeField] private TextMeshProUGUI _expandChoiceTitle;
+    [SerializeField] private TextMeshProUGUI _expandChoiceDetail;
+    [SerializeField] private TextMeshProUGUI _exploitChoiceTitle;
+    [SerializeField] private TextMeshProUGUI _exploitChoiceDetail;
+    [SerializeField] private TextMeshProUGUI _entertainChoiceTitle;
+    [SerializeField] private TextMeshProUGUI _entertainChoiceDetail;
+    [SerializeField] private Image _exploLockImage;
+    [SerializeField] private Image _expandLockImage;
+    [SerializeField] private Image _exploitLockImage;
+    [SerializeField] private Image _entertainLockImage;
+    [SerializeField] private Sprite _lockSprite;
+    [SerializeField] private Sprite _unlockSprite;
+    [SerializeField] private Button _rerollButton;
+    [SerializeField] private Button _exploLockButton;
+    [SerializeField] private Button _expandLockButton;
+    [SerializeField] private Button _exploitLockButton;
+    [SerializeField] private Button _entertainLockButton;
+    [SerializeField] private List<Image> _exploLockLines;
+    [SerializeField] private List<Image> _expandLockLines;
+    [SerializeField] private List<Image> _exploitLockLines;
+    [SerializeField] private List<Image> _entertainLockLines;
     [Header("_________________________________________________________")]
     [Header("Show Income button")]
     [SerializeField] private Image _showIncomeButton;
@@ -93,6 +119,7 @@ public class UIManager : Singleton<UIManager>
     [Header("_________________________________________________________")]
     [Header("Various Objects")]
     [SerializeField] private Animator _scoutHint;
+    [SerializeField] private Animator _revealAnywhereHint;
     #endregion
 
     #region VARIABLES
@@ -100,16 +127,16 @@ public class UIManager : Singleton<UIManager>
     private bool _uiPhaseInAnimation;
     private bool _areIncomesShown;
     private bool _areEntPlacementShown;
+    // Upgrades choices variables
+    private bool _exploLockState;
+    private bool _expandLockState;
+    private bool _exploitLockState;
+    private bool _entertainLockState;
+    private bool _alreadyReroll;
     #endregion
 
     #region ACCESSORS
     public Color ColorCantAfford { get => _colorCantAfford;}
-    public Color ColorLocked { get => _colorLocked; }
-    public Color ColorUnlocked { get => _colorUnlocked; }
-    public UpgradeTree ActivatedTree { get => _activatedTree; }
-    public Sprite SpriteUnlocked { get => _spriteButtonUnlocked; }
-    public GameObject MarkerExclusiveUpgrade { get => _markerExclusiveUpgrade; }
-    public Sprite MarkerExclusiveUpgradeLocked { get => _markerExclusiveUpgradeLocked; }
     public RectTransform VfxAnchorEndConfetti1 { get => _vfxAnchorEndConfetti1; }
     public RectTransform VfxAnchorEndConfetti2 { get => _vfxAnchorEndConfetti2; }
     public RectTransform VfxAnchorEndFirework1 { get => _vfxAnchorEndFirework1; }
@@ -129,6 +156,15 @@ public class UIManager : Singleton<UIManager>
     public RectTransform VfxAnchorCarnivalist { get => _vfxAnchorCarnivalist; }
     public bool AreIncomesShown { get => _areIncomesShown; }
     public bool AreEntPlacementShown { get => _areEntPlacementShown; }
+    public TextMeshProUGUI ExploChoiceTitle { get => _exploChoiceTitle; }
+    public TextMeshProUGUI ExploChoiceDetail { get => _exploChoiceDetail; }
+    public TextMeshProUGUI ExpandChoiceTitle { get => _expandChoiceTitle; }
+    public TextMeshProUGUI ExpandChoiceDetail { get => _expandChoiceDetail; }
+    public TextMeshProUGUI ExploitChoiceTitle { get => _exploitChoiceTitle; }
+    public TextMeshProUGUI ExploitChoiceDetail { get => _exploitChoiceDetail; }
+    public TextMeshProUGUI EntertainChoiceTitle { get => _entertainChoiceTitle; }
+    public TextMeshProUGUI EntertainChoiceDetail { get => _entertainChoiceDetail; }
+    public Animator RevealAnywhereHint { get => _revealAnywhereHint; }
     #endregion
 
     protected override void OnAwake()
@@ -390,6 +426,7 @@ public class UIManager : Singleton<UIManager>
     public void UpdateTurnCounterText(int turnCounter)
     {
         _turnCounterText.text = "Turn : " + turnCounter + "/" + GameManager.Instance.TurnLimit;
+        UpdateTurnCounterBeforeNextUpgrade(turnCounter);
     }
     #endregion
 
@@ -440,47 +477,166 @@ public class UIManager : Singleton<UIManager>
         if (_upgradesMenu.activeSelf)
         {
             _upgradesMenu.GetComponent<Animator>().SetTrigger("Fold");
-            GameManager.Instance.GamePaused = false;
         }
         else
         {
             if (_tradeMenu.activeSelf)
                 TradeMenu();
             _upgradesMenu.SetActive(true);
-            GameManager.Instance.GamePaused = true;
-            foreach (UpgradeTree tree in _upgradeTrees)
-            {
-                if (tree.treeObject.activeSelf)
-                {
-                    _activatedTree = tree;
-                    tree.nodes.ForEach(node => node.UpdateVisual());
-                    break;
-                }
-            }
         }
     }
 
-    public void ShowUpgradeTree(GameObject associatedTree)
+    public void UpgradesChoiceMenu()
     {
-        associatedTree.SetActive(true);
-
-        foreach (UpgradeTree tree in _upgradeTrees)
+        if (_upgradesChoiceMenuObject.activeSelf)
         {
-            if (tree.treeObject == associatedTree)
-            {
-                _activatedTree = tree;
-                tree.nodes.ForEach(node => node.UpdateVisual());
-            }
-            if (tree.treeObject != associatedTree)
-                tree.treeObject.SetActive(false);
+            _upgradesChoiceMenuObject.GetComponent<Animator>().SetTrigger("Fold");
+            GameManager.Instance.GamePaused = false;
+        }
+        else
+        {
+            if (_tradeMenu.activeSelf)
+                TradeMenu();
+            if (_upgradesMenu.activeSelf)
+                UpgradesMenu();
+            _rerollButton.interactable = true;
+            _exploLockButton.interactable = true;
+            _expandLockButton.interactable = true;
+            _exploitLockButton.interactable = true;
+            _entertainLockButton.interactable = true;
+            _alreadyReroll = false;
+            _exploLockState = false;
+            _expandLockState = false;
+            _exploitLockState = false;
+            _entertainLockState = false;
+            _exploLockImage.sprite = _unlockSprite;
+            _expandLockImage.sprite = _unlockSprite;
+            _exploitLockImage.sprite = _unlockSprite;
+            _entertainLockImage.sprite = _unlockSprite;
+            foreach (Image line in _exploLockLines)
+                line.enabled = true;
+            foreach (Image line in _expandLockLines)
+                line.enabled = true;
+            foreach (Image line in _exploitLockLines)
+                line.enabled = true;
+            foreach (Image line in _entertainLockLines)
+                line.enabled = true;
+            _rerollButton.GetComponentInChildren<TextMeshProUGUI>().text = "Reroll 4";
+            _upgradesChoiceMenuObject.SetActive(true);
+            GameManager.Instance.GamePaused = true;
         }
     }
 
-    [ContextMenu("Fill Trees List")]
-    private void FillTreesList()
+    public void ConfirmUpgrade(int phase)
     {
-        foreach (UpgradeTree tree in _upgradeTrees)
-            tree.nodes = tree.treeObject.GetComponentsInChildren<UI_UpgradeNode>().ToList();
+        UpgradesManager.Instance.ConfirmUpgrade((Phase)phase);
+    }
+
+    public void SwitchUpgradeLockState(int phase)
+    {
+        switch ((Phase)phase)
+        {
+            case Phase.Explore:
+                _exploLockState = !_exploLockState;
+                _exploLockButton.GetComponent<Image>().sprite = _exploLockState ? _lockSprite : _unlockSprite;
+                foreach (Image line in _exploLockLines)
+                    line.enabled = !_exploLockState;
+                break;
+            case Phase.Expand:
+                _expandLockState = !_expandLockState;
+                _expandLockButton.GetComponent<Image>().sprite = _expandLockState ? _lockSprite : _unlockSprite;
+                foreach (Image line in _expandLockLines)
+                    line.enabled = !_expandLockState;
+                break;
+            case Phase.Exploit:
+                _exploitLockState = !_exploitLockState;
+                _exploitLockButton.GetComponent<Image>().sprite = _exploitLockState ? _lockSprite : _unlockSprite;
+                foreach (Image line in _exploitLockLines)
+                    line.enabled = !_exploitLockState;
+                break;
+            case Phase.Entertain:
+                _entertainLockState = !_entertainLockState;
+                _entertainLockButton.GetComponent<Image>().sprite = _entertainLockState ? _lockSprite : _unlockSprite;
+                foreach (Image line in _entertainLockLines)
+                    line.enabled = !_entertainLockState;
+                break;
+        }
+        int count = new[] { _exploLockState, _expandLockState, _exploitLockState, _entertainLockState }.Count(b => !b);
+        _rerollButton.GetComponentInChildren<TextMeshProUGUI>().text = "Reroll " + count;
+        if (count == 0)
+            _rerollButton.interactable = false;
+        else if (!_alreadyReroll)
+            _rerollButton.interactable = true;
+    }
+
+    public void RerollUpgradesChoice()
+    {
+        if (!_exploitLockState)
+            UpgradesManager.Instance.RerollUpgradesChoice(Phase.Exploit);
+        if (!_expandLockState)
+            UpgradesManager.Instance.RerollUpgradesChoice(Phase.Expand);
+        if (!_exploLockState)
+            UpgradesManager.Instance.RerollUpgradesChoice(Phase.Explore);
+        if (!_entertainLockState)
+            UpgradesManager.Instance.RerollUpgradesChoice(Phase.Entertain);
+
+        _alreadyReroll = true;
+        _exploLockButton.interactable = false;
+        _expandLockButton.interactable = false;
+        _exploitLockButton.interactable = false;
+        _entertainLockButton.interactable = false;
+        _rerollButton.interactable = false;
+        _rerollButton.GetComponentInChildren<TextMeshProUGUI>().text = "Reroll used";
+    }
+
+    public void FillUpgradesList(int upgradeNumber, UpgradeEffect upgrade)
+    {
+        switch (upgradeNumber)
+        {
+            case 1:
+                _upgrade1.text = upgrade.EffectName;
+                _upgrade1.color = GetColorOfPhase(upgrade.AssociatedSystem);
+                _upgrade1.GetComponent<UpgradeHolder>().UpgradeEffect = upgrade;
+                break;
+            case 2:
+                _upgrade2.text = upgrade.EffectName;
+                _upgrade2.color = GetColorOfPhase(upgrade.AssociatedSystem);
+                _upgrade2.GetComponent<UpgradeHolder>().UpgradeEffect = upgrade;
+                break;
+            case 3:
+                _upgrade3.text = upgrade.EffectName;
+                _upgrade3.color = GetColorOfPhase(upgrade.AssociatedSystem);
+                _upgrade3.GetComponent<UpgradeHolder>().UpgradeEffect = upgrade;
+                break;
+            case 4:
+                _upgrade4.text = upgrade.EffectName;
+                _upgrade4.color = GetColorOfPhase(upgrade.AssociatedSystem);
+                _upgrade4.GetComponent<UpgradeHolder>().UpgradeEffect = upgrade;
+                break;
+            case 5:
+                _upgrade5.text = upgrade.EffectName;
+                _upgrade5.color = GetColorOfPhase(upgrade.AssociatedSystem);
+                _upgrade5.GetComponent<UpgradeHolder>().UpgradeEffect = upgrade;
+                break;
+            case 6:
+                _upgrade6.text = upgrade.EffectName;
+                _upgrade6.color = GetColorOfPhase(upgrade.AssociatedSystem);
+                _upgrade6.GetComponent<UpgradeHolder>().UpgradeEffect = upgrade;
+                break;
+            default:
+                Debug.LogError("Shouldn't reach 7 upgrades.");
+                break;
+        }
+        UpdateTurnCounterBeforeNextUpgrade(GameManager.Instance.TurnCounter);
+    }
+
+    private void UpdateTurnCounterBeforeNextUpgrade(int currentTurn)
+    {
+        int nextTurn = UpgradesManager.Instance.GetNextUpgradeTurn();
+        if (nextTurn == -1)
+            _counterForNextUpgrade.text = "No more Upgrades";
+        else
+            _counterForNextUpgrade.text = "Next upgrade in " + (nextTurn - currentTurn) + " turns";
     }
     #endregion
 
@@ -502,5 +658,17 @@ public class UIManager : Singleton<UIManager>
         {
             tile.ShowEntPlacementUI(_areEntPlacementShown);
         }
+    }
+
+    public Color GetColorOfPhase(Phase phase)
+    {
+        return phase switch
+        {
+            Phase.Explore => _colorExplo,
+            Phase.Expand => _colorExpand,
+            Phase.Exploit => _colorExploit,
+            Phase.Entertain => _colorEntertain,
+            _ => Color.white,
+        };
     }
 }

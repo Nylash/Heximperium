@@ -143,7 +143,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
         }
     }
 
-    public void UpdateCarnivalist(int value, Transaction transaction, Tile tile = null)
+    public void UpdateCarnivalist(int value, Transaction transaction, Tile tile = null, GenerateCarnivalist sbGenerateCarn = null)
     {
         if (transaction == Transaction.Spent)
             value = -value;
@@ -151,6 +151,31 @@ public class ResourcesManager : Singleton<ResourcesManager>
         if (_carnivalist < 0)
             _carnivalist = 0;
         UIManager.Instance.UpdateCarnivalistUI(_carnivalist);
+
+        // Prevent replaying the event that call VFX if the special was already present on the tile (or on the target tile if spending)
+        if (tile && sbGenerateCarn)
+        {
+            switch (transaction)
+            {
+                case Transaction.Gain:
+                    foreach (GenerateCarnivalist behaviour in tile.PreviousData.SpecialBehaviours.OfType<GenerateCarnivalist>())
+                    {
+                        if (ReferenceEquals(sbGenerateCarn, behaviour))
+                            return;
+                    }
+                    break;
+                case Transaction.Spent:
+                    if (tile.TargetData)
+                    {
+                        foreach (GenerateCarnivalist behaviour in tile.TargetData.SpecialBehaviours.OfType<GenerateCarnivalist>())
+                        {
+                            if (ReferenceEquals(sbGenerateCarn, behaviour))
+                                return;
+                        }
+                    }
+                    break;
+            }
+        }
 
         switch (transaction)
         {

@@ -9,6 +9,8 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     [Header("_________________________________________________________")]
     [Header("Entertainment Data")]
     [SerializeField] private List<EntertainmentData> _entertainmentsData = new List<EntertainmentData>();
+    [Tooltip("Minstrel stage data to access it easily with the upgrade (keep it in the list too)")]
+    [SerializeField] private EntertainmentData _minstrelData;
     [SerializeField] private GameObject _entertainmentPrefab;
     [SerializeField] private Transform _entertainmentsParent;
     [Header("_________________________________________________________")]
@@ -25,6 +27,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     private Dictionary<int, int> _groupBoostCount = new Dictionary<int, int>(); //Use for BoostByZoneSize special effect, <GroupID, Count>
     // Upgrade variables
     private bool _upgradeMinstrelStageOnNeighbor;
+    private AllowEntertainmentOnSpecificInfra _upgradeAllowEntOnSpecificInfra;
     #endregion
 
     #region ACCESSORS
@@ -33,6 +36,8 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     public Dictionary<int, List<Entertainment>> GroupBoost { get => _groupBoost; }
     public Dictionary<int, int> GroupBoostCount { get => _groupBoostCount; }
     public bool UpgradeMinstrelStageOnNeighbor { get => _upgradeMinstrelStageOnNeighbor; set => _upgradeMinstrelStageOnNeighbor = value; }
+    public EntertainmentData MinstrelData { get => _minstrelData; }
+    public AllowEntertainmentOnSpecificInfra UpgradeAllowEntOnSpecificInfra { get => _upgradeAllowEntOnSpecificInfra; set => _upgradeAllowEntOnSpecificInfra = value; }
 
     public int GetPointsFromMinstrelStage()
     {
@@ -86,6 +91,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
 
     #region EVENTS
     public event Action<Entertainment> OnEntertainmentSpawned;
+    public event Action<EntertainmentData, Tile> OnEntertainmentRemoved;
     public event Action OnScoreUpdated;
     public event Action<Tile, int> OnScoreGained;
     public Action<Tile, int> OnScoreLost;//Directly called by Entertainment when it lose points (or by the manager on destroy)
@@ -174,10 +180,18 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
             {
                 if (tile.CanReceiveEntertainment())
                 {
-                    _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, _entertainmentsData.Count);
-                    for (int i = 0; i < _entertainmentsData.Count; i++)
+                    if (!tile.AllowEntertainment)
                     {
-                        EntertainmentInteraction(tile, i, _entertainmentsData[i]);
+                        _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
+                        EntertainmentInteraction(tile, 0, _minstrelData);
+                    }
+                    else
+                    {
+                        _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, _entertainmentsData.Count);
+                        for (int i = 0; i < _entertainmentsData.Count; i++)
+                        {
+                            EntertainmentInteraction(tile, i, _entertainmentsData[i]);
+                        }
                     }
                 }
             }
@@ -220,10 +234,12 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
 
     public void DestroyEntertainment(Tile tile)
     {
+        EntertainmentData removedEntertainmentData = tile.Entertainment.Data;
         OnScoreLost?.Invoke(tile, tile.Entertainment.Points);
         tile.Entertainment.DestroyEntertainment();
         _entertainments.Remove(tile.Entertainment);
         tile.Entertainment = null;
+        OnEntertainmentRemoved?.Invoke(removedEntertainmentData, tile);
         //Call the check empty group after the Entertainment assignation, so the event and its listener is done before
         CheckEmptyGroup(tile);
 

@@ -83,6 +83,9 @@ public class InteractionButton : MonoBehaviour
             case Interaction.RedirectScout:
                 InitializeRedirectScout(scout);
                 break;
+            case Interaction.RevealAnywhere:
+                InitializeRevealAnywhere();
+                break;
         }
 
         _animator = GetComponentInChildren<Animator>();
@@ -130,6 +133,11 @@ public class InteractionButton : MonoBehaviour
     {
         _associatedScout = scout;
         LoadSprite(Interaction.RedirectScout.ToString());
+    }
+
+    private void InitializeRevealAnywhere()
+    {
+        LoadSprite(Interaction.RevealAnywhere.ToString());
     }
 
     private void LoadSprite(string spriteName)

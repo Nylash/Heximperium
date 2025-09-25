@@ -5,20 +5,20 @@ public class GenerateCarnivalist : SpecialBehaviour
 {
     [SerializeField] private int _carnivalistQuantity;
 
-    public int CarnivalistQuantity { get => _carnivalistQuantity; }
-
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
     {
-        ResourcesManager.Instance.UpdateCarnivalist(_carnivalistQuantity, Transaction.Gain, behaviourTile);
+        ResourcesManager.Instance.UpdateCarnivalist(_carnivalistQuantity, Transaction.Gain, behaviourTile, this);
         ResourcesManager.Instance.UpdateCarnivalistSource(behaviourTile.TileData, _carnivalistQuantity, Transaction.Gain);
+        behaviourTile.RecruitedCarnivalists += _carnivalistQuantity;
     }
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
-        ResourcesManager.Instance.UpdateCarnivalist(_carnivalistQuantity, Transaction.Spent, behaviourTile);
+        ResourcesManager.Instance.UpdateCarnivalist(_carnivalistQuantity, Transaction.Spent, behaviourTile, this);
         ResourcesManager.Instance.UpdateCarnivalistSource(behaviourTile.TileData, _carnivalistQuantity, Transaction.Spent);
+        behaviourTile.RecruitedCarnivalists -= _carnivalistQuantity;
     }
-
+    
     public override void HighlightImpactedTile(Tile behaviourTile, bool show)
     {
         //Nothing needed

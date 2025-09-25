@@ -29,8 +29,6 @@ public class BoostByNeighbors : SpecialEffect
             if (!neighbor)
                 continue;
             neighbor.OnEntertainmentModified -= associatedEntertainment.ListenerOnEntertainmentModified_BoostByNeighbors;
-            if (!neighbor.Entertainment)
-                continue;
         }
     }
 
