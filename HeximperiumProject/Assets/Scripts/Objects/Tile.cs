@@ -31,6 +31,7 @@ public class Tile : MonoBehaviour
     private Tile[] _neighbors = new Tile[6];
     private TileData _initialData;
     private TileData _previousData;
+    private TileData _targetData;
     private bool _revealed;
     private bool _claimed;
     private Border _border;
@@ -152,6 +153,8 @@ public class Tile : MonoBehaviour
                 ShowIncomeUI(true);
         } 
     }
+
+    public TileData TargetData { get => _targetData; }
     #endregion
 
     private void Awake()
@@ -182,6 +185,8 @@ public class Tile : MonoBehaviour
     //Update the tile data and call every other methods that impact
     private void UpdateTileData(TileData value)
     {
+        _targetData = value;
+
         RollbackSpecialBehaviours();
 
         //Set the new income
@@ -203,6 +208,7 @@ public class Tile : MonoBehaviour
         name = value.TileName + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
         _previousData = _tileData;
         _tileData = value;
+        _targetData = null;
 
         UpdateVisual();
 
