@@ -89,7 +89,7 @@ public class PopUpManager : Singleton<PopUpManager>
                         VisibilityPopUp();
                         break;
                     case "UpgradeUI":
-                        // TO DO
+                        UpgradePopUp(obj.GetComponent<UpgradeHolder>().UpgradeEffect);
                         break;
                     case "ScoreUI":
                         ScorePopUp();
@@ -520,6 +520,33 @@ public class PopUpManager : Singleton<PopUpManager>
             detail.text = "Hide which tiles can receive an entertainment";
         else
             detail.text = "Show which tiles can receive an entertainment";
+        detail.margin = _horizontalMargin;
+        ClampTextWidth(detail);
+        textObjects.Add(detail.GetComponent<RectTransform>());
+        #endregion
+
+        SetPopUpContentAnchors(textObjects);
+        PositionPopupRelativeToUI(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>());
+    }
+
+    private void UpgradePopUp(UpgradeEffect effect)
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        #region TITLE
+        TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
+        title.text = effect.EffectName;
+        title.margin = _fullMargin;
+        textObjects.Add(title.GetComponent<RectTransform>());
+        #endregion
+
+        #region DETAIL
+        TextMeshProUGUI detail = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        detail.text = effect.GetEffectDescription();
         detail.margin = _horizontalMargin;
         ClampTextWidth(detail);
         textObjects.Add(detail.GetComponent<RectTransform>());

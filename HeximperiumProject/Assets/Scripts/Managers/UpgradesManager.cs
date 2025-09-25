@@ -30,8 +30,6 @@ public class UpgradesManager : Singleton<UpgradesManager>
         _remainingExpandUpgrades.AddRange(_expandUpgrades);
         _remainingExploitpgrades.AddRange(_exploitUpgrades);
         _remainingEntertainUpgrades.AddRange(_entertainUpgrades);
-
-        StartUpgradesChoice();
     }
 
     private void CheckNewTurnValue(int newTurn)

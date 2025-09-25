@@ -596,26 +596,32 @@ public class UIManager : Singleton<UIManager>
             case 1:
                 _upgrade1.text = upgrade.EffectName;
                 _upgrade1.color = GetColorOfPhase(upgrade.AssociatedSystem);
+                _upgrade1.GetComponent<UpgradeHolder>().UpgradeEffect = upgrade;
                 break;
             case 2:
                 _upgrade2.text = upgrade.EffectName;
                 _upgrade2.color = GetColorOfPhase(upgrade.AssociatedSystem);
+                _upgrade2.GetComponent<UpgradeHolder>().UpgradeEffect = upgrade;
                 break;
             case 3:
                 _upgrade3.text = upgrade.EffectName;
                 _upgrade3.color = GetColorOfPhase(upgrade.AssociatedSystem);
+                _upgrade3.GetComponent<UpgradeHolder>().UpgradeEffect = upgrade;
                 break;
             case 4:
                 _upgrade4.text = upgrade.EffectName;
                 _upgrade4.color = GetColorOfPhase(upgrade.AssociatedSystem);
+                _upgrade4.GetComponent<UpgradeHolder>().UpgradeEffect = upgrade;
                 break;
             case 5:
                 _upgrade5.text = upgrade.EffectName;
                 _upgrade5.color = GetColorOfPhase(upgrade.AssociatedSystem);
+                _upgrade5.GetComponent<UpgradeHolder>().UpgradeEffect = upgrade;
                 break;
             case 6:
                 _upgrade6.text = upgrade.EffectName;
                 _upgrade6.color = GetColorOfPhase(upgrade.AssociatedSystem);
+                _upgrade6.GetComponent<UpgradeHolder>().UpgradeEffect = upgrade;
                 break;
             default:
                 Debug.LogError("Shouldn't reach 7 upgrades.");
