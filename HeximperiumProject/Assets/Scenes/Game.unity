@@ -600,7 +600,11 @@ PrefabInstance:
     - target: {fileID: 5058650393401128906, guid: b67b6ca7df07e5640bffb0e62167570d, type: 3}
       propertyPath: '_exploUpgrades.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: b62e185c215bd524e82e9456a5e79cad, type: 2}
+      objectReference: {fileID: 11400000, guid: 9a49a49ae690a184a9610a41818d887e, type: 2}
+    - target: {fileID: 5058650393401128906, guid: b67b6ca7df07e5640bffb0e62167570d, type: 3}
+      propertyPath: '_turnsForUpgradesChoice.Array.data[0]'
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6989854815427043266, guid: b67b6ca7df07e5640bffb0e62167570d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

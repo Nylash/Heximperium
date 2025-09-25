@@ -592,14 +592,6 @@ public class Tile : MonoBehaviour
             behaviour.CheckScoutSpawned(this, scout);
         }
     }
-
-    public void ListenerOnScoutSpawned_GainIncomeWhenScoutRevealTile(Scout scout)
-    {
-        foreach (IncomeWhenScoutRevealTile behaviour in _tileData.SpecialBehaviours.OfType<IncomeWhenScoutRevealTile>())
-        {
-            behaviour.CheckScoutSpawned(this, scout);
-        }
-    }
     #endregion
 
     #region ON INFRA BUILDED

@@ -9,9 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce2fccb091b8482429fb6dedd0356624, type: 3}
-  m_Name: IncomeOnScoutReveal_SB
+  m_Script: {fileID: 11500000, guid: a956d5320dd501748a8e4ce9cd001444, type: 3}
+  m_Name: IncomeOnScoutRevealTile
   m_EditorClassIdentifier: 
+  EffectName: Treasure Maps
+  AssociatedSystem: 0
   _income:
   - resource: 0
     value: 1
