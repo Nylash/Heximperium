@@ -182,6 +182,51 @@ public class Tile : MonoBehaviour
         _incomes = data.Incomes;
     }
 
+    // We use the same logic as UpdateTileData but without calling the events then we reset to the previous data
+    public List<ResourceToIntMap> GetPredictedIncomes(TileData newData)
+    {
+        TileData currentData = _tileData;
+        TileData currentPreviousData = _previousData;
+
+        #region INCOMES PREDICTION
+        _targetData = newData;
+
+        RollbackSpecialBehaviours();
+
+        List<ResourceToIntMap> previousRawIncomes = _incomes;
+
+        Incomes = Utilities.MergeResourceToIntMaps(_incomes, newData.Incomes);
+
+        _previousData = _tileData;
+        _tileData = newData;
+        _targetData = null;
+
+        UpdateSpecialBehaviours();
+        OnTileDataModified?.Invoke(this);
+
+        List<ResourceToIntMap> predictedIncomes = _incomes;
+        #endregion
+
+        #region RESET TO CURRENT DATA
+        _targetData = currentData;
+
+        RollbackSpecialBehaviours();
+
+        Incomes = previousRawIncomes;
+
+        _previousData = newData;
+        _tileData = currentData;
+        _targetData = null;
+
+        UpdateSpecialBehaviours();
+        OnTileDataModified?.Invoke(this);
+
+        _previousData = currentPreviousData;
+        #endregion
+
+        return predictedIncomes;
+    }
+
     //Update the tile data and call every other methods that impact
     private void UpdateTileData(TileData value)
     {
@@ -197,9 +242,9 @@ public class Tile : MonoBehaviour
         }
         else
         {
-            //We are going back to the initial data (basic tile, resource tile or hazardous tile) so we reset the income
+            //We are going back to the initial data (basic tile or resource tile) so we reset the income
             Incomes = Utilities.SubtractResourceToIntMaps(_incomes, _tileData.Incomes);
-            //If the preivous data is an infra we were on an enhanced infra so we need to remove the base infra income too
+            //If the previous data is an infra we were on an enhanced infra so we need to remove the base infra income too
             if(_previousData is InfrastructureData)
                 Incomes = Utilities.SubtractResourceToIntMaps(_incomes, _previousData.Incomes);
             _currentInfraLevel = 0;
