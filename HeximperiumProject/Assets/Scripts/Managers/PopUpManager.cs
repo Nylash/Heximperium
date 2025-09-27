@@ -569,7 +569,7 @@ public class PopUpManager : Singleton<PopUpManager>
             foreach (SpecialBehaviour behaviour in tile.TileData.SpecialBehaviours)
             {
                 TextMeshProUGUI behaviourText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-                behaviourText.text = "<sprite name=\"Puce_Emoji\">" + behaviour.GetBehaviourDescription();
+                behaviourText.text = "<sprite name=\"Puce_Emoji\"> " + behaviour.GetBehaviourDescription();
                 textObjects.Add(behaviourText.GetComponent<RectTransform>());
                 ClampTextWidth(behaviourText);
                 behaviour.HighlightImpactedTile(tile, true);
@@ -582,7 +582,9 @@ public class PopUpManager : Singleton<PopUpManager>
         if (tile.Incomes.Count > 0)
         {
             TextMeshProUGUI income = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            income.text = "Income: " + tile.Incomes.IncomeToString();
+            income.text = tile.Incomes.IncomeToString() + " per turn";
+            income.fontStyle = FontStyles.Bold;
+            income.alignment = TextAlignmentOptions.Center;
             textObjects.Add(income.GetComponent<RectTransform>());
         }
         #endregion
@@ -937,7 +939,7 @@ public class PopUpManager : Singleton<PopUpManager>
             foreach (SpecialBehaviour behaviour in button.InfrastructureData.SpecialBehaviours)
             {
                 TextMeshProUGUI behaviourText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-                behaviourText.text = behaviour.GetBehaviourDescription();
+                behaviourText.text = "<sprite name=\"Puce_Emoji\"> " + behaviour.GetBehaviourDescription();
                 textObjects.Add(behaviourText.GetComponent<RectTransform>());
                 ClampTextWidth(behaviourText);
                 behaviour.HighlightImpactedTile(button.AssociatedTile, true);
@@ -1104,6 +1106,7 @@ public class PopUpManager : Singleton<PopUpManager>
         // Apply stacking offset along the outward direction
         anchoredPos.y += isBottom ? +stackOffset : -stackOffset;
 
+        /*
         // --- zoom-based cursor margin ---
         float yZoom = CameraManager.Instance.transform.position.y;       // smaller => closer
         float t = Mathf.InverseLerp(CameraManager.Instance.MaxZoomLevel,
@@ -1116,6 +1119,7 @@ public class PopUpManager : Singleton<PopUpManager>
         float signY = isBottom ? +1f : -1f; // BL/BR -> +y ; TL/TR -> -y
         anchoredPos += new Vector2(signX * margin, signY * margin);
         // --- end zoom-based cursor margin ---
+        */
 
         popupRect.anchoredPosition = anchoredPos;
     }
