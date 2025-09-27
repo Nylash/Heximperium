@@ -68,7 +68,7 @@ public class Tile : MonoBehaviour
 
     #region ACCESSORS
     public Vector2 Coordinate { get => _coordinate; set => _coordinate = value; }
-    public TileData TileData { get => _tileData; set => UpdateTileData(value); }
+    public TileData TileData { get => _tileData; }
     public bool Claimed { get => _claimed;}
     public bool Revealed { get => _revealed;}
     public Tile[] Neighbors { get => _neighbors;}
@@ -104,7 +104,7 @@ public class Tile : MonoBehaviour
                 ShowIncomeUI(true);
         }  
     }
-    public TileData PreviousData { get => _previousData; }
+    public TileData PreviousData { get => _previousData; set => _previousData = value; }
     public int UniqueInfraNeighborsCount { get => _uniqueInfraNeighborsCount; set => _uniqueInfraNeighborsCount = value; }
     public EntertainmentData PreviousEntertainmentData { get => _previousEntertainmentData; }
     public int UniqueEntertainmentNeighborsCount_SB { get => _uniqueEntertainmentNeighborsCount_SB; set => _uniqueEntertainmentNeighborsCount_SB = value; }
@@ -183,7 +183,7 @@ public class Tile : MonoBehaviour
     }
 
     //Update the tile data and call every other methods that impact
-    private void UpdateTileData(TileData value)
+    public void UpdateTileData(TileData value, bool updateVisual)
     {
         _targetData = value;
 
@@ -210,7 +210,8 @@ public class Tile : MonoBehaviour
         _tileData = value;
         _targetData = null;
 
-        UpdateVisual();
+        if (updateVisual)
+            UpdateVisual();
 
         UpdateSpecialBehaviours();
 
@@ -302,6 +303,9 @@ public class Tile : MonoBehaviour
 
     public void Highlight(bool show)
     {
+        if (_tileData is HazardousTileData)
+            return;
+
         if (show)
         {
             if (_highlightObject != null)

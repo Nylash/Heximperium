@@ -299,7 +299,7 @@ public class GameManager : Singleton<GameManager>
                 break;
             case Interaction.Destroy:
                 if(_currentPhase == Phase.Exploit)
-                    ExploitationManager.Instance.DestroyInfrastructure(button.AssociatedTile);
+                    ExploitationManager.Instance.DestroyInfrastructure(button.AssociatedTile, true);
                 else
                     EntertainmentManager.Instance.DestroyEntertainment(button.AssociatedTile);
                 break;
