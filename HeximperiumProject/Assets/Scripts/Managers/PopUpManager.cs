@@ -933,15 +933,6 @@ public class PopUpManager : Singleton<PopUpManager>
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
-        #region INCOME BONUS
-        if (button.InfrastructureData.Incomes.Count > 0)
-        {
-            TextMeshProUGUI income = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            income.text = "Improve income by " + button.InfrastructureData.Incomes.IncomeToString() + " per turn";
-            textObjects.Add(income.GetComponent<RectTransform>());
-        }
-        #endregion
-
         #region BEHAVIOURS
         if (button.InfrastructureData.SpecialBehaviours.Count > 0)
         {
@@ -957,23 +948,13 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
-        #region CURRENT INCOME
-        if (button.AssociatedTile.Incomes.Count > 0)
+        #region INCOME
+        if (button.InfrastructureData.Incomes.Count > 0)
         {
-            TextMeshProUGUI currentIncome = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            currentIncome.text = "Current income: " + button.AssociatedTile.Incomes.IncomeToString() + " per turn";
-            currentIncome.fontStyle = FontStyles.Bold;
-            currentIncome.alignment = TextAlignmentOptions.Center;
-            textObjects.Add(currentIncome.GetComponent<RectTransform>());
+            TextMeshProUGUI income = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            income.text = "Income increase: " + button.InfrastructureData.Incomes.IncomeToString();
+            textObjects.Add(income.GetComponent<RectTransform>());
         }
-        #endregion
-
-        #region PREDICTED INCOME
-        TextMeshProUGUI projectedIncome = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        projectedIncome.text = "Predicted income: " + button.AssociatedTile.GetPredictedIncomes(button.InfrastructureData).IncomeToString() + " per turn";
-        projectedIncome.fontStyle = FontStyles.Bold;
-        projectedIncome.alignment = TextAlignmentOptions.Center;
-        textObjects.Add(projectedIncome.GetComponent<RectTransform>());
         #endregion
 
         #region ENHANCEMENTS
