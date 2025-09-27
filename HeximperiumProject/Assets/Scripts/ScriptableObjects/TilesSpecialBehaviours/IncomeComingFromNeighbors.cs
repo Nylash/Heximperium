@@ -141,7 +141,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
 
     public override string GetBehaviourDescription()
     {
-        string tmp = $"Increases {_resource.ToCustomString()} income by neighbors' {_resource.ToCustomString()} income";
+        string tmp = $"Increases {_resource.ToCustomString()} income by the sum of every neighbors' {_resource.ToCustomString()} income";
         if (_excludedTiles.Count > 0)
             tmp += $" (excluding: {_excludedTiles.ToCustomString()})";
         return tmp;
