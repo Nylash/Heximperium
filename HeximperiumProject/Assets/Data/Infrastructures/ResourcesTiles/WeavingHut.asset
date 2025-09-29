@@ -13,8 +13,6 @@ MonoBehaviour:
   m_Name: WeavingHut
   m_EditorClassIdentifier: 
   _name: Weaving Hut
-  _visuals:
-  - {fileID: 2100000, guid: 22a123ab97f14bc40a28bd9f60cb68d7, type: 2}
   _visualsProps:
   - tileData: {fileID: 11400000, guid: 2061b2aed384d3e4f8bd7ddde780225a, type: 2}
     gameObjects:
@@ -30,3 +28,4 @@ MonoBehaviour:
     value: 10
   _scoutStartingPoint: 0
   isTown: 0
+  _infrastructureLevel: 1

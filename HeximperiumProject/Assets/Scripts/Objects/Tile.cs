@@ -38,7 +38,6 @@ public class Tile : MonoBehaviour
     private Border _border;
     private Animator _animator;
     private GameObject _highlightObject;
-    private int _currentInfraLevel = 0;
     private Coroutine _interactionCoroutine;
     private TileInteractionAnimationState _interactionAnimationState = TileInteractionAnimationState.None;
     private GameObject _visualAssets;
@@ -259,7 +258,6 @@ public class Tile : MonoBehaviour
         if (value is InfrastructureData)
         {
             UpdateIncomes(value.Incomes, true);
-            _currentInfraLevel++;
         }
         else
         {
@@ -268,7 +266,6 @@ public class Tile : MonoBehaviour
             //If the preivous data is an infra we were on an enhanced infra so we need to remove the base infra income too
             if(_previousData is InfrastructureData)
                 UpdateIncomes(_previousData.Incomes, false);
-            _currentInfraLevel = 0;
         }
 
         name = value.TileName + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
@@ -327,29 +324,10 @@ public class Tile : MonoBehaviour
     //Change tile's visual based on the tile data
     private void UpdateVisual()
     {
-        switch (_currentInfraLevel)
-        {
-            case 0:
-                _infraLvlRenderer.sprite = null;
-                break;
-            case 1:
-                _infraLvlRenderer.sprite = _spriteInfraLvl[0];
-                break;
-            case 2:
-                _infraLvlRenderer.sprite = _spriteInfraLvl[1];
-                break;
-            case 3:
-                _infraLvlRenderer.sprite = _spriteInfraLvl[2];
-                break;
-            case 4:
-                _infraLvlRenderer.sprite = _spriteInfraLvl[3];
-                break;
-            case 5:
-                _infraLvlRenderer.sprite = _spriteInfraLvl[4];
-                break;
-            default:
-                break;
-        }
+        if (_tileData is InfrastructureData infraData)
+            _infraLvlRenderer.sprite = _spriteInfraLvl[infraData.InfrastructureLevel - 1];
+        else
+            _infraLvlRenderer.sprite = null;
 
         if (_tileData is HazardousTileData)
             _claimTintAnimator.gameObject.SetActive(false);

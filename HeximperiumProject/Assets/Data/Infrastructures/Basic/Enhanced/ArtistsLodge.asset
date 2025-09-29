@@ -13,8 +13,6 @@ MonoBehaviour:
   m_Name: ArtistsLodge
   m_EditorClassIdentifier: 
   _name: "Artists\u2019 Lodge"
-  _visuals:
-  - {fileID: 2100000, guid: 22a123ab97f14bc40a28bd9f60cb68d7, type: 2}
   _visualsProps:
   - tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
     gameObjects:
@@ -38,3 +36,4 @@ MonoBehaviour:
     value: 5
   _scoutStartingPoint: 1
   isTown: 0
+  _infrastructureLevel: 2
