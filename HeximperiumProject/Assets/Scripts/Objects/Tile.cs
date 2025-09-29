@@ -42,7 +42,8 @@ public class Tile : MonoBehaviour
     private TileInteractionAnimationState _interactionAnimationState = TileInteractionAnimationState.None;
     private GameObject _visualAssets;
     private int _carnivalistCostReduction;
-    private int _recruitedCarnivalists; // variable only used for UI purposes
+    private int _recruitedCarnivalists;
+    private int _bufferRecruitedCarnivalists;
     //Scouts
     private List<Scout> _scouts = new List<Scout>();
     //Entertainment variables
@@ -162,6 +163,18 @@ public class Tile : MonoBehaviour
                 neighbor.OnClaimBorderAnimationDone += CheckBorder;
             }
         };
+    }
+
+    private void LateUpdate()
+    {
+        if (_bufferRecruitedCarnivalists != _recruitedCarnivalists)
+        {
+            if (_recruitedCarnivalists < _bufferRecruitedCarnivalists)
+                ResourcesManager.Instance.HelperOnCarnivalistSpent(this, _bufferRecruitedCarnivalists - _recruitedCarnivalists);
+            else
+                ResourcesManager.Instance.HelperOnCarnivalistGained(this, _recruitedCarnivalists - _bufferRecruitedCarnivalists);
+        }
+        _bufferRecruitedCarnivalists = _recruitedCarnivalists;
     }
 
     #region BASIC METHODS
