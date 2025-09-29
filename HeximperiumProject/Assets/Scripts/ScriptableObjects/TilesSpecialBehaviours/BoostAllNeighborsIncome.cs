@@ -12,7 +12,7 @@ public class BoostAllNeighborsIncome : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
-            neighbor.Incomes = Utilities.MergeResourceToIntMaps(neighbor.Incomes, _incomeBoost);
+            neighbor.UpdateIncomes(_incomeBoost, true, behaviourTile.TileData);
         }
     }
 
@@ -22,7 +22,7 @@ public class BoostAllNeighborsIncome : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
-            neighbor.Incomes = Utilities.SubtractResourceToIntMaps(neighbor.Incomes, _incomeBoost);
+            neighbor.UpdateIncomes(_incomeBoost, false, behaviourTile.TileData);
         }
     }
 

@@ -16,7 +16,7 @@ public class BoostNeighborsIncome : SpecialBehaviour
                 continue;
             if (_infrastructuresBoosted.Contains(neighbor.TileData))
             {
-                neighbor.Incomes = Utilities.MergeResourceToIntMaps(neighbor.Incomes, _incomeBoost);
+                neighbor.UpdateIncomes(_incomeBoost, true, behaviourTile.TileData);
             }
             //BehaviourTile is needed even if the reference isn't in the method to create a unique pair of behaviourTile and neighbor, avoiding conflict between events
             neighbor.OnTileDataModified -= behaviourTile.ListenerOnTileDataModified_BoostNeighborsIncome;
@@ -33,7 +33,7 @@ public class BoostNeighborsIncome : SpecialBehaviour
                 continue;
             if (_infrastructuresBoosted.Contains(neighbor.TileData))
             {
-                neighbor.Incomes = Utilities.SubtractResourceToIntMaps(neighbor.Incomes, _incomeBoost);
+                neighbor.UpdateIncomes(_incomeBoost, false, behaviourTile.TileData);
             }
             neighbor.OnTileDataModified -= behaviourTile.ListenerOnTileDataModified_BoostNeighborsIncome;
         }
@@ -52,20 +52,20 @@ public class BoostNeighborsIncome : SpecialBehaviour
         }
     }
 
-    public void CheckNewData(Tile tile)
+    public void CheckNewData(Tile tile, Tile behaviourTile)
     {
         if (_infrastructuresBoosted.Contains(tile.TileData))
         {
             //Check if the previous data didn't already get the boost
             if (_infrastructuresBoosted.Contains(tile.PreviousData))
                 return;
-            tile.Incomes = Utilities.MergeResourceToIntMaps(tile.Incomes, _incomeBoost);
+            tile.UpdateIncomes(_incomeBoost, true, behaviourTile.TileData);
         }
         else
         {
             //Check if the previous data did get a boost, then remove it if yes
             if (_infrastructuresBoosted.Contains(tile.PreviousData))
-                tile.Incomes = Utilities.SubtractResourceToIntMaps(tile.Incomes, _incomeBoost);
+                tile.UpdateIncomes(_incomeBoost, false, behaviourTile.TileData);
         }
     }
 

@@ -13,7 +13,7 @@ public class BoostByInfraOccurrenceInEmpire : SpecialBehaviour
         {
             if (tile.TileData is InfrastructureData data && _tilesBoosting.Contains(data))
             {
-                behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, _boost);
+                behaviourTile.UpdateIncomes(_boost, true);
             }
         }
         ExploitationManager.Instance.OnInfraBuilded -= behaviourTile.ListenerOnInfraBuilded_BoostByInfraOccurrenceInEmpire;
@@ -28,7 +28,7 @@ public class BoostByInfraOccurrenceInEmpire : SpecialBehaviour
         {
             if (tile.TileData is InfrastructureData data && _tilesBoosting.Contains(data))
             {
-                behaviourTile.Incomes = Utilities.SubtractResourceToIntMaps(behaviourTile.Incomes, _boost);
+                behaviourTile.UpdateIncomes(_boost, false);
             }
         }
 
@@ -54,13 +54,13 @@ public class BoostByInfraOccurrenceInEmpire : SpecialBehaviour
             //Check if the previous data didn't already applied the boost
             if (tile.PreviousData is InfrastructureData previousData && _tilesBoosting.Contains(previousData))
                 return;
-            behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, _boost);
+            behaviourTile.UpdateIncomes(_boost, true);
         }
         else
         {
             //Check if the previous data did apply a boost, then remove it if yes
             if (tile.PreviousData is InfrastructureData previousData && _tilesBoosting.Contains(previousData))
-                behaviourTile.Incomes = Utilities.SubtractResourceToIntMaps(behaviourTile.Incomes, _boost);
+                behaviourTile.UpdateIncomes(_boost, false);
         }
     }
 
@@ -68,7 +68,7 @@ public class BoostByInfraOccurrenceInEmpire : SpecialBehaviour
     {
         if(tile.PreviousData is InfrastructureData data && _tilesBoosting.Contains(data))
         {
-            behaviourTile.Incomes = Utilities.SubtractResourceToIntMaps(behaviourTile.Incomes, _boost);
+            behaviourTile.UpdateIncomes(_boost, false);
         }
     }
 

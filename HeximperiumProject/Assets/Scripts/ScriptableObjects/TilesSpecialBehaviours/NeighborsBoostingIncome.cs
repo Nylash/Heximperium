@@ -16,7 +16,7 @@ public class NeighborsBoostingIncome : SpecialBehaviour
                 continue;
             if (_boostingInfrastructures.Contains(neighbor.TileData))
             {
-                behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, _incomeBoost);
+                behaviourTile.UpdateIncomes(_incomeBoost, true);
             }
             neighbor.OnTileDataModified -= behaviourTile.ListenerOnTileDataModified_NeighborsBoostingIncome;
             neighbor.OnTileDataModified += behaviourTile.ListenerOnTileDataModified_NeighborsBoostingIncome;
@@ -32,7 +32,7 @@ public class NeighborsBoostingIncome : SpecialBehaviour
                 continue;
             if (_boostingInfrastructures.Contains(neighbor.TileData))
             {
-                behaviourTile.Incomes = Utilities.SubtractResourceToIntMaps(behaviourTile.Incomes, _incomeBoost);
+                behaviourTile.UpdateIncomes(_incomeBoost, false);
             }
             neighbor.OnTileDataModified -= behaviourTile.ListenerOnTileDataModified_NeighborsBoostingIncome;
         }
@@ -58,13 +58,13 @@ public class NeighborsBoostingIncome : SpecialBehaviour
             //Check if the previous data didn't already applied the boost
             if (_boostingInfrastructures.Contains(tile.PreviousData))
                 return;
-            behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, _incomeBoost);
+            behaviourTile.UpdateIncomes(_incomeBoost, true);
         }
         else
         {
             //Check if the previous data did apply a boost, then remove it if yes
             if (_boostingInfrastructures.Contains(tile.PreviousData))
-                behaviourTile.Incomes = Utilities.SubtractResourceToIntMaps(behaviourTile.Incomes, _incomeBoost);
+                behaviourTile.UpdateIncomes(_incomeBoost, false);
         }
     }
 

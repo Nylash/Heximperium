@@ -29,7 +29,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
                         income.Add(new ResourceToIntMap(_resource, item.value));
                 }
 
-                behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, income);
+                behaviourTile.UpdateIncomes(income, true);
 
                 //Add a lister to adjust the income when a neighbor adjust its own income
                 neighbor.OnIncomeModified -= behaviourTile.ListenerOnIncomeModified;
@@ -65,7 +65,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
                         income.Add(new ResourceToIntMap(_resource, item.value));
                 }
 
-                behaviourTile.Incomes = Utilities.SubtractResourceToIntMaps(behaviourTile.Incomes, income);
+                behaviourTile.UpdateIncomes(income, false);
             }
 
             neighbor.OnIncomeModified -= behaviourTile.ListenerOnIncomeModified;
@@ -115,7 +115,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
         }
 
         // Apply delta (newIncome - previousIncome)
-        behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, Utilities.SubtractResourceToIntMaps(newInc, previousInc));
+        behaviourTile.UpdateIncomes(Utilities.SubtractResourceToIntMaps(newInc, previousInc), true);
     }
 
     public void CheckClaimedTile(Tile behaviourTile, Tile tile)
@@ -132,7 +132,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
                 income.Add(new ResourceToIntMap(_resource, item.value));
         }
 
-        behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, income);
+        behaviourTile.UpdateIncomes(income, true);
 
         //Add a listener to adjust the income when a neighbor adjust its own income
         tile.OnIncomeModified -= behaviourTile.ListenerOnIncomeModified;

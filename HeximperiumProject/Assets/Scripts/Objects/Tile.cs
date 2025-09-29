@@ -27,6 +27,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private Vector2 _coordinate;
     [SerializeField] private List<ResourceToIntMap> _incomes = new List<ResourceToIntMap>();
 
+    private Dictionary<TileData, List<ResourceToIntMap>> _incomesSources = new Dictionary<TileData, List<ResourceToIntMap>>();
     private int _claimIncome = 0;
     private Tile[] _neighbors = new Tile[6];
     private TileData _initialData;
@@ -73,17 +74,7 @@ public class Tile : MonoBehaviour
     public bool Revealed { get => _revealed;}
     public Tile[] Neighbors { get => _neighbors;}
     public List<Scout> Scouts { get => _scouts; set => _scouts = value; }
-    public List<ResourceToIntMap> Incomes
-    {
-        get => _incomes;
-        set
-        {
-            OnIncomeModified?.Invoke(this, _incomes, value);
-            _incomes = value;
-            if (UIManager.Instance.AreIncomesShown)
-                ShowIncomeUI(true);
-        }
-    }
+    public List<ResourceToIntMap> Incomes { get => _incomes; }
     public TileData InitialData { get => _initialData; set => _initialData = value; }
     public Entertainment Entertainment 
     { 
@@ -155,6 +146,7 @@ public class Tile : MonoBehaviour
     }
 
     public TileData TargetData { get => _targetData; }
+    public Dictionary<TileData, List<ResourceToIntMap>> IncomesSources { get => _incomesSources; }
     #endregion
 
     private void Awake()
@@ -182,6 +174,80 @@ public class Tile : MonoBehaviour
         _incomes = data.Incomes;
     }
 
+    public void UpdateIncomes(List<ResourceToIntMap> inputIncomes, bool merge, TileData source = null)
+    {
+        List<ResourceToIntMap> previousIncomes = _incomes;
+
+        if (merge)
+        {
+            _incomes = Utilities.MergeResourceToIntMaps(_incomes, inputIncomes);
+            if (source)
+            {
+                if (!_incomesSources.ContainsKey(source))
+                    _incomesSources.Add(source, inputIncomes);
+                else
+                    _incomesSources[source] = Utilities.MergeResourceToIntMaps(_incomesSources[source], inputIncomes);
+                // Clean the source if all values are 0
+                bool allZero = true;
+                foreach (ResourceToIntMap item in _incomesSources[source])
+                {
+                    if (item.value != 0)
+                    {
+                        allZero = false;
+                        break;
+                    }
+                }
+                if (allZero)
+                    _incomesSources.Remove(source);
+            }
+        }
+        else
+        {
+            _incomes = Utilities.SubtractResourceToIntMaps(_incomes, inputIncomes);
+            if (source)
+            {
+                if (_incomesSources.ContainsKey(source))
+                {
+                    _incomesSources[source] = Utilities.SubtractResourceToIntMaps(_incomesSources[source], inputIncomes);
+                    // Clean the source if all values are 0
+                    bool allZero = true;
+                    foreach (ResourceToIntMap item in _incomesSources[source])
+                    {
+                        if (item.value != 0)
+                        {
+                            allZero = false;
+                            break;
+                        }
+                    }
+                    if (allZero)
+                        _incomesSources.Remove(source);
+                }
+                else
+                    Debug.LogWarning("Trying to remove income from a source that doesn't exist in the dictionary");
+            }
+        }
+
+        OnIncomeModified?.Invoke(this, previousIncomes, _incomes);
+        if (UIManager.Instance.AreIncomesShown)
+            ShowIncomeUI(true);
+    }
+
+    public List<ResourceToIntMap> GetIncomeFromTileOnly()
+    {
+        if (_incomes.Count == 0)
+            return new List<ResourceToIntMap>();
+        if (_incomesSources.Count == 0)
+            return _incomes;
+
+        List<ResourceToIntMap> incomeFromTileOnly = new List<ResourceToIntMap>();
+        incomeFromTileOnly = Utilities.MergeResourceToIntMaps(incomeFromTileOnly, _incomes);
+        foreach (var kvp in _incomesSources)
+        {
+            incomeFromTileOnly = Utilities.SubtractResourceToIntMaps(incomeFromTileOnly, kvp.Value);
+        }
+        return incomeFromTileOnly;
+    }
+
     //Update the tile data and call every other methods that impact
     public void UpdateTileData(TileData value, bool updateVisual)
     {
@@ -192,16 +258,16 @@ public class Tile : MonoBehaviour
         //Set the new income
         if (value is InfrastructureData)
         {
-            Incomes = Utilities.MergeResourceToIntMaps(_incomes, value.Incomes);
+            UpdateIncomes(value.Incomes, true);
             _currentInfraLevel++;
         }
         else
         {
             //We are going back to the initial data (basic tile, resource tile or hazardous tile) so we reset the income
-            Incomes = Utilities.SubtractResourceToIntMaps(_incomes, _tileData.Incomes);
+            UpdateIncomes(_tileData.Incomes, false);
             //If the preivous data is an infra we were on an enhanced infra so we need to remove the base infra income too
             if(_previousData is InfrastructureData)
-                Incomes = Utilities.SubtractResourceToIntMaps(_incomes, _previousData.Incomes);
+                UpdateIncomes(_previousData.Incomes, false);
             _currentInfraLevel = 0;
         }
 
@@ -575,7 +641,7 @@ public class Tile : MonoBehaviour
     {
         foreach (BoostNeighborsIncome behaviour in _tileData.SpecialBehaviours.OfType<BoostNeighborsIncome>())
         {
-            behaviour.CheckNewData(tile);
+            behaviour.CheckNewData(tile, this);
         }
     }
 

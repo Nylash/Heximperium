@@ -589,6 +589,22 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
+        #region INCOME SOURCES
+        if (tile.IncomesSources.Count > 0)
+        {
+            TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            List<ResourceToIntMap> ownInc = tile.GetIncomeFromTileOnly();
+            if (ownInc.Count > 0)
+                sourceInc.text = "(" + ownInc.IncomeToString() + " from the tile itself)" + "\n";
+            foreach (var kvp in tile.IncomesSources)
+            {
+                sourceInc.text += "(" + kvp.Value.IncomeToString() + " from " + kvp.Key.TileName + ")" + "\n";
+            }
+            sourceInc.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(sourceInc.GetComponent<RectTransform>());
+        }
+        #endregion
+
         #region ENHANCEMENTS
         if (tile.TileData.AvailableInfrastructures.Count > 0 && GameManager.Instance.CurrentPhase != Phase.Entertain)
         {
@@ -937,7 +953,7 @@ public class PopUpManager : Singleton<PopUpManager>
         if (button.InfrastructureData.Incomes.Count > 0)
         {
             TextMeshProUGUI income = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            income.text = "Improve income by " + button.InfrastructureData.Incomes.IncomeToString() + " per turn";
+            income.text = "<sprite name=\"Puce_Emoji\"> Improve income by " + button.InfrastructureData.Incomes.IncomeToString() + " per turn";
             textObjects.Add(income.GetComponent<RectTransform>());
         }
         #endregion
@@ -969,11 +985,30 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         #region PREDICTED INCOME
-        TextMeshProUGUI projectedIncome = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        projectedIncome.text = "Predicted income: " + ExploitationManager.Instance.GetProjectedIncomes(button.AssociatedTile, button.InfrastructureData).IncomeToString() + " per turn";
-        projectedIncome.fontStyle = FontStyles.Bold;
-        projectedIncome.alignment = TextAlignmentOptions.Center;
-        textObjects.Add(projectedIncome.GetComponent<RectTransform>());
+        TextMeshProUGUI predictedIncome = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        List<ResourceToIntMap> predictedInc;
+        List<ResourceToIntMap> predictedSelfInc;
+        Dictionary<TileData, List<ResourceToIntMap>> predictedSources;
+        ExploitationManager.Instance.GetPredictedIncomes(button.AssociatedTile, button.InfrastructureData, out predictedInc, out predictedSources, out predictedSelfInc);
+        predictedIncome.text = "Predicted income: " + predictedInc.IncomeToString() + " per turn";
+        predictedIncome.fontStyle = FontStyles.Bold;
+        predictedIncome.alignment = TextAlignmentOptions.Center;
+        textObjects.Add(predictedIncome.GetComponent<RectTransform>());
+        #endregion
+
+        #region INCOME SOURCES
+        if (predictedSources.Count > 0)
+        {
+            TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            if (predictedSelfInc.Count > 0)
+                sourceInc.text = "(" + predictedSelfInc.IncomeToString() + " from the tile itself)" + "\n";
+            foreach (var kvp in predictedSources)
+            {
+                sourceInc.text += "(" + kvp.Value.IncomeToString() + " from " + kvp.Key.TileName + ")" + "\n";
+            }
+            sourceInc.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(sourceInc.GetComponent<RectTransform>());
+        }
         #endregion
 
         #region ENHANCEMENTS
