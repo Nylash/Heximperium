@@ -125,22 +125,42 @@ public static class Utilities
         };
     }
 
-    public static string ToCustomString(this Family value)
+    public static string ToCustomString(this Family value, bool plural = false)
     {
-        return value switch
+        if (plural)
         {
-            Family.None => "None",
-            Family.Town => "Town<sprite name=\"Towns_Emoji\">",
-            Family.Farm => "Farm<sprite name=\"Farms_Emoji\">",
-            Family.Mill => "Mill<sprite name=\"Mills_Emoji\">",
-            Family.Village => "Village<sprite name=\"Villages_Emoji\">",
-            Family.Inn => "Inn<sprite name=\"Inns_Emoji\">",
-            Family.Lumberyard => "Lumberyards<sprite name=\"Lumberyard_Emoji\">",
-            Family.Temple => "Temples<sprite name=\"Temple_Emoji\">",
-            Family.Guild => "Guild<sprite name=\"Guilds_Emoji\">",
-            Family.Stonework => "Craftmanship<sprite name=\"Stonework_Emoji\">",
-            _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
-        };
+            return value switch
+            {
+                Family.None => "None",
+                Family.Town => "Towns<sprite name=\"Towns_Emoji\">",
+                Family.Farm => "Farms<sprite name=\"Farms_Emoji\">",
+                Family.Mill => "Mills<sprite name=\"Mills_Emoji\">",
+                Family.Village => "Villages<sprite name=\"Villages_Emoji\">",
+                Family.Inn => "Inns<sprite name=\"Inns_Emoji\">",
+                Family.Lumberyard => "Lumberyards<sprite name=\"Lumberyards_Emoji\">",
+                Family.Temple => "Temples<sprite name=\"Temples_Emoji\">",
+                Family.Guild => "Guilds<sprite name=\"Guilds_Emoji\">",
+                Family.Stonework => "Stonework<sprite name=\"Stonework_Emoji\">",
+                _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
+            };
+        }
+        else
+        {
+            return value switch
+            {
+                Family.None => "None",
+                Family.Town => "Town<sprite name=\"Towns_Emoji\">",
+                Family.Farm => "Farm<sprite name=\"Farms_Emoji\">",
+                Family.Mill => "Mill<sprite name=\"Mills_Emoji\">",
+                Family.Village => "Village<sprite name=\"Villages_Emoji\">",
+                Family.Inn => "Inn<sprite name=\"Inns_Emoji\">",
+                Family.Lumberyard => "Lumberyard<sprite name=\"Lumberyards_Emoji\">",
+                Family.Temple => "Temple<sprite name=\"Temples_Emoji\">",
+                Family.Guild => "Guild<sprite name=\"Guilds_Emoji\">",
+                Family.Stonework => "Stonework<sprite name=\"Stonework_Emoji\">",
+                _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
+            };
+        }
     }
 
     public static string ToCustomString(this Direction value)
@@ -234,7 +254,7 @@ public static class Utilities
                     else
                         res += ", ";
                 }
-                res += familiesList[i].ToCustomString();
+                res += familiesList[i].ToCustomString(true);
             }
             return res;
         }

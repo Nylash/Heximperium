@@ -361,13 +361,13 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
-        title.text = "Special Resources";
+        title.text = "Stone";
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
         #region INCOME
         TextMeshProUGUI income = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        income.text = "Special Resources per turn: +" + ExploitationManager.Instance.GetResourceIncomeByAllTiles(Resource.SpecialResources) + "<sprite name=\"SR_Emoji\">";
+        income.text = "Stone per turn: +" + ExploitationManager.Instance.GetResourceIncomeByAllTiles(Resource.SpecialResources) + "<sprite name=\"SR_Emoji\">";
         ClampTextWidth(income);
         textObjects.Add(income.GetComponent<RectTransform>());
         #endregion
