@@ -578,6 +578,16 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
+        #region SCOUT STARTING POINT
+        if (tile.TileData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
+        {
+            TextMeshProUGUI scoutText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            scoutText.text = "<sprite name=\"Puce_Emoji\"> Scout starting point";
+            textObjects.Add(scoutText.GetComponent<RectTransform>());
+            ClampTextWidth(scoutText);
+        }
+        #endregion
+
         #region INCOME
         if (tile.Incomes.Count > 0)
         {
@@ -614,17 +624,6 @@ public class PopUpManager : Singleton<PopUpManager>
             ClampTextWidth(enhancement);
             enhancement.fontStyle = FontStyles.Italic;
             enhancement.alignment = TextAlignmentOptions.Center;
-        }
-        #endregion
-
-        #region SCOUT STARTING POINT
-        if (tile.TileData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
-        {
-            TextMeshProUGUI scoutText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            scoutText.text = "Scout starting point";
-            scoutText.fontStyle = FontStyles.Italic;
-            scoutText.alignment = TextAlignmentOptions.Center;
-            textObjects.Add(scoutText.GetComponent<RectTransform>());
         }
         #endregion
 
@@ -973,6 +972,16 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
+        #region SCOUT STARTING POINT
+        if (button.InfrastructureData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
+        {
+            TextMeshProUGUI scoutText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            scoutText.text = "<sprite name=\"Puce_Emoji\"> Scout starting point";
+            textObjects.Add(scoutText.GetComponent<RectTransform>());
+            ClampTextWidth(scoutText);
+        }
+        #endregion
+
         #region CURRENT INCOME
         if (button.AssociatedTile.Incomes.Count > 0)
         {
@@ -1021,17 +1030,6 @@ public class PopUpManager : Singleton<PopUpManager>
             ClampTextWidth(enhancement);
             enhancement.fontStyle = FontStyles.Italic;
             enhancement.alignment = TextAlignmentOptions.Center;
-        }
-        #endregion
-
-        #region SCOUT STARTING POINT
-        if (button.InfrastructureData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
-        {
-            TextMeshProUGUI scoutText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            scoutText.text = "Scout starting point";
-            scoutText.fontStyle = FontStyles.Italic;
-            scoutText.alignment = TextAlignmentOptions.Center;
-            textObjects.Add(scoutText.GetComponent<RectTransform>());
         }
         #endregion
 
