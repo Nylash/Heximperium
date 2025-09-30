@@ -15,8 +15,10 @@ public class PopUpManager : Singleton<PopUpManager>
     [SerializeField][Range(0f,1f)] private float _percentageOfTimerForVisualHint = 0.75f;
     [SerializeField] private Image _timerOverImage;
     [SerializeField] private float _offsetBetweenSeveralPopUps = 1f;
+    /*
     [SerializeField] private float _marginAtMinZoom = 45f;
     [SerializeField] private float _marginAtMaxZoom = 150f;
+    */
     [SerializeField] private float _maxScreenFraction = 0.15f;
     [Header("_________________________________________________________")]
     [Header("Prefabs")]
@@ -619,7 +621,7 @@ public class PopUpManager : Singleton<PopUpManager>
         if (tile.TileData.AvailableInfrastructures.Count > 0 && GameManager.Instance.CurrentPhase != Phase.Entertain)
         {
             TextMeshProUGUI enhancement = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            enhancement.text = "Can be enhanced into " + tile.TileData.AvailableInfrastructures.ToCustomString(true);
+            enhancement.text = "Can be enhanced into " + tile.TileData.AvailableInfrastructures.ToCustomString(false, true);
             textObjects.Add(enhancement.GetComponent<RectTransform>());
             ClampTextWidth(enhancement);
             enhancement.fontStyle = FontStyles.Italic;
@@ -633,6 +635,16 @@ public class PopUpManager : Singleton<PopUpManager>
             TextMeshProUGUI claimStatus = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
             claimStatus.text = "Claim cost: " + tile.TileData.ClaimCost + "<sprite name=\"Claim_Emoji\">";
             textObjects.Add(claimStatus.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region FAMILY
+        if (tile.TileData is InfrastructureData infra)
+        {
+            TextMeshProUGUI family = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            family.text = infra.Family.ToCustomString();
+            family.alignment = TextAlignmentOptions.Right;
+            textObjects.Add(family.GetComponent<RectTransform>());
         }
         #endregion
 
@@ -1024,7 +1036,7 @@ public class PopUpManager : Singleton<PopUpManager>
         if (button.InfrastructureData.AvailableInfrastructures.Count > 0)
         {
             TextMeshProUGUI enhancement = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            enhancement.text = "Can be enhanced into " + button.InfrastructureData.AvailableInfrastructures.ToCustomString(true);
+            enhancement.text = "Can be enhanced into " + button.InfrastructureData.AvailableInfrastructures.ToCustomString(false, true);
 
             textObjects.Add(enhancement.GetComponent<RectTransform>());
             ClampTextWidth(enhancement);
@@ -1069,9 +1081,14 @@ public class PopUpManager : Singleton<PopUpManager>
                 availability.color = UIManager.Instance.ColorCantAfford;
             }
             textObjects.Add(availability.GetComponent<RectTransform>());
-            availability.fontStyle = FontStyles.Italic;
-            availability.alignment = TextAlignmentOptions.MidlineRight;
         }
+        #endregion
+
+        #region FAMILY
+        TextMeshProUGUI family = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        family.text = button.InfrastructureData.Family.ToCustomString();
+        family.alignment = TextAlignmentOptions.Right;
+        textObjects.Add(family.GetComponent<RectTransform>());
         #endregion
 
         SetPopUpContentAnchors(textObjects);

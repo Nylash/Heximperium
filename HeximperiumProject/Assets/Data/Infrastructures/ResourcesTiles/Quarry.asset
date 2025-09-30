@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Quarry
   m_EditorClassIdentifier: 
   _name: Quarry
+  _family: 9
   _visualsProps:
   - tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
     gameObjects:

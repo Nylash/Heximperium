@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: FestivalGrounds
   m_EditorClassIdentifier: 
   _name: Festival Grounds
+  _family: 1
   _visualsProps:
   - tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
     gameObjects:

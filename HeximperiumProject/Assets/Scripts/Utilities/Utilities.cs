@@ -125,6 +125,24 @@ public static class Utilities
         };
     }
 
+    public static string ToCustomString(this Family value)
+    {
+        return value switch
+        {
+            Family.None => "None",
+            Family.Town => "Town<sprite name=\"Towns_Emoji\">",
+            Family.Farm => "Farm<sprite name=\"Farms_Emoji\">",
+            Family.Mill => "Mill<sprite name=\"Mills_Emoji\">",
+            Family.Village => "Village<sprite name=\"Villages_Emoji\">",
+            Family.Inn => "Inn<sprite name=\"Inns_Emoji\">",
+            Family.Lumberyard => "Lumberyards<sprite name=\"Lumberyard_Emoji\">",
+            Family.Temple => "Temples<sprite name=\"Temple_Emoji\">",
+            Family.Guild => "Guild<sprite name=\"Guilds_Emoji\">",
+            Family.Stonework => "Craftmanship<sprite name=\"Stonework_Emoji\">",
+            _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
+        };
+    }
+
     public static string ToCustomString(this Direction value)
     {
         return value switch
@@ -192,26 +210,55 @@ public static class Utilities
         return costString;
     }
 
-    public static string ToCustomString<T>(this List<T> data, bool orInsteadOfAnd = false) where T : TileData
+    public static string ToCustomString<T>(this List<T> data, bool showFamily, bool orInsteadOfAnd = false) where T : TileData
     {
-        string res = string.Empty;
-        for (int i = 0; i < data.Count; i++)
+        if (typeof(T) == typeof(InfrastructureData) && showFamily)
         {
-            if (i > 0)
+            List<InfrastructureData> infrastructureDatas = (List<InfrastructureData>)(object)data;
+            string res = string.Empty;
+            HashSet<Family> families = new HashSet<Family>();
+            foreach (InfrastructureData d in infrastructureDatas)
+                families.Add(d.Family);
+            List<Family> familiesList = families.ToList();
+            for (int i = 0; i < familiesList.Count; i++)
             {
-                if (i == data.Count - 1)
+                if (i > 0)
                 {
-                    if (orInsteadOfAnd)
-                        res += " or ";
+                    if (i == familiesList.Count - 1)
+                    {
+                        if (orInsteadOfAnd)
+                            res += " or ";
+                        else
+                            res += " & ";
+                    }
                     else
-                        res += " & ";
+                        res += ", ";
                 }
-                else
-                    res += ", ";
+                res += familiesList[i].ToCustomString();
             }
-            res += data[i].TileName;
+            return res;
         }
-        return res;
+        else
+        {
+            string res = string.Empty;
+            for (int i = 0; i < data.Count; i++)
+            {
+                if (i > 0)
+                {
+                    if (i == data.Count - 1)
+                    {
+                        if (orInsteadOfAnd)
+                            res += " or ";
+                        else
+                            res += " & ";
+                    }
+                    else
+                        res += ", ";
+                }
+                res += data[i].TileName;
+            }
+            return res;
+        }
     }
 
     public static string ToCustomString(this List<EntertainmentData> entertainments)
@@ -318,5 +365,10 @@ public enum UpgradeStatus
 public enum TileInteractionAnimationState
 {
     None, Animating, Stopping
+}
+
+public enum Family
+{
+    None, Town, Farm, Mill, Village, Inn, Lumberyard, Temple, Guild, Stonework
 }
 #endregion

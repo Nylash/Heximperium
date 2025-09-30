@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: HorseRanch
   m_EditorClassIdentifier: 
   _name: Horse Ranch
+  _family: 9
   _visualsProps:
   - tileData: {fileID: 11400000, guid: c81ae4899e5770740944c34ce98060ae, type: 2}
     gameObjects:

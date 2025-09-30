@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Sawmill
   m_EditorClassIdentifier: 
   _name: Sawmill
+  _family: 6
   _visualsProps:
   - tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
     gameObjects:

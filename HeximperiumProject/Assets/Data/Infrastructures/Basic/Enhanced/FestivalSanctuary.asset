@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: FestivalSanctuary
   m_EditorClassIdentifier: 
   _name: Festival Sanctuary
+  _family: 7
   _visualsProps:
   - tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
     gameObjects:

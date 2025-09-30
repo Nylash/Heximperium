@@ -18,6 +18,6 @@ public class InfraDataIsScoutStartingPoint : UpgradeEffect
 
     public override string GetEffectDescription()
     {
-        return $"Scouts can start on {_boostedInfra.ToCustomString()}";
+        return $"Scouts can start on {_boostedInfra.ToCustomString(true)}";
     }
 }

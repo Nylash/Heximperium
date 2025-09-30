@@ -74,6 +74,6 @@ public class BoostByInfraOccurrenceInEmpire : SpecialBehaviour
 
     public override string GetBehaviourDescription()
     {
-        return $"Boosts tile income by {_boost.IncomeToString()} for each occurrence of {_tilesBoosting.ToCustomString()} in the empire";
+        return $"Boosts tile income by {_boost.IncomeToString()} for each occurrence of {_tilesBoosting.ToCustomString(true)} in the empire";
     }
 }

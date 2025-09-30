@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: LumberCamp
   m_EditorClassIdentifier: 
   _name: Lumber Camp
+  _family: 6
   _visualsProps:
   - tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
     gameObjects:

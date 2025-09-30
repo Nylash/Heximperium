@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: WeavingHut
   m_EditorClassIdentifier: 
   _name: Weaving Hut
+  _family: 9
   _visualsProps:
   - tileData: {fileID: 11400000, guid: 2061b2aed384d3e4f8bd7ddde780225a, type: 2}
     gameObjects:

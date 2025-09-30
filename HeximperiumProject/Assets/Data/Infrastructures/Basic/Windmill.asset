@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Windmill
   m_EditorClassIdentifier: 
   _name: Windmill
+  _family: 3
   _visualsProps:
   - tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
     gameObjects:

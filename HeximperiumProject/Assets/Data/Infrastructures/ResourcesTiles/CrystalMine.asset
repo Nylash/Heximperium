@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: CrystalMine
   m_EditorClassIdentifier: 
   _name: Crystal Mine
+  _family: 9
   _visualsProps:
   - tileData: {fileID: 11400000, guid: 797ecded2fc68aa4b9845172a7bfb3a5, type: 2}
     gameObjects:

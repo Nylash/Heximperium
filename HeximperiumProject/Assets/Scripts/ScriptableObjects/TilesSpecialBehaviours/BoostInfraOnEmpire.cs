@@ -74,6 +74,6 @@ public class BoostInfraOnEmpire : SpecialBehaviour
 
     public override string GetBehaviourDescription()
     {
-        return $"Boosts the income of every {_infrastructuresBoosted.ToCustomString()} in the empire by {_incomeBoost.IncomeToString()}";
+        return $"Boosts the income of every {_infrastructuresBoosted.ToCustomString(true)} in the empire by {_incomeBoost.IncomeToString()}";
     }
 }

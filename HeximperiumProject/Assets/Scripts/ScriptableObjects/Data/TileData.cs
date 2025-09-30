@@ -6,6 +6,7 @@ public class TileData : ScriptableObject
     [Header("_________________________________________________________")]
     [Header("Base Settings")]
     [SerializeField] private string _name;
+    [SerializeField] private Family _family;
     [Tooltip("Each entry should correspond to a specific base tile then the visual for the current tile on that base tile")]
     [SerializeField] private List<TileDataToGameObjectsMap> _visualsProps;
     [SerializeField] private int _claimCost;
@@ -24,6 +25,7 @@ public class TileData : ScriptableObject
     public List<InfrastructureData> AvailableInfrastructures { get => _availableInfrastructures; }
     public List<SpecialBehaviour> SpecialBehaviours { get => _runtimeSpecialBehaviours; }
     public List<TileDataToGameObjectsMap> VisualsProps { get => _visualsProps; }
+    public Family Family { get => _family; }
 
     // Manage runtime list of special behaviours
     private void OnEnable()
