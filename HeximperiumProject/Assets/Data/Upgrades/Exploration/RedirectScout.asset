@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: RedirectScout
   m_EditorClassIdentifier: 
   EffectName: Strategic Orders
+  AssociatedSystem: 0

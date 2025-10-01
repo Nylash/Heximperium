@@ -247,10 +247,12 @@ public class GameManager : Singleton<GameManager>
     private void SelectTile(Tile tile)
     {
         //We can only select revealed tiles except if we are in exploration phase and have the right upgrade
-        if (!tile.Revealed && 
-            !ExplorationManager.Instance.UpgradeRevealAnywhere && 
-            _currentPhase != Phase.Explore)
+        if (!tile.Revealed &&
+            !(ExplorationManager.Instance.UpgradeRevealAnywhere != null
+              && _currentPhase == Phase.Explore))
+        {
             return;
+        }
 
         _selectedTile = tile;
 
