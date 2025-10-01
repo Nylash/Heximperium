@@ -132,15 +132,15 @@ public static class Utilities
             return value switch
             {
                 Family.None => "None",
-                Family.Town => "Towns<sprite name=\"Towns_Emoji\">",
-                Family.Farm => "Farms<sprite name=\"Farms_Emoji\">",
-                Family.Mill => "Mills<sprite name=\"Mills_Emoji\">",
-                Family.Village => "Villages<sprite name=\"Villages_Emoji\">",
-                Family.Inn => "Inns<sprite name=\"Inns_Emoji\">",
-                Family.Lumberyard => "Lumberyards<sprite name=\"Lumberyards_Emoji\">",
-                Family.Temple => "Temples<sprite name=\"Temples_Emoji\">",
-                Family.Guild => "Guilds<sprite name=\"Guilds_Emoji\">",
-                Family.Stonework => "Stonework<sprite name=\"Stonework_Emoji\">",
+                Family.Town => "<u>Towns</u><sprite name=\"Towns_Emoji\">",
+                Family.Farm => "<u>Farms</u><sprite name=\"Farms_Emoji\">",
+                Family.Mill => "<u>Mills</u><sprite name=\"Mills_Emoji\">",
+                Family.Village => "<u>Villages</u><sprite name=\"Villages_Emoji\">",
+                Family.Inn => "<u>Inns</u><sprite name=\"Inns_Emoji\">",
+                Family.Lumberyard => "<u>Lumberyards</u><sprite name=\"Lumberyards_Emoji\">",
+                Family.Temple => "<u>Temples</u><sprite name=\"Temples_Emoji\">",
+                Family.Guild => "<u>Guilds</u><sprite name=\"Guilds_Emoji\">",
+                Family.Stonework => "<u>Stonework</u><sprite name=\"Stonework_Emoji\">",
                 _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
             };
         }
@@ -149,15 +149,15 @@ public static class Utilities
             return value switch
             {
                 Family.None => "None",
-                Family.Town => "Town<sprite name=\"Towns_Emoji\">",
-                Family.Farm => "Farm<sprite name=\"Farms_Emoji\">",
-                Family.Mill => "Mill<sprite name=\"Mills_Emoji\">",
-                Family.Village => "Village<sprite name=\"Villages_Emoji\">",
-                Family.Inn => "Inn<sprite name=\"Inns_Emoji\">",
-                Family.Lumberyard => "Lumberyard<sprite name=\"Lumberyards_Emoji\">",
-                Family.Temple => "Temple<sprite name=\"Temples_Emoji\">",
-                Family.Guild => "Guild<sprite name=\"Guilds_Emoji\">",
-                Family.Stonework => "Stonework<sprite name=\"Stonework_Emoji\">",
+                Family.Town => "<u>Town</u><sprite name=\"Towns_Emoji\">",
+                Family.Farm => "<u>Farm</u><sprite name=\"Farms_Emoji\">",
+                Family.Mill => "<u>Mill</u><sprite name=\"Mills_Emoji\">",
+                Family.Village => "<u>Village</u><sprite name=\"Villages_Emoji\">",
+                Family.Inn => "<u>Inn</u><sprite name=\"Inns_Emoji\">",
+                Family.Lumberyard => "<u>Lumberyard</u><sprite name=\"Lumberyards_Emoji\">",
+                Family.Temple => "<u>Temple</u><sprite name=\"Temples_Emoji\">",
+                Family.Guild => "<u>Guild</u><sprite name=\"Guilds_Emoji\">",
+                Family.Stonework => "<u>Stonework</u><sprite name=\"Stonework_Emoji\">",
                 _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
             };
         }
