@@ -230,7 +230,7 @@ public static class Utilities
         return costString;
     }
 
-    public static string ToCustomString<T>(this List<T> data, bool showFamily, bool orInsteadOfAnd = false) where T : TileData
+    public static string ToCustomString<T>(this List<T> data, bool showFamily, bool orInsteadOfAnd = false, bool familyPlural = true) where T : TileData
     {
         if (typeof(T) == typeof(InfrastructureData) && showFamily)
         {
@@ -254,7 +254,7 @@ public static class Utilities
                     else
                         res += ", ";
                 }
-                res += familiesList[i].ToCustomString(true);
+                res += familiesList[i].ToCustomString(familyPlural);
             }
             return res;
         }

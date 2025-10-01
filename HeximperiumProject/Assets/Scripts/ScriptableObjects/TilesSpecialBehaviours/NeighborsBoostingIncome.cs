@@ -5,7 +5,7 @@ using UnityEngine;
 public class NeighborsBoostingIncome : SpecialBehaviour
 {
     [SerializeField] private List<ResourceToIntMap> _incomeBoost = new List<ResourceToIntMap>();
-    [SerializeField] private List<TileData> _boostingInfrastructures = new List<TileData>();
+    [SerializeField] private List<InfrastructureData> _boostingInfrastructures = new List<InfrastructureData>();
 
     //Get a boost if the neighbor is right
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
@@ -14,7 +14,7 @@ public class NeighborsBoostingIncome : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
-            if (_boostingInfrastructures.Contains(neighbor.TileData))
+            if (neighbor.TileData is InfrastructureData data && _boostingInfrastructures.Contains(data))
             {
                 behaviourTile.UpdateIncomes(_incomeBoost, true);
             }
@@ -30,7 +30,7 @@ public class NeighborsBoostingIncome : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
-            if (_boostingInfrastructures.Contains(neighbor.TileData))
+            if (neighbor.TileData is InfrastructureData data && _boostingInfrastructures.Contains(data))
             {
                 behaviourTile.UpdateIncomes(_incomeBoost, false);
             }
@@ -44,7 +44,7 @@ public class NeighborsBoostingIncome : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
-            if (_boostingInfrastructures.Contains(neighbor.TileData))
+            if (neighbor.TileData is InfrastructureData data && _boostingInfrastructures.Contains(data))
             {
                 neighbor.Highlight(show);
             }
@@ -53,23 +53,23 @@ public class NeighborsBoostingIncome : SpecialBehaviour
 
     public void CheckNewData(Tile behaviourTile, Tile tile)
     {
-        if (_boostingInfrastructures.Contains(tile.TileData))
+        if (tile.TileData is InfrastructureData data && _boostingInfrastructures.Contains(data))
         {
             //Check if the previous data didn't already applied the boost
-            if (_boostingInfrastructures.Contains(tile.PreviousData))
+            if (tile.PreviousData is InfrastructureData d && _boostingInfrastructures.Contains(d))
                 return;
             behaviourTile.UpdateIncomes(_incomeBoost, true);
         }
         else
         {
             //Check if the previous data did apply a boost, then remove it if yes
-            if (_boostingInfrastructures.Contains(tile.PreviousData))
+            if (tile.PreviousData is InfrastructureData d && _boostingInfrastructures.Contains(d))
                 behaviourTile.UpdateIncomes(_incomeBoost, false);
         }
     }
 
     public override string GetBehaviourDescription()
     {
-        return $"Income boosted by {_incomeBoost.IncomeToString()} for each neighboring {_boostingInfrastructures.ToCustomString(true)}";
+        return $"Income boosted by {_incomeBoost.IncomeToString()} for each neighboring {_boostingInfrastructures.ToCustomString(true, false, false)}";
     }
 }

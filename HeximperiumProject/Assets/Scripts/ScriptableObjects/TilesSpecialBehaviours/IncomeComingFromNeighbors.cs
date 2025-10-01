@@ -5,7 +5,7 @@ using UnityEngine;
 public class IncomeComingFromNeighbors : SpecialBehaviour
 {
     [SerializeField] private Resource _resource;
-    [SerializeField] private List<TileData> _excludedTiles = new List<TileData>();
+    [SerializeField] private List<InfrastructureData> _excludedTiles = new List<InfrastructureData>();
 
     //Subscribe to neighbors event OnIncomeModified and update its income based on their income
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
@@ -18,7 +18,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
             {
 
                 //Don't do the adjustement if the neighbor is excluded
-                if (_excludedTiles.Contains(neighbor.TileData))
+                if (neighbor.TileData is InfrastructureData data && _excludedTiles.Contains(data))
                     continue;
 
                 List<ResourceToIntMap> income = new List<ResourceToIntMap>();
@@ -54,7 +54,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
             if (neighbor.Claimed)
             {
                 //Don't do the rollback if the neighbor is excluded
-                if (_excludedTiles.Contains(neighbor.TileData))
+                if (neighbor.TileData is InfrastructureData data && _excludedTiles.Contains(data))
                     continue;
 
                 List<ResourceToIntMap> income = new List<ResourceToIntMap>();
@@ -82,7 +82,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
             if (neighbor.Claimed)
             {
                 //Don't do the highlight if the neighbor is excluded
-                if (_excludedTiles.Contains(neighbor.TileData))
+                if (neighbor.TileData is InfrastructureData data && _excludedTiles.Contains(data))
                     continue;
 
                 foreach (ResourceToIntMap item in neighbor.Incomes)
@@ -97,7 +97,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
     public void CheckNewIncome(Tile behaviourTile, Tile neighbor, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
     {
         //Don't do the adjustement if the neighbor is excluded
-        if (_excludedTiles.Contains(neighbor.TileData))
+        if (neighbor.TileData is InfrastructureData data && _excludedTiles.Contains(data))
             return;
 
         List<ResourceToIntMap> previousInc = new List<ResourceToIntMap>();
@@ -121,7 +121,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
     public void CheckClaimedTile(Tile behaviourTile, Tile tile)
     {
         //Don't do the adjustement if the tile is excluded
-        if (_excludedTiles.Contains(tile.TileData))
+        if (tile.TileData is InfrastructureData data && _excludedTiles.Contains(data))
             return;
 
         List<ResourceToIntMap> income = new List<ResourceToIntMap>();

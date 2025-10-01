@@ -86,6 +86,6 @@ public class GenerateCarnivalistPerOccurrenceInEmpire : SpecialBehaviour
 
     public override string GetBehaviourDescription()
     {
-        return $"Recruit {_carnivalistQuantity}<sprite name=\"Carnivalist_Emoji\"> for each occurrence of {_tilesBoosting.ToCustomString(true)} in the empire";
+        return $"Recruit {_carnivalistQuantity}<sprite name=\"Carnivalist_Emoji\"> for each occurrence of {_tilesBoosting.ToCustomString(true, false, false)} in the empire";
     }
 }

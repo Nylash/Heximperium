@@ -5,7 +5,7 @@ using UnityEngine;
 public class BoostInfraOnEmpire : SpecialBehaviour
 {
     [SerializeField] private List<ResourceToIntMap> _incomeBoost = new List<ResourceToIntMap>();
-    [SerializeField] private List<TileData> _infrastructuresBoosted = new List<TileData>();
+    [SerializeField] private List<InfrastructureData> _infrastructuresBoosted = new List<InfrastructureData>();
 
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
     {
