@@ -81,21 +81,14 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TextMeshProUGUI _exploitChoiceDetail;
     [SerializeField] private TextMeshProUGUI _entertainChoiceTitle;
     [SerializeField] private TextMeshProUGUI _entertainChoiceDetail;
-    [SerializeField] private Image _exploLockImage;
-    [SerializeField] private Image _expandLockImage;
-    [SerializeField] private Image _exploitLockImage;
-    [SerializeField] private Image _entertainLockImage;
-    [SerializeField] private Sprite _lockSprite;
-    [SerializeField] private Sprite _unlockSprite;
-    [SerializeField] private Button _rerollButton;
-    [SerializeField] private Button _exploLockButton;
-    [SerializeField] private Button _expandLockButton;
-    [SerializeField] private Button _exploitLockButton;
-    [SerializeField] private Button _entertainLockButton;
-    [SerializeField] private List<Image> _exploLockLines;
-    [SerializeField] private List<Image> _expandLockLines;
-    [SerializeField] private List<Image> _exploitLockLines;
-    [SerializeField] private List<Image> _entertainLockLines;
+    [SerializeField] private Button _rerollExplo;
+    [SerializeField] private Button _rerollExpand;
+    [SerializeField] private Button _rerollExploit;
+    [SerializeField] private Button _rerollEntertain;
+    [SerializeField] private Animator _animatorExplo;
+    [SerializeField] private Animator _animatorExpand;
+    [SerializeField] private Animator _animatorExploit;
+    [SerializeField] private Animator _animatorEntertain;
     [Header("_________________________________________________________")]
     [Header("Show Income button")]
     [SerializeField] private Image _showIncomeButton;
@@ -127,12 +120,6 @@ public class UIManager : Singleton<UIManager>
     private bool _uiPhaseInAnimation;
     private bool _areIncomesShown;
     private bool _areEntPlacementShown;
-    // Upgrades choices variables
-    private bool _exploLockState;
-    private bool _expandLockState;
-    private bool _exploitLockState;
-    private bool _entertainLockState;
-    private bool _alreadyReroll;
     #endregion
 
     #region ACCESSORS
@@ -499,29 +486,10 @@ public class UIManager : Singleton<UIManager>
                 TradeMenu();
             if (_upgradesMenu.activeSelf)
                 UpgradesMenu();
-            _rerollButton.interactable = true;
-            _exploLockButton.interactable = true;
-            _expandLockButton.interactable = true;
-            _exploitLockButton.interactable = true;
-            _entertainLockButton.interactable = true;
-            _alreadyReroll = false;
-            _exploLockState = false;
-            _expandLockState = false;
-            _exploitLockState = false;
-            _entertainLockState = false;
-            _exploLockImage.sprite = _unlockSprite;
-            _expandLockImage.sprite = _unlockSprite;
-            _exploitLockImage.sprite = _unlockSprite;
-            _entertainLockImage.sprite = _unlockSprite;
-            foreach (Image line in _exploLockLines)
-                line.enabled = true;
-            foreach (Image line in _expandLockLines)
-                line.enabled = true;
-            foreach (Image line in _exploitLockLines)
-                line.enabled = true;
-            foreach (Image line in _entertainLockLines)
-                line.enabled = true;
-            _rerollButton.GetComponentInChildren<TextMeshProUGUI>().text = "Reroll 4";
+            _rerollExplo.interactable = true;
+            _rerollExpand.interactable = true;
+            _rerollExploit.interactable = true;
+            _rerollEntertain.interactable = true;
             _upgradesChoiceMenuObject.SetActive(true);
             GameManager.Instance.GamePaused = true;
         }
@@ -532,61 +500,30 @@ public class UIManager : Singleton<UIManager>
         UpgradesManager.Instance.ConfirmUpgrade((Phase)phase);
     }
 
-    public void SwitchUpgradeLockState(int phase)
+    public void RerollUpgrade(int phase)
     {
         switch ((Phase)phase)
         {
             case Phase.Explore:
-                _exploLockState = !_exploLockState;
-                _exploLockButton.GetComponent<Image>().sprite = _exploLockState ? _lockSprite : _unlockSprite;
-                foreach (Image line in _exploLockLines)
-                    line.enabled = !_exploLockState;
+                _animatorExplo.SetTrigger("Reroll");
+                _rerollExplo.interactable = false;
                 break;
             case Phase.Expand:
-                _expandLockState = !_expandLockState;
-                _expandLockButton.GetComponent<Image>().sprite = _expandLockState ? _lockSprite : _unlockSprite;
-                foreach (Image line in _expandLockLines)
-                    line.enabled = !_expandLockState;
+                _animatorExpand.SetTrigger("Reroll");
+                _rerollExpand.interactable = false;
                 break;
             case Phase.Exploit:
-                _exploitLockState = !_exploitLockState;
-                _exploitLockButton.GetComponent<Image>().sprite = _exploitLockState ? _lockSprite : _unlockSprite;
-                foreach (Image line in _exploitLockLines)
-                    line.enabled = !_exploitLockState;
+                _animatorExploit.SetTrigger("Reroll");
+                _rerollExploit.interactable = false;
                 break;
             case Phase.Entertain:
-                _entertainLockState = !_entertainLockState;
-                _entertainLockButton.GetComponent<Image>().sprite = _entertainLockState ? _lockSprite : _unlockSprite;
-                foreach (Image line in _entertainLockLines)
-                    line.enabled = !_entertainLockState;
+                _animatorEntertain.SetTrigger("Reroll");
+                _rerollEntertain.interactable = false;
+                break;
+            default:
+                Debug.LogError("Invalid phase for rerolling upgrade.");
                 break;
         }
-        int count = new[] { _exploLockState, _expandLockState, _exploitLockState, _entertainLockState }.Count(b => !b);
-        _rerollButton.GetComponentInChildren<TextMeshProUGUI>().text = "Reroll " + count;
-        if (count == 0)
-            _rerollButton.interactable = false;
-        else if (!_alreadyReroll)
-            _rerollButton.interactable = true;
-    }
-
-    public void RerollUpgradesChoice()
-    {
-        if (!_exploitLockState)
-            UpgradesManager.Instance.RerollUpgradesChoice(Phase.Exploit);
-        if (!_expandLockState)
-            UpgradesManager.Instance.RerollUpgradesChoice(Phase.Expand);
-        if (!_exploLockState)
-            UpgradesManager.Instance.RerollUpgradesChoice(Phase.Explore);
-        if (!_entertainLockState)
-            UpgradesManager.Instance.RerollUpgradesChoice(Phase.Entertain);
-
-        _alreadyReroll = true;
-        _exploLockButton.interactable = false;
-        _expandLockButton.interactable = false;
-        _exploitLockButton.interactable = false;
-        _entertainLockButton.interactable = false;
-        _rerollButton.interactable = false;
-        _rerollButton.GetComponentInChildren<TextMeshProUGUI>().text = "Reroll used";
     }
 
     public void FillUpgradesList(int upgradeNumber, UpgradeEffect upgrade)
