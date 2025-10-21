@@ -10,25 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e0e460f401a6ce44ad84d3534c37a05, type: 3}
-  m_Name: Quarry
+  m_Name: Workshop
   m_EditorClassIdentifier: 
-  _name: Quarry
+  _name: Workshop
   _family: 9
   _visualsProps:
   - tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
     gameObjects:
-    - {fileID: 8158725270209530402, guid: 1f4d1e5c1035e434a9917f5d443df1fe, type: 3}
-    - {fileID: 8158725270209530402, guid: bc53991decf6ad44098fe40ac1eefc07, type: 3}
+    - {fileID: 8158725270209530402, guid: c3e5bc4d3c186c749bd3774e5f37feca, type: 3}
   _claimCost: 0
   _incomes:
   - resource: 1
-    value: 4
-  _availableInfrastructures:
-  - {fileID: 11400000, guid: fad078b89b1b57642a35a66200c5269a, type: 2}
-  _specialBehaviours: []
+    value: 2
+  _availableInfrastructures: []
+  _specialBehaviours:
+  - {fileID: 11400000, guid: 5bdf1f5264fdbd04b8cb1a1306cb8ed1, type: 2}
   _costs:
   - resource: 0
-    value: 10
+    value: 15
+  - resource: 1
+    value: 5
   _scoutStartingPoint: 0
   isTown: 0
-  _infrastructureLevel: 1
+  _infrastructureLevel: 2
