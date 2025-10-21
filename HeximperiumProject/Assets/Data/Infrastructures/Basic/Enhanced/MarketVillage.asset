@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: MarketVillage
   m_EditorClassIdentifier: 
   _name: Market Village
-  _visuals:
-  - {fileID: 2100000, guid: 22a123ab97f14bc40a28bd9f60cb68d7, type: 2}
+  _family: 4
   _visualsProps:
   - tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
     gameObjects:
@@ -37,3 +36,4 @@ MonoBehaviour:
     value: 15
   _scoutStartingPoint: 0
   isTown: 0
+  _infrastructureLevel: 2

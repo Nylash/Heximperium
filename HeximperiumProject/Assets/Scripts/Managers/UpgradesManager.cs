@@ -32,6 +32,14 @@ public class UpgradesManager : Singleton<UpgradesManager>
         _remainingEntertainUpgrades.AddRange(_entertainUpgrades);
     }
 
+#if UNITY_EDITOR
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.U))
+            StartUpgradesChoice();
+    }
+#endif
+
     private void CheckNewTurnValue(int newTurn)
     {
         if (_turnsForUpgradesChoice.Contains(newTurn))

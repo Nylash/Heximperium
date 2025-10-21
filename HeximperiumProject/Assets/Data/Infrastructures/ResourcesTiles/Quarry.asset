@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: Quarry
   m_EditorClassIdentifier: 
   _name: Quarry
-  _visuals:
-  - {fileID: 2100000, guid: 71955a2af21c2a342aabb132cc61e99d, type: 2}
+  _family: 9
   _visualsProps:
   - tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
     gameObjects:
@@ -31,3 +30,4 @@ MonoBehaviour:
     value: 10
   _scoutStartingPoint: 0
   isTown: 0
+  _infrastructureLevel: 1

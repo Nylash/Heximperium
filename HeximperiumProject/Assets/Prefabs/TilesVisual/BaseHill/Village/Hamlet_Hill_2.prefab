@@ -97,7 +97,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8784619814335075951}
   m_Layer: 0
-  m_Name: Village_Hill_2
+  m_Name: Hamlet_Hill_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

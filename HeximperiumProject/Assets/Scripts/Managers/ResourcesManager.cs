@@ -56,7 +56,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
     public event Action<int> OnGoldSpent;
     public event Action<int> OnSpecialResourcesSpent;
     public event Action<int> OnClaimSpent;
-    public event Action<int> OnCarnivalistSpent;
+    public event Action<Tile, int> OnCarnivalistSpent;
     #endregion
 
     public void CHEAT_RESOURCES()
@@ -143,7 +143,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
         }
     }
 
-    public void UpdateCarnivalist(int value, Transaction transaction, Tile tile = null, GenerateCarnivalist sbGenerateCarn = null)
+    public void UpdateCarnivalist(int value, Transaction transaction, Tile tile = null)
     {
         if (transaction == Transaction.Spent)
             value = -value;
@@ -152,40 +152,28 @@ public class ResourcesManager : Singleton<ResourcesManager>
             _carnivalist = 0;
         UIManager.Instance.UpdateCarnivalistUI(_carnivalist);
 
-        // Prevent replaying the event that call VFX if the special was already present on the tile (or on the target tile if spending)
-        if (tile && sbGenerateCarn)
+        if (!tile)
         {
             switch (transaction)
             {
                 case Transaction.Gain:
-                    foreach (GenerateCarnivalist behaviour in tile.PreviousData.SpecialBehaviours.OfType<GenerateCarnivalist>())
-                    {
-                        if (ReferenceEquals(sbGenerateCarn, behaviour))
-                            return;
-                    }
+                    HelperOnCarnivalistGained(null, value);
                     break;
                 case Transaction.Spent:
-                    if (tile.TargetData)
-                    {
-                        foreach (GenerateCarnivalist behaviour in tile.TargetData.SpecialBehaviours.OfType<GenerateCarnivalist>())
-                        {
-                            if (ReferenceEquals(sbGenerateCarn, behaviour))
-                                return;
-                        }
-                    }
+                    HelperOnCarnivalistSpent(null, value);
                     break;
             }
         }
+    }
 
-        switch (transaction)
-        {
-            case Transaction.Gain:
-                OnCarnivalistGained?.Invoke(tile, value);
-                break;
-            case Transaction.Spent:
-                OnCarnivalistSpent?.Invoke(Mathf.Abs(value));
-                break;
-        }
+    public void HelperOnCarnivalistGained(Tile tile, int value)
+    {
+        OnCarnivalistGained?.Invoke(tile, value);
+    }
+
+    public void HelperOnCarnivalistSpent(Tile tile, int value)
+    {
+        OnCarnivalistSpent?.Invoke(tile, Mathf.Abs(value));
     }
 
     public void UpdateCarnivalistSource(TileData source, int value, Transaction transaction)

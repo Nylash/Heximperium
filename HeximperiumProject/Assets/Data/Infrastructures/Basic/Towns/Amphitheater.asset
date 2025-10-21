@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Amphitheater
   m_EditorClassIdentifier: 
   _name: Amphitheater
+  _family: 1
   _visualsProps:
   - tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
     gameObjects:
@@ -38,3 +39,4 @@ MonoBehaviour:
     value: 25
   _scoutStartingPoint: 1
   isTown: 1
+  _infrastructureLevel: 3

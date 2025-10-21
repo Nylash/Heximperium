@@ -23,8 +23,8 @@ public class AddSpecialBehaviourToInfraData : UpgradeEffect
 
     public override string GetEffectDescription()
     {
-        return $"{_boostedInfra.ToCustomString()} " +
-               $"{(_boostedInfra.Count == 1 ? "gains" : "gain")} " +
+        return $"{_boostedInfra.ToCustomString(true)} " +
+               $"gain " +
                $"\"{_specialBehaviour.GetBehaviourDescription()}\"";
 
     }

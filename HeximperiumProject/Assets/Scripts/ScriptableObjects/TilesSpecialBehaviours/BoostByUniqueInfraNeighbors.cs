@@ -25,7 +25,7 @@ public class BoostByUniqueInfraNeighbors : SpecialBehaviour
 
         //Boost for each unique infra
         for (int i = 0; i < behaviourTile.UniqueInfraNeighborsCount; i++)
-            behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, _boost);
+            behaviourTile.UpdateIncomes(_boost, true);
     }
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
@@ -39,7 +39,7 @@ public class BoostByUniqueInfraNeighbors : SpecialBehaviour
 
         //Remove boost for each unique infra
         for (int i = 0; i < behaviourTile.UniqueInfraNeighborsCount; i++)
-            behaviourTile.Incomes = Utilities.SubtractResourceToIntMaps(behaviourTile.Incomes, _boost);
+            behaviourTile.UpdateIncomes(_boost, false);
 
         behaviourTile.UniqueInfraNeighborsCount = 0;
     }
@@ -75,13 +75,13 @@ public class BoostByUniqueInfraNeighbors : SpecialBehaviour
         {
             // Add boost delta times
             for (int i = 0; i < delta; i++)
-                behaviourTile.Incomes = Utilities.MergeResourceToIntMaps(behaviourTile.Incomes, _boost);
+                behaviourTile.UpdateIncomes(_boost, true);
         }
         else
         {
             // Remove boost |delta| times
             for (int i = 0; i < -delta; i++)
-                behaviourTile.Incomes = Utilities.SubtractResourceToIntMaps(behaviourTile.Incomes, _boost);
+                behaviourTile.UpdateIncomes(_boost, false);
         }
 
         behaviourTile.UniqueInfraNeighborsCount = uniqueData.Count;

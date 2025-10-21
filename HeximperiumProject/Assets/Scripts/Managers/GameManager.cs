@@ -247,10 +247,12 @@ public class GameManager : Singleton<GameManager>
     private void SelectTile(Tile tile)
     {
         //We can only select revealed tiles except if we are in exploration phase and have the right upgrade
-        if (!tile.Revealed && 
-            !ExplorationManager.Instance.UpgradeRevealAnywhere && 
-            _currentPhase != Phase.Explore)
+        if (!tile.Revealed &&
+            !(ExplorationManager.Instance.UpgradeRevealAnywhere != null
+              && _currentPhase == Phase.Explore))
+        {
             return;
+        }
 
         _selectedTile = tile;
 
@@ -299,7 +301,7 @@ public class GameManager : Singleton<GameManager>
                 break;
             case Interaction.Destroy:
                 if(_currentPhase == Phase.Exploit)
-                    ExploitationManager.Instance.DestroyInfrastructure(button.AssociatedTile);
+                    ExploitationManager.Instance.DestroyInfrastructure(button.AssociatedTile, true);
                 else
                     EntertainmentManager.Instance.DestroyEntertainment(button.AssociatedTile);
                 break;

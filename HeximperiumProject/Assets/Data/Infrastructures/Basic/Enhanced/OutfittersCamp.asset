@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: OutfittersCamp
   m_EditorClassIdentifier: 
   _name: Outfitter's Camp
-  _visuals:
-  - {fileID: 2100000, guid: 22a123ab97f14bc40a28bd9f60cb68d7, type: 2}
+  _family: 6
   _visualsProps:
   - tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
     gameObjects:
@@ -34,3 +33,4 @@ MonoBehaviour:
     value: 10
   _scoutStartingPoint: 1
   isTown: 0
+  _infrastructureLevel: 2

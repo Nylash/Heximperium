@@ -39,7 +39,7 @@ public class JuiceManager : Singleton<JuiceManager>
         ResourcesManager.Instance.OnClaimGained += (tile, value) => ResourceGain(tile, value, ExtendedResource.Claim);
         ResourcesManager.Instance.OnClaimSpent += (value) => PlayUIResourceVFX(value, _claimMat, UIManager.Instance.VfxAnchorClaim, UIManager.Instance.ColorCantAfford);
         ResourcesManager.Instance.OnCarnivalistGained += (tile, value) => ResourceGain(tile, value, ExtendedResource.Carnivalist);
-        ResourcesManager.Instance.OnCarnivalistSpent += (value) => PlayUIResourceVFX(value, _carnivalistMat, UIManager.Instance.VfxAnchorCarnivalist, UIManager.Instance.ColorCantAfford);
+        ResourcesManager.Instance.OnCarnivalistSpent += (tile, value) => CarnivalistSpent(tile, value);
 
         GameManager.Instance.OnGameFinished += EndGameVFX;
 
@@ -98,6 +98,14 @@ public class JuiceManager : Singleton<JuiceManager>
         main.startColor = new ParticleSystem.MinMaxGradient(color);
 
         particleSystem.Play();
+    }
+
+    private void CarnivalistSpent(Tile tile, int value)
+    {
+        if (tile)
+            PlayResourceVFX(tile, value, _carnivalistMat, UIManager.Instance.ColorCantAfford);
+        else
+            PlayUIResourceVFX(value, _carnivalistMat, UIManager.Instance.VfxAnchorCarnivalist, UIManager.Instance.ColorCantAfford);
     }
 
     private void DustVFX(Tile tile)

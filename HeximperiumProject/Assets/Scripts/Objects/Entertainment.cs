@@ -30,19 +30,13 @@ public class Entertainment : MonoBehaviour
         _renderer = GetComponent<SpriteRenderer>();
     }
 
-    private void FixedUpdate()
-    {
-        _pointsBuffer = _points;
-    }
-
     private void LateUpdate()
     {
         if (_pointsBuffer > _points)//We lost points during the frame
         {
-            EntertainmentManager.Instance.OnScoreLost?.Invoke(_tile, _pointsBuffer - _points);
-            // Reset the buffer so we don't fire again until the next FixedUpdate
-            _pointsBuffer = _points;
+            EntertainmentManager.Instance.OnScoreLost?.Invoke(_tile, _pointsBuffer - _points); 
         }
+        _pointsBuffer = _points;
     }
 
     public void Initialize(Tile tile, EntertainmentData data)

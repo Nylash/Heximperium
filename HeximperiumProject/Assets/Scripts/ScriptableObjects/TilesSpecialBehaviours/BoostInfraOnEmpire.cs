@@ -5,7 +5,7 @@ using UnityEngine;
 public class BoostInfraOnEmpire : SpecialBehaviour
 {
     [SerializeField] private List<ResourceToIntMap> _incomeBoost = new List<ResourceToIntMap>();
-    [SerializeField] private List<TileData> _infrastructuresBoosted = new List<TileData>();
+    [SerializeField] private List<InfrastructureData> _infrastructuresBoosted = new List<InfrastructureData>();
 
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
     {
@@ -13,7 +13,7 @@ public class BoostInfraOnEmpire : SpecialBehaviour
         {
             if (tile.TileData is InfrastructureData data && _infrastructuresBoosted.Contains(data))
             {
-                tile.Incomes = Utilities.MergeResourceToIntMaps(tile.Incomes, _incomeBoost);
+                tile.UpdateIncomes(_incomeBoost, true, behaviourTile.TileData);
             }
         }
         ExploitationManager.Instance.OnInfraBuilded -= behaviourTile.ListenerOnInfraBuilded_BoostInfraOnEmpire;
@@ -28,7 +28,7 @@ public class BoostInfraOnEmpire : SpecialBehaviour
         {
             if (tile.TileData is InfrastructureData data && _infrastructuresBoosted.Contains(data))
             {
-                tile.Incomes = Utilities.SubtractResourceToIntMaps(tile.Incomes, _incomeBoost);
+                tile.UpdateIncomes(_incomeBoost, false, behaviourTile.TileData);
             }
         }
 
@@ -54,13 +54,13 @@ public class BoostInfraOnEmpire : SpecialBehaviour
             //Check if the previous data didn't already get the boost
             if (tile.PreviousData is InfrastructureData previousData && _infrastructuresBoosted.Contains(previousData))
                 return;
-            tile.Incomes = Utilities.MergeResourceToIntMaps(tile.Incomes, _incomeBoost);
+            tile.UpdateIncomes(_incomeBoost, true, behaviourTile.TileData);
         }
         else
         {
             //Check if the previous data did get a boost, then remove it if yes
             if (tile.PreviousData is InfrastructureData previousData && _infrastructuresBoosted.Contains(previousData))
-                tile.Incomes = Utilities.SubtractResourceToIntMaps(tile.Incomes, _incomeBoost);
+                tile.UpdateIncomes(_incomeBoost, false, behaviourTile.TileData);
         }
     }
 
@@ -68,12 +68,12 @@ public class BoostInfraOnEmpire : SpecialBehaviour
     {
         if (tile.PreviousData is InfrastructureData data && _infrastructuresBoosted.Contains(data))
         {
-            tile.Incomes = Utilities.SubtractResourceToIntMaps(tile.Incomes, _incomeBoost);
+            tile.UpdateIncomes(_incomeBoost, false, behaviourTile.TileData);
         }
     }
 
     public override string GetBehaviourDescription()
     {
-        return $"Boosts the income of every {_infrastructuresBoosted.ToCustomString()} in the empire by {_incomeBoost.IncomeToString()}";
+        return $"Boosts the income of every {_infrastructuresBoosted.ToCustomString(true)} in the empire by {_incomeBoost.IncomeToString()}";
     }
 }

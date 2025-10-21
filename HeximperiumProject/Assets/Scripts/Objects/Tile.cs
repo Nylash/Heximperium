@@ -27,6 +27,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private Vector2 _coordinate;
     [SerializeField] private List<ResourceToIntMap> _incomes = new List<ResourceToIntMap>();
 
+    private Dictionary<TileData, List<ResourceToIntMap>> _incomesSources = new Dictionary<TileData, List<ResourceToIntMap>>();
     private int _claimIncome = 0;
     private Tile[] _neighbors = new Tile[6];
     private TileData _initialData;
@@ -37,12 +38,12 @@ public class Tile : MonoBehaviour
     private Border _border;
     private Animator _animator;
     private GameObject _highlightObject;
-    private int _currentInfraLevel = 0;
     private Coroutine _interactionCoroutine;
     private TileInteractionAnimationState _interactionAnimationState = TileInteractionAnimationState.None;
     private GameObject _visualAssets;
     private int _carnivalistCostReduction;
-    private int _recruitedCarnivalists; // variable only used for UI purposes
+    private int _recruitedCarnivalists;
+    private int _bufferRecruitedCarnivalists;
     //Scouts
     private List<Scout> _scouts = new List<Scout>();
     //Entertainment variables
@@ -68,22 +69,12 @@ public class Tile : MonoBehaviour
 
     #region ACCESSORS
     public Vector2 Coordinate { get => _coordinate; set => _coordinate = value; }
-    public TileData TileData { get => _tileData; set => UpdateTileData(value); }
+    public TileData TileData { get => _tileData; }
     public bool Claimed { get => _claimed;}
     public bool Revealed { get => _revealed;}
     public Tile[] Neighbors { get => _neighbors;}
     public List<Scout> Scouts { get => _scouts; set => _scouts = value; }
-    public List<ResourceToIntMap> Incomes
-    {
-        get => _incomes;
-        set
-        {
-            OnIncomeModified?.Invoke(this, _incomes, value);
-            _incomes = value;
-            if (UIManager.Instance.AreIncomesShown)
-                ShowIncomeUI(true);
-        }
-    }
+    public List<ResourceToIntMap> Incomes { get => _incomes; }
     public TileData InitialData { get => _initialData; set => _initialData = value; }
     public Entertainment Entertainment 
     { 
@@ -104,7 +95,7 @@ public class Tile : MonoBehaviour
                 ShowIncomeUI(true);
         }  
     }
-    public TileData PreviousData { get => _previousData; }
+    public TileData PreviousData { get => _previousData; set => _previousData = value; }
     public int UniqueInfraNeighborsCount { get => _uniqueInfraNeighborsCount; set => _uniqueInfraNeighborsCount = value; }
     public EntertainmentData PreviousEntertainmentData { get => _previousEntertainmentData; }
     public int UniqueEntertainmentNeighborsCount_SB { get => _uniqueEntertainmentNeighborsCount_SB; set => _uniqueEntertainmentNeighborsCount_SB = value; }
@@ -155,6 +146,7 @@ public class Tile : MonoBehaviour
     }
 
     public TileData TargetData { get => _targetData; }
+    public Dictionary<TileData, List<ResourceToIntMap>> IncomesSources { get => _incomesSources; }
     #endregion
 
     private void Awake()
@@ -173,6 +165,18 @@ public class Tile : MonoBehaviour
         };
     }
 
+    private void LateUpdate()
+    {
+        if (_bufferRecruitedCarnivalists != _recruitedCarnivalists)
+        {
+            if (_recruitedCarnivalists < _bufferRecruitedCarnivalists)
+                ResourcesManager.Instance.HelperOnCarnivalistSpent(this, _bufferRecruitedCarnivalists - _recruitedCarnivalists);
+            else
+                ResourcesManager.Instance.HelperOnCarnivalistGained(this, _recruitedCarnivalists - _bufferRecruitedCarnivalists);
+        }
+        _bufferRecruitedCarnivalists = _recruitedCarnivalists;
+    }
+
     #region BASIC METHODS
     public void InitializeTile(TileData data)
     {
@@ -182,8 +186,82 @@ public class Tile : MonoBehaviour
         _incomes = data.Incomes;
     }
 
+    public void UpdateIncomes(List<ResourceToIntMap> inputIncomes, bool merge, TileData source = null)
+    {
+        List<ResourceToIntMap> previousIncomes = _incomes;
+
+        if (merge)
+        {
+            _incomes = Utilities.MergeResourceToIntMaps(_incomes, inputIncomes);
+            if (source)
+            {
+                if (!_incomesSources.ContainsKey(source))
+                    _incomesSources.Add(source, inputIncomes);
+                else
+                    _incomesSources[source] = Utilities.MergeResourceToIntMaps(_incomesSources[source], inputIncomes);
+                // Clean the source if all values are 0
+                bool allZero = true;
+                foreach (ResourceToIntMap item in _incomesSources[source])
+                {
+                    if (item.value != 0)
+                    {
+                        allZero = false;
+                        break;
+                    }
+                }
+                if (allZero)
+                    _incomesSources.Remove(source);
+            }
+        }
+        else
+        {
+            _incomes = Utilities.SubtractResourceToIntMaps(_incomes, inputIncomes);
+            if (source)
+            {
+                if (_incomesSources.ContainsKey(source))
+                {
+                    _incomesSources[source] = Utilities.SubtractResourceToIntMaps(_incomesSources[source], inputIncomes);
+                    // Clean the source if all values are 0
+                    bool allZero = true;
+                    foreach (ResourceToIntMap item in _incomesSources[source])
+                    {
+                        if (item.value != 0)
+                        {
+                            allZero = false;
+                            break;
+                        }
+                    }
+                    if (allZero)
+                        _incomesSources.Remove(source);
+                }
+                else
+                    Debug.LogWarning("Trying to remove income from a source that doesn't exist in the dictionary");
+            }
+        }
+
+        OnIncomeModified?.Invoke(this, previousIncomes, _incomes);
+        if (UIManager.Instance.AreIncomesShown)
+            ShowIncomeUI(true);
+    }
+
+    public List<ResourceToIntMap> GetIncomeFromTileOnly()
+    {
+        if (_incomes.Count == 0)
+            return new List<ResourceToIntMap>();
+        if (_incomesSources.Count == 0)
+            return _incomes;
+
+        List<ResourceToIntMap> incomeFromTileOnly = new List<ResourceToIntMap>();
+        incomeFromTileOnly = Utilities.MergeResourceToIntMaps(incomeFromTileOnly, _incomes);
+        foreach (var kvp in _incomesSources)
+        {
+            incomeFromTileOnly = Utilities.SubtractResourceToIntMaps(incomeFromTileOnly, kvp.Value);
+        }
+        return incomeFromTileOnly;
+    }
+
     //Update the tile data and call every other methods that impact
-    private void UpdateTileData(TileData value)
+    public void UpdateTileData(TileData value, bool updateVisual)
     {
         _targetData = value;
 
@@ -192,17 +270,15 @@ public class Tile : MonoBehaviour
         //Set the new income
         if (value is InfrastructureData)
         {
-            Incomes = Utilities.MergeResourceToIntMaps(_incomes, value.Incomes);
-            _currentInfraLevel++;
+            UpdateIncomes(value.Incomes, true);
         }
         else
         {
             //We are going back to the initial data (basic tile, resource tile or hazardous tile) so we reset the income
-            Incomes = Utilities.SubtractResourceToIntMaps(_incomes, _tileData.Incomes);
+            UpdateIncomes(_tileData.Incomes, false);
             //If the preivous data is an infra we were on an enhanced infra so we need to remove the base infra income too
             if(_previousData is InfrastructureData)
-                Incomes = Utilities.SubtractResourceToIntMaps(_incomes, _previousData.Incomes);
-            _currentInfraLevel = 0;
+                UpdateIncomes(_previousData.Incomes, false);
         }
 
         name = value.TileName + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
@@ -210,7 +286,8 @@ public class Tile : MonoBehaviour
         _tileData = value;
         _targetData = null;
 
-        UpdateVisual();
+        if (updateVisual)
+            UpdateVisual();
 
         UpdateSpecialBehaviours();
 
@@ -260,29 +337,10 @@ public class Tile : MonoBehaviour
     //Change tile's visual based on the tile data
     private void UpdateVisual()
     {
-        switch (_currentInfraLevel)
-        {
-            case 0:
-                _infraLvlRenderer.sprite = null;
-                break;
-            case 1:
-                _infraLvlRenderer.sprite = _spriteInfraLvl[0];
-                break;
-            case 2:
-                _infraLvlRenderer.sprite = _spriteInfraLvl[1];
-                break;
-            case 3:
-                _infraLvlRenderer.sprite = _spriteInfraLvl[2];
-                break;
-            case 4:
-                _infraLvlRenderer.sprite = _spriteInfraLvl[3];
-                break;
-            case 5:
-                _infraLvlRenderer.sprite = _spriteInfraLvl[4];
-                break;
-            default:
-                break;
-        }
+        if (_tileData is InfrastructureData infraData)
+            _infraLvlRenderer.sprite = _spriteInfraLvl[infraData.InfrastructureLevel - 1];
+        else
+            _infraLvlRenderer.sprite = null;
 
         if (_tileData is HazardousTileData)
             _claimTintAnimator.gameObject.SetActive(false);
@@ -302,6 +360,9 @@ public class Tile : MonoBehaviour
 
     public void Highlight(bool show)
     {
+        if (_tileData is HazardousTileData)
+            return;
+
         if (show)
         {
             if (_highlightObject != null)
@@ -571,7 +632,7 @@ public class Tile : MonoBehaviour
     {
         foreach (BoostNeighborsIncome behaviour in _tileData.SpecialBehaviours.OfType<BoostNeighborsIncome>())
         {
-            behaviour.CheckNewData(tile);
+            behaviour.CheckNewData(tile, this);
         }
     }
 

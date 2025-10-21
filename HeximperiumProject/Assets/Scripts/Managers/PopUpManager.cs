@@ -3,7 +3,6 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.InputSystem.OnScreen.OnScreenStick;
 
 public class PopUpManager : Singleton<PopUpManager>
 {
@@ -16,11 +15,11 @@ public class PopUpManager : Singleton<PopUpManager>
     [SerializeField][Range(0f,1f)] private float _percentageOfTimerForVisualHint = 0.75f;
     [SerializeField] private Image _timerOverImage;
     [SerializeField] private float _offsetBetweenSeveralPopUps = 1f;
+    /*
     [SerializeField] private float _marginAtMinZoom = 45f;
     [SerializeField] private float _marginAtMaxZoom = 150f;
+    */
     [SerializeField] private float _maxScreenFraction = 0.15f;
-    [SerializeField] private Vector4 _horizontalMargin = new Vector4(10, 0, 10, 0); // left, top, right, bottom
-    [SerializeField] private Vector4 _fullMargin = new Vector4(10, 5, 10, 5);
     [Header("_________________________________________________________")]
     [Header("Prefabs")]
     [SerializeField] private GameObject _basePopUp;
@@ -241,14 +240,12 @@ public class PopUpManager : Singleton<PopUpManager>
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
         title.text = text + " limit";
-        title.margin = _fullMargin;
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
         #region DETAIL
         TextMeshProUGUI detail = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
         detail.text = "Can be upgrades with specifics enhancements and upgrades";
-        detail.margin = _horizontalMargin;
         ClampTextWidth(detail);
         detail.alignment = TextAlignmentOptions.Center;
         detail.fontStyle = FontStyles.Italic;
@@ -273,7 +270,6 @@ public class PopUpManager : Singleton<PopUpManager>
             title.text = "Entertainments visibility";
         else
             title.text = "Scouts visibility";
-        title.margin = _fullMargin;
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
@@ -283,7 +279,6 @@ public class PopUpManager : Singleton<PopUpManager>
             detail.text = "Hide or show Entertainments' icon";
         else
             detail.text = "Hide or show Scouts' icon";
-        detail.margin = _horizontalMargin;
         ClampTextWidth(detail);
         textObjects.Add(detail.GetComponent<RectTransform>());
         #endregion
@@ -303,14 +298,12 @@ public class PopUpManager : Singleton<PopUpManager>
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
         title.text = "Claims";
-        title.margin = _fullMargin;
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
         #region INCOME
         TextMeshProUGUI income = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
         income.text = "Claim per turn: +" + ExpansionManager.Instance.ClaimPerTurn + "<sprite name=\"Claim_Emoji\">";
-        income.margin = _horizontalMargin;
         ClampTextWidth(income);
         textObjects.Add(income.GetComponent<RectTransform>());
         #endregion
@@ -330,14 +323,12 @@ public class PopUpManager : Singleton<PopUpManager>
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
         title.text = "Gold";
-        title.margin = _fullMargin;
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
         #region INCOME
         TextMeshProUGUI income = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
         income.text = "Total gold per turn: +" + ExploitationManager.Instance.GetResourceIncomeByAllTiles(Resource.Gold) + "<sprite name=\"Gold_Emoji\">";
-        income.margin = _horizontalMargin;
         ClampTextWidth(income);
         textObjects.Add(income.GetComponent<RectTransform>());
         #endregion
@@ -345,7 +336,6 @@ public class PopUpManager : Singleton<PopUpManager>
         #region INCOME NO INFRA
         TextMeshProUGUI incomeNoInfra = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
         incomeNoInfra.text = "Gold from non enhanced tiles: +" + ExploitationManager.Instance.GetResourceIncomeByNoInfraTiles(Resource.Gold) + "<sprite name=\"Gold_Emoji\">";
-        incomeNoInfra.margin = _horizontalMargin;
         ClampTextWidth(incomeNoInfra);
         textObjects.Add(incomeNoInfra.GetComponent<RectTransform>());
         #endregion
@@ -353,7 +343,6 @@ public class PopUpManager : Singleton<PopUpManager>
         #region INCOME INFRA
         TextMeshProUGUI incomeInfra = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
         incomeInfra.text = "Gold from enhanced tiles: +" + ExploitationManager.Instance.GetResourceIncomeByInfra(Resource.Gold) + "<sprite name=\"Gold_Emoji\">";
-        incomeInfra.margin = _horizontalMargin;
         ClampTextWidth(incomeInfra);
         textObjects.Add(incomeInfra.GetComponent<RectTransform>());
         #endregion
@@ -372,15 +361,13 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
-        title.text = "Special Resources";
-        title.margin = _fullMargin;
+        title.text = "Stone";
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
         #region INCOME
         TextMeshProUGUI income = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        income.text = "Special Resources per turn: +" + ExploitationManager.Instance.GetResourceIncomeByAllTiles(Resource.SpecialResources) + "<sprite name=\"SR_Emoji\">";
-        income.margin = _horizontalMargin;
+        income.text = "Stone per turn: +" + ExploitationManager.Instance.GetResourceIncomeByAllTiles(Resource.SpecialResources) + "<sprite name=\"SR_Emoji\">";
         ClampTextWidth(income);
         textObjects.Add(income.GetComponent<RectTransform>());
         #endregion
@@ -400,14 +387,12 @@ public class PopUpManager : Singleton<PopUpManager>
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
         title.text = "Points";
-        title.margin = _fullMargin;
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
         #region MINSTREL STAGE
         TextMeshProUGUI minstrel = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
         minstrel.text = "Points from Minstrel Stage: +" + EntertainmentManager.Instance.GetPointsFromMinstrelStage() + "<sprite name=\"Point_Emoji\">";
-        minstrel.margin = _horizontalMargin;
         ClampTextWidth(minstrel);
         textObjects.Add(minstrel.GetComponent<RectTransform>());
         #endregion
@@ -415,7 +400,6 @@ public class PopUpManager : Singleton<PopUpManager>
         #region TASTING PAVILION
         TextMeshProUGUI tasting = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
         tasting.text = "Points from Tasting Pavilion: +" + EntertainmentManager.Instance.GetPointsFromTastingPavilion() + "<sprite name=\"Point_Emoji\">";
-        tasting.margin = _horizontalMargin;
         ClampTextWidth(tasting);
         textObjects.Add(tasting.GetComponent<RectTransform>());
         #endregion
@@ -423,7 +407,6 @@ public class PopUpManager : Singleton<PopUpManager>
         #region PARADE ROUTE
         TextMeshProUGUI parade = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
         parade.text = "Points from Parade Route: +" + EntertainmentManager.Instance.GetPointsFromParadeRoute() + "<sprite name=\"Point_Emoji\">";
-        parade.margin = _horizontalMargin;
         ClampTextWidth(parade);
         textObjects.Add(parade.GetComponent<RectTransform>());
         #endregion
@@ -431,7 +414,6 @@ public class PopUpManager : Singleton<PopUpManager>
         #region MYSTIC GARDEN
         TextMeshProUGUI garden = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
         garden.text = "Points from Mystic Garden: +" + EntertainmentManager.Instance.GetPointsFromMysticGarden() + "<sprite name=\"Point_Emoji\">";
-        garden.margin = _horizontalMargin;
         ClampTextWidth(garden);
         textObjects.Add(garden.GetComponent<RectTransform>());
         #endregion
@@ -451,14 +433,12 @@ public class PopUpManager : Singleton<PopUpManager>
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
         title.text = "Carnivalists";
-        title.margin = _fullMargin;
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
         #region DETAIL
         TextMeshProUGUI detail = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
         detail.text = "Carnivalists are used during the Grand Jubilee";
-        detail.margin = _horizontalMargin;
         ClampTextWidth(detail);
         detail.alignment = TextAlignmentOptions.Center;
         detail.fontStyle = FontStyles.Italic;
@@ -472,7 +452,6 @@ public class PopUpManager : Singleton<PopUpManager>
             {
                 TextMeshProUGUI source = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
                 source.text = pair.Key.TileName + ": " + pair.Value + "<sprite name=\"Carnivalist_Emoji\">";
-                source.margin = _horizontalMargin;
                 ClampTextWidth(source);
                 textObjects.Add(source.GetComponent<RectTransform>());
             }
@@ -497,7 +476,6 @@ public class PopUpManager : Singleton<PopUpManager>
             detail.text = "Hide tiles' incomes and bonuses";
         else
             detail.text = "Show tiles' incomes and bonuses";
-        detail.margin = _horizontalMargin;
         ClampTextWidth(detail);
         textObjects.Add(detail.GetComponent<RectTransform>());
         #endregion
@@ -520,7 +498,6 @@ public class PopUpManager : Singleton<PopUpManager>
             detail.text = "Hide which tiles can receive an entertainment";
         else
             detail.text = "Show which tiles can receive an entertainment";
-        detail.margin = _horizontalMargin;
         ClampTextWidth(detail);
         textObjects.Add(detail.GetComponent<RectTransform>());
         #endregion
@@ -540,14 +517,12 @@ public class PopUpManager : Singleton<PopUpManager>
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
         title.text = effect.EffectName;
-        title.margin = _fullMargin;
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
         #region DETAIL
         TextMeshProUGUI detail = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
         detail.text = effect.GetEffectDescription();
-        detail.margin = _horizontalMargin;
         ClampTextWidth(detail);
         textObjects.Add(detail.GetComponent<RectTransform>());
         #endregion
@@ -569,7 +544,6 @@ public class PopUpManager : Singleton<PopUpManager>
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
         title.text = tile.TileData.TileName;
-        title.margin = _fullMargin;
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
@@ -578,7 +552,6 @@ public class PopUpManager : Singleton<PopUpManager>
         {
             TextMeshProUGUI slow = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
             slow.text = "Slow down scouts, cannot be claimed";
-            slow.margin = _horizontalMargin;
             textObjects.Add(slow.GetComponent<RectTransform>());
             ClampTextWidth(slow);
             slow.fontStyle = FontStyles.Italic;
@@ -598,8 +571,7 @@ public class PopUpManager : Singleton<PopUpManager>
             foreach (SpecialBehaviour behaviour in tile.TileData.SpecialBehaviours)
             {
                 TextMeshProUGUI behaviourText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-                behaviourText.text = behaviour.GetBehaviourDescription();
-                behaviourText.margin = _fullMargin;
+                behaviourText.text = "<sprite name=\"Puce_Emoji\"> " + behaviour.GetBehaviourDescription();
                 textObjects.Add(behaviourText.GetComponent<RectTransform>());
                 ClampTextWidth(behaviourText);
                 behaviour.HighlightImpactedTile(tile, true);
@@ -608,26 +580,13 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
-        #region ENHANCEMENTS
-        if (tile.TileData.AvailableInfrastructures.Count > 0 && GameManager.Instance.CurrentPhase != Phase.Entertain)
+        #region SCOUT STARTING POINT
+        if (tile.TileData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
         {
-            TextMeshProUGUI enhancement = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            if (tile.TileData is ResourceTileData resourceTileData)
-            {
-                enhancement.text = "Can be upgraded to produce Special Resources";
-            }
-            else
-            {
-                enhancement.text = "Can be upgraded with " + tile.TileData.AvailableInfrastructures.Count;
-                if (tile.TileData.AvailableInfrastructures.Count > 1)
-                    enhancement.text += " different enhancements";
-                else
-                    enhancement.text += " unique enhancement";
-            }
-            enhancement.margin = _horizontalMargin;
-            textObjects.Add(enhancement.GetComponent<RectTransform>());
-            ClampTextWidth(enhancement);
-            enhancement.fontStyle = FontStyles.Italic;
+            TextMeshProUGUI scoutText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            scoutText.text = "<sprite name=\"Puce_Emoji\"> Scout starting point";
+            textObjects.Add(scoutText.GetComponent<RectTransform>());
+            ClampTextWidth(scoutText);
         }
         #endregion
 
@@ -635,21 +594,38 @@ public class PopUpManager : Singleton<PopUpManager>
         if (tile.Incomes.Count > 0)
         {
             TextMeshProUGUI income = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            income.text = "Income: " + tile.Incomes.IncomeToString();
-            income.margin = _horizontalMargin;
+            income.text = tile.Incomes.IncomeToString() + " per turn";
+            income.fontStyle = FontStyles.Bold;
+            income.alignment = TextAlignmentOptions.Center;
             textObjects.Add(income.GetComponent<RectTransform>());
         }
         #endregion
 
-        #region SCOUT STARTING POINT
-        if (tile.TileData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
+        #region INCOME SOURCES
+        if (tile.IncomesSources.Count > 0)
         {
-            TextMeshProUGUI scoutText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            scoutText.text = "Scout starting point";
-            scoutText.fontStyle = FontStyles.Italic;
-            scoutText.alignment = TextAlignmentOptions.Center;
-            scoutText.margin = _horizontalMargin;
-            textObjects.Add(scoutText.GetComponent<RectTransform>());
+            TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            List<ResourceToIntMap> ownInc = tile.GetIncomeFromTileOnly();
+            if (ownInc.Count > 0)
+                sourceInc.text = "(" + ownInc.IncomeToString() + " from the tile itself)" + "\n";
+            foreach (var kvp in tile.IncomesSources)
+            {
+                sourceInc.text += "(" + kvp.Value.IncomeToString() + " from " + kvp.Key.TileName + ")" + "\n";
+            }
+            sourceInc.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(sourceInc.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region ENHANCEMENTS
+        if (tile.TileData.AvailableInfrastructures.Count > 0 && GameManager.Instance.CurrentPhase != Phase.Entertain)
+        {
+            TextMeshProUGUI enhancement = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            enhancement.text = "Can be enhanced into " + tile.TileData.AvailableInfrastructures.ToCustomString(false, true);
+            textObjects.Add(enhancement.GetComponent<RectTransform>());
+            ClampTextWidth(enhancement);
+            enhancement.fontStyle = FontStyles.Italic;
+            enhancement.alignment = TextAlignmentOptions.Center;
         }
         #endregion
 
@@ -658,8 +634,17 @@ public class PopUpManager : Singleton<PopUpManager>
         {
             TextMeshProUGUI claimStatus = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
             claimStatus.text = "Claim cost: " + tile.TileData.ClaimCost + "<sprite name=\"Claim_Emoji\">";
-            claimStatus.margin = _horizontalMargin;
             textObjects.Add(claimStatus.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region FAMILY
+        if (tile.TileData is InfrastructureData infra)
+        {
+            TextMeshProUGUI family = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            family.text = infra.Family.ToCustomString();
+            family.alignment = TextAlignmentOptions.Right;
+            textObjects.Add(family.GetComponent<RectTransform>());
         }
         #endregion
 
@@ -678,28 +663,24 @@ public class PopUpManager : Singleton<PopUpManager>
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
         title.text = "Scout";
-        title.margin = _fullMargin;
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
         #region SPEED
         TextMeshProUGUI speedText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
         speedText.text = "Speed: " + scout.Speed;
-        speedText.margin = _horizontalMargin;
         textObjects.Add(speedText.GetComponent<RectTransform>());
         #endregion
 
         #region REVEAL RADIUS
         TextMeshProUGUI revealText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
         revealText.text = "Reveal radius: " + scout.RevealRadius;
-        revealText.margin = _horizontalMargin;
         textObjects.Add(revealText.GetComponent<RectTransform>());
         #endregion
 
         #region LIFESPAN
         TextMeshProUGUI lifespanText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
         lifespanText.text = "Remaining turns: " + scout.Lifespan;
-        lifespanText.margin = _horizontalMargin;
         textObjects.Add(lifespanText.GetComponent<RectTransform>());
         #endregion
 
@@ -711,7 +692,6 @@ public class PopUpManager : Singleton<PopUpManager>
                 redirectText.text = "Scout has already been redirected";
             else
                 redirectText.text = "Scout can be redirected";
-            redirectText.margin = _fullMargin;
             redirectText.fontStyle = FontStyles.Italic;
             redirectText.alignment = TextAlignmentOptions.Center;
             textObjects.Add(redirectText.GetComponent<RectTransform>());
@@ -721,7 +701,6 @@ public class PopUpManager : Singleton<PopUpManager>
         #region DIRECTION
         TextMeshProUGUI directionText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
         directionText.text = scout.Direction.ToCustomString();
-        directionText.margin = _horizontalMargin;
         directionText.fontStyle = FontStyles.Italic;
         directionText.alignment = TextAlignmentOptions.Right;
         textObjects.Add(directionText.GetComponent<RectTransform>());
@@ -742,7 +721,6 @@ public class PopUpManager : Singleton<PopUpManager>
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
         title.text = ent.Data.Type.ToCustomString();
-        title.margin = _fullMargin;
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
@@ -753,7 +731,6 @@ public class PopUpManager : Singleton<PopUpManager>
             {
                 TextMeshProUGUI effectText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
                 effectText.text = effect.GetBehaviourDescription();
-                effectText.margin = _fullMargin;
                 textObjects.Add(effectText.GetComponent<RectTransform>());
                 ClampTextWidth(effectText);
                 effect.HighlightImpactedEntertainment(ent.Tile, true);
@@ -765,7 +742,6 @@ public class PopUpManager : Singleton<PopUpManager>
         #region POINTS
         TextMeshProUGUI pointsText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
         pointsText.text = "Points: +" + ent.Points + "<sprite name=\"Point_Emoji\">";
-        pointsText.margin = _horizontalMargin;
         textObjects.Add(pointsText.GetComponent<RectTransform>());
         #endregion
 
@@ -790,7 +766,6 @@ public class PopUpManager : Singleton<PopUpManager>
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
         title.text = "Spawn a Scout";
-        title.margin = _fullMargin;
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
@@ -800,7 +775,6 @@ public class PopUpManager : Singleton<PopUpManager>
             speedText.text = "Speed: " + (button.ScoutData.Speed + boostingInfra.BoostSpeed + ExplorationManager.Instance.BoostScoutSpeed);
         else
             speedText.text = "Speed: " + (button.ScoutData.Speed + ExplorationManager.Instance.BoostScoutSpeed);
-        speedText.margin = _horizontalMargin;
         textObjects.Add(speedText.GetComponent<RectTransform>());
         #endregion
 
@@ -810,7 +784,6 @@ public class PopUpManager : Singleton<PopUpManager>
             revealText.text = "Reveal radius: " + (button.ScoutData.RevealRadius + boostingInfra.BoostRevealRadius + ExplorationManager.Instance.BoostScoutRevealRadius);
         else
             revealText.text = "Reveal radius: " + (button.ScoutData.RevealRadius + ExplorationManager.Instance.BoostScoutRevealRadius);
-        revealText.margin = _horizontalMargin;
         textObjects.Add(revealText.GetComponent<RectTransform>());
         #endregion
 
@@ -820,7 +793,6 @@ public class PopUpManager : Singleton<PopUpManager>
             lifespanText.text = "Lifespan: " + (button.ScoutData.Lifespan + boostingInfra.BoostLifespan + ExplorationManager.Instance.BoostScoutLifespan);
         else
             lifespanText.text = "Lifespan: " + (button.ScoutData.Lifespan + ExplorationManager.Instance.BoostScoutLifespan);
-        lifespanText.margin = _horizontalMargin;
         textObjects.Add(lifespanText.GetComponent<RectTransform>());
         #endregion
 
@@ -839,7 +811,6 @@ public class PopUpManager : Singleton<PopUpManager>
             availability.text = "No available Scout";
             availability.color = UIManager.Instance.ColorCantAfford;
         }
-        availability.margin = _fullMargin;
         textObjects.Add(availability.GetComponent<RectTransform>());
         availability.fontStyle = FontStyles.Italic;
         availability.alignment = TextAlignmentOptions.Center;
@@ -859,7 +830,6 @@ public class PopUpManager : Singleton<PopUpManager>
 
         TextMeshProUGUI text = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
         text.text = "Redirect a Scout";
-        text.margin = _fullMargin;
         textObjects.Add(text.GetComponent<RectTransform>());
 
         SetPopUpContentAnchors(textObjects);
@@ -876,7 +846,6 @@ public class PopUpManager : Singleton<PopUpManager>
 
         TextMeshProUGUI text = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
         text.text = $"Reveal this tile and all those in a {ExplorationManager.Instance.UpgradeRevealAnywhere.RevealRadius}-tile radius";
-        text.margin = _fullMargin;
         textObjects.Add(text.GetComponent<RectTransform>());
         ClampTextWidth(text);
 
@@ -895,7 +864,6 @@ public class PopUpManager : Singleton<PopUpManager>
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
         title.text = "Claim " + button.AssociatedTile.TileData.TileName;
-        title.margin = _fullMargin;
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
@@ -904,7 +872,6 @@ public class PopUpManager : Singleton<PopUpManager>
         cost.text = "Cost: " + button.AssociatedTile.TileData.ClaimCost + "<sprite name=\"Claim_Emoji\">" + "(" + ResourcesManager.Instance.Claim + ")";
         if (!ResourcesManager.Instance.CanAffordClaim(button.AssociatedTile.TileData.ClaimCost))
             cost.color = UIManager.Instance.ColorCantAfford;
-        cost.margin = _fullMargin;
         textObjects.Add(cost.GetComponent<RectTransform>());
         ClampTextWidth(cost);
         #endregion
@@ -924,7 +891,6 @@ public class PopUpManager : Singleton<PopUpManager>
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
         title.text = text;
-        title.margin = _fullMargin;
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
@@ -943,7 +909,6 @@ public class PopUpManager : Singleton<PopUpManager>
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
         title.text = "Place " + button.EntertainData.Type.ToCustomString();
-        title.margin = _fullMargin;
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
@@ -954,7 +919,6 @@ public class PopUpManager : Singleton<PopUpManager>
             {
                 TextMeshProUGUI effectText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
                 effectText.text = effect.GetBehaviourDescription();
-                effectText.margin = _horizontalMargin;
                 textObjects.Add(effectText.GetComponent<RectTransform>());
                 ClampTextWidth(effectText);
                 effect.HighlightImpactedEntertainment(button.AssociatedTile, true);
@@ -966,7 +930,6 @@ public class PopUpManager : Singleton<PopUpManager>
         #region POINTS
         TextMeshProUGUI pointsText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
         pointsText.text = "Base points: +" + button.EntertainData.BasePoints + "<sprite name=\"Point_Emoji\">";
-        pointsText.margin = _horizontalMargin;
         textObjects.Add(pointsText.GetComponent<RectTransform>());
         #endregion
 
@@ -975,7 +938,6 @@ public class PopUpManager : Singleton<PopUpManager>
         cost.text = "Cost: " + button.EntertainData.GetActualCarnivalistCost(button.AssociatedTile) + "<sprite name=\"Carnivalist_Emoji\">";
         if (!ResourcesManager.Instance.CanAffordCarnivalist(button.EntertainData.GetActualCarnivalistCost(button.AssociatedTile)))
             cost.color = UIManager.Instance.ColorCantAfford;
-        cost.margin = _fullMargin;
         textObjects.Add(cost.GetComponent<RectTransform>());
         ClampTextWidth(cost);
         #endregion
@@ -995,8 +957,16 @@ public class PopUpManager : Singleton<PopUpManager>
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
         title.text = "Build " + button.InfrastructureData.TileName;
-        title.margin = _fullMargin;
         textObjects.Add(title.GetComponent<RectTransform>());
+        #endregion
+
+        #region INCOME BONUS
+        if (button.InfrastructureData.Incomes.Count > 0)
+        {
+            TextMeshProUGUI income = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            income.text = "<sprite name=\"Puce_Emoji\"> Improve income by " + button.InfrastructureData.Incomes.IncomeToString() + " per turn";
+            textObjects.Add(income.GetComponent<RectTransform>());
+        }
         #endregion
 
         #region BEHAVIOURS
@@ -1005,8 +975,7 @@ public class PopUpManager : Singleton<PopUpManager>
             foreach (SpecialBehaviour behaviour in button.InfrastructureData.SpecialBehaviours)
             {
                 TextMeshProUGUI behaviourText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-                behaviourText.text = behaviour.GetBehaviourDescription();
-                behaviourText.margin = _fullMargin;
+                behaviourText.text = "<sprite name=\"Puce_Emoji\"> " + behaviour.GetBehaviourDescription();
                 textObjects.Add(behaviourText.GetComponent<RectTransform>());
                 ClampTextWidth(behaviourText);
                 behaviour.HighlightImpactedTile(button.AssociatedTile, true);
@@ -1015,42 +984,64 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
-        #region ENHANCEMENTS
-        if (button.InfrastructureData.AvailableInfrastructures.Count > 0)
-        {
-            TextMeshProUGUI enhancement = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            enhancement.text = "Can be further upgraded with " + button.InfrastructureData.AvailableInfrastructures.Count;
-            if (button.InfrastructureData.AvailableInfrastructures.Count > 1)
-                enhancement.text += " different enhancements";
-            else
-                enhancement.text += " unique enhancement";
-
-            enhancement.margin = _horizontalMargin;
-            textObjects.Add(enhancement.GetComponent<RectTransform>());
-            ClampTextWidth(enhancement);
-            enhancement.fontStyle = FontStyles.Italic;
-        }
-        #endregion
-
-        #region INCOME
-        if (button.InfrastructureData.Incomes.Count > 0)
-        {
-            TextMeshProUGUI income = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            income.text = "Income increase: " + button.InfrastructureData.Incomes.IncomeToString();
-            income.margin = _horizontalMargin;
-            textObjects.Add(income.GetComponent<RectTransform>());
-        }
-        #endregion
-
         #region SCOUT STARTING POINT
         if (button.InfrastructureData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
         {
             TextMeshProUGUI scoutText = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-            scoutText.text = "Scout starting point";
-            scoutText.fontStyle = FontStyles.Italic;
-            scoutText.alignment = TextAlignmentOptions.Center;
-            scoutText.margin = _horizontalMargin;
+            scoutText.text = "<sprite name=\"Puce_Emoji\"> Scout starting point";
             textObjects.Add(scoutText.GetComponent<RectTransform>());
+            ClampTextWidth(scoutText);
+        }
+        #endregion
+
+        #region CURRENT INCOME
+        if (button.AssociatedTile.Incomes.Count > 0)
+        {
+            TextMeshProUGUI currentIncome = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            currentIncome.text = "Current income: " + button.AssociatedTile.Incomes.IncomeToString() + " per turn";
+            currentIncome.fontStyle = FontStyles.Bold;
+            currentIncome.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(currentIncome.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region PREDICTED INCOME
+        TextMeshProUGUI predictedIncome = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        List<ResourceToIntMap> predictedInc;
+        List<ResourceToIntMap> predictedSelfInc;
+        Dictionary<TileData, List<ResourceToIntMap>> predictedSources;
+        ExploitationManager.Instance.GetPredictedIncomes(button.AssociatedTile, button.InfrastructureData, out predictedInc, out predictedSources, out predictedSelfInc);
+        predictedIncome.text = "Predicted income: " + predictedInc.IncomeToString() + " per turn";
+        predictedIncome.fontStyle = FontStyles.Bold;
+        predictedIncome.alignment = TextAlignmentOptions.Center;
+        textObjects.Add(predictedIncome.GetComponent<RectTransform>());
+        #endregion
+
+        #region INCOME SOURCES
+        if (predictedSources.Count > 0)
+        {
+            TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            if (predictedSelfInc.Count > 0)
+                sourceInc.text = "(" + predictedSelfInc.IncomeToString() + " from the tile itself)" + "\n";
+            foreach (var kvp in predictedSources)
+            {
+                sourceInc.text += "(" + kvp.Value.IncomeToString() + " from " + kvp.Key.TileName + ")" + "\n";
+            }
+            sourceInc.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(sourceInc.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region ENHANCEMENTS
+        if (button.InfrastructureData.AvailableInfrastructures.Count > 0)
+        {
+            TextMeshProUGUI enhancement = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+            enhancement.text = "Can be enhanced into " + button.InfrastructureData.AvailableInfrastructures.ToCustomString(false, true);
+
+            textObjects.Add(enhancement.GetComponent<RectTransform>());
+            ClampTextWidth(enhancement);
+            enhancement.fontStyle = FontStyles.Italic;
+            enhancement.alignment = TextAlignmentOptions.Center;
         }
         #endregion
 
@@ -1068,7 +1059,6 @@ public class PopUpManager : Singleton<PopUpManager>
             if (!ResourcesManager.Instance.CanAfford(button.InfrastructureData.Costs))
                 cost.color = UIManager.Instance.ColorCantAfford;
         }
-        cost.margin = _fullMargin;
         textObjects.Add(cost.GetComponent<RectTransform>());
         ClampTextWidth(cost);
         #endregion
@@ -1090,11 +1080,15 @@ public class PopUpManager : Singleton<PopUpManager>
                 availability.text = "No available copy";
                 availability.color = UIManager.Instance.ColorCantAfford;
             }
-            availability.margin = _fullMargin;
             textObjects.Add(availability.GetComponent<RectTransform>());
-            availability.fontStyle = FontStyles.Italic;
-            availability.alignment = TextAlignmentOptions.MidlineRight;
         }
+        #endregion
+
+        #region FAMILY
+        TextMeshProUGUI family = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
+        family.text = button.InfrastructureData.Family.ToCustomString();
+        family.alignment = TextAlignmentOptions.Right;
+        textObjects.Add(family.GetComponent<RectTransform>());
         #endregion
 
         SetPopUpContentAnchors(textObjects);
@@ -1181,6 +1175,7 @@ public class PopUpManager : Singleton<PopUpManager>
         // Apply stacking offset along the outward direction
         anchoredPos.y += isBottom ? +stackOffset : -stackOffset;
 
+        /*
         // --- zoom-based cursor margin ---
         float yZoom = CameraManager.Instance.transform.position.y;       // smaller => closer
         float t = Mathf.InverseLerp(CameraManager.Instance.MaxZoomLevel,
@@ -1193,6 +1188,7 @@ public class PopUpManager : Singleton<PopUpManager>
         float signY = isBottom ? +1f : -1f; // BL/BR -> +y ; TL/TR -> -y
         anchoredPos += new Vector2(signX * margin, signY * margin);
         // --- end zoom-based cursor margin ---
+        */
 
         popupRect.anchoredPosition = anchoredPos;
     }

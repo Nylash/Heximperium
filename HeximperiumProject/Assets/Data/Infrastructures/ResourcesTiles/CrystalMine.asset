@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: CrystalMine
   m_EditorClassIdentifier: 
   _name: Crystal Mine
-  _visuals:
-  - {fileID: 2100000, guid: 22a123ab97f14bc40a28bd9f60cb68d7, type: 2}
+  _family: 9
   _visualsProps:
   - tileData: {fileID: 11400000, guid: 797ecded2fc68aa4b9845172a7bfb3a5, type: 2}
     gameObjects:
@@ -30,3 +29,4 @@ MonoBehaviour:
     value: 10
   _scoutStartingPoint: 0
   isTown: 0
+  _infrastructureLevel: 1

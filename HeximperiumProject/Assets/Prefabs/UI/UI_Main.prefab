@@ -4617,8 +4617,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1114069333654374784}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.45, y: 1}
+  m_AnchorMin: {x: 0, y: 0.05}
+  m_AnchorMax: {x: 0.45, y: 0.95}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -19085,11 +19085,7 @@ MonoBehaviour:
   _percentageOfTimerForVisualHint: 0.4
   _timerOverImage: {fileID: 896984897485514827}
   _offsetBetweenSeveralPopUps: 1
-  _marginAtMinZoom: 45
-  _marginAtMaxZoom: 150
   _maxScreenFraction: 0.3
-  _horizontalMargin: {x: 10, y: 0, z: 10, w: 0}
-  _fullMargin: {x: 10, y: 5, z: 10, w: 5}
   _basePopUp: {fileID: 6245525707209063558, guid: d5762cd1b2823a44ab37029529fc5308, type: 3}
   _title: {fileID: 7943185033060346411, guid: 323427eb9484ee64b874eee96dae90aa, type: 3}
   _text: {fileID: 5711950651282281864, guid: 7e62b65f6bfb42b4bacaf35545e1c85b, type: 3}

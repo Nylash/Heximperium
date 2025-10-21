@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: WaystoneChapel
   m_EditorClassIdentifier: 
   _name: Waystone Chapel
-  _visuals:
-  - {fileID: 2100000, guid: 22a123ab97f14bc40a28bd9f60cb68d7, type: 2}
+  _family: 7
   _visualsProps:
   - tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
     gameObjects:
@@ -37,3 +36,4 @@ MonoBehaviour:
     value: 10
   _scoutStartingPoint: 0
   isTown: 0
+  _infrastructureLevel: 2

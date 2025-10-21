@@ -10,6 +10,6 @@ public class UnlockTownAutoClaim : UpgradeEffect
 
     public override string GetEffectDescription()
     {
-        return "Founding a Town automatically claim the 6 surrounding tiles";
+        return "Founding a New Town automatically claim the 6 surrounding tiles";
     }
 }

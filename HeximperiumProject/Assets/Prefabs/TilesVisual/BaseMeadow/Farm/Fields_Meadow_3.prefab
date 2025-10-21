@@ -657,7 +657,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5276107723333310238}
   m_Layer: 0
-  m_Name: Farm_Meadow_3
+  m_Name: Fields_Meadow_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
