@@ -14,9 +14,10 @@ public class PopUpManager : Singleton<PopUpManager>
     [SerializeField] private float _durationHoverForUI = 1f;
     [SerializeField][Range(0f,1f)] private float _percentageOfTimerForVisualHint = 0.75f;
     [SerializeField] private Image _timerOverImage;
-    [SerializeField][Range(0, 1)] private float _offsetBetweenSeveralPopUps;
-    [SerializeField] private float _maxScreenFraction = 0.15f;
-    [SerializeField][Range(0, 1)] private float _offsetNormX = 0.1f;
+    [SerializeField][Range(0, 1f)] private float _offsetBetweenSeveralPopUps;
+    [SerializeField][Range(0, 1f)] private float _maxScreenFraction = 0.15f;
+    [SerializeField][Range(0, 1f)] private float _offsetNormX = 0.1f;
+    [SerializeField][Range(0, 1f)] private float _maxDistanceBetweenObjectAndPopup = 0.3f;
     [SerializeField] private RectTransform _topLimit;
     [SerializeField] private RectTransform _bottomLimit;
     [SerializeField] private RectTransform _rightLimit;
@@ -1160,7 +1161,7 @@ public class PopUpManager : Singleton<PopUpManager>
         // First popup → use limits
         if (_popUps.Count == 1)
         {
-            SnapVerticalEdge(popupRect, isBottom ? _topLimit : _bottomLimit, snapTopEdge: isBottom);
+            SnapVerticalEdge(refTransform, popupRect, isBottom ? _topLimit : _bottomLimit, snapTopEdge: isBottom);
             PlaceHorizontal(popupRect, refTransform, isLeft, _offsetNormX, _leftLimit, _rightLimit);
         }
         // Subsequent popups → stack relative to previous
@@ -1173,7 +1174,7 @@ public class PopUpManager : Singleton<PopUpManager>
         }
     }
 
-    private void SnapVerticalEdge(RectTransform popup, RectTransform lineLimit, bool snapTopEdge)
+    private void SnapVerticalEdge(Transform refObject, RectTransform popup, RectTransform lineLimit, bool snapTopEdge)
     {
         // assume popup.parent == lineLimit.parent
         RectTransform parent = popup.parent as RectTransform;
@@ -1183,6 +1184,28 @@ public class PopUpManager : Singleton<PopUpManager>
 
         // if your "line" rect has identical min/max Y anchors, either is fine:
         float lineY = lineLimit.anchorMin.y; // == lineLimit.anchorMax.y
+
+        // avoid being too far from the reference Y (clamp the popup edge)
+        float refY = Mathf.Clamp01(Camera.main.WorldToViewportPoint(refObject.position).y);
+
+        // current edge based on which edge we snap
+        float edgeY = snapTopEdge ? (lineY - normHeight)   // bottom edge
+                                  : (lineY + normHeight);  // top edge
+
+        float dist = Mathf.Abs(edgeY - refY);
+        if (dist > _maxDistanceBetweenObjectAndPopup)
+        {
+            // keep edge on the same side of refY it currently is
+            float desiredEdge =
+                (edgeY > refY)
+                ? (refY + _maxDistanceBetweenObjectAndPopup)
+                : (refY - _maxDistanceBetweenObjectAndPopup);
+
+            // rebuild lineY from the desired edge + known height
+            lineY = snapTopEdge
+                ? (desiredEdge + normHeight)  // edge = line - H  -> line = edge + H
+                : (desiredEdge - normHeight); // edge = line + H  -> line = edge - H
+        }
 
         Vector2 aMin = popup.anchorMin;
         Vector2 aMax = popup.anchorMax;
