@@ -19194,6 +19194,7 @@ MonoBehaviour:
   _maxScreenFraction: 0.3
   _offsetNormX: 0.1
   _maxDistanceBetweenObjectAndPopup: 0.25
+  _offsetPopupOnCursor: 0.01
   _topLimit: {fileID: 7504004161406634285}
   _bottomLimit: {fileID: 3788652933479061911}
   _rightLimit: {fileID: 7239601312656741034}
