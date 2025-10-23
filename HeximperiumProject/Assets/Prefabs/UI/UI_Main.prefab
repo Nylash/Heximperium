@@ -19192,6 +19192,11 @@ MonoBehaviour:
   _timerOverImage: {fileID: 896984897485514827}
   _offsetBetweenSeveralPopUps: 1
   _maxScreenFraction: 0.3
+  _offsetNormX: 0.1
+  _topLimit: {fileID: 7504004161406634285}
+  _bottomLimit: {fileID: 3788652933479061911}
+  _rightLimit: {fileID: 7239601312656741034}
+  _leftLimit: {fileID: 5576148429967003284}
   _basePopUp: {fileID: 6245525707209063558, guid: d5762cd1b2823a44ab37029529fc5308, type: 3}
   _title: {fileID: 7943185033060346411, guid: 323427eb9484ee64b874eee96dae90aa, type: 3}
   _text: {fileID: 5711950651282281864, guid: 7e62b65f6bfb42b4bacaf35545e1c85b, type: 3}

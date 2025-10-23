@@ -14,12 +14,13 @@ public class PopUpManager : Singleton<PopUpManager>
     [SerializeField] private float _durationHoverForUI = 1f;
     [SerializeField][Range(0f,1f)] private float _percentageOfTimerForVisualHint = 0.75f;
     [SerializeField] private Image _timerOverImage;
-    [SerializeField] private float _offsetBetweenSeveralPopUps = 1f;
-    /*
-    [SerializeField] private float _marginAtMinZoom = 45f;
-    [SerializeField] private float _marginAtMaxZoom = 150f;
-    */
+    [SerializeField][Range(0, 1)] private float _offsetBetweenSeveralPopUps;
     [SerializeField] private float _maxScreenFraction = 0.15f;
+    [SerializeField][Range(0, 1)] private float _offsetNormX = 0.1f;
+    [SerializeField] private RectTransform _topLimit;
+    [SerializeField] private RectTransform _bottomLimit;
+    [SerializeField] private RectTransform _rightLimit;
+    [SerializeField] private RectTransform _leftLimit;
     [Header("_________________________________________________________")]
     [Header("Prefabs")]
     [SerializeField] private GameObject _basePopUp;
@@ -31,8 +32,6 @@ public class PopUpManager : Singleton<PopUpManager>
     private GameObject _objectUnderMouse;
     private float _hoverTimer;
     private float _delayedHoverTimer;//For filling image purpose
-    private float _screenWidth;
-    private float _screenHeight;
     private List<GameObject> _popUps = new List<GameObject>();
     private Dictionary<SpecialBehaviour, Tile> _highlightingBehaviours = new Dictionary<SpecialBehaviour, Tile>();
     private Dictionary<SpecialEffect, Tile> _highlightingEffects = new Dictionary<SpecialEffect, Tile>();
@@ -41,12 +40,9 @@ public class PopUpManager : Singleton<PopUpManager>
 
     private void Start()
     {
-        _screenWidth = Screen.width;
-        _screenHeight = Screen.height;
+        float dynamicFraction = _maxScreenFraction * (REF_WIDTH / Screen.width);
 
-        float dynamicFraction = _maxScreenFraction * (REF_WIDTH / _screenWidth);
-
-        _maxAllowed = _screenWidth * dynamicFraction;
+        _maxAllowed = Screen.width * dynamicFraction;
     }
 
     #region BASE LOGIC
@@ -160,23 +156,23 @@ public class PopUpManager : Singleton<PopUpManager>
                             break;
                         case Interaction.Destroy:
                             if (GameManager.Instance.CurrentPhase == Phase.Exploit)
-                                ButtonDestroyPopUp("Destroy " + button.AssociatedTile.TileData.TileName);
+                                ButtonDestroyPopUp("Destroy " + button.AssociatedTile.TileData.TileName, button);
                             else
                             {
                                 if (button.AssociatedTile.Entertainment == null)
-                                    ButtonDestroyPopUp("Remove the entertainment");
+                                    ButtonDestroyPopUp("Remove the entertainment", button);
                                 else
-                                    ButtonDestroyPopUp("Remove " + button.AssociatedTile.Entertainment.Data.Type.ToCustomString());
+                                    ButtonDestroyPopUp("Remove " + button.AssociatedTile.Entertainment.Data.Type.ToCustomString(), button);
                             }
                             break;
                         case Interaction.Entertainment:
                             ButtonEntertainmentPopUp(button);
                             break;
                         case Interaction.RedirectScout:
-                            ButtonRedirectScoutPopUp();
+                            ButtonRedirectScoutPopUp(button);
                             break;
                         case Interaction.RevealAnywhere:
-                            ButtonRevealAnywherePopUp();
+                            ButtonRevealAnywherePopUp(button);
                             break;
                         default:
                             Debug.LogWarning("PopUpManager: InteractionButton with no interaction type found " + button.Interaction);
@@ -558,7 +554,7 @@ public class PopUpManager : Singleton<PopUpManager>
             slow.alignment = TextAlignmentOptions.Center;
 
             SetPopUpContentAnchors(textObjects);
-            PositionPopup(popUp.GetComponent<RectTransform>());
+            PositionPopup(popUp.GetComponent<RectTransform>(), tile.transform);
 
             // No need to go further, hazardous tile have no other info
             return;
@@ -649,7 +645,7 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         SetPopUpContentAnchors(textObjects);
-        PositionPopup(popUp.GetComponent<RectTransform>());
+        PositionPopup(popUp.GetComponent<RectTransform>(), tile.transform);
     }
 
     private void ScoutPopUp(Scout scout)
@@ -707,7 +703,7 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         SetPopUpContentAnchors(textObjects);
-        PositionPopup(popUp.GetComponent<RectTransform>());
+        PositionPopup(popUp.GetComponent<RectTransform>(), scout.CurrentTile.transform);
     }
 
     private void EntertainmentPopUp(Entertainment ent)
@@ -746,7 +742,7 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         SetPopUpContentAnchors(textObjects);
-        PositionPopup(popUp.GetComponent<RectTransform>());
+        PositionPopup(popUp.GetComponent<RectTransform>(), ent.Tile.transform);
     }
     #endregion
 
@@ -817,10 +813,10 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         SetPopUpContentAnchors(textObjects);
-        PositionPopup(popUp.GetComponent<RectTransform>());
+        PositionPopup(popUp.GetComponent<RectTransform>(), button.transform);
     }
 
-    private void ButtonRedirectScoutPopUp()
+    private void ButtonRedirectScoutPopUp(InteractionButton button)
     {
         GameObject popUp;
         popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
@@ -833,10 +829,10 @@ public class PopUpManager : Singleton<PopUpManager>
         textObjects.Add(text.GetComponent<RectTransform>());
 
         SetPopUpContentAnchors(textObjects);
-        PositionPopup(popUp.GetComponent<RectTransform>());
+        PositionPopup(popUp.GetComponent<RectTransform>(), button.transform);
     }
 
-    private void ButtonRevealAnywherePopUp()
+    private void ButtonRevealAnywherePopUp(InteractionButton button)
     {
         GameObject popUp;
         popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
@@ -850,7 +846,7 @@ public class PopUpManager : Singleton<PopUpManager>
         ClampTextWidth(text);
 
         SetPopUpContentAnchors(textObjects);
-        PositionPopup(popUp.GetComponent<RectTransform>());
+        PositionPopup(popUp.GetComponent<RectTransform>(), button.transform);
     }
 
     private void ButtonClaimPopUp(InteractionButton button)
@@ -877,10 +873,10 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         SetPopUpContentAnchors(textObjects);
-        PositionPopup(popUp.GetComponent<RectTransform>());
+        PositionPopup(popUp.GetComponent<RectTransform>(), button.transform);
     }
 
-    private void ButtonDestroyPopUp(string text)
+    private void ButtonDestroyPopUp(string text, InteractionButton button)
     {
         GameObject popUp;
         popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
@@ -895,7 +891,7 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         SetPopUpContentAnchors(textObjects);
-        PositionPopup(popUp.GetComponent<RectTransform>());
+        PositionPopup(popUp.GetComponent<RectTransform>(), button.transform);
     }
 
     private void ButtonEntertainmentPopUp(InteractionButton button)
@@ -943,7 +939,7 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         SetPopUpContentAnchors(textObjects);
-        PositionPopup(popUp.GetComponent<RectTransform>());
+        PositionPopup(popUp.GetComponent<RectTransform>(), button.transform);
     }
 
     private void ButtonInfraPopUp(InteractionButton button)
@@ -1092,7 +1088,7 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         SetPopUpContentAnchors(textObjects);
-        PositionPopup(popUp.GetComponent<RectTransform>());
+        PositionPopup(popUp.GetComponent<RectTransform>(), button.transform);
     }
     #endregion
 
@@ -1139,58 +1135,221 @@ public class PopUpManager : Singleton<PopUpManager>
         popupRect.anchoredPosition = pos;
     }
 
-    private void PositionPopup(RectTransform popupRect)
+    private void PositionPopup(RectTransform popupRect, Transform refTransform)
     {
-        Vector2 mouse = Input.mousePosition;
-
-        // Quadrant → choose which popup corner sits under the cursor
-        bool isLeft = mouse.x <= (_screenWidth * 0.5f);
-        bool isBottom = mouse.y <= (_screenHeight * 0.5f);
+        Vector3 refPos = Camera.main.WorldToScreenPoint(refTransform.position);
+        // Quadrant → in which quadrant of the screen is the tile
+        bool isLeft = refPos.x <= (Screen.width * 0.5f);
+        bool isBottom = refPos.y <= (Screen.height * 0.5f);
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(popupRect);
 
-        // Stack offset from existing popups
-        float stackOffset = 0f;
-        for (int i = 0; i < _popUps.Count - 1; i++)
-            stackOffset += _popUps[i].GetComponent<RectTransform>().rect.height + _offsetBetweenSeveralPopUps;
+        // Convert pixel position to normalized anchors
+        RectTransform parent = popupRect.parent as RectTransform;
+        float screenW = parent.rect.width;
+        float screenH = parent.rect.height;
+        Vector2 pixelPos = popupRect.anchoredPosition;
+        float normX = pixelPos.x / screenW;
+        float normY = pixelPos.y / screenH;
+        float normWidth = popupRect.rect.width / screenW;
+        float normHeight = popupRect.rect.height / screenH; popupRect.anchorMin = new Vector2(normX, normY);
+        popupRect.anchorMax = new Vector2(normX + normWidth, normY + normHeight);
+        popupRect.anchoredPosition = Vector2.zero;
+        popupRect.sizeDelta = Vector2.zero;
 
-        // Anchor & pivot at the same corner so that corner == cursor
-        Vector2 corner = new Vector2(isLeft ? 0f : 1f, isBottom ? 0f : 1f);
-        popupRect.anchorMin = corner;
-        popupRect.anchorMax = corner;
-        popupRect.pivot = corner;
+        // First popup → use limits
+        if (_popUps.Count == 1)
+        {
+            SnapVerticalEdge(popupRect, isBottom ? _topLimit : _bottomLimit, snapTopEdge: isBottom);
+            PlaceHorizontal(popupRect, refTransform, isLeft, _offsetNormX, _leftLimit, _rightLimit);
+        }
+        // Subsequent popups → stack relative to previous
+        else
+        {
+            RectTransform prev = _popUps[_popUps.Count - 2].GetComponent<RectTransform>();
 
-        RectTransform parent = (RectTransform)popupRect.parent;
+            SnapVerticalAfterPrev(popupRect, prev, isBottom, _offsetBetweenSeveralPopUps);
+            AlignHorizontalToPrevEdge(popupRect, prev, isLeft, _leftLimit, _rightLimit);
+        }
+    }
 
-        // Convert screen → parent local (relative to parent *pivot*)
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(parent, mouse, null, out var localFromParentPivot);
+    private void SnapVerticalEdge(RectTransform popup, RectTransform lineLimit, bool snapTopEdge)
+    {
+        // assume popup.parent == lineLimit.parent
+        RectTransform parent = popup.parent as RectTransform;
 
-        // Convert parent-pivot space → anchor space
-        Vector2 anchorOffset = new Vector2(
-            parent.rect.width * (parent.pivot.x - popupRect.anchorMin.x),
-            parent.rect.height * (parent.pivot.y - popupRect.anchorMin.y)
-        );
-        Vector2 anchoredPos = localFromParentPivot + anchorOffset;
+        float parentH = parent.rect.height;
+        float normHeight = popup.rect.height / parentH;
 
-        // Apply stacking offset along the outward direction
-        anchoredPos.y += isBottom ? +stackOffset : -stackOffset;
+        // if your "line" rect has identical min/max Y anchors, either is fine:
+        float lineY = lineLimit.anchorMin.y; // == lineLimit.anchorMax.y
 
-        /*
-        // --- zoom-based cursor margin ---
-        float yZoom = CameraManager.Instance.transform.position.y;       // smaller => closer
-        float t = Mathf.InverseLerp(CameraManager.Instance.MaxZoomLevel,
-                                          CameraManager.Instance.MinZoomLevel, yZoom);
-        // bigger y -> smaller margin
-        float margin = Mathf.Lerp(_marginAtMaxZoom, _marginAtMinZoom, t);
+        Vector2 aMin = popup.anchorMin;
+        Vector2 aMax = popup.anchorMax;
 
-        // push away from the cursor based on corner
-        float signX = isLeft ? +1f : -1f; // BL/TL -> +x ; BR/TR -> -x
-        float signY = isBottom ? +1f : -1f; // BL/BR -> +y ; TL/TR -> -y
-        anchoredPos += new Vector2(signX * margin, signY * margin);
-        // --- end zoom-based cursor margin ---
-        */
+        if (snapTopEdge)
+        {
+            // snap popup's TOP to the line
+            aMax.y = lineY;
+            aMin.y = lineY - normHeight;
+        }
+        else
+        {
+            // snap popup's BOTTOM to the line
+            aMin.y = lineY;
+            aMax.y = lineY + normHeight;
+        }
 
-        popupRect.anchoredPosition = anchoredPos;
+        // clamp to [0,1] to avoid drift
+        aMin.y = Mathf.Clamp01(aMin.y);
+        aMax.y = Mathf.Clamp01(aMax.y);
+
+        popup.anchorMin = aMin;
+        popup.anchorMax = aMax;
+
+        // zero offsets so it's purely anchor-driven
+        popup.anchoredPosition = new Vector2(popup.anchoredPosition.x, 0f);
+        popup.sizeDelta = new Vector2(popup.sizeDelta.x, 0f);
+    }
+
+    private void PlaceHorizontal(RectTransform popup, Transform refTransform, bool isLeft, float offsetNorm, RectTransform _leftLimit, RectTransform _rightLimit)
+    {
+        RectTransform parent = popup.parent as RectTransform;
+        float parentW = parent.rect.width;
+        float normWidth = popup.rect.width / parentW;
+
+        // 1) tile x in normalized [0..1] using viewport space (works for overlay/camera canvases covering the screen)
+        float centerNorm = Mathf.Clamp01(Camera.main.WorldToViewportPoint(refTransform.position).x);
+
+        // 2) available horizontal band from limits (assumes limits share parent and are vertical "lines")
+        float bandMin = _leftLimit.anchorMin.x;   // == _leftLimit.anchorMax.x
+        float bandMax = _rightLimit.anchorMin.x;  // == _rightLimit.anchorMax.x
+
+        // If popup wider than band, clamp to band
+        if (normWidth >= (bandMax - bandMin))
+        {
+            popup.anchorMin = new Vector2(bandMin, popup.anchorMin.y);
+            popup.anchorMax = new Vector2(bandMax, popup.anchorMax.y);
+            popup.anchoredPosition = new Vector2(0f, popup.anchoredPosition.y);
+            popup.sizeDelta = new Vector2(0f, popup.sizeDelta.y);
+            return;
+        }
+
+        // 3) initial placement: edge relative to tile.x ± offset
+        float aMinX, aMaxX;
+        if (isLeft)
+        {
+            // popup to the RIGHT of the tile: left edge starts at tile + offset
+            aMinX = centerNorm + offsetNorm;
+            aMaxX = aMinX + normWidth;
+        }
+        else
+        {
+            // popup to the LEFT of the tile: right edge ends at tile - offset
+            aMaxX = centerNorm - offsetNorm;
+            aMinX = aMaxX - normWidth;
+        }
+
+        // 4) clamp inside [bandMin, bandMax] by shifting the rect if needed
+        float shift = 0f;
+        if (aMinX < bandMin) shift = bandMin - aMinX;
+        else if (aMaxX > bandMax) shift = bandMax - aMaxX;
+
+        aMinX += shift;
+        aMaxX += shift;
+
+        // 5) assign anchors and zero offsets (pure anchor-driven on X)
+        Vector2 aMin = popup.anchorMin;
+        Vector2 aMax = popup.anchorMax;
+        aMin.x = Mathf.Clamp01(aMinX);
+        aMax.x = Mathf.Clamp01(aMaxX);
+
+        popup.anchorMin = aMin;
+        popup.anchorMax = aMax;
+
+        popup.anchoredPosition = new Vector2(0f, popup.anchoredPosition.y);
+        popup.sizeDelta = new Vector2(0f, popup.sizeDelta.y);
+    }
+
+    private void SnapVerticalAfterPrev(RectTransform popup, RectTransform prev, bool isBottom, float offsetNormY)
+    {
+        RectTransform parent = (RectTransform)popup.parent;
+        float parentH = parent.rect.height;
+        float normH = popup.rect.height / parentH;
+
+        // offsetNormY is already normalized (0–1)
+        float oy = offsetNormY;
+
+        float prevMinY = prev.anchorMin.y; // prev bottom
+        float prevMaxY = prev.anchorMax.y; // prev top
+
+        Vector2 aMin = popup.anchorMin;
+        Vector2 aMax = popup.anchorMax;
+
+        if (isBottom)
+        {
+            // TOP to prev BOTTOM (gap goes downward)
+            aMax.y = prevMinY - oy;
+            aMin.y = aMax.y - normH;
+        }
+        else
+        {
+            // BOTTOM to prev TOP (gap goes upward)
+            aMin.y = prevMaxY + oy;
+            aMax.y = aMin.y + normH;
+        }
+
+        aMin.y = Mathf.Clamp01(aMin.y);
+        aMax.y = Mathf.Clamp01(aMax.y);
+
+        popup.anchorMin = aMin;
+        popup.anchorMax = aMax;
+        popup.anchoredPosition = new Vector2(popup.anchoredPosition.x, 0f);
+        popup.sizeDelta = new Vector2(popup.sizeDelta.x, 0f);
+    }
+
+    private void AlignHorizontalToPrevEdge(RectTransform popup, RectTransform prev, bool isLeft, RectTransform _leftLimit, RectTransform _rightLimit)
+    {
+        RectTransform parent = (RectTransform)popup.parent;
+        float parentW = parent.rect.width;
+        float normW = popup.rect.width / parentW;
+
+        float bandMin = _leftLimit.anchorMin.x;
+        float bandMax = _rightLimit.anchorMin.x;
+
+        Vector2 aMin = popup.anchorMin;
+        Vector2 aMax = popup.anchorMax;
+
+        if (isLeft)
+        {
+            // Right edge to prev right
+            aMax.x = prev.anchorMax.x;
+            aMin.x = aMax.x - normW;
+        }
+        else
+        {
+            // Left edge to prev left
+            aMin.x = prev.anchorMin.x;
+            aMax.x = aMin.x + normW;
+        }
+
+        // Clamp inside limits by shifting if necessary
+        float shift = 0f;
+        if (aMin.x < bandMin) shift = bandMin - aMin.x;
+        else if (aMax.x > bandMax) shift = bandMax - aMax.x;
+
+        aMin.x += shift;
+        aMax.x += shift;
+
+        aMin.x = Mathf.Clamp01(aMin.x);
+        aMax.x = Mathf.Clamp01(aMax.x);
+
+        popup.anchorMin = aMin;
+        popup.anchorMax = aMax;
+
+        // zero X offsets (anchor-driven)
+        popup.anchoredPosition = new Vector2(0f, popup.anchoredPosition.y);
+        popup.sizeDelta = new Vector2(0f, popup.sizeDelta.y);
     }
 
     private void ClampTextWidth(TextMeshProUGUI tmp)
