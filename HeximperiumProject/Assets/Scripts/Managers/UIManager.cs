@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -35,7 +34,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Animator _popUpExploitPhase;
     [SerializeField] private Animator _popUpEntertainPhase;
     [SerializeField] private Button _buttonEndPhase;
-    [SerializeField] private List<Image> _phaseBorders;
+    [SerializeField] private Material _phaseMaterial;
     [Header("_________________________________________________________")]
     [Header("Units visibility UI")]
     [SerializeField] private Image _visibilityImage;
@@ -347,10 +346,7 @@ public class UIManager : Singleton<UIManager>
     
     public void ForceExploColor()
     {
-        foreach (Image item in _phaseBorders)
-        {
-            item.color = _colorExplo;
-        }
+        _phaseMaterial.color = _colorExplo;
     }
 
     private void PhaseEnded(Phase endedPhase)
@@ -377,34 +373,22 @@ public class UIManager : Singleton<UIManager>
         {
             case Phase.Explore:
                 _confirmPhaseButtonText.text = "End Phase";
-                foreach (Image item in _phaseBorders)
-                {
-                    item.color = _colorExplo;
-                }
+                _phaseMaterial.color = _colorExplo;
                 _popUpExploPhase.SetTrigger("Show");
                 break;
             case Phase.Expand:
                 _confirmPhaseButtonText.text = "End Phase";
-                foreach (Image item in _phaseBorders)
-                {
-                    item.color = _colorExpand;
-                }
+                _phaseMaterial.color = _colorExpand;
                 _popUpExpandPhase.SetTrigger("Show");
                 break;
             case Phase.Exploit:
                 _confirmPhaseButtonText.text = "End Turn";
-                foreach (Image item in _phaseBorders)
-                {
-                    item.color = _colorExploit;
-                }
+                _phaseMaterial.color = _colorExploit;
                 _popUpExploitPhase.SetTrigger("Show");
                 break;
             case Phase.Entertain:
                 _confirmPhaseButtonText.text = "End Game";
-                foreach (Image item in _phaseBorders)
-                {
-                    item.color = _colorEntertain;
-                }
+                _phaseMaterial.color = _colorEntertain;
                 _popUpEntertainPhase.SetTrigger("Show");
                 break;
         }
