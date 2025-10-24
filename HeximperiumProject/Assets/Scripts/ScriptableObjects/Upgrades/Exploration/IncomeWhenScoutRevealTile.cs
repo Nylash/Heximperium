@@ -28,7 +28,7 @@ public class IncomeWhenScoutRevealTile : UpgradeEffect
 
     public override string GetEffectDescription()
     {
-        return $"Gain {_income.IncomeToString()} when a scout reveals a tile";
+        return $"Gain {_income.IncomeToString()} when a scout<sprite name=\"Scout_Emoji\"> reveals a tile";
 
     }
 }

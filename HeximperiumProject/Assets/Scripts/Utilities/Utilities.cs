@@ -208,7 +208,7 @@ public static class Utilities
         {
             if (i > 0)
                 limitsString += " & ";
-            limitsString += limits[i].infrastructure.TileName + " by " + limits[i].availableCopy;
+            limitsString += "<u>" + limits[i].infrastructure.TileName + "</u>" + " by " + limits[i].availableCopy;
         }
         return limitsString;
     }
@@ -275,7 +275,7 @@ public static class Utilities
                     else
                         res += ", ";
                 }
-                res += data[i].TileName;
+                res += "<u>" + data[i].TileName + "</u>";
             }
             return res;
         }

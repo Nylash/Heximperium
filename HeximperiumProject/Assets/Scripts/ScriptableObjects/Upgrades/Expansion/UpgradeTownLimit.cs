@@ -10,6 +10,6 @@ public class UpgradeTownLimit : UpgradeEffect
 
     public override string GetEffectDescription()
     {
-        return "+3 Towns limit";
+        return "+3 Towns<sprite name=\"Town_Emoji\"> limit";
     }
 }

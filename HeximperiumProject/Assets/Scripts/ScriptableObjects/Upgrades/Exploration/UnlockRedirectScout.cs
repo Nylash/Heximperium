@@ -10,6 +10,6 @@ public class UnlockRedirectScout : UpgradeEffect
 
     public override string GetEffectDescription()
     {
-        return "Each Scout can be redirected once per turn";
+        return "Each Scout<sprite name=\"Scout_Emoji\"> can be redirected once per turn";
     }
 }

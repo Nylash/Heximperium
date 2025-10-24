@@ -10,6 +10,6 @@ public class UnlockScoutIgnoreHazard : UpgradeEffect
 
     public override string GetEffectDescription()
     {
-        return "Scouts ignore slow penalty from Mountain, Desert, Swamp and Water tiles";
+        return "Scouts<sprite name=\"Scout_Emoji\"> ignore slow penalty from Mountain, Desert, Swamp and Water tiles";
     }
 }

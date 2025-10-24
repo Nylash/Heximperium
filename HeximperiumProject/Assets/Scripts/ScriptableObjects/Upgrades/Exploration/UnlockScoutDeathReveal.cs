@@ -12,6 +12,6 @@ public class UnlockScoutDeathReveal : UpgradeEffect
 
     public override string GetEffectDescription()
     {
-        return $"When a Scout reaches the end of its lifespan, he reveals all tiles in a {_deathRevealRadius}-tiles radius around him";
+        return $"When a Scout<sprite name=\"Scout_Emoji\"> reaches the end of its lifespan, he reveals all tiles in a {_deathRevealRadius}-tiles radius around him";
     }
 }

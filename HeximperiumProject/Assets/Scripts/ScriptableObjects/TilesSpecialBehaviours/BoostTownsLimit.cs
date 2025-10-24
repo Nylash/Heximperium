@@ -20,6 +20,6 @@ public class BoostTownsLimit : SpecialBehaviour
 
     public override string GetBehaviourDescription()
     {
-        return "Boosts the town limit by 1";
+        return "Boosts the town<sprite name=\"Town_Emoji\"> limit by 1";
     }
 }

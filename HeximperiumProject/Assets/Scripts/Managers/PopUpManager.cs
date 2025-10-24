@@ -68,13 +68,13 @@ public class PopUpManager : Singleton<PopUpManager>
                 switch (obj.tag)
                 {
                     case "ScoutLimitUI":
-                        LimitPopUp("Scouts");
+                        LimitPopUp("Scouts<sprite name=\"Scout_Emoji\">");
                         break;
                     case "ClaimUI":
                         ClaimPopUp();
                         break;
                     case "TownLimitUI":
-                        LimitPopUp("Towns");
+                        LimitPopUp("Towns<sprite name=\"Town_Emoji\">");
                         break;
                     case "GoldUI":
                         GoldPopUp();
@@ -295,7 +295,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
-        title.text = "Claims";
+        title.text = "Claims<sprite name=\"Claim_Emoji\">";
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
@@ -320,27 +320,27 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
-        title.text = "Gold";
+        title.text = "Gold<sprite name=\"Gold_Emoji\">";
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
         #region INCOME
         TextMeshProUGUI income = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        income.text = "Total gold per turn: +" + ExploitationManager.Instance.GetResourceIncomeByAllTiles(Resource.Gold) + "<sprite name=\"Gold_Emoji\">";
+        income.text = "Total <sprite name=\"Gold_Emoji\"> per turn: +" + ExploitationManager.Instance.GetResourceIncomeByAllTiles(Resource.Gold) + "<sprite name=\"Gold_Emoji\">";
         ClampTextWidth(income);
         textObjects.Add(income.GetComponent<RectTransform>());
         #endregion
 
         #region INCOME NO INFRA
         TextMeshProUGUI incomeNoInfra = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        incomeNoInfra.text = "Gold from non enhanced tiles: +" + ExploitationManager.Instance.GetResourceIncomeByNoInfraTiles(Resource.Gold) + "<sprite name=\"Gold_Emoji\">";
+        incomeNoInfra.text = "<sprite name=\"Gold_Emoji\"> from non enhanced tiles: +" + ExploitationManager.Instance.GetResourceIncomeByNoInfraTiles(Resource.Gold) + "<sprite name=\"Gold_Emoji\">";
         ClampTextWidth(incomeNoInfra);
         textObjects.Add(incomeNoInfra.GetComponent<RectTransform>());
         #endregion
 
         #region INCOME INFRA
         TextMeshProUGUI incomeInfra = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        incomeInfra.text = "Gold from enhanced tiles: +" + ExploitationManager.Instance.GetResourceIncomeByInfra(Resource.Gold) + "<sprite name=\"Gold_Emoji\">";
+        incomeInfra.text = "<sprite name=\"Gold_Emoji\"> from enhanced tiles: +" + ExploitationManager.Instance.GetResourceIncomeByInfra(Resource.Gold) + "<sprite name=\"Gold_Emoji\">";
         ClampTextWidth(incomeInfra);
         textObjects.Add(incomeInfra.GetComponent<RectTransform>());
         #endregion
@@ -359,13 +359,13 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
-        title.text = "Stone";
+        title.text = "Stone<sprite name=\"SR_Emoji\">";
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
         #region INCOME
         TextMeshProUGUI income = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        income.text = "Stone per turn: +" + ExploitationManager.Instance.GetResourceIncomeByAllTiles(Resource.SpecialResources) + "<sprite name=\"SR_Emoji\">";
+        income.text = "<sprite name=\"SR_Emoji\"> per turn: +" + ExploitationManager.Instance.GetResourceIncomeByAllTiles(Resource.SpecialResources) + "<sprite name=\"SR_Emoji\">";
         ClampTextWidth(income);
         textObjects.Add(income.GetComponent<RectTransform>());
         #endregion
@@ -384,34 +384,34 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
-        title.text = "Points";
+        title.text = "Points<sprite name=\"Point_Emoji\">";
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
         #region MINSTREL STAGE
         TextMeshProUGUI minstrel = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        minstrel.text = "Points from Minstrel Stage: +" + EntertainmentManager.Instance.GetPointsFromMinstrelStage() + "<sprite name=\"Point_Emoji\">";
+        minstrel.text = "<sprite name=\"Point_Emoji\"> from Minstrel Stage: +" + EntertainmentManager.Instance.GetPointsFromMinstrelStage() + "<sprite name=\"Point_Emoji\">";
         ClampTextWidth(minstrel);
         textObjects.Add(minstrel.GetComponent<RectTransform>());
         #endregion
 
         #region TASTING PAVILION
         TextMeshProUGUI tasting = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        tasting.text = "Points from Tasting Pavilion: +" + EntertainmentManager.Instance.GetPointsFromTastingPavilion() + "<sprite name=\"Point_Emoji\">";
+        tasting.text = "<sprite name=\"Point_Emoji\"> from Tasting Pavilion: +" + EntertainmentManager.Instance.GetPointsFromTastingPavilion() + "<sprite name=\"Point_Emoji\">";
         ClampTextWidth(tasting);
         textObjects.Add(tasting.GetComponent<RectTransform>());
         #endregion
 
         #region PARADE ROUTE
         TextMeshProUGUI parade = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        parade.text = "Points from Parade Route: +" + EntertainmentManager.Instance.GetPointsFromParadeRoute() + "<sprite name=\"Point_Emoji\">";
+        parade.text = "<sprite name=\"Point_Emoji\"> from Parade Route: +" + EntertainmentManager.Instance.GetPointsFromParadeRoute() + "<sprite name=\"Point_Emoji\">";
         ClampTextWidth(parade);
         textObjects.Add(parade.GetComponent<RectTransform>());
         #endregion
 
         #region MYSTIC GARDEN
         TextMeshProUGUI garden = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        garden.text = "Points from Mystic Garden: +" + EntertainmentManager.Instance.GetPointsFromMysticGarden() + "<sprite name=\"Point_Emoji\">";
+        garden.text = "<sprite name=\"Point_Emoji\"> from Mystic Garden: +" + EntertainmentManager.Instance.GetPointsFromMysticGarden() + "<sprite name=\"Point_Emoji\">";
         ClampTextWidth(garden);
         textObjects.Add(garden.GetComponent<RectTransform>());
         #endregion
@@ -430,13 +430,13 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform).GetComponent<TextMeshProUGUI>();
-        title.text = "Carnivalists";
+        title.text = "Carnivalists<sprite name=\"Carnivalist_Emoji\">";
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
         #region DETAIL
         TextMeshProUGUI detail = Instantiate(_text, popUp.transform).GetComponent<TextMeshProUGUI>();
-        detail.text = "Carnivalists are used during the Grand Jubilee";
+        detail.text = "<sprite name=\"Carnivalist_Emoji\"> are used during the Grand Jubilee";
         ClampTextWidth(detail);
         detail.alignment = TextAlignmentOptions.Center;
         detail.fontStyle = FontStyles.Italic;

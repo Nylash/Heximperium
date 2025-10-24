@@ -24,6 +24,6 @@ public class BoostScoutsLimit : SpecialBehaviour
 
     public override string GetBehaviourDescription()
     {
-        return "Increases the limit of scouts by " + _scoutsIncrease;
+        return "Increases the limit of scouts<sprite name=\"Scout_Emoji\"> by " + _scoutsIncrease;
     }
 }

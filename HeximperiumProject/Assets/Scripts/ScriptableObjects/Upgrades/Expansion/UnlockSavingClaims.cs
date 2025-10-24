@@ -10,6 +10,6 @@ public class UnlockSavingClaims : UpgradeEffect
 
     public override string GetEffectDescription()
     {
-        return "Claims are now conserved between turns";
+        return "Claims<sprite name=\"Claim_Emoji\"> are now conserved between turns";
     }
 }
