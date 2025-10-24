@@ -518,31 +518,37 @@ public class UIManager : Singleton<UIManager>
                 _upgrade1.text = upgrade.EffectName;
                 _upgrade1.color = GetColorOfPhase(upgrade.AssociatedSystem);
                 _upgrade1.GetComponent<UpgradeHolder>().UpgradeEffect = upgrade;
+                _upgrade1.gameObject.SetActive(true);
                 break;
             case 2:
                 _upgrade2.text = upgrade.EffectName;
                 _upgrade2.color = GetColorOfPhase(upgrade.AssociatedSystem);
                 _upgrade2.GetComponent<UpgradeHolder>().UpgradeEffect = upgrade;
+                _upgrade2.gameObject.SetActive(true);
                 break;
             case 3:
                 _upgrade3.text = upgrade.EffectName;
                 _upgrade3.color = GetColorOfPhase(upgrade.AssociatedSystem);
                 _upgrade3.GetComponent<UpgradeHolder>().UpgradeEffect = upgrade;
+                _upgrade3.gameObject.SetActive(true);
                 break;
             case 4:
                 _upgrade4.text = upgrade.EffectName;
                 _upgrade4.color = GetColorOfPhase(upgrade.AssociatedSystem);
                 _upgrade4.GetComponent<UpgradeHolder>().UpgradeEffect = upgrade;
+                _upgrade4.gameObject.SetActive(true);
                 break;
             case 5:
                 _upgrade5.text = upgrade.EffectName;
                 _upgrade5.color = GetColorOfPhase(upgrade.AssociatedSystem);
                 _upgrade5.GetComponent<UpgradeHolder>().UpgradeEffect = upgrade;
+                _upgrade5.gameObject.SetActive(true);
                 break;
             case 6:
                 _upgrade6.text = upgrade.EffectName;
                 _upgrade6.color = GetColorOfPhase(upgrade.AssociatedSystem);
                 _upgrade6.GetComponent<UpgradeHolder>().UpgradeEffect = upgrade;
+                _upgrade6.gameObject.SetActive(true);
                 break;
             default:
                 Debug.LogError("Shouldn't reach 7 upgrades.");

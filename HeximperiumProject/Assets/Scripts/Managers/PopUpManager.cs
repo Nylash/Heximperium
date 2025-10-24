@@ -506,6 +506,9 @@ public class PopUpManager : Singleton<PopUpManager>
 
     private void UpgradePopUp(UpgradeEffect effect)
     {
+        if (effect == null)
+            return;
+
         GameObject popUp;
         popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
         _popUps.Add(popUp);
