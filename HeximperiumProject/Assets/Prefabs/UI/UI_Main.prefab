@@ -4375,7 +4375,7 @@ GameObject:
   - component: {fileID: 5646575419411938907}
   m_Layer: 5
   m_Name: ScoreBar
-  m_TagString: ScoreUI
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6260,7 +6260,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 2100000, guid: 837467701677637439b019c6f3d27d10, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -7167,7 +7167,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 21.55
+  m_fontSize: 21.6
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -12734,7 +12734,7 @@ GameObject:
   - component: {fileID: 6944899636249446578}
   m_Layer: 5
   m_Name: Back
-  m_TagString: Untagged
+  m_TagString: ScoreUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16029,7 +16029,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 21.55
+  m_fontSize: 21.6
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -22405,6 +22405,7 @@ MonoBehaviour:
   _offsetNormX: 0.1
   _maxDistanceBetweenObjectAndPopup: 0.25
   _offsetPopupOnCursor: 0.01
+  _paddingForPhaseBorder: {x: 0, y: 0, z: 0, w: 0}
   _topLimit: {fileID: 7504004161406634285}
   _bottomLimit: {fileID: 3788652933479061911}
   _rightLimit: {fileID: 7239601312656741034}
