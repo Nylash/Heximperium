@@ -46,6 +46,7 @@ public class UIManager : Singleton<UIManager>
     [Header("Menu")]
     [SerializeField] private GameObject _menu;
     [SerializeField] private GameObject _confirmQuit;
+    [SerializeField] private GameObject _confirmMainMenu;
     [SerializeField] private GameObject _endMenu;
     [SerializeField] private TextMeshProUGUI _endScore;
     [Header("_________________________________________________________")]
@@ -413,17 +414,29 @@ public class UIManager : Singleton<UIManager>
 
     public void OpenCloseMenu()
     {
-        //Close the upgrades menu if it's open instead of opening the main menu
-        if (_upgradesMenu.activeSelf)
+        if (_confirmQuit.activeSelf)
         {
-            _upgradesMenu.GetComponent<Animator>().SetTrigger("Fold");
-            GameManager.Instance.GamePaused = false;
+            ConfirmQuit();
+            return;
+        }
+        if (_confirmMainMenu.activeSelf)
+        {
+            ConfirmMainMenu();
             return;
         }
 
-        _menu.SetActive(!_menu.activeSelf);
-        GameManager.Instance.GamePaused = _menu.activeSelf;
-        PopUpManager.Instance.ResetPopUp(null);
+        if (_menu.activeSelf)
+        {
+            _menu.GetComponent<Animator>().SetTrigger("Hide");
+            GameManager.Instance.GamePaused = false;
+            PopUpManager.Instance.ResetPopUp(null);
+        }
+        else
+        {
+            _menu.SetActive(true);
+            GameManager.Instance.GamePaused = true;
+            PopUpManager.Instance.ResetPopUp(null);
+        }
     }
 
     public void LoadMainMenu()
@@ -433,7 +446,18 @@ public class UIManager : Singleton<UIManager>
 
     public void ConfirmQuit()
     {
-        _confirmQuit.SetActive(!_confirmQuit.activeSelf);
+        if (_confirmQuit.activeSelf)
+            _confirmQuit.GetComponent<Animator>().SetTrigger("Hide");
+        else
+            _confirmQuit.SetActive(true);
+    }
+
+    public void ConfirmMainMenu()
+    {
+        if (_confirmMainMenu.activeSelf)
+            _confirmMainMenu.GetComponent<Animator>().SetTrigger("Hide");
+        else
+            _confirmMainMenu.SetActive(true);
     }
 
     public void QuitGame()
