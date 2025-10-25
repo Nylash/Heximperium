@@ -586,7 +586,7 @@ public class PopUpManager : Singleton<PopUpManager>
         if (tile.TileData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
         {
             TextMeshProUGUI scoutText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            scoutText.text = "<sprite name=\"Puce_Emoji\"> Scout starting point";
+            scoutText.text = "<sprite name=\"Puce_Emoji\"> Scout<sprite name=\"Scout_Emoji\"> starting point";
             textObjects.Add(scoutText.GetComponent<RectTransform>());
             ClampTextWidth(scoutText);
         }
@@ -990,7 +990,7 @@ public class PopUpManager : Singleton<PopUpManager>
         if (button.InfrastructureData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
         {
             TextMeshProUGUI scoutText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            scoutText.text = "<sprite name=\"Puce_Emoji\"> Scout starting point";
+            scoutText.text = "<sprite name=\"Puce_Emoji\"> Scout<sprite name=\"Scout_Emoji\"> starting point";
             textObjects.Add(scoutText.GetComponent<RectTransform>());
             ClampTextWidth(scoutText);
         }
