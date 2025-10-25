@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public static class Utilities
 {
@@ -315,27 +316,37 @@ public static class Utilities
             .ToList();
     }
 
-    //Clone a List<ResourceToIntMap>
-    public static List<ResourceToIntMap> CloneResourceToIntMap(List<ResourceToIntMap> original)
+    public static void AnchorWrapperToContent(RectTransform wrapper, RectTransform content)
     {
-        return original.Select(item => new ResourceToIntMap(item.resource, item.value)).ToList();
-    }
+        // 1) Forcer le layout pour avoir les bonnes tailles
+        LayoutRebuilder.ForceRebuildLayoutImmediate(content);
+        LayoutRebuilder.ForceRebuildLayoutImmediate(wrapper);
 
-    //Reanchor a RectTransform to its current position and size
-    public static void ReanchorToCurrentRect(RectTransform rt)
-    {
-        var parent = rt.parent as RectTransform;
-        var ps = parent.rect.size;
+        var parent = wrapper.parent as RectTransform;
+        if (parent == null) return;
 
-        // compute new normalized anchors
-        Vector2 aMin = rt.anchorMin + rt.offsetMin / ps;
-        Vector2 aMax = rt.anchorMax + rt.offsetMax / ps;
+        // 2) Bounding box du content relative au parent du wrapper
+        //    (=> coordonnées locales du parent)
+        Bounds b = RectTransformUtility.CalculateRelativeRectTransformBounds(parent, content);
 
-        // apply
-        rt.anchorMin = aMin;
-        rt.anchorMax = aMax;
-        rt.offsetMin = Vector2.zero;
-        rt.offsetMax = Vector2.zero;
+        // 3) Convertir en ancres normalisées [0..1] (origine = coin bas-gauche du parent)
+        Vector2 parentSize = parent.rect.size;
+        Vector2 parentBL = -Vector2.Scale(parentSize, parent.pivot); // coin bas-gauche en local
+
+        Vector2 minNorm = new Vector2(
+            (b.min.x - parentBL.x) / parentSize.x,
+            (b.min.y - parentBL.y) / parentSize.y
+        );
+        Vector2 maxNorm = new Vector2(
+            (b.max.x - parentBL.x) / parentSize.x,
+            (b.max.y - parentBL.y) / parentSize.y
+        );
+
+        // 4) Appliquer aux ancres du wrapper et neutraliser offsets
+        wrapper.anchorMin = minNorm;
+        wrapper.anchorMax = maxNorm;
+        wrapper.anchoredPosition = Vector2.zero;
+        wrapper.sizeDelta = Vector2.zero;
     }
 }
 
