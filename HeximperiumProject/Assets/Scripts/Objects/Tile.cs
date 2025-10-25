@@ -287,7 +287,7 @@ public class Tile : MonoBehaviour
         _targetData = null;
 
         if (updateVisual)
-            UpdateVisual();
+            _animator.SetTrigger("UpdateVisual");
 
         UpdateSpecialBehaviours();
 
@@ -335,7 +335,7 @@ public class Tile : MonoBehaviour
     }
 
     //Change tile's visual based on the tile data
-    private void UpdateVisual()
+    public void UpdateVisual()
     {
         if (_tileData is InfrastructureData infraData)
             _infraLvlRenderer.sprite = _spriteInfraLvl[infraData.InfrastructureLevel - 1];
@@ -346,7 +346,10 @@ public class Tile : MonoBehaviour
             _claimTintAnimator.gameObject.SetActive(false);
 
         if (_visualAssets != null)
-            DestroyImmediate(_visualAssets);
+        {
+            GameObject previousVisualAssets = _visualAssets;
+            Destroy(previousVisualAssets);
+        }
         foreach (TileDataToGameObjectsMap item in _tileData.VisualsProps)
         {
             if (item.tileData == _initialData)
