@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -91,7 +93,7 @@ public class CameraManager : Singleton<CameraManager>
     {
         if (GameManager.Instance.GamePaused)
         {
-            if (UIManager.Instance.UpgradesMenuObject.activeSelf)
+            if (UIManager.Instance.UpgradesChoiceMenuObject.activeSelf)
                 ObjectUnderMouseDetection();
             return;
         }
@@ -106,6 +108,7 @@ public class CameraManager : Singleton<CameraManager>
         ObjectUnderMouseDetection();
     }
 
+    #region MOUSE OVER DETECTION
     //Check if the cursor is over an object, if so give the object to UI Manager to display a pop up
     private void ObjectUnderMouseDetection()
     {
@@ -119,8 +122,16 @@ public class CameraManager : Singleton<CameraManager>
 
             if (results.Count > 0)
             {
-                // Pass the topmost UI object under the cursor
-                PopUpManager.Instance.UIPopUp(results[0].gameObject);
+                TextMeshProUGUI text = results[0].gameObject.GetComponent<TextMeshProUGUI>();
+                if (text != null && results[0].gameObject.CompareTag("Untagged"))
+                {
+                    DetectWordUnderCursor(pointerEventData, text);
+                }
+                else
+                {
+                    // Pass the topmost UI object under the cursor
+                    PopUpManager.Instance.UIPopUp(results[0].gameObject);
+                }
             }
 
             //If a interaction button was shrink we unshrink it
@@ -164,6 +175,40 @@ public class CameraManager : Singleton<CameraManager>
             }
         }
     }
+
+    private void DetectWordUnderCursor(PointerEventData eventData, TextMeshProUGUI text)
+    {
+        text.ForceMeshUpdate();
+
+        int w = TMP_TextUtilities.FindIntersectingWord(text, eventData.position, eventData.enterEventCamera);
+        if (w == -1) return;
+
+        var wi = text.textInfo.wordInfo[w];
+        string s = wi.GetWord();                 // raw word (no tags)
+
+        if (!Utilities.IsUnderlined(text, wi.firstCharacterIndex, wi.lastCharacterIndex))
+            return;
+
+        string underlinedWord = Utilities.ExtractWholeUnderlinedWord(text.textInfo, wi.firstCharacterIndex);
+
+        foreach (Family family in Enum.GetValues(typeof(Family)))
+        {
+            if (Utilities.Matches(underlinedWord, family.ToString()))
+            {
+                PopUpManager.Instance.PopUpOnPopUp(text.rectTransform, family);
+                return;
+            }
+        }
+        foreach (InfrastructureData infra in ExploitationManager.Instance.AllInfraDatas)
+        {
+            if (underlinedWord.Equals(infra.TileName))
+            {
+                PopUpManager.Instance.PopUpOnPopUp(text.rectTransform, Family.None, infra);
+                return;
+            }
+        }
+    }
+    #endregion
 
     #region CAMERA MOVEMENT
     private void CenterCam()

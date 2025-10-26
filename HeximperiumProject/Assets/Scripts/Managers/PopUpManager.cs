@@ -29,6 +29,11 @@ public class PopUpManager : Singleton<PopUpManager>
     [SerializeField] private GameObject _basePopUp;
     [SerializeField] private GameObject _title;
     [SerializeField] private GameObject _text;
+    [Header("_________________________________________________________")]
+    [Header("Locking Popup")]
+    [SerializeField] private GameObject _lockingObject;
+    [SerializeField] private GameObject _lockedObject;
+    [SerializeField] private float _durationForLockingPopup = 5f;
     #endregion
 
     #region VARIABLES
@@ -39,6 +44,15 @@ public class PopUpManager : Singleton<PopUpManager>
     private Dictionary<SpecialBehaviour, Tile> _highlightingBehaviours = new Dictionary<SpecialBehaviour, Tile>();
     private Dictionary<SpecialEffect, Tile> _highlightingEffects = new Dictionary<SpecialEffect, Tile>();
     private float _maxAllowed;
+    private bool _popUpShown;
+    //POPUP ON POPUP Variables
+    private GameObject _lockingPopup;
+    private bool _isLockingPopup;
+    private Image _lockingImage;
+    private float _lockingTimer;
+    private Dictionary<GameObject, Button> _lockedPopUps = new();
+
+    public Dictionary<GameObject, Button> LockedPopUps { get => _lockedPopUps; }
     #endregion
 
     private void Start()
@@ -46,6 +60,9 @@ public class PopUpManager : Singleton<PopUpManager>
         float dynamicFraction = _maxScreenFraction * (REF_WIDTH / Screen.width);
 
         _maxAllowed = Screen.width * dynamicFraction;
+
+        // delay start for pop up UI
+        _delayedHoverTimer = _durationHoverForUI * _percentageOfTimerForVisualHint;
     }
 
     #region BASE LOGIC
@@ -55,16 +72,19 @@ public class PopUpManager : Singleton<PopUpManager>
         {
             if (obj.CompareTag("Untagged"))
                 return;
+            if (_popUpShown)
+                return;
 
             //Timer before spawning popup
             _hoverTimer += Time.deltaTime;
-            // delay start
-            _delayedHoverTimer = _durationHoverForUI * _percentageOfTimerForVisualHint;
             // Fill is 0 until t >= t0, then rises linearly to 1 at t == d.
             _timerOverImage.fillAmount = Mathf.InverseLerp(_delayedHoverTimer, _durationHoverForUI, _hoverTimer);
 
             if (_hoverTimer >= _durationHoverForUI && _popUps.Count == 0)
             {
+                _popUpShown = true;
+                _hoverTimer = 0.0f;
+                _timerOverImage.fillAmount = 0.0f;
                 _timerOverImage.enabled = false;
                 switch (obj.tag)
                 {
@@ -122,15 +142,18 @@ public class PopUpManager : Singleton<PopUpManager>
         {
             if (obj.GetComponent<Tile>() is Tile t && !t.Revealed)
                 return;
+            if (_popUpShown)
+                return;
 
             //Timer before spawning popup
             _hoverTimer += Time.deltaTime;
-            // delay start
-            _delayedHoverTimer = _durationHoverForUI * _percentageOfTimerForVisualHint;
             // Fill is 0 until t >= t0, then rises linearly to 1 at t == d.
             _timerOverImage.fillAmount = Mathf.InverseLerp(_delayedHoverTimer, _durationHoverForUI, _hoverTimer);
             if (_hoverTimer >= _durationHoverForUI && _popUps.Count == 0)
             {
+                _popUpShown = true;
+                _hoverTimer = 0.0f;
+                _timerOverImage.fillAmount = 0.0f;
                 _timerOverImage.enabled = false;
                 if (obj.GetComponent<Tile>() is Tile tile)
                 {
@@ -191,12 +214,46 @@ public class PopUpManager : Singleton<PopUpManager>
         }
     }
 
+    public void PopUpOnPopUp(RectTransform refObject, Family family = Family.None, InfrastructureData infra = null)
+    {
+        if (refObject.gameObject == _objectUnderMouse)
+        {
+            if (_popUpShown)
+                return;
+
+            //Timer before spawning popup
+            _hoverTimer += Time.deltaTime;
+            // Fill is 0 until t >= t0, then rises linearly to 1 at t == d.
+            _timerOverImage.fillAmount = Mathf.InverseLerp(_delayedHoverTimer, _durationHoverForUI, _hoverTimer);
+            if (_hoverTimer >= _durationHoverForUI && _popUps.Count == 0)
+            {
+                _popUpShown = true;
+                _hoverTimer = 0.0f;
+                _timerOverImage.fillAmount = 0.0f;
+                _timerOverImage.enabled = false;
+                if (family != Family.None)
+                {
+                    FamilyPopup(family, refObject);
+                }
+                else if (infra != null)
+                {
+                    InfrastructurePopup(infra, refObject);
+                }
+            }
+        }
+        else
+        {
+            //Object under cursor changed, so we reset everything
+            ResetPopUp(refObject.gameObject);
+        }
+    }
+
     public void ResetPopUp(GameObject obj)
     {
+        _popUpShown = false;
         _objectUnderMouse = obj;
         _hoverTimer = 0.0f;
         _timerOverImage.fillAmount = 0.0f;
-        _delayedHoverTimer = 0.0f;
         _timerOverImage.enabled = true;
         GameManager.Instance.InteractionButtonsFade(false, null);
 
@@ -223,6 +280,27 @@ public class PopUpManager : Singleton<PopUpManager>
                 item.Key.HighlightImpactedEntertainment(item.Value, false);
             }
             _highlightingEffects.Clear();
+        }
+        if (_lockingImage != null)
+        {
+            StopLockingPopup();
+        }
+    }
+
+    //Used to lock a popup on screen until user closes it
+    private void Update()
+    {
+        if (_isLockingPopup && _lockingImage != null)
+        {
+            _lockingTimer += Time.deltaTime;
+            float t = (_durationForLockingPopup <= 0f) ? 1f : Mathf.Clamp01(_lockingTimer / _durationForLockingPopup);
+            _lockingImage.fillAmount = t;
+            if (_lockingTimer >= _durationForLockingPopup)
+            {
+                _isLockingPopup = false;
+                _lockingTimer = 0f;
+                LockPopup(_lockingPopup);
+            }
         }
     }
     #endregion
@@ -309,6 +387,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
+        StartLockingPopup(popUp);
     }
 
     private void GoldPopUp()
@@ -348,6 +427,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
+        StartLockingPopup(popUp);
     }
 
     private void SRPopUp()
@@ -373,6 +453,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
+        StartLockingPopup(popUp);
     }
 
     private void ScorePopUp()
@@ -419,6 +500,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
+        StartLockingPopup(popUp);
     }
 
     private void CarnivalistPopUp()
@@ -459,6 +541,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
+        StartLockingPopup(popUp);
     }
 
     private void ShowIncomePopUp()
@@ -531,6 +614,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
+        StartLockingPopup(popUp);
     }
     #endregion
 
@@ -652,6 +736,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>(), tile.transform, tile.TileData.SpecialBehaviours.Count == 0);
+        StartLockingPopup(popUp);
     }
 
     private void ScoutPopUp(Scout scout)
@@ -749,6 +834,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>(), ent.Tile.transform, ent.Data.SpecialEffects.Count == 0);
+        StartLockingPopup(popUp);
     }
     #endregion
 
@@ -820,6 +906,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, true);
+        StartLockingPopup(popUp);
     }
 
     private void ButtonRedirectScoutPopUp(InteractionButton button)
@@ -880,6 +967,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, true);
+        StartLockingPopup(popUp);
     }
 
     private void ButtonDestroyPopUp(string text, InteractionButton button)
@@ -946,6 +1034,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, button.EntertainData.SpecialEffects.Count == 0);
+        StartLockingPopup(popUp);
     }
 
     private void ButtonInfraPopUp(InteractionButton button)
@@ -1095,6 +1184,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, button.InfrastructureData.SpecialBehaviours.Count == 0);
+        StartLockingPopup(popUp);
     }
     #endregion
 
@@ -1404,6 +1494,211 @@ public class PopUpManager : Singleton<PopUpManager>
             textObjects[reversedIndex].anchorMin = new Vector2(0, i / (float)count);
             textObjects[reversedIndex].anchorMax = new Vector2(1, (i + 1f) / count);
         }
+    }
+    #endregion
+
+    #region POPUP ON POPUP
+    public void FamilyPopup(Family family, RectTransform refObject)
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        #region TITLE
+        TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        title.text = family.ToCustomString();
+        textObjects.Add(title.GetComponent<RectTransform>());
+        #endregion
+
+        #region FAMILY LIST
+        TextMeshProUGUI familyList = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        List<InfrastructureData> infraOfFamily = new List<InfrastructureData>();
+        foreach (InfrastructureData infra in ExploitationManager.Instance.AllInfraDatas)
+        {
+            if (infra.Family == family)
+            {
+                infraOfFamily.Add(infra);
+            }
+        }
+        familyList.text = infraOfFamily.ToCustomString(false);
+        ClampTextWidth(familyList);
+        textObjects.Add(familyList.GetComponent<RectTransform>());
+        #endregion
+
+        SetPopUpContentAnchors(textObjects);
+        PositionPopup(popUp.GetComponent<RectTransform>(), refObject, true);
+        StartLockingPopup(popUp);
+    }
+
+    public void InfrastructurePopup(InfrastructureData infra, RectTransform refObject)
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        #region TITLE
+        TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        title.text = infra.TileName;
+        textObjects.Add(title.GetComponent<RectTransform>());
+        #endregion
+
+        #region INCOME BONUS
+        if (infra.Incomes.Count > 0)
+        {
+            TextMeshProUGUI income = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            income.text = "<sprite name=\"Puce_Emoji\"> Improve income by " + infra.Incomes.IncomeToString() + " per turn";
+            textObjects.Add(income.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region BEHAVIOURS
+        if (infra.SpecialBehaviours.Count > 0)
+        {
+            foreach (SpecialBehaviour behaviour in infra.SpecialBehaviours)
+            {
+                TextMeshProUGUI behaviourText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                behaviourText.text = "<sprite name=\"Puce_Emoji\"> " + behaviour.GetBehaviourDescription();
+                textObjects.Add(behaviourText.GetComponent<RectTransform>());
+                ClampTextWidth(behaviourText);
+            }
+        }
+        #endregion
+
+        #region SCOUT STARTING POINT
+        if (infra.ScoutStartingPoint)
+        {
+            TextMeshProUGUI scoutText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            scoutText.text = "<sprite name=\"Puce_Emoji\"> Scout<sprite name=\"Scout_Emoji\"> starting point";
+            textObjects.Add(scoutText.GetComponent<RectTransform>());
+            ClampTextWidth(scoutText);
+        }
+        #endregion
+
+        #region ENHANCEMENTS
+        if (infra.AvailableInfrastructures.Count > 0)
+        {
+            TextMeshProUGUI enhancement = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            enhancement.text = "Can be enhanced into " + infra.AvailableInfrastructures.ToCustomString(false, true);
+
+            textObjects.Add(enhancement.GetComponent<RectTransform>());
+            ClampTextWidth(enhancement);
+            enhancement.fontStyle = FontStyles.Italic;
+            enhancement.alignment = TextAlignmentOptions.Center;
+        }
+        #endregion
+
+        #region COST
+        TextMeshProUGUI cost = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        if (GameManager.Instance.CurrentPhase == Phase.Expand)
+        {
+            cost.text = "Cost: " + infra.ClaimCost + "<sprite name=\"Claim_Emoji\">" + "(" + ResourcesManager.Instance.Claim + ")";
+            if (!ResourcesManager.Instance.CanAffordClaim(infra.ClaimCost))
+                cost.color = UIManager.Instance.ColorCantAfford;
+        }
+        else
+        {
+            cost.text = "Cost: " + infra.Costs.CostToString();
+            if (!ResourcesManager.Instance.CanAfford(infra.Costs))
+                cost.color = UIManager.Instance.ColorCantAfford;
+        }
+        textObjects.Add(cost.GetComponent<RectTransform>());
+        ClampTextWidth(cost);
+        #endregion
+
+        #region AVAILABILITY
+        if (ExploitationManager.Instance.DoesInfraLimitExist(infra))
+        {
+            TextMeshProUGUI availability = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            int existingCount = ExploitationManager.Instance.GetAvailableInfraCopies(infra);
+            if (existingCount > 0)
+            {
+                if (existingCount == 1)
+                    availability.text = "1 copy available";
+                else
+                    availability.text = existingCount + " copies available";
+            }
+            else
+            {
+                availability.text = "No available copy";
+                availability.color = UIManager.Instance.ColorCantAfford;
+            }
+            textObjects.Add(availability.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region FAMILY
+        TextMeshProUGUI family = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        family.text = infra.Family.ToCustomString();
+        family.alignment = TextAlignmentOptions.Right;
+        textObjects.Add(family.GetComponent<RectTransform>());
+        #endregion
+
+        SetPopUpContentAnchors(textObjects);
+        PositionPopup(popUp.GetComponent<RectTransform>(), refObject, true);
+        StartLockingPopup(popUp);
+    }
+
+    private void StartLockingPopup(GameObject popUp)
+    {
+        _lockingPopup = popUp;
+        _isLockingPopup = true;
+        _lockingTimer = 0f;
+
+        _lockingImage = Instantiate(_lockingObject, UIManager.Instance.PopUpParent).GetComponent<Image>();
+        Utilities.PlacePrefabAroundTargetTopRight(_lockingImage.GetComponent<RectTransform>(), popUp.GetComponent<RectTransform>());
+    }
+
+    private void StopLockingPopup()
+    {
+        Destroy(_lockingImage.gameObject);
+        _lockingImage = null;
+        _isLockingPopup = false;
+        _lockingPopup = null;
+        _lockingTimer = 0f;
+    }
+
+    private void LockPopup(GameObject popUp)
+    {
+        _popUps.Remove(popUp);
+        Button lockedButton = Instantiate(_lockedObject, UIManager.Instance.PopUpParent).GetComponent<Button>();
+        _lockedPopUps.Add(popUp, lockedButton);
+        Utilities.PlacePrefabAroundTargetTopRight(lockedButton.GetComponent<RectTransform>(), popUp.GetComponent<RectTransform>());
+        StopLockingPopup();
+    }
+
+    public void CloseLockedPopup(Button button)
+    {
+        GameObject popUpToRemove = null;
+        foreach (var item in _lockedPopUps)
+        {
+            if (item.Value == button)
+            {
+                popUpToRemove = item.Key;
+                Destroy(item.Key);
+                Destroy(item.Value.gameObject);
+                ResetPopUp(null);
+                break;
+            }
+        }
+        if (popUpToRemove != null)
+        {
+            _lockedPopUps.Remove(popUpToRemove);
+        }
+    }
+
+    public void CloseAllLockedPopup()
+    {
+        foreach (var item in _lockedPopUps)
+        {
+            Destroy(item.Key);
+            Destroy(item.Value.gameObject);
+        }
+        _lockedPopUps.Clear();
+        ResetPopUp(null);
     }
     #endregion
 }

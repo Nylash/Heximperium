@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +10,7 @@ public static class Utilities
 {
     public static Action OnGameInitialized;
 
+    #region INTERACTION BUTTONS
     //Return a list of world position around the tile, depending on how many buttons is needed
     public static List<Vector3> GetInteractionButtonsPosition(Vector3 tilePosition, int buttonsNumber)
     {
@@ -80,7 +83,9 @@ public static class Utilities
 
         return button;
     }
+    #endregion
 
+    #region INCOMES
     //Merge two List<ResourceToIntMap>
     public static List<ResourceToIntMap> MergeResourceToIntMaps(List<ResourceToIntMap> list1, List<ResourceToIntMap> list2)
     {
@@ -116,6 +121,30 @@ public static class Utilities
         return mergedDictionary.Select(kvp => new ResourceToIntMap(kvp.Key, kvp.Value)).ToList();
     }
 
+    //Subtract a by b and return the resulting List<ResourceToIntMap>
+    public static List<ResourceToIntMap> SubtractResourceToIntMaps(List<ResourceToIntMap> a, List<ResourceToIntMap> b)
+    {
+        var result = new Dictionary<Resource, int>();
+
+        foreach (var item in a)
+            result[item.resource] = result.GetValueOrDefault(item.resource, 0) + item.value;
+
+        foreach (var item in b)
+            result[item.resource] = result.GetValueOrDefault(item.resource, 0) - item.value;
+
+        return result
+            .Where(kvp => kvp.Value != 0)
+            .Select(kvp => new ResourceToIntMap(kvp.Key, kvp.Value))
+            .ToList();
+    }
+
+    public static int? GetValueFor(this List<ResourceToIntMap> incomes, Resource resource)
+    {
+        return incomes.FirstOrDefault(r => r.resource == resource)?.value;
+    }
+    #endregion
+
+    #region CUSTOM STRINGS
     public static string ToCustomString(this Resource value)//The "this" is used to extend the enum Resource with a method
     {
         return value switch
@@ -214,11 +243,6 @@ public static class Utilities
         return limitsString;
     }
 
-    public static int? GetValueFor(this List<ResourceToIntMap> incomes, Resource resource)
-    {
-        return incomes.FirstOrDefault(r => r.resource == resource)?.value;
-    }
-
     public static string CostToString(this List<ResourceToIntMap> incomes)
     {
         string costString = string.Empty;
@@ -298,24 +322,9 @@ public static class Utilities
         }
         return res;
     }
+    #endregion
 
-    //Subtract a by b and return the resulting List<ResourceToIntMap>
-    public static List<ResourceToIntMap> SubtractResourceToIntMaps(List<ResourceToIntMap> a, List<ResourceToIntMap> b)
-    {
-        var result = new Dictionary<Resource, int>();
-
-        foreach (var item in a)
-            result[item.resource] = result.GetValueOrDefault(item.resource, 0) + item.value;
-
-        foreach (var item in b)
-            result[item.resource] = result.GetValueOrDefault(item.resource, 0) - item.value;
-
-        return result
-            .Where(kvp => kvp.Value != 0)
-            .Select(kvp => new ResourceToIntMap(kvp.Key, kvp.Value))
-            .ToList();
-    }
-
+    #region POPUP
     public static void AnchorWrapperToContent(RectTransform wrapper, RectTransform content)
     {
         // 1) Forcer le layout pour avoir les bonnes tailles
@@ -348,6 +357,107 @@ public static class Utilities
         wrapper.anchoredPosition = Vector2.zero;
         wrapper.sizeDelta = Vector2.zero;
     }
+
+    public static void PlacePrefabAroundTargetTopRight(RectTransform prefabRect, RectTransform targetRect)
+    {
+        // 1) Parent commun (le parent immédiat du prefab)
+        var parentRect = (RectTransform)prefabRect.parent;
+
+        // 2) Récupérer le point monde du coin haut-droit de la cible
+        var corners = new Vector3[4];
+        targetRect.GetWorldCorners(corners);
+        Vector3 worldTopRight = corners[2];
+
+        // 3) Convertir ce point en local du parent du prefab
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            parentRect,
+            RectTransformUtility.WorldToScreenPoint(null, worldTopRight),
+            null,
+            out localPoint
+        );
+
+        // 4) Convertir en coordonnées normalisées [0..1] dans le parent
+        Vector2 parentSize = parentRect.rect.size;
+        Vector2 parentBL = -parentSize * parentRect.pivot;     // bas-gauche du parent en local
+        Vector2 normalized = (localPoint - parentBL);
+        normalized.x /= parentSize.x;
+        normalized.y /= parentSize.y;
+
+        // 5) Conserver l’écart d’ancres (span) et les recentrer sur "normalized"
+        Vector2 span = prefabRect.anchorMax - prefabRect.anchorMin; // A CONSERVER
+        Vector2 half = span * 0.5f;
+
+        Vector2 newMin = normalized - half;
+        Vector2 newMax = normalized + half;
+
+        // Clamp pour rester dans [0,1]
+        newMin = new Vector2(Mathf.Clamp01(newMin.x), Mathf.Clamp01(newMin.y));
+        newMax = new Vector2(Mathf.Clamp01(newMax.x), Mathf.Clamp01(newMax.y));
+
+        prefabRect.anchorMin = newMin;
+        prefabRect.anchorMax = newMax;
+        prefabRect.anchoredPosition = Vector2.zero;
+        }
+
+    public static bool IsUnderlined(TMP_Text text, int firstChar, int lastChar)
+    {
+        // Component-level underline?
+        if ((text.fontStyle & FontStyles.Underline) != 0) return true;
+
+        var chars = text.textInfo.characterInfo;
+        for (int i = firstChar; i <= lastChar; i++)
+        {
+            if (chars[i].elementType == TMP_TextElementType.Character &&
+                (chars[i].style & FontStyles.Underline) != 0)
+                return true;
+        }
+        return false;
+    }
+
+    public static string ExtractWholeUnderlinedWord(TMP_TextInfo textInfo, int index)
+    {
+        var chars = textInfo.characterInfo;
+        if (index < 0 || index >= chars.Length)
+            return null;
+
+        int start = index;
+        int end = index;
+
+        // Étendre à gauche
+        while (start > 0 &&
+               chars[start - 1].elementType == TMP_TextElementType.Character &&
+               (chars[start - 1].style & FontStyles.Underline) != 0)
+        {
+            start--;
+        }
+
+        // Étendre à droite
+        while (end < chars.Length - 1 &&
+               chars[end + 1].elementType == TMP_TextElementType.Character &&
+               (chars[end + 1].style & FontStyles.Underline) != 0)
+        {
+            end++;
+        }
+
+        // Construire le mot complet
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+        for (int i = start; i <= end; i++)
+            sb.Append(chars[i].character);
+
+        return sb.ToString();
+    }
+
+    public static bool Matches(string s, string valeur)
+    {
+        // Mot entier, optionnellement suivi de 's' ou 'es'
+        string pattern = $@"\b{Regex.Escape(valeur)}(es|s)?\b";
+        bool res = Regex.IsMatch(s, pattern, RegexOptions.IgnoreCase);
+        if (s.Contains(' ')) 
+            return false;
+        return res;
+    }
+    #endregion
 }
 
 #region ENUMS
