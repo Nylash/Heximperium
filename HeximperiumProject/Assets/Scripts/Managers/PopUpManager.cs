@@ -50,7 +50,9 @@ public class PopUpManager : Singleton<PopUpManager>
     private bool _isLockingPopup;
     private Image _lockingImage;
     private float _lockingTimer;
-    private List<PopUpMap> _lockedPopUps = new List<PopUpMap>();
+    private Dictionary<GameObject, Button> _lockedPopUps = new();
+
+    public Dictionary<GameObject, Button> LockedPopUps { get => _lockedPopUps; }
     #endregion
 
     private void Start()
@@ -1663,30 +1665,40 @@ public class PopUpManager : Singleton<PopUpManager>
     {
         _popUps.Remove(popUp);
         Button lockedButton = Instantiate(_lockedObject, UIManager.Instance.PopUpParent).GetComponent<Button>();
-        _lockedPopUps.Add(new PopUpMap(popUp, lockedButton));
-        print("Popup" + popUp.name + " Objet" + _objectUnderMouse.name);
+        _lockedPopUps.Add(popUp, lockedButton);
         Utilities.PlacePrefabAroundTargetTopRight(lockedButton.GetComponent<RectTransform>(), popUp.GetComponent<RectTransform>());
         StopLockingPopup();
     }
 
     public void CloseLockedPopup(Button button)
     {
-        PopUpMap mapToRemove = null;
-        foreach (PopUpMap map in _lockedPopUps)
+        GameObject popUpToRemove = null;
+        foreach (var item in _lockedPopUps)
         {
-            if (map.CloseButton == button)
+            if (item.Value == button)
             {
-                mapToRemove = map;
-                Destroy(map.PopupObject);
-                Destroy(button.gameObject);
+                popUpToRemove = item.Key;
+                Destroy(item.Key);
+                Destroy(item.Value.gameObject);
                 ResetPopUp(null);
                 break;
             }
         }
-        if (mapToRemove != null)
+        if (popUpToRemove != null)
         {
-            _lockedPopUps.Remove(mapToRemove);
+            _lockedPopUps.Remove(popUpToRemove);
         }
+    }
+
+    public void CloseAllLockedPopup()
+    {
+        foreach (var item in _lockedPopUps)
+        {
+            Destroy(item.Key);
+            Destroy(item.Value.gameObject);
+        }
+        _lockedPopUps.Clear();
+        ResetPopUp(null);
     }
     #endregion
 }

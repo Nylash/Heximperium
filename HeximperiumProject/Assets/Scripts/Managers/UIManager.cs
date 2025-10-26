@@ -413,6 +413,12 @@ public class UIManager : Singleton<UIManager>
 
     public void OpenCloseMenu()
     {
+        if (PopUpManager.Instance.LockedPopUps.Count > 0)
+        {
+            PopUpManager.Instance.CloseAllLockedPopup();
+            return;
+        }
+
         if (_confirmQuit.activeSelf)
         {
             ConfirmQuit();
