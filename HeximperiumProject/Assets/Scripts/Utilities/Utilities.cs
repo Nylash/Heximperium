@@ -348,7 +348,49 @@ public static class Utilities
         wrapper.anchoredPosition = Vector2.zero;
         wrapper.sizeDelta = Vector2.zero;
     }
-}
+
+    public static void PlacePrefabAroundTargetTopRight(RectTransform prefabRect, RectTransform targetRect)
+    {
+        // 1) Parent commun (le parent immédiat du prefab)
+        var parentRect = (RectTransform)prefabRect.parent;
+
+        // 2) Récupérer le point monde du coin haut-droit de la cible
+        var corners = new Vector3[4];
+        targetRect.GetWorldCorners(corners);
+        Vector3 worldTopRight = corners[2];
+
+        // 3) Convertir ce point en local du parent du prefab
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            parentRect,
+            RectTransformUtility.WorldToScreenPoint(null, worldTopRight),
+            null,
+            out localPoint
+        );
+
+        // 4) Convertir en coordonnées normalisées [0..1] dans le parent
+        Vector2 parentSize = parentRect.rect.size;
+        Vector2 parentBL = -parentSize * parentRect.pivot;     // bas-gauche du parent en local
+        Vector2 normalized = (localPoint - parentBL);
+        normalized.x /= parentSize.x;
+        normalized.y /= parentSize.y;
+
+        // 5) Conserver l’écart d’ancres (span) et les recentrer sur "normalized"
+        Vector2 span = prefabRect.anchorMax - prefabRect.anchorMin; // A CONSERVER
+        Vector2 half = span * 0.5f;
+
+        Vector2 newMin = normalized - half;
+        Vector2 newMax = normalized + half;
+
+        // Clamp pour rester dans [0,1]
+        newMin = new Vector2(Mathf.Clamp01(newMin.x), Mathf.Clamp01(newMin.y));
+        newMax = new Vector2(Mathf.Clamp01(newMax.x), Mathf.Clamp01(newMax.y));
+
+        prefabRect.anchorMin = newMin;
+        prefabRect.anchorMax = newMax;
+        prefabRect.anchoredPosition = Vector2.zero;
+        }
+    }
 
 #region ENUMS
 public enum Phase

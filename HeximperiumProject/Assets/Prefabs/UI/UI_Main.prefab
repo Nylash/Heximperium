@@ -22413,6 +22413,9 @@ MonoBehaviour:
   _basePopUp: {fileID: 6245525707209063558, guid: d5762cd1b2823a44ab37029529fc5308, type: 3}
   _title: {fileID: 7943185033060346411, guid: 323427eb9484ee64b874eee96dae90aa, type: 3}
   _text: {fileID: 5711950651282281864, guid: 7e62b65f6bfb42b4bacaf35545e1c85b, type: 3}
+  _lockingObject: {fileID: 7037854885280977937, guid: 68460ce107a3fa949a67d23049f98846, type: 3}
+  _lockedObject: {fileID: 7037854885280977937, guid: 3e6326d1c2245ea4fac29cd815f0fe9a, type: 3}
+  _durationForLockingPopup: 4
 --- !u!114 &5447738742827255451
 MonoBehaviour:
   m_ObjectHideFlags: 0

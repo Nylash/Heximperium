@@ -29,6 +29,11 @@ public class PopUpManager : Singleton<PopUpManager>
     [SerializeField] private GameObject _basePopUp;
     [SerializeField] private GameObject _title;
     [SerializeField] private GameObject _text;
+    [Header("_________________________________________________________")]
+    [Header("Locking Popup")]
+    [SerializeField] private GameObject _lockingObject;
+    [SerializeField] private GameObject _lockedObject;
+    [SerializeField] private float _durationForLockingPopup = 5f;
     #endregion
 
     #region VARIABLES
@@ -39,6 +44,12 @@ public class PopUpManager : Singleton<PopUpManager>
     private Dictionary<SpecialBehaviour, Tile> _highlightingBehaviours = new Dictionary<SpecialBehaviour, Tile>();
     private Dictionary<SpecialEffect, Tile> _highlightingEffects = new Dictionary<SpecialEffect, Tile>();
     private float _maxAllowed;
+    //POPUP ON POPUP Variables
+    private GameObject _lockingPopup;
+    private bool _isLockingPopup;
+    private Image _lockingImage;
+    private float _lockingTimer;
+    private List<PopUpMap> _lockedPopUps = new List<PopUpMap>();
     #endregion
 
     private void Start()
@@ -118,7 +129,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
     public void NonUIPopUp(GameObject obj)
     {
-        if (obj == _objectUnderMouse)
+        if (obj == _objectUnderMouse && !ObjectHasLockedPopup(obj))
         {
             if (obj.GetComponent<Tile>() is Tile t && !t.Revealed)
                 return;
@@ -223,6 +234,28 @@ public class PopUpManager : Singleton<PopUpManager>
                 item.Key.HighlightImpactedEntertainment(item.Value, false);
             }
             _highlightingEffects.Clear();
+        }
+        if (_lockingImage != null)
+        {
+            StopLockingPopup();
+        }
+    }
+
+    private void Update()
+    {
+        if (GameManager.Instance.GamePaused)
+            return;
+        if (_isLockingPopup && _lockingImage != null)
+        {
+            _lockingTimer += Time.deltaTime;
+            float t = (_durationForLockingPopup <= 0f) ? 1f : Mathf.Clamp01(_lockingTimer / _durationForLockingPopup);
+            _lockingImage.fillAmount = t;
+            if (_lockingTimer >= _durationForLockingPopup)
+            {
+                _isLockingPopup = false;
+                _lockingTimer = 0f;
+                LockPopup(_lockingPopup);
+            }
         }
     }
     #endregion
@@ -652,6 +685,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>(), tile.transform, tile.TileData.SpecialBehaviours.Count == 0);
+        StartLockingPopup(popUp);
     }
 
     private void ScoutPopUp(Scout scout)
@@ -1403,6 +1437,69 @@ public class PopUpManager : Singleton<PopUpManager>
             int reversedIndex = count - 1 - i;
             textObjects[reversedIndex].anchorMin = new Vector2(0, i / (float)count);
             textObjects[reversedIndex].anchorMax = new Vector2(1, (i + 1f) / count);
+        }
+    }
+    #endregion
+
+    #region POPUP ON POPUP
+    private void StartLockingPopup(GameObject popUp)
+    {
+        _lockingPopup = popUp;
+        _isLockingPopup = true;
+        _lockingTimer = 0f;
+
+        _lockingImage = Instantiate(_lockingObject, UIManager.Instance.PopUpParent).GetComponent<Image>();
+        Utilities.PlacePrefabAroundTargetTopRight(_lockingImage.GetComponent<RectTransform>(), popUp.GetComponent<RectTransform>());
+    }
+
+    private void StopLockingPopup()
+    {
+        Destroy(_lockingImage.gameObject);
+        _lockingImage = null;
+        _isLockingPopup = false;
+        _lockingPopup = null;
+        _lockingTimer = 0f;
+    }
+
+    private void LockPopup(GameObject popUp)
+    {
+        _popUps.Remove(popUp);
+        Button lockedButton = Instantiate(_lockedObject, UIManager.Instance.PopUpParent).GetComponent<Button>();
+        _lockedPopUps.Add(new PopUpMap(popUp, lockedButton, _objectUnderMouse));
+        print("Popup" + popUp.name + " Objet" + _objectUnderMouse.name);
+        Utilities.PlacePrefabAroundTargetTopRight(lockedButton.GetComponent<RectTransform>(), popUp.GetComponent<RectTransform>());
+        StopLockingPopup();
+    }
+
+    private bool ObjectHasLockedPopup(GameObject obj)
+    {
+        foreach (PopUpMap map in _lockedPopUps)
+        {
+            if (map.ObjectOrigin == obj)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void CloseLockedPopup(Button button)
+    {
+        PopUpMap mapToRemove = null;
+        foreach (PopUpMap map in _lockedPopUps)
+        {
+            if (map.CloseButton == button)
+            {
+                mapToRemove = map;
+                Destroy(map.PopupObject);
+                Destroy(button.gameObject);
+                ResetPopUp(null);
+                break;
+            }
+        }
+        if (mapToRemove != null)
+        {
+            _lockedPopUps.Remove(mapToRemove);
         }
     }
     #endregion
