@@ -122,12 +122,8 @@ public class CameraManager : Singleton<CameraManager>
 
             if (results.Count > 0)
             {
-                foreach (RaycastResult item in results)
-                {
-                    print(item.gameObject.name);
-                }
                 TextMeshProUGUI text = results[0].gameObject.GetComponent<TextMeshProUGUI>();
-                if (text != null)
+                if (text != null && results[0].gameObject.CompareTag("Untagged"))
                 {
                     DetectWordUnderCursor(pointerEventData, text);
                 }
@@ -195,11 +191,11 @@ public class CameraManager : Singleton<CameraManager>
 
         string underlinedWord = Utilities.ExtractWholeUnderlinedWord(text.textInfo, wi.firstCharacterIndex);
 
-        foreach (Family valeur in Enum.GetValues(typeof(Family)))
+        foreach (Family family in Enum.GetValues(typeof(Family)))
         {
-            if (Utilities.Matches(underlinedWord, valeur.ToString()))
+            if (Utilities.Matches(underlinedWord, family.ToString()))
             {
-                Debug.Log($"Family trouvé : {valeur}");
+                PopUpManager.Instance.PopUpOnPopUp(text.rectTransform, family);
                 return;
             }
         }
@@ -207,7 +203,7 @@ public class CameraManager : Singleton<CameraManager>
         {
             if (underlinedWord.Equals(infra.TileName))
             {
-                Debug.Log($"Infra trouvé : {infra.TileName}");
+                PopUpManager.Instance.PopUpOnPopUp(text.rectTransform, Family.None, infra);
                 return;
             }
         }
