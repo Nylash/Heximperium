@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ public class Entertainment : MonoBehaviour
     private SpriteRenderer _renderer;
     private int _points;
     private int _pointsBuffer;
+    private Dictionary<TileData, int> _pointsSpecialSource = new Dictionary<TileData, int>();
     // Upgrade variables
     private bool _boostedByIdenticalNeighbors;
     #endregion
@@ -23,6 +25,7 @@ public class Entertainment : MonoBehaviour
     public SpriteRenderer Renderer { get => _renderer; }
     public int Points { get => _points; }
     public bool BoostedByIdenticalNeighbors { get => _boostedByIdenticalNeighbors; set => _boostedByIdenticalNeighbors = value; }
+    public Dictionary<TileData, int> PointsSpecialSource { get => _pointsSpecialSource; }
     #endregion
 
     private void Awake()
@@ -32,6 +35,9 @@ public class Entertainment : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (EntertainmentManager.Instance.IsPredictingPoints)
+            return;
+
         if (_pointsBuffer > _points)//We lost points during the frame
         {
             EntertainmentManager.Instance.OnScoreLost?.Invoke(_tile, _pointsBuffer - _points); 
@@ -53,7 +59,7 @@ public class Entertainment : MonoBehaviour
         gameObject.name = _data.name + " (" + (int)_tile.Coordinate.x + ";" + _tile.Coordinate.y + ")";
     }
 
-    public void UpdatePoints(int value, Transaction transaction, bool skipVFX = false)
+    public void UpdatePoints(int value, Transaction transaction, bool skipVFX = false, TileData specialBevSource = null)
     {
         EntertainmentManager.Instance.UpdateScore(value, transaction, _tile, skipVFX);
 
@@ -64,6 +70,20 @@ public class Entertainment : MonoBehaviour
 
         if (UIManager.Instance.AreIncomesShown)
             _tile.ShowIncomeUI(true);
+
+        if (specialBevSource)
+        {
+            if (_pointsSpecialSource.ContainsKey(specialBevSource))
+            {
+                _pointsSpecialSource[specialBevSource] += value;
+                if (_pointsSpecialSource[specialBevSource] == 0)
+                    _pointsSpecialSource.Remove(specialBevSource);
+            }
+            else if (transaction == Transaction.Spent)
+                Debug.LogWarning("Trying to remove points from a source that doesn't exist in the dictionary");
+            else
+                _pointsSpecialSource.Add(specialBevSource, value);
+        }
     }
 
     public void DestroyEntertainment()
@@ -80,6 +100,19 @@ public class Entertainment : MonoBehaviour
     public void EntertainmentVisibility(bool visible)
     {
         _renderer.enabled = visible;
+    }
+
+    public int GetPointsFromEntertainmentOnly()
+    {
+        if (_pointsSpecialSource.Count == 0)
+            return _points;
+
+        int pointsFromEntOnly = _points;
+        foreach (var kvp in _pointsSpecialSource)
+        {
+            pointsFromEntOnly -= kvp.Value;
+        }
+        return pointsFromEntOnly;
     }
 
     #region SPECIAL EFFECTS

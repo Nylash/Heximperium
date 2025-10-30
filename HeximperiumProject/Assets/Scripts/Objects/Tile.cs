@@ -591,7 +591,7 @@ public class Tile : MonoBehaviour
     {
         foreach (BoostEntertainmentOnTileAndOnNeighbors behaviour in _tileData.SpecialBehaviours.OfType<BoostEntertainmentOnTileAndOnNeighbors>())
         {
-            behaviour.CheckNewEntertainment(tile);
+            behaviour.CheckNewEntertainment(tile, this);
         }
     }
     #endregion
