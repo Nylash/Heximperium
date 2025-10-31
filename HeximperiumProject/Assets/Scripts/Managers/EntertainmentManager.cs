@@ -255,7 +255,8 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     }
 
     public void GetPredictedPoints(Tile tile, EntertainmentData data,
-        out int predictedPoints, out Dictionary<TileData, int> predictedSources, out int predictedSelfPoints)
+        out int predictedPoints, out Dictionary<TileData, int> predictedSources, out int predictedSelfPoints, 
+        out int totalPointsGivenToEnt, out int entImpacted)
     {
         if (_resetPredictBoolCoroutine != null)
             StopCoroutine(_resetPredictBoolCoroutine);
@@ -264,6 +265,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         predictedPoints = tile.Entertainment.Points;
         predictedSources = new Dictionary<TileData, int>(tile.Entertainment.PointsSpecialSource);
         predictedSelfPoints = tile.Entertainment.GetPointsFromEntertainmentOnly();
+        tile.GetTotalPointsImpactedByThisTileEntertainment(out totalPointsGivenToEnt, out entImpacted);
         DestroyEntertainment(tile, true);
         _resetPredictBoolCoroutine = StartCoroutine(ResetPredictionBool());
     }

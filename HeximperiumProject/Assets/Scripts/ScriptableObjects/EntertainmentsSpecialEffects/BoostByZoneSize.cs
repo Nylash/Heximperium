@@ -118,7 +118,6 @@ public class BoostByZoneSize : SpecialEffect
         }
     }
 
-
     private int CreateNewGroup(Entertainment initialEntertainment)
     {
         int newGroupId = 1;
@@ -147,6 +146,8 @@ public class BoostByZoneSize : SpecialEffect
                 if (item.Data != _dataBoosting)
                     continue;
                 item.UpdatePoints(_boost, Transaction.Gain, skipVFX);
+                item.Tile.UpdateImpactedTileByEntertainment(newEntertainment.Tile, _boost);
+                newEntertainment.Tile.UpdateImpactedTileByEntertainment(item.Tile, _boost);//Update the impacted tiles for both entertainments here (to use only one loop)
             }
         }
             
@@ -180,6 +181,8 @@ public class BoostByZoneSize : SpecialEffect
                 if (item.Data != _dataBoosting)
                     continue;
                 item.UpdatePoints(_boost, Transaction.Spent);
+                item.Tile.UpdateImpactedTileByEntertainment(tile, -_boost);
+                tile.UpdateImpactedTileByEntertainment(item.Tile, -_boost);
             }
         }
 
@@ -372,7 +375,7 @@ public class BoostByZoneSize : SpecialEffect
                         isFirst = false;
                     }
                     else
-                        AddEntertainmentToGroup(newGroupID, ent, true);//Skip VFX too avoid confusing the player
+                        AddEntertainmentToGroup(newGroupID, ent, true);//Skip VFX to avoid confusing the player
                 }
             }
         }

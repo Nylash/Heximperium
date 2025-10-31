@@ -88,7 +88,7 @@ public class Entertainment : MonoBehaviour
 
     public void DestroyEntertainment()
     {
-        EntertainmentManager.Instance.UpdateScore(_points, Transaction.Spent);//Since we remove the entertainment with all its, no need to rollback them on special effects
+        EntertainmentManager.Instance.UpdateScore(_points, Transaction.Spent);//Since we remove the entertainment with all its points, no need to rollback them on special effects
 
         foreach (SpecialEffect effect in _data.SpecialEffects)
             effect.RollbackSpecialEntertainment(this);
