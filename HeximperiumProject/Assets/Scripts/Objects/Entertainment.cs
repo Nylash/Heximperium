@@ -15,6 +15,8 @@ public class Entertainment : MonoBehaviour
     private int _points;
     private int _pointsBuffer;
     private Dictionary<TileData, int> _pointsSpecialSource = new Dictionary<TileData, int>();
+    //Variables for special effects
+    private HashSet<Tile> _uniqueNeighbors = new HashSet<Tile>();
     // Upgrade variables
     private bool _boostedByIdenticalNeighbors;
     #endregion
@@ -26,6 +28,7 @@ public class Entertainment : MonoBehaviour
     public int Points { get => _points; }
     public bool BoostedByIdenticalNeighbors { get => _boostedByIdenticalNeighbors; set => _boostedByIdenticalNeighbors = value; }
     public Dictionary<TileData, int> PointsSpecialSource { get => _pointsSpecialSource; }
+    public HashSet<Tile> UniqueNeighbors { get => _uniqueNeighbors; }
     #endregion
 
     private void Awake()
