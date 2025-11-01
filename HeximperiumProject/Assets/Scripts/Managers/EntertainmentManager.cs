@@ -258,6 +258,17 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         out int predictedPoints, out Dictionary<TileData, int> predictedSources, out int predictedSelfPoints, 
         out int totalPointsGivenToEnt, out int entImpacted)
     {
+        // If there is already an entertainment, no prediction possible (possible is we spawn an entertainment right before calling this function)
+        if (tile.Entertainment != null)
+        {
+            predictedPoints = 0;
+            predictedSources = new Dictionary<TileData, int>();
+            predictedSelfPoints = 0;
+            totalPointsGivenToEnt = 0;
+            entImpacted = 0;
+            return;
+        }
+
         if (_resetPredictBoolCoroutine != null)
             StopCoroutine(_resetPredictBoolCoroutine);
         _isPredictingPoints = true;

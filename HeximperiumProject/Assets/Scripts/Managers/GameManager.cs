@@ -83,7 +83,7 @@ public class GameManager : Singleton<GameManager>
     {
         _inputActions = new InputSystem_Actions();
 
-        _inputActions.Player.LeftClick.performed += ctx => LeftClickAction();
+        _inputActions.Player.LeftClick.performed += ctx => StartCoroutine(LeftClickAction());
         _inputActions.Player.RightClick.performed += ctx => RightClickAction();
         _inputActions.Player.ConfirmPhase.performed += ctx => ConfirmPhase();
         _inputActions.Player.Menu.performed += ctx => UIManager.Instance.OpenCloseMenu();
@@ -191,17 +191,20 @@ public class GameManager : Singleton<GameManager>
     #endregion
 
     #region ACTIONS
-    private void LeftClickAction()
+    private IEnumerator LeftClickAction()
     {
         if(_gamePaused)
-            return;
+            yield break;
 
         //Specific behaviour with scouts instancing
         if (ExplorationManager.Instance.ChoosingScoutDirection)
         {
             ExplorationManager.Instance.ConfirmDirection();
-            return;
+            yield break;
         }
+
+        if (ExploitationManager.Instance.IsPredictingIncome || EntertainmentManager.Instance.IsPredictingPoints)
+            yield return null;
 
         //If a tile was selected we unselect it
         if (_selectedTile)
@@ -214,7 +217,7 @@ public class GameManager : Singleton<GameManager>
 
         //The action is performed only if the cursor is not on UI
         if (_isPointerOverUI)
-            return;
+            yield break;
 
         _mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(_mouseRay, out _mouseRayHit))
