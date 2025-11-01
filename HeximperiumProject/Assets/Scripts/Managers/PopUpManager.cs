@@ -45,6 +45,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private Dictionary<SpecialEffect, Tile> _highlightingEffects = new Dictionary<SpecialEffect, Tile>();
     private float _maxAllowed;
     private bool _popUpShown;
+    private bool _showSourcesOnPopUp;
     //POPUP ON POPUP Variables
     private GameObject _lockingPopup;
     private bool _isLockingPopup;
@@ -53,6 +54,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private Dictionary<GameObject, Button> _lockedPopUps = new();
 
     public Dictionary<GameObject, Button> LockedPopUps { get => _lockedPopUps; }
+    public bool ShowSourcesOnPopUp { get => _showSourcesOnPopUp; set => _showSourcesOnPopUp = value; }
     #endregion
 
     private void Start()
@@ -688,18 +690,22 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         #region INCOME SOURCES
-        if (tile.IncomesSources.Count > 0)
+        if (_showSourcesOnPopUp)
         {
-            TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            List<ResourceToIntMap> ownInc = tile.GetIncomeFromTileOnly();
-            if (ownInc.Count > 0)
-                sourceInc.text = "(" + ownInc.IncomeToString() + " from the tile itself)" + "\n";
-            foreach (var kvp in tile.IncomesSources)
+            if (tile.IncomesSources.Count > 0)
             {
-                sourceInc.text += "(" + kvp.Value.IncomeToString() + " from " + kvp.Key.TileName + ")" + "\n";
+                TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                List<ResourceToIntMap> ownInc = tile.GetIncomeFromTileOnly();
+                if (ownInc.Count > 0)
+                    sourceInc.text = "(" + ownInc.IncomeToString() + " based on the tile properties)" + "\n";
+                foreach (var kvp in tile.IncomesSources)
+                {
+                    sourceInc.text += "(" + kvp.Value.IncomeToString() + " from " + kvp.Key.TileName + ")" + "\n";
+                }
+                sourceInc.alignment = TextAlignmentOptions.Center;
+                sourceInc.fontStyle = FontStyles.Italic;
+                textObjects.Add(sourceInc.GetComponent<RectTransform>());
             }
-            sourceInc.alignment = TextAlignmentOptions.Center;
-            textObjects.Add(sourceInc.GetComponent<RectTransform>());
         }
         #endregion
 
@@ -722,7 +728,7 @@ public class PopUpManager : Singleton<PopUpManager>
             int nbOfEnt;
             tile.GetTotalPointsImpactedByTile(out totalPoints, out nbOfEnt);
             TextMeshProUGUI boostedEnt = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            boostedEnt.text += "(+" + totalPoints + "<sprite name=\"Point_Emoji\"> given over " + nbOfEnt + " entertainment" + (nbOfEnt > 1 ? "s)" : ")");
+            boostedEnt.text += "(+" + totalPoints + "<sprite name=\"Point_Emoji\"> given over " + nbOfEnt + " entertainment" + (nbOfEnt > 1 ? "s" : " ") + ", through effects or sheer presence)";
             boostedEnt.alignment = TextAlignmentOptions.Center;
             textObjects.Add(boostedEnt.GetComponent<RectTransform>());
         }
@@ -849,18 +855,22 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         #region POINTS SOURCES
-        if (ent.PointsSpecialSource.Count > 0)
+        if (_showSourcesOnPopUp)
         {
-            TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            int predictedSelfPoints = ent.GetPointsFromEntertainmentOnly();
-            if (predictedSelfPoints > 0)
-                sourceInc.text = "(+" + predictedSelfPoints + "<sprite name=\"Point_Emoji\"> from the entertainment itself)" + "\n";
-            foreach (var kvp in ent.PointsSpecialSource)
+            if (ent.PointsSpecialSource.Count > 0)
             {
-                sourceInc.text += "(+" + kvp.Value + "<sprite name=\"Point_Emoji\"> from " + kvp.Key.TileName + ")" + "\n";
+                TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                int predictedSelfPoints = ent.GetPointsFromEntertainmentOnly();
+                if (predictedSelfPoints > 0)
+                    sourceInc.text = "(+" + predictedSelfPoints + "<sprite name=\"Point_Emoji\"> based on the entertainment properties)" + "\n";
+                foreach (var kvp in ent.PointsSpecialSource)
+                {
+                    sourceInc.text += "(+" + kvp.Value + "<sprite name=\"Point_Emoji\"> from " + kvp.Key.TileName + ")" + "\n";
+                }
+                sourceInc.alignment = TextAlignmentOptions.Center;
+                sourceInc.fontStyle = FontStyles.Italic;
+                textObjects.Add(sourceInc.GetComponent<RectTransform>());
             }
-            sourceInc.alignment = TextAlignmentOptions.Center;
-            textObjects.Add(sourceInc.GetComponent<RectTransform>());
         }
         #endregion
 
@@ -871,9 +881,9 @@ public class PopUpManager : Singleton<PopUpManager>
             int pointsGivenValue;
             int tilesImpactedCount;
             ent.Tile.GetTotalPointsImpactedByThisTileEntertainment(out pointsGivenValue, out tilesImpactedCount);
-            pointsGiven.text = "<sprite name=\"Puce_Emoji\">  +" + pointsGivenValue + "<sprite name=\"Point_Emoji\"> given over " + tilesImpactedCount + " other entertainment" + (tilesImpactedCount > 1 ? "s)" : ")");
+            pointsGiven.text = "(+" + pointsGivenValue + "<sprite name=\"Point_Emoji\"> given over " + tilesImpactedCount + " other entertainment" + (tilesImpactedCount > 1 ? "s" : " ") + ", through effects or sheer presence)";
+            pointsGiven.alignment = TextAlignmentOptions.Center;
             textObjects.Add(pointsGiven.GetComponent<RectTransform>());
-            ClampTextWidth(pointsGiven);
         }
         #endregion
 
@@ -1085,17 +1095,21 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         #region POINTS SOURCES
-        if (predictedSources.Count > 0)
+        if (_showSourcesOnPopUp)
         {
-            TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            if (predictedSelfPoints > 0)
-                sourceInc.text = "(+" + predictedSelfPoints + "<sprite name=\"Point_Emoji\"> from the entertainment itself)" + "\n";
-            foreach (var kvp in predictedSources)
+            if (predictedSources.Count > 0)
             {
-                sourceInc.text += "(+" + kvp.Value + "<sprite name=\"Point_Emoji\"> from " + kvp.Key.TileName + ")" + "\n";
+                TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                if (predictedSelfPoints > 0)
+                    sourceInc.text = "(+" + predictedSelfPoints + "<sprite name=\"Point_Emoji\"> from the entertainment itself)" + "\n";
+                foreach (var kvp in predictedSources)
+                {
+                    sourceInc.text += "(+" + kvp.Value + "<sprite name=\"Point_Emoji\"> from " + kvp.Key.TileName + ")" + "\n";
+                }
+                sourceInc.alignment = TextAlignmentOptions.Center;
+                sourceInc.fontStyle = FontStyles.Italic;
+                textObjects.Add(sourceInc.GetComponent<RectTransform>());
             }
-            sourceInc.alignment = TextAlignmentOptions.Center;
-            textObjects.Add(sourceInc.GetComponent<RectTransform>());
         }
         #endregion
 
@@ -1103,9 +1117,9 @@ public class PopUpManager : Singleton<PopUpManager>
         if (nbOfEntImpacted > 0)
         {
             TextMeshProUGUI pointsGiven = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            pointsGiven.text = "<sprite name=\"Puce_Emoji\">  Would give +" + totalPointsGiven + "<sprite name=\"Point_Emoji\"> over " + nbOfEntImpacted + " other entertainment" + (nbOfEntImpacted > 1 ? "s)" : ")");
+            pointsGiven.text = "(Would give +" + totalPointsGiven + "<sprite name=\"Point_Emoji\"> over " + nbOfEntImpacted + " other entertainment" + (nbOfEntImpacted > 1 ? "s" : " ") + ", through effects or sheer presence)";
+            pointsGiven.alignment = TextAlignmentOptions.Center;
             textObjects.Add(pointsGiven.GetComponent<RectTransform>());
-            ClampTextWidth(pointsGiven);
         }
         #endregion
 
@@ -1195,17 +1209,21 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         #region INCOME SOURCES
-        if (predictedSources.Count > 0)
+        if (_showSourcesOnPopUp)
         {
-            TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            if (predictedSelfInc.Count > 0)
-                sourceInc.text = "(" + predictedSelfInc.IncomeToString() + " from the tile itself)" + "\n";
-            foreach (var kvp in predictedSources)
+            if (predictedSources.Count > 0)
             {
-                sourceInc.text += "(" + kvp.Value.IncomeToString() + " from " + kvp.Key.TileName + ")" + "\n";
+                TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                if (predictedSelfInc.Count > 0)
+                    sourceInc.text = "(" + predictedSelfInc.IncomeToString() + " from the tile itself)" + "\n";
+                foreach (var kvp in predictedSources)
+                {
+                    sourceInc.text += "(" + kvp.Value.IncomeToString() + " from " + kvp.Key.TileName + ")" + "\n";
+                }
+                sourceInc.alignment = TextAlignmentOptions.Center;
+                sourceInc.fontStyle = FontStyles.Italic;
+                textObjects.Add(sourceInc.GetComponent<RectTransform>());
             }
-            sourceInc.alignment = TextAlignmentOptions.Center;
-            textObjects.Add(sourceInc.GetComponent<RectTransform>());
         }
         #endregion
 
