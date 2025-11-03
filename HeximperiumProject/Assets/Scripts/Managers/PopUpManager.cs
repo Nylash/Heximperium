@@ -671,9 +671,6 @@ public class PopUpManager : Singleton<PopUpManager>
 
             SetPopUpContentAnchors(textObjects);
             PositionPopup(popUp.GetComponent<RectTransform>(), tile.transform, true);
-
-            // No need to go further, hazardous tile have no other info
-            return;
         }
         #endregion
 
@@ -716,20 +713,23 @@ public class PopUpManager : Singleton<PopUpManager>
         #region INCOME SOURCES
         if (_showSourcesOnPopUp)
         {
-            TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            List<ResourceToIntMap> ownInc = tile.GetIncomeFromTileOnly();
-            if (ownInc.Count > 0)
-                sourceInc.text = "(" + ownInc.IncomeToString() + " based on the tile effects)" + "\n";
-            if (tile.ExternalIncomesSources.Count > 0)
+            if (tile.Incomes.Count > 0)
             {
-                foreach (var kvp in tile.ExternalIncomesSources)
+                TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                List<ResourceToIntMap> ownInc = tile.GetIncomeFromTileOnly();
+                if (ownInc.Count > 0)
+                    sourceInc.text = "(" + ownInc.IncomeToString() + " based on the tile effects)" + "\n";
+                if (tile.ExternalIncomesSources.Count > 0)
                 {
-                    sourceInc.text += "(" + kvp.Value.IncomeToString() + " from " + kvp.Key.TileName + ")" + "\n";
+                    foreach (var kvp in tile.ExternalIncomesSources)
+                    {
+                        sourceInc.text += "(" + kvp.Value.IncomeToString() + " from " + kvp.Key.TileName + ")" + "\n";
+                    }
                 }
+                sourceInc.alignment = TextAlignmentOptions.Center;
+                sourceInc.fontStyle = FontStyles.Italic;
+                textObjects.Add(sourceInc.GetComponent<RectTransform>());
             }
-            sourceInc.alignment = TextAlignmentOptions.Center;
-            sourceInc.fontStyle = FontStyles.Italic;
-            textObjects.Add(sourceInc.GetComponent<RectTransform>());
         }
         #endregion
 
@@ -855,21 +855,6 @@ public class PopUpManager : Singleton<PopUpManager>
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
-        #region EFFECT
-        if (ent.Data.SpecialEffects.Count > 0)
-        {
-            foreach (SpecialEffect effect in ent.Data.SpecialEffects)
-            {
-                TextMeshProUGUI effectText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-                effectText.text = "<sprite name=\"Puce_Emoji\"> " + effect.GetBehaviourDescription();
-                textObjects.Add(effectText.GetComponent<RectTransform>());
-                ClampTextWidth(effectText);
-                effect.HighlightImpactedEntertainment(ent.Tile, true);
-                _highlightingEffects.Add(effect, ent.Tile);
-            }
-        }
-        #endregion
-
         #region POINTS
         TextMeshProUGUI pointsText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
         pointsText.text = "+" + ent.Points + "<sprite name=\"Point_Emoji\">";
@@ -914,6 +899,28 @@ public class PopUpManager : Singleton<PopUpManager>
             pointsGiven.text = "(+" + pointsGivenValue + "<sprite name=\"Point_Emoji\"> given over " + tilesImpactedCount + " other entertainment" + (tilesImpactedCount > 1 ? "s" : " ") + ", through effects or sheer presence)";
             pointsGiven.alignment = TextAlignmentOptions.Center;
             textObjects.Add(pointsGiven.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region BASE POINTS
+        TextMeshProUGUI basePointsText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        basePointsText.text = "<sprite name=\"Puce_Emoji\"> Base points +" + ent.Data.BasePoints + "<sprite name=\"Point_Emoji\">";
+        textObjects.Add(basePointsText.GetComponent<RectTransform>());
+        ClampTextWidth(basePointsText);
+        #endregion
+
+        #region EFFECT
+        if (ent.Data.SpecialEffects.Count > 0)
+        {
+            foreach (SpecialEffect effect in ent.Data.SpecialEffects)
+            {
+                TextMeshProUGUI effectText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                effectText.text = "<sprite name=\"Puce_Emoji\"> " + effect.GetBehaviourDescription();
+                textObjects.Add(effectText.GetComponent<RectTransform>());
+                ClampTextWidth(effectText);
+                effect.HighlightImpactedEntertainment(ent.Tile, true);
+                _highlightingEffects.Add(effect, ent.Tile);
+            }
         }
         #endregion
 
@@ -1087,27 +1094,6 @@ public class PopUpManager : Singleton<PopUpManager>
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
-        #region EFFECT
-        if (button.EntertainData.SpecialEffects.Count > 0)
-        {
-            foreach (SpecialEffect effect in button.EntertainData.SpecialEffects)
-            {
-                TextMeshProUGUI effectText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-                effectText.text = "<sprite name=\"Puce_Emoji\"> " + effect.GetBehaviourDescription();
-                textObjects.Add(effectText.GetComponent<RectTransform>());
-                ClampTextWidth(effectText);
-                effect.HighlightImpactedEntertainment(button.AssociatedTile, true);
-                _highlightingEffects.Add(effect, button.AssociatedTile);
-            }
-        }
-        #endregion
-
-        #region POINTS
-        TextMeshProUGUI pointsText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        pointsText.text = "<sprite name=\"Puce_Emoji\"> Base points +" + button.EntertainData.BasePoints + "<sprite name=\"Point_Emoji\">";
-        textObjects.Add(pointsText.GetComponent<RectTransform>());
-        #endregion
-
         #region PREDICTED POINTS
         TextMeshProUGUI predictedIncome = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
         int predictedPoints;
@@ -1115,7 +1101,7 @@ public class PopUpManager : Singleton<PopUpManager>
         Dictionary<Tile, int> predictedSources;
         int totalPointsGiven;
         int nbOfEntImpacted;
-        EntertainmentManager.Instance.GetPredictedPoints(button.AssociatedTile, button.EntertainData, 
+        EntertainmentManager.Instance.GetPredictedPoints(button.AssociatedTile, button.EntertainData,
             out predictedPoints, out predictedSources, out predictedSelfPoints,
             out totalPointsGiven, out nbOfEntImpacted);
         predictedIncome.text = "Predicted points: +" + predictedPoints + "<sprite name=\"Point_Emoji\">";
@@ -1159,6 +1145,27 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
+        #region POINTS
+        TextMeshProUGUI pointsText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        pointsText.text = "<sprite name=\"Puce_Emoji\"> Base points +" + button.EntertainData.BasePoints + "<sprite name=\"Point_Emoji\">";
+        textObjects.Add(pointsText.GetComponent<RectTransform>());
+        #endregion
+
+        #region EFFECT
+        if (button.EntertainData.SpecialEffects.Count > 0)
+        {
+            foreach (SpecialEffect effect in button.EntertainData.SpecialEffects)
+            {
+                TextMeshProUGUI effectText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                effectText.text = "<sprite name=\"Puce_Emoji\"> " + effect.GetBehaviourDescription();
+                textObjects.Add(effectText.GetComponent<RectTransform>());
+                ClampTextWidth(effectText);
+                effect.HighlightImpactedEntertainment(button.AssociatedTile, true);
+                _highlightingEffects.Add(effect, button.AssociatedTile);
+            }
+        }
+        #endregion
+
         #region COST
         TextMeshProUGUI cost = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
         cost.text = "Cost: " + button.EntertainData.GetActualCarnivalistCost(button.AssociatedTile) + "<sprite name=\"Carnivalist_Emoji\">";
@@ -1185,6 +1192,55 @@ public class PopUpManager : Singleton<PopUpManager>
         TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
         title.text = "Build " + button.InfrastructureData.TileName;
         textObjects.Add(title.GetComponent<RectTransform>());
+        #endregion
+
+        #region CURRENT INCOME
+        if (button.AssociatedTile.Incomes.Count > 0)
+        {
+            TextMeshProUGUI currentIncome = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            currentIncome.text = "Current income: " + button.AssociatedTile.Incomes.IncomeToString() + " per turn";
+            currentIncome.fontStyle = FontStyles.Bold;
+            currentIncome.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(currentIncome.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region PREDICTED INCOME
+        List<ResourceToIntMap> predictedInc;
+        List<ResourceToIntMap> predictedSelfInc;
+        Dictionary<TileData, List<ResourceToIntMap>> predictedSources;
+        ExploitationManager.Instance.GetPredictedIncomes(button.AssociatedTile, button.InfrastructureData, out predictedInc, out predictedSources, out predictedSelfInc);
+        if (predictedInc.Count > 0)
+        {
+            TextMeshProUGUI predictedIncome = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            predictedIncome.text = "Predicted income: " + predictedInc.IncomeToString() + " per turn";
+            predictedIncome.fontStyle = FontStyles.Bold;
+            predictedIncome.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(predictedIncome.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region INCOME SOURCES
+        if (_showSourcesOnPopUp)
+        {
+            if (predictedInc.Count > 0)
+            {
+                TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                if (predictedSelfInc.Count > 0)
+                    sourceInc.text = "(" + predictedSelfInc.IncomeToString() + " based on the tile effects)" + "\n";
+                if (predictedSources.Count > 0)
+                {
+
+                    foreach (var kvp in predictedSources)
+                    {
+                        sourceInc.text += "(" + kvp.Value.IncomeToString() + " from " + kvp.Key.TileName + ")" + "\n";
+                    }
+                }
+                sourceInc.alignment = TextAlignmentOptions.Center;
+                sourceInc.fontStyle = FontStyles.Italic;
+                textObjects.Add(sourceInc.GetComponent<RectTransform>());
+            }
+        }
         #endregion
 
         #region INCOME BONUS
@@ -1218,49 +1274,6 @@ public class PopUpManager : Singleton<PopUpManager>
             scoutText.text = "<sprite name=\"Puce_Emoji\"> Scout<sprite name=\"Scout_Emoji\"> starting point";
             textObjects.Add(scoutText.GetComponent<RectTransform>());
             ClampTextWidth(scoutText);
-        }
-        #endregion
-
-        #region CURRENT INCOME
-        if (button.AssociatedTile.Incomes.Count > 0)
-        {
-            TextMeshProUGUI currentIncome = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            currentIncome.text = "Current income: " + button.AssociatedTile.Incomes.IncomeToString() + " per turn";
-            currentIncome.fontStyle = FontStyles.Bold;
-            currentIncome.alignment = TextAlignmentOptions.Center;
-            textObjects.Add(currentIncome.GetComponent<RectTransform>());
-        }
-        #endregion
-
-        #region PREDICTED INCOME
-        TextMeshProUGUI predictedIncome = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        List<ResourceToIntMap> predictedInc;
-        List<ResourceToIntMap> predictedSelfInc;
-        Dictionary<TileData, List<ResourceToIntMap>> predictedSources;
-        ExploitationManager.Instance.GetPredictedIncomes(button.AssociatedTile, button.InfrastructureData, out predictedInc, out predictedSources, out predictedSelfInc);
-        predictedIncome.text = "Predicted income: " + predictedInc.IncomeToString() + " per turn";
-        predictedIncome.fontStyle = FontStyles.Bold;
-        predictedIncome.alignment = TextAlignmentOptions.Center;
-        textObjects.Add(predictedIncome.GetComponent<RectTransform>());
-        #endregion
-
-        #region INCOME SOURCES
-        if (_showSourcesOnPopUp)
-        {
-            TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            if (predictedSelfInc.Count > 0)
-                sourceInc.text = "(" + predictedSelfInc.IncomeToString() + " based on the tile effects)" + "\n";
-            if (predictedSources.Count > 0)
-            {
-
-                foreach (var kvp in predictedSources)
-                {
-                    sourceInc.text += "(" + kvp.Value.IncomeToString() + " from " + kvp.Key.TileName + ")" + "\n";
-                }
-            }
-            sourceInc.alignment = TextAlignmentOptions.Center;
-            sourceInc.fontStyle = FontStyles.Italic;
-            textObjects.Add(sourceInc.GetComponent<RectTransform>());
         }
         #endregion
 
