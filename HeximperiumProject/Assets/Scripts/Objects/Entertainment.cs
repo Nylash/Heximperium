@@ -14,8 +14,8 @@ public class Entertainment : MonoBehaviour
     private SpriteRenderer _renderer;
     private int _points;
     private int _pointsBuffer;
-    private Dictionary<Tile, int> _externalPointsSource = new Dictionary<Tile, int>();// Points coming from other ent/tile behaviours (only used with tiles)
-    private Dictionary<Entertainment, int> _internalPointsSource = new Dictionary<Entertainment, int>();// Points coming from this ent behaviours (only used with entertainments)
+    private Dictionary<Tile, int> _externalPointsSource = new Dictionary<Tile, int>();// Points coming from other ent/tile behaviours
+    private Dictionary<Tile, int> _internalPointsSource = new Dictionary<Tile, int>();// Points coming from this ent/tile behaviours
     //Variables for special effects
     private HashSet<Tile> _uniqueNeighbors = new HashSet<Tile>();
     private HashSet<Tile> _identicalNeighbors = new HashSet<Tile>();
@@ -66,8 +66,14 @@ public class Entertainment : MonoBehaviour
     }
 
     public void UpdatePoints(int value, Transaction transaction, bool skipVFX = false, 
-        Tile extSource = null, Entertainment intSource = null)
+        Tile intSource = null, Tile extSource = null)
     {
+        if (extSource && intSource)
+        {
+            Debug.LogError("Both external and internal source cannot be defined at the same time");
+            return;
+        }
+
         EntertainmentManager.Instance.UpdateScore(value, transaction, _tile, skipVFX);
 
         if (transaction == Transaction.Spent)
@@ -91,6 +97,24 @@ public class Entertainment : MonoBehaviour
             else
                 _externalPointsSource.Add(extSource, value);
         }
+        if (intSource)
+        {
+            UpdateInternalSource(intSource, value, transaction);
+        }
+    }
+
+    public void UpdateInternalSource(Tile intSource, int value, Transaction transaction)
+    {
+        if (_internalPointsSource.ContainsKey(intSource))
+        {
+            _internalPointsSource[intSource] += value;
+            if (_internalPointsSource[intSource] == 0)
+                _internalPointsSource.Remove(intSource);
+        }
+        else if (transaction == Transaction.Spent)
+            Debug.LogWarning("Trying to remove points from a source that doesn't exist in the dictionary");
+        else
+            _internalPointsSource.Add(intSource, value);
     }
 
     public void DestroyEntertainment()

@@ -19,7 +19,7 @@ public class BoostByNeighbors : SpecialEffect
                 continue;
             if (_boostingNeighbors.Contains(neighbor.Entertainment.Data))
             {
-                associatedEntertainment.UpdatePoints(_boost, Transaction.Gain);
+                associatedEntertainment.UpdatePoints(_boost, Transaction.Gain, false, neighbor);
                 neighbor.UpdateImpactedEntertainmentByEntertainment(associatedEntertainment.Tile, _boost);
             }
         }
@@ -63,7 +63,7 @@ public class BoostByNeighbors : SpecialEffect
                 //Check if the previous data didn't already applied the boost
                 if (_boostingNeighbors.Contains(tile.PreviousEntertainmentData))
                     return;
-                associatedEntertainment.UpdatePoints(_boost, Transaction.Gain);
+                associatedEntertainment.UpdatePoints(_boost, Transaction.Gain, false, tile);
                 tile.UpdateImpactedEntertainmentByEntertainment(associatedEntertainment.Tile, _boost);
             }
         }
@@ -72,7 +72,7 @@ public class BoostByNeighbors : SpecialEffect
             //Check if the previous data did apply a boost, then remove it if yes
             if (_boostingNeighbors.Contains(tile.PreviousEntertainmentData))
             {
-                associatedEntertainment.UpdatePoints(_boost, Transaction.Spent);
+                associatedEntertainment.UpdatePoints(_boost, Transaction.Spent, false, tile);
                 tile.UpdateImpactedEntertainmentByEntertainment(associatedEntertainment.Tile, -_boost);
             }
         }

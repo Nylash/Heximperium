@@ -31,17 +31,14 @@ public class BoostByUniqueNeighbors : SpecialEffect
         // Distinct count
         int distinctDataCount = groups.Count();
 
-        // Update neighors that have no twin
+        // Update one tile per group
         associatedEntertainment.UniqueNeighbors.Clear();
         foreach (var g in groups)
         {
-            bool isUnique = g.Count() == 1;
-            if (isUnique)
-            {
-                var n = g.First(); // only one in the group
-                n.UpdateImpactedEntertainmentByEntertainment(associatedEntertainment.Tile, _boost);
-                associatedEntertainment.UniqueNeighbors.Add(n);
-            }
+            var t = g.First(); // only one by group
+            t.UpdateImpactedEntertainmentByEntertainment(associatedEntertainment.Tile, _boost);
+            associatedEntertainment.UniqueNeighbors.Add(t);
+            associatedEntertainment.UpdateInternalSource(t, _boost, Transaction.Gain);
         }
 
         // Update points and store count
@@ -84,6 +81,7 @@ public class BoostByUniqueNeighbors : SpecialEffect
         foreach (Tile item in associatedEntertainment.UniqueNeighbors)
         {
             item.UpdateImpactedEntertainmentByEntertainment(associatedEntertainment.Tile, -_boost);
+            associatedEntertainment.UpdateInternalSource(item, -_boost, Transaction.Spent);
         }
         associatedEntertainment.UniqueNeighbors.Clear();
 
@@ -102,29 +100,27 @@ public class BoostByUniqueNeighbors : SpecialEffect
         // Distinct count delta
         int deltaCount = groups.Count() - associatedEntertainment.Tile.UniqueEntertainmentNeighborsCount_SE;
 
-        // Update neighors that have no twin
+        // Update one tile per group
+        associatedEntertainment.UniqueNeighbors.Clear();
         foreach (var g in groups)
         {
-            bool isUnique = g.Count() == 1;
-            if (isUnique)
-            {
-                var n = g.First(); // only one in the group
-                n.UpdateImpactedEntertainmentByEntertainment(associatedEntertainment.Tile, _boost);
-                associatedEntertainment.UniqueNeighbors.Add(n);
-            }
+            var t = g.First(); // only one by group
+            t.UpdateImpactedEntertainmentByEntertainment(associatedEntertainment.Tile, _boost);
+            associatedEntertainment.UniqueNeighbors.Add(t);
+            associatedEntertainment.UpdateInternalSource(t, _boost, Transaction.Gain);
         }
 
         if (deltaCount == 0)
             return;//Count of unique entertainment neighbors didn't change, so nothing to do
 
-        Transaction t;
+        Transaction transaction;
 
         if (deltaCount > 0)
-            t = Transaction.Gain;
+            transaction = Transaction.Gain;
         else
-            t = Transaction.Spent;
+            transaction = Transaction.Spent;
 
-        associatedEntertainment.UpdatePoints(_boost * Mathf.Abs(deltaCount), t);
+        associatedEntertainment.UpdatePoints(_boost * Mathf.Abs(deltaCount), transaction);
 
         associatedEntertainment.Tile.UniqueEntertainmentNeighborsCount_SE = groups.Count();
     }

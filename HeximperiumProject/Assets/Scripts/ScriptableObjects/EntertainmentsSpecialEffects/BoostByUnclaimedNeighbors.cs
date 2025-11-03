@@ -43,7 +43,7 @@ public class BoostByUnclaimedNeighbors : SpecialEffect
                 continue;
             if (!neighbor.Claimed)
             {
-                associatedEnt.UpdatePoints(_boostAmount, Transaction.Gain);
+                associatedEnt.UpdatePoints(_boostAmount, Transaction.Gain, false, neighbor);
                 neighbor.UpdateImpactedEntByTile(associatedEnt.Tile, _boostAmount);
             }
         }

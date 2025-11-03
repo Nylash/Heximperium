@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/SpecialEffect/BoostIfEnoughIdenticalNeighbors")]
 public class BoostIfEnoughIdenticalNeighbors : SpecialEffect
@@ -56,6 +58,7 @@ public class BoostIfEnoughIdenticalNeighbors : SpecialEffect
         foreach (Tile item in associatedEnt.IdenticalNeighbors)
         {
             item.UpdateImpactedEntertainmentByEntertainment(associatedEnt.Tile, -_boostAmount);
+            associatedEnt.UpdateInternalSource(item, -_boostAmount, Transaction.Spent);
         }
         associatedEnt.IdenticalNeighbors.Clear();
         HashSet<Entertainment> validNeighbors;
@@ -68,13 +71,17 @@ public class BoostIfEnoughIdenticalNeighbors : SpecialEffect
             {
                 associatedEnt.UpdatePoints(_boostAmount, Transaction.Gain);
                 associatedEnt.BoostedByIdenticalNeighbors = true;
-            }
-            if (identicalNeighborCount == _requiredIdenticalNeighbors) // Exactly at the threshold, the neighbors all directly impact
-            {
-                foreach (Entertainment ent in validNeighbors)
+
+                //Take 3 random neighbors to mark as impacting
+                List<Entertainment> randomElements = validNeighbors
+                    .OrderBy(_ => Random.value)
+                    .Take(3)
+                    .ToList();
+                foreach (Entertainment ent in randomElements)
                 {
                     associatedEnt.IdenticalNeighbors.Add(ent.Tile);
                     ent.Tile.UpdateImpactedEntertainmentByEntertainment(associatedEnt.Tile, _boostAmount);
+                    associatedEnt.UpdateInternalSource(ent.Tile, _boostAmount, Transaction.Gain);
                 }
             }
         }
@@ -85,6 +92,20 @@ public class BoostIfEnoughIdenticalNeighbors : SpecialEffect
             {
                 associatedEnt.UpdatePoints(_boostAmount, Transaction.Spent);
                 associatedEnt.BoostedByIdenticalNeighbors = false;
+            }
+            else
+            {
+                //Take 3 random neighbors to mark as impacting
+                List<Entertainment> randomElements = validNeighbors
+                    .OrderBy(_ => Random.value)
+                    .Take(3)
+                    .ToList();
+                foreach (Entertainment ent in randomElements)
+                {
+                    associatedEnt.IdenticalNeighbors.Add(ent.Tile);
+                    ent.Tile.UpdateImpactedEntertainmentByEntertainment(associatedEnt.Tile, _boostAmount);
+                    associatedEnt.UpdateInternalSource(ent.Tile, _boostAmount, Transaction.Gain);
+                }
             }
         }
     }
