@@ -207,16 +207,30 @@ public static class Utilities
         };
     }
 
-    public static string ToCustomString(this EntertainmentType value)
+    public static string ToCustomString(this EntertainmentType value, bool underline = true)
     {
-        return value switch
+        if (underline)
         {
-            EntertainmentType.TastingPavilion => "Tasting Pavilion",
-            EntertainmentType.MinstrelStage => "Minstrel Stage",
-            EntertainmentType.ParadeRoute => "Parade Route",
-            EntertainmentType.MysticGarden => "Mystic Garden",
-            _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
-        };
+            return value switch
+            {
+                EntertainmentType.TastingPavilion => "<u>Tasting Pavilion</u>",
+                EntertainmentType.MinstrelStage => "<u>Minstrel Stage</u>",
+                EntertainmentType.ParadeRoute => "<u>Parade Route</u>",
+                EntertainmentType.MysticGarden => "<u>Mystic Garden</u>",
+                _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
+            };
+        }
+        else
+        {
+            return value switch
+            {
+                EntertainmentType.TastingPavilion => "Tasting Pavilion",
+                EntertainmentType.MinstrelStage => "Minstrel Stage",
+                EntertainmentType.ParadeRoute => "Parade Route",
+                EntertainmentType.MysticGarden => "Mystic Garden",
+                _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
+            };
+        }
     }
 
     public static string IncomeToString(this List<ResourceToIntMap> incomes)
@@ -335,10 +349,10 @@ public static class Utilities
         if (parent == null) return;
 
         // 2) Bounding box du content relative au parent du wrapper
-        //    (=> coordonnées locales du parent)
+        //    (=> coordonnï¿½es locales du parent)
         Bounds b = RectTransformUtility.CalculateRelativeRectTransformBounds(parent, content);
 
-        // 3) Convertir en ancres normalisées [0..1] (origine = coin bas-gauche du parent)
+        // 3) Convertir en ancres normalisï¿½es [0..1] (origine = coin bas-gauche du parent)
         Vector2 parentSize = parent.rect.size;
         Vector2 parentBL = -Vector2.Scale(parentSize, parent.pivot); // coin bas-gauche en local
 
@@ -360,10 +374,10 @@ public static class Utilities
 
     public static void PlacePrefabAroundTargetTopRight(RectTransform prefabRect, RectTransform targetRect)
     {
-        // 1) Parent commun (le parent immédiat du prefab)
+        // 1) Parent commun (le parent immï¿½diat du prefab)
         var parentRect = (RectTransform)prefabRect.parent;
 
-        // 2) Récupérer le point monde du coin haut-droit de la cible
+        // 2) Rï¿½cupï¿½rer le point monde du coin haut-droit de la cible
         var corners = new Vector3[4];
         targetRect.GetWorldCorners(corners);
         Vector3 worldTopRight = corners[2];
@@ -377,14 +391,14 @@ public static class Utilities
             out localPoint
         );
 
-        // 4) Convertir en coordonnées normalisées [0..1] dans le parent
+        // 4) Convertir en coordonnï¿½es normalisï¿½es [0..1] dans le parent
         Vector2 parentSize = parentRect.rect.size;
         Vector2 parentBL = -parentSize * parentRect.pivot;     // bas-gauche du parent en local
         Vector2 normalized = (localPoint - parentBL);
         normalized.x /= parentSize.x;
         normalized.y /= parentSize.y;
 
-        // 5) Conserver l’écart d’ancres (span) et les recentrer sur "normalized"
+        // 5) Conserver lï¿½ï¿½cart dï¿½ancres (span) et les recentrer sur "normalized"
         Vector2 span = prefabRect.anchorMax - prefabRect.anchorMin; // A CONSERVER
         Vector2 half = span * 0.5f;
 
@@ -424,7 +438,7 @@ public static class Utilities
         int start = index;
         int end = index;
 
-        // Étendre à gauche
+        // ï¿½tendre ï¿½ gauche
         while (start > 0 &&
                chars[start - 1].elementType == TMP_TextElementType.Character &&
                (chars[start - 1].style & FontStyles.Underline) != 0)
@@ -432,7 +446,7 @@ public static class Utilities
             start--;
         }
 
-        // Étendre à droite
+        // ï¿½tendre ï¿½ droite
         while (end < chars.Length - 1 &&
                chars[end + 1].elementType == TMP_TextElementType.Character &&
                (chars[end + 1].style & FontStyles.Underline) != 0)

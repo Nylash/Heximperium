@@ -81,6 +81,8 @@ public class JuiceManager : Singleton<JuiceManager>
 
     private void SpawnUnitVFX(Tile tile)
     {
+        if (EntertainmentManager.Instance.IsPredictingPoints)
+            return;
         Instantiate(_spawnUnitVFX, _spawnUnitVFX.transform.position + tile.transform.position, _spawnUnitVFX.transform.rotation);
     }
 

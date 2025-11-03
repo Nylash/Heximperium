@@ -118,7 +118,6 @@ public class BoostByZoneSize : SpecialEffect
         }
     }
 
-
     private int CreateNewGroup(Entertainment initialEntertainment)
     {
         int newGroupId = 1;
@@ -146,7 +145,9 @@ public class BoostByZoneSize : SpecialEffect
             {
                 if (item.Data != _dataBoosting)
                     continue;
-                item.UpdatePoints(_boost, Transaction.Gain, skipVFX);
+                item.UpdatePoints(_boost, Transaction.Gain, skipVFX, newEntertainment.Tile);
+                item.Tile.UpdateImpactedEntertainmentByEntertainment(newEntertainment.Tile, _boost);
+                newEntertainment.Tile.UpdateImpactedEntertainmentByEntertainment(item.Tile, _boost);//Update the impacted tiles for both entertainments here (to use only one loop)
             }
         }
             
@@ -154,7 +155,14 @@ public class BoostByZoneSize : SpecialEffect
         if (newEntertainment.Data == _dataBoosting)
         {
             //Apply the boost before increasing the count because the effect shouldn't count itself
-            newEntertainment.UpdatePoints(_boost * EntertainmentManager.Instance.GroupBoostCount[groupID], Transaction.Gain, skipVFX);
+            foreach (Entertainment ent in EntertainmentManager.Instance.GroupBoost[groupID])
+            {
+                if (ent == newEntertainment)
+                    continue;
+                if (ent.Data != _dataBoosting)
+                    continue;
+                newEntertainment.UpdatePoints(_boost, Transaction.Gain, skipVFX, ent.Tile);
+            }
             EntertainmentManager.Instance.GroupBoostCount[groupID]++;
         }
 
@@ -179,7 +187,9 @@ public class BoostByZoneSize : SpecialEffect
             {
                 if (item.Data != _dataBoosting)
                     continue;
-                item.UpdatePoints(_boost, Transaction.Spent);
+                item.UpdatePoints(_boost, Transaction.Spent, false, tile);
+                item.Tile.UpdateImpactedEntertainmentByEntertainment(tile, -_boost);
+                tile.UpdateImpactedEntertainmentByEntertainment(item.Tile, -_boost);
             }
         }
 
@@ -276,10 +286,15 @@ public class BoostByZoneSize : SpecialEffect
     {
         if (entertainment.Data != _dataBoosting)
             return;
-        entertainment.UpdatePoints(
-            _boost * 
-            (EntertainmentManager.Instance.GroupBoostCount[entertainment.Tile.GroupID] -1),//subtract 1 from group count since the boost logic does not count itself
-            Transaction.Spent);
+
+        foreach (Entertainment ent in EntertainmentManager.Instance.GroupBoost[entertainment.Tile.GroupID])
+        {
+            if (ent == entertainment)
+                continue;
+            if (ent.Data != _dataBoosting)
+                continue;
+            entertainment.UpdatePoints(_boost, Transaction.Spent, false, ent.Tile);
+        }
     }
 
     private bool CheckIfGroupStillWhole(int groupID)
@@ -372,7 +387,7 @@ public class BoostByZoneSize : SpecialEffect
                         isFirst = false;
                     }
                     else
-                        AddEntertainmentToGroup(newGroupID, ent, true);//Skip VFX too avoid confusing the player
+                        AddEntertainmentToGroup(newGroupID, ent, true);//Skip VFX to avoid confusing the player
                 }
             }
         }

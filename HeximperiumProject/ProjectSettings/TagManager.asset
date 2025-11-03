@@ -16,6 +16,7 @@ TagManager:
   - CarnivalistUI
   - ShowIncomeUI
   - ShowEntPlacementUI
+  - ShowDetailsPopupUI
   layers:
   - Default
   - TransparentFX

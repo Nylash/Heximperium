@@ -27,7 +27,8 @@ public class Tile : MonoBehaviour
     [SerializeField] private Vector2 _coordinate;
     [SerializeField] private List<ResourceToIntMap> _incomes = new List<ResourceToIntMap>();
 
-    private Dictionary<TileData, List<ResourceToIntMap>> _incomesSources = new Dictionary<TileData, List<ResourceToIntMap>>();
+    private Dictionary<TileData, List<ResourceToIntMap>> _externalIncomesSources = new Dictionary<TileData, List<ResourceToIntMap>>(); // Income coming from other tiles behaviours
+    private Dictionary<Tile, List<ResourceToIntMap>> _internalIncomesSources = new Dictionary<Tile, List<ResourceToIntMap>>(); // Income coming from this tile behaviours
     private int _claimIncome = 0;
     private Tile[] _neighbors = new Tile[6];
     private TileData _initialData;
@@ -44,6 +45,9 @@ public class Tile : MonoBehaviour
     private int _carnivalistCostReduction;
     private int _recruitedCarnivalists;
     private int _bufferRecruitedCarnivalists;
+    //Dictionary for impacted tiles
+    private Dictionary<Tile, int> _entImpactedByEntertainment = new Dictionary<Tile, int>();//Use the tile to avoid issues with destroyed entertainment
+    private Dictionary<Tile, int> _entImpactedByTile = new Dictionary<Tile, int>();//Use the tile to avoid issues with destroyed entertainment
     //Scouts
     private List<Scout> _scouts = new List<Scout>();
     //Entertainment variables
@@ -146,7 +150,9 @@ public class Tile : MonoBehaviour
     }
 
     public TileData TargetData { get => _targetData; }
-    public Dictionary<TileData, List<ResourceToIntMap>> IncomesSources { get => _incomesSources; }
+    public Dictionary<TileData, List<ResourceToIntMap>> ExternalIncomesSources { get => _externalIncomesSources; }
+    public Dictionary<Tile, int> TilesImpactedByEntertainment { get => _entImpactedByEntertainment; }
+    public Dictionary<Tile, int> EntImpactedByTile { get => _entImpactedByTile; }
     #endregion
 
     private void Awake()
@@ -195,13 +201,13 @@ public class Tile : MonoBehaviour
             _incomes = Utilities.MergeResourceToIntMaps(_incomes, inputIncomes);
             if (source)
             {
-                if (!_incomesSources.ContainsKey(source))
-                    _incomesSources.Add(source, inputIncomes);
+                if (!_externalIncomesSources.ContainsKey(source))
+                    _externalIncomesSources.Add(source, inputIncomes);
                 else
-                    _incomesSources[source] = Utilities.MergeResourceToIntMaps(_incomesSources[source], inputIncomes);
+                    _externalIncomesSources[source] = Utilities.MergeResourceToIntMaps(_externalIncomesSources[source], inputIncomes);
                 // Clean the source if all values are 0
                 bool allZero = true;
-                foreach (ResourceToIntMap item in _incomesSources[source])
+                foreach (ResourceToIntMap item in _externalIncomesSources[source])
                 {
                     if (item.value != 0)
                     {
@@ -210,7 +216,7 @@ public class Tile : MonoBehaviour
                     }
                 }
                 if (allZero)
-                    _incomesSources.Remove(source);
+                    _externalIncomesSources.Remove(source);
             }
         }
         else
@@ -218,12 +224,12 @@ public class Tile : MonoBehaviour
             _incomes = Utilities.SubtractResourceToIntMaps(_incomes, inputIncomes);
             if (source)
             {
-                if (_incomesSources.ContainsKey(source))
+                if (_externalIncomesSources.ContainsKey(source))
                 {
-                    _incomesSources[source] = Utilities.SubtractResourceToIntMaps(_incomesSources[source], inputIncomes);
+                    _externalIncomesSources[source] = Utilities.SubtractResourceToIntMaps(_externalIncomesSources[source], inputIncomes);
                     // Clean the source if all values are 0
                     bool allZero = true;
-                    foreach (ResourceToIntMap item in _incomesSources[source])
+                    foreach (ResourceToIntMap item in _externalIncomesSources[source])
                     {
                         if (item.value != 0)
                         {
@@ -232,7 +238,7 @@ public class Tile : MonoBehaviour
                         }
                     }
                     if (allZero)
-                        _incomesSources.Remove(source);
+                        _externalIncomesSources.Remove(source);
                 }
                 else
                     Debug.LogWarning("Trying to remove income from a source that doesn't exist in the dictionary");
@@ -248,12 +254,12 @@ public class Tile : MonoBehaviour
     {
         if (_incomes.Count == 0)
             return new List<ResourceToIntMap>();
-        if (_incomesSources.Count == 0)
+        if (_externalIncomesSources.Count == 0)
             return _incomes;
 
         List<ResourceToIntMap> incomeFromTileOnly = new List<ResourceToIntMap>();
         incomeFromTileOnly = Utilities.MergeResourceToIntMaps(incomeFromTileOnly, _incomes);
-        foreach (var kvp in _incomesSources)
+        foreach (var kvp in _externalIncomesSources)
         {
             incomeFromTileOnly = Utilities.SubtractResourceToIntMaps(incomeFromTileOnly, kvp.Value);
         }
@@ -559,6 +565,48 @@ public class Tile : MonoBehaviour
     }
     #endregion
 
+    #region IMPACTED TILES MANAGEMENT
+    public void UpdateImpactedEntertainmentByEntertainment(Tile tile, int entertainmentPoints)
+    {
+        if (!_entImpactedByEntertainment.ContainsKey(tile))
+            _entImpactedByEntertainment.Add(tile, entertainmentPoints);
+        else
+            _entImpactedByEntertainment[tile] += entertainmentPoints;
+        if (_entImpactedByEntertainment[tile] <= 0)
+            _entImpactedByEntertainment.Remove(tile);
+    }
+
+    public void GetTotalPointsImpactedByThisTileEntertainment(out int totalPoints, out int impactedTilesCount)
+    {
+        totalPoints = 0;
+        impactedTilesCount = _entImpactedByEntertainment.Count;
+        foreach (var kvp in _entImpactedByEntertainment)
+        {
+            totalPoints += kvp.Value;
+        }
+    }
+
+    public void UpdateImpactedEntByTile(Tile tile, int entertainmentPoints)
+    {
+        if (!_entImpactedByTile.ContainsKey(tile))
+            _entImpactedByTile.Add(tile, entertainmentPoints);
+        else
+            _entImpactedByTile[tile] += entertainmentPoints;
+        if (_entImpactedByTile[tile] <= 0)
+            _entImpactedByTile.Remove(tile);
+    }
+
+    public void GetTotalPointsImpactedByTile(out int totalPoints, out int impactedEntCount)
+    {
+        totalPoints = 0;
+        impactedEntCount = _entImpactedByTile.Count;
+        foreach (var kvp in _entImpactedByTile)
+        {
+            totalPoints += kvp.Value;
+        }
+    }
+    #endregion
+
     #region SPECIAL BEHAVIOUR
     private void UpdateSpecialBehaviours()
     {
@@ -591,7 +639,7 @@ public class Tile : MonoBehaviour
     {
         foreach (BoostEntertainmentOnTileAndOnNeighbors behaviour in _tileData.SpecialBehaviours.OfType<BoostEntertainmentOnTileAndOnNeighbors>())
         {
-            behaviour.CheckNewEntertainment(tile);
+            behaviour.CheckNewEntertainment(tile, this);
         }
     }
     #endregion

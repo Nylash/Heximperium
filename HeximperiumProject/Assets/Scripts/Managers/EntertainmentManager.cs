@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System.Collections;
 
 public class EntertainmentManager : PhaseManager<EntertainmentManager>
 {
@@ -25,6 +26,8 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     private int _score;
     private Dictionary<int, List<Entertainment>> _groupBoost = new Dictionary<int, List<Entertainment>>(); //Use for BoostByZoneSize special effect, <GroupID, Entertainments>
     private Dictionary<int, int> _groupBoostCount = new Dictionary<int, int>(); //Use for BoostByZoneSize special effect, <GroupID, Count>
+    private bool _isPredictingPoints;
+    private Coroutine _resetPredictBoolCoroutine;
     // Upgrade variables
     private bool _upgradeMinstrelStageOnNeighbor;
     private AllowEntertainmentOnSpecificInfra _upgradeAllowEntOnSpecificInfra;
@@ -38,6 +41,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     public bool UpgradeMinstrelStageOnNeighbor { get => _upgradeMinstrelStageOnNeighbor; set => _upgradeMinstrelStageOnNeighbor = value; }
     public EntertainmentData MinstrelData { get => _minstrelData; }
     public AllowEntertainmentOnSpecificInfra UpgradeAllowEntOnSpecificInfra { get => _upgradeAllowEntOnSpecificInfra; set => _upgradeAllowEntOnSpecificInfra = value; }
+    public bool IsPredictingPoints { get => _isPredictingPoints; }
 
     public int GetPointsFromMinstrelStage()
     {
@@ -209,14 +213,15 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Destroy));
     }
 
-    public void SpawnEntertainment(Tile tile, EntertainmentData data)
+    public void SpawnEntertainment(Tile tile, EntertainmentData data, bool isPredictionRelated = false)
     {
         if (tile.Entertainment != null)
             return;
 
-        if (ResourcesManager.Instance.CanAffordCarnivalist(data.GetActualCarnivalistCost(tile)))
+        if (ResourcesManager.Instance.CanAffordCarnivalist(data.GetActualCarnivalistCost(tile)) || isPredictionRelated)
         {
-            ResourcesManager.Instance.UpdateCarnivalist(data.GetActualCarnivalistCost(tile), Transaction.Spent);
+            if (!isPredictionRelated)
+                ResourcesManager.Instance.UpdateCarnivalist(data.GetActualCarnivalistCost(tile), Transaction.Spent);
 
             Entertainment currentEntertainment = Instantiate(_entertainmentPrefab,
                 tile.transform.position + _entertainmentPrefab.transform.localPosition,
@@ -228,14 +233,16 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
             tile.Entertainment = currentEntertainment;
             OnEntertainmentSpawned?.Invoke(currentEntertainment);
 
-            AnimateInteractableTiles();
+            if (!isPredictionRelated)
+                AnimateInteractableTiles();
         }
     }
 
-    public void DestroyEntertainment(Tile tile)
+    public void DestroyEntertainment(Tile tile, bool isPredictionRelated = false)
     {
         EntertainmentData removedEntertainmentData = tile.Entertainment.Data;
-        OnScoreLost?.Invoke(tile, tile.Entertainment.Points);
+        if (!isPredictionRelated)
+            OnScoreLost?.Invoke(tile, tile.Entertainment.Points);
         tile.Entertainment.DestroyEntertainment();
         _entertainments.Remove(tile.Entertainment);
         tile.Entertainment = null;
@@ -243,7 +250,42 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         //Call the check empty group after the Entertainment assignation, so the event and its listener is done before
         CheckEmptyGroup(tile);
 
-        AnimateInteractableTiles();
+        if (!isPredictionRelated)
+            AnimateInteractableTiles();
+    }
+
+    public void GetPredictedPoints(Tile tile, EntertainmentData data,
+        out int predictedPoints, out Dictionary<Tile, int> predictedSources, out int predictedSelfPoints, 
+        out int totalPointsGivenToEnt, out int entImpacted)
+    {
+        // If there is already an entertainment, no prediction possible (possible is we spawn an entertainment right before calling this function)
+        if (tile.Entertainment != null)
+        {
+            predictedPoints = 0;
+            predictedSources = new Dictionary<Tile, int>();
+            predictedSelfPoints = 0;
+            totalPointsGivenToEnt = 0;
+            entImpacted = 0;
+            return;
+        }
+
+        if (_resetPredictBoolCoroutine != null)
+            StopCoroutine(_resetPredictBoolCoroutine);
+        _isPredictingPoints = true;
+        SpawnEntertainment(tile, data, true);
+        predictedPoints = tile.Entertainment.Points;
+        predictedSources = new Dictionary<Tile, int>(tile.Entertainment.ExternalPointsSource);
+        predictedSelfPoints = tile.Entertainment.GetPointsFromEntertainmentOnly();
+        tile.GetTotalPointsImpactedByThisTileEntertainment(out totalPointsGivenToEnt, out entImpacted);
+        DestroyEntertainment(tile, true);
+        _resetPredictBoolCoroutine = StartCoroutine(ResetPredictionBool());
+    }
+
+    private IEnumerator ResetPredictionBool()
+    {
+        //Wait end of frame to avoid issues with LateUpdate in Entertainment
+        yield return new WaitForEndOfFrame();
+        _isPredictingPoints = false;
     }
     #endregion
 
@@ -254,7 +296,10 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
 
         _score += value;
 
-        if(!skipVFX)
+        if (_isPredictingPoints)
+            return;
+
+        if (!skipVFX)
         {
             //Play VFX if we gain score
             if (tile != null && transaction == Transaction.Gain)

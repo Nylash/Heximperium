@@ -1,4 +1,7 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/SpecialEffect/BoostIfEnoughIdenticalNeighbors")]
 public class BoostIfEnoughIdenticalNeighbors : SpecialEffect
@@ -22,12 +25,18 @@ public class BoostIfEnoughIdenticalNeighbors : SpecialEffect
 
     public override void RollbackSpecialEntertainment(Entertainment associatedEntertainment)
     {
+        associatedEntertainment.BoostedByIdenticalNeighbors = false;
         foreach (Tile neighbor in associatedEntertainment.Tile.Neighbors)
         {
             if (!neighbor)
                 continue;
             neighbor.OnEntertainmentModified -= associatedEntertainment.ListenerOnEntertainmentModified_BoostIfEnoughIdenticalNeighbors;
         }
+        foreach (Tile item in associatedEntertainment.IdenticalNeighbors)
+        {
+            item.UpdateImpactedEntertainmentByEntertainment(associatedEntertainment.Tile, -_boostAmount);
+        }
+        associatedEntertainment.IdenticalNeighbors.Clear();
     }
 
     public override void HighlightImpactedEntertainment(Tile associatedTile, bool show)
@@ -45,39 +54,75 @@ public class BoostIfEnoughIdenticalNeighbors : SpecialEffect
 
     public void CheckEntertainment(Entertainment associatedEnt)
     {
+        // First, remove previous boosts from identical neighbors
+        foreach (Tile item in associatedEnt.IdenticalNeighbors)
+        {
+            item.UpdateImpactedEntertainmentByEntertainment(associatedEnt.Tile, -_boostAmount);
+            associatedEnt.UpdateInternalSource(item, -_boostAmount, Transaction.Spent);
+        }
+        associatedEnt.IdenticalNeighbors.Clear();
+        HashSet<Entertainment> validNeighbors;
+        int identicalNeighborCount = CountIdenticalNeighbors(associatedEnt, out validNeighbors);
+
+        // Check boost condition and apply/remove boost as necessary
         if (!associatedEnt.BoostedByIdenticalNeighbors)
         {
-            if (CountIdenticalNeighbors(associatedEnt) >= _requiredIdenticalNeighbors)
+            if (identicalNeighborCount >= _requiredIdenticalNeighbors)
             {
                 associatedEnt.UpdatePoints(_boostAmount, Transaction.Gain);
                 associatedEnt.BoostedByIdenticalNeighbors = true;
+
+                //Take 3 random neighbors to mark as impacting
+                List<Entertainment> randomElements = validNeighbors
+                    .OrderBy(_ => Random.value)
+                    .Take(3)
+                    .ToList();
+                foreach (Entertainment ent in randomElements)
+                {
+                    associatedEnt.IdenticalNeighbors.Add(ent.Tile);
+                    ent.Tile.UpdateImpactedEntertainmentByEntertainment(associatedEnt.Tile, _boostAmount);
+                    associatedEnt.UpdateInternalSource(ent.Tile, _boostAmount, Transaction.Gain);
+                }
             }
         }
         else
         {
             // If it was already boosted, we need to check if it still has enough neighbors
-            if (CountIdenticalNeighbors(associatedEnt) < _requiredIdenticalNeighbors)
+            if (identicalNeighborCount < _requiredIdenticalNeighbors)
             {
                 associatedEnt.UpdatePoints(_boostAmount, Transaction.Spent);
                 associatedEnt.BoostedByIdenticalNeighbors = false;
             }
+            else
+            {
+                //Take 3 random neighbors to mark as impacting
+                List<Entertainment> randomElements = validNeighbors
+                    .OrderBy(_ => Random.value)
+                    .Take(3)
+                    .ToList();
+                foreach (Entertainment ent in randomElements)
+                {
+                    associatedEnt.IdenticalNeighbors.Add(ent.Tile);
+                    ent.Tile.UpdateImpactedEntertainmentByEntertainment(associatedEnt.Tile, _boostAmount);
+                    associatedEnt.UpdateInternalSource(ent.Tile, _boostAmount, Transaction.Gain);
+                }
+            }
         }
     }
 
-    private int CountIdenticalNeighbors(Entertainment e)
+    private int CountIdenticalNeighbors(Entertainment e, out HashSet<Entertainment> validNeighbors)
     {
-        int count = 0;
+        validNeighbors = new HashSet<Entertainment>();
         foreach (Tile t in e.Tile.Neighbors)
         {
             if (!t)
                 continue;
             if (t?.Entertainment != null && t.Entertainment.Data == _entData)
             {
-                count++;
-                if (count >= _requiredIdenticalNeighbors) break; // early exit
+                validNeighbors.Add(t.Entertainment);
             }
         }
-        return count;
+        return validNeighbors.Count;
     }
 
     public override string GetBehaviourDescription()

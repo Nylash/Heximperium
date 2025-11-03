@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -13,6 +14,11 @@ public class Entertainment : MonoBehaviour
     private SpriteRenderer _renderer;
     private int _points;
     private int _pointsBuffer;
+    private Dictionary<Tile, int> _externalPointsSource = new Dictionary<Tile, int>();// Points coming from other ent/tile behaviours
+    private Dictionary<Tile, int> _internalPointsSource = new Dictionary<Tile, int>();// Points coming from this ent/tile behaviours
+    //Variables for special effects
+    private HashSet<Tile> _uniqueNeighbors = new HashSet<Tile>();
+    private HashSet<Tile> _identicalNeighbors = new HashSet<Tile>();
     // Upgrade variables
     private bool _boostedByIdenticalNeighbors;
     #endregion
@@ -23,6 +29,9 @@ public class Entertainment : MonoBehaviour
     public SpriteRenderer Renderer { get => _renderer; }
     public int Points { get => _points; }
     public bool BoostedByIdenticalNeighbors { get => _boostedByIdenticalNeighbors; set => _boostedByIdenticalNeighbors = value; }
+    public Dictionary<Tile, int> ExternalPointsSource { get => _externalPointsSource; }
+    public HashSet<Tile> UniqueNeighbors { get => _uniqueNeighbors; }
+    public HashSet<Tile> IdenticalNeighbors { get => _identicalNeighbors; }
     #endregion
 
     private void Awake()
@@ -32,6 +41,9 @@ public class Entertainment : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (EntertainmentManager.Instance.IsPredictingPoints)
+            return;
+
         if (_pointsBuffer > _points)//We lost points during the frame
         {
             EntertainmentManager.Instance.OnScoreLost?.Invoke(_tile, _pointsBuffer - _points); 
@@ -53,8 +65,15 @@ public class Entertainment : MonoBehaviour
         gameObject.name = _data.name + " (" + (int)_tile.Coordinate.x + ";" + _tile.Coordinate.y + ")";
     }
 
-    public void UpdatePoints(int value, Transaction transaction, bool skipVFX = false)
+    public void UpdatePoints(int value, Transaction transaction, bool skipVFX = false, 
+        Tile intSource = null, Tile extSource = null)
     {
+        if (extSource && intSource)
+        {
+            Debug.LogError("Both external and internal source cannot be defined at the same time");
+            return;
+        }
+
         EntertainmentManager.Instance.UpdateScore(value, transaction, _tile, skipVFX);
 
         if (transaction == Transaction.Spent)
@@ -64,11 +83,43 @@ public class Entertainment : MonoBehaviour
 
         if (UIManager.Instance.AreIncomesShown)
             _tile.ShowIncomeUI(true);
+
+        if (extSource)
+        {
+            if (_externalPointsSource.ContainsKey(extSource))
+            {
+                _externalPointsSource[extSource] += value;
+                if (_externalPointsSource[extSource] == 0)
+                    _externalPointsSource.Remove(extSource);
+            }
+            else if (transaction == Transaction.Spent)
+                Debug.LogWarning("Trying to remove points from a source that doesn't exist in the dictionary");
+            else
+                _externalPointsSource.Add(extSource, value);
+        }
+        if (intSource)
+        {
+            UpdateInternalSource(intSource, value, transaction);
+        }
+    }
+
+    public void UpdateInternalSource(Tile intSource, int value, Transaction transaction)
+    {
+        if (_internalPointsSource.ContainsKey(intSource))
+        {
+            _internalPointsSource[intSource] += value;
+            if (_internalPointsSource[intSource] == 0)
+                _internalPointsSource.Remove(intSource);
+        }
+        else if (transaction == Transaction.Spent)
+            Debug.LogWarning("Trying to remove points from a source that doesn't exist in the dictionary");
+        else
+            _internalPointsSource.Add(intSource, value);
     }
 
     public void DestroyEntertainment()
     {
-        EntertainmentManager.Instance.UpdateScore(_points, Transaction.Spent);//Since we remove the entertainment with all its, no need to rollback them on special effects
+        EntertainmentManager.Instance.UpdateScore(_points, Transaction.Spent);//Since we remove the entertainment with all its points, no need to rollback them on special effects
 
         foreach (SpecialEffect effect in _data.SpecialEffects)
             effect.RollbackSpecialEntertainment(this);
@@ -80,6 +131,19 @@ public class Entertainment : MonoBehaviour
     public void EntertainmentVisibility(bool visible)
     {
         _renderer.enabled = visible;
+    }
+
+    public int GetPointsFromEntertainmentOnly()
+    {
+        if (_externalPointsSource.Count == 0)
+            return _points;
+
+        int pointsFromEntOnly = _points;
+        foreach (var kvp in _externalPointsSource)
+        {
+            pointsFromEntOnly -= kvp.Value;
+        }
+        return pointsFromEntOnly;
     }
 
     #region SPECIAL EFFECTS

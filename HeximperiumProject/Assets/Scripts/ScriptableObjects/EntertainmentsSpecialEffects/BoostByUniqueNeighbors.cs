@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/SpecialEffect/BoostByUniqueNeighbors")]
@@ -8,8 +9,8 @@ public class BoostByUniqueNeighbors : SpecialEffect
 
     public override void InitializeSpecialEffect(Entertainment associatedEntertainment)
     {
-        //Create a hashset to count unique entertainment around
-        HashSet<EntertainmentData> uniqueData = new HashSet<EntertainmentData>();
+        // Initialize list of valid neighbors
+        var validNeighbors = new List<Tile>();
         foreach (Tile neighbor in associatedEntertainment.Tile.Neighbors)
         {
             if (!neighbor)
@@ -20,13 +21,31 @@ public class BoostByUniqueNeighbors : SpecialEffect
 
             if (!neighbor.Entertainment)
                 continue;
-            uniqueData.Add(neighbor.Entertainment.Data);
+
+            validNeighbors.Add(neighbor);
         }
 
-        associatedEntertainment.Tile.UniqueEntertainmentNeighborsCount_SE = uniqueData.Count;
+        // Group by EntertainmentData
+        var groups = validNeighbors.GroupBy(n => n.Entertainment.Data);
 
-        if(uniqueData.Count > 0)
-            associatedEntertainment.UpdatePoints(_boost * uniqueData.Count, Transaction.Gain);
+        // Distinct count
+        int distinctDataCount = groups.Count();
+
+        // Update one tile per group
+        associatedEntertainment.UniqueNeighbors.Clear();
+        foreach (var g in groups)
+        {
+            var t = g.First(); // only one by group
+            t.UpdateImpactedEntertainmentByEntertainment(associatedEntertainment.Tile, _boost);
+            associatedEntertainment.UniqueNeighbors.Add(t);
+            associatedEntertainment.UpdateInternalSource(t, _boost, Transaction.Gain);
+        }
+
+        // Update points and store count
+        associatedEntertainment.Tile.UniqueEntertainmentNeighborsCount_SE = distinctDataCount;
+
+        if (distinctDataCount > 0)
+            associatedEntertainment.UpdatePoints(_boost * distinctDataCount, Transaction.Gain);
     }
 
     public override void RollbackSpecialEntertainment(Entertainment associatedEntertainment)
@@ -38,6 +57,11 @@ public class BoostByUniqueNeighbors : SpecialEffect
             neighbor.OnEntertainmentModified -= associatedEntertainment.ListenerOnEntertainmentModified_BoostByUniqueNeighbors;
         }
         associatedEntertainment.Tile.UniqueEntertainmentNeighborsCount_SE = 0;
+        foreach (Tile item in associatedEntertainment.UniqueNeighbors)
+        {
+            item.UpdateImpactedEntertainmentByEntertainment(associatedEntertainment.Tile, -_boost);
+        }
+        associatedEntertainment.UniqueNeighbors.Clear();
     }
 
     public override void HighlightImpactedEntertainment(Tile associatedTile, bool show)
@@ -52,33 +76,53 @@ public class BoostByUniqueNeighbors : SpecialEffect
         }
     }
 
-    public void CheckEntertainment(Entertainment entertainment)
+    public void CheckEntertainment(Entertainment associatedEntertainment)
     {
-        HashSet<EntertainmentData> uniqueData = new HashSet<EntertainmentData>();
-        foreach (Tile neighbor in entertainment.Tile.Neighbors)
+        foreach (Tile item in associatedEntertainment.UniqueNeighbors)
+        {
+            item.UpdateImpactedEntertainmentByEntertainment(associatedEntertainment.Tile, -_boost);
+            associatedEntertainment.UpdateInternalSource(item, -_boost, Transaction.Spent);
+        }
+        associatedEntertainment.UniqueNeighbors.Clear();
+
+        // Initialize list of valid neighbors
+        var validNeighbors = new List<Tile>();
+        foreach (Tile neighbor in associatedEntertainment.Tile.Neighbors)
         {
             if (!neighbor)
                 continue;
             if (!neighbor.Entertainment)
                 continue;
-            uniqueData.Add(neighbor.Entertainment.Data);
+            validNeighbors.Add(neighbor);
         }
+        // Group by EntertainmentData
+        var groups = validNeighbors.GroupBy(n => n.Entertainment.Data);
+        // Distinct count delta
+        int deltaCount = groups.Count() - associatedEntertainment.Tile.UniqueEntertainmentNeighborsCount_SE;
 
-        int deltaCount = uniqueData.Count - entertainment.Tile.UniqueEntertainmentNeighborsCount_SE;
+        // Update one tile per group
+        associatedEntertainment.UniqueNeighbors.Clear();
+        foreach (var g in groups)
+        {
+            var t = g.First(); // only one by group
+            t.UpdateImpactedEntertainmentByEntertainment(associatedEntertainment.Tile, _boost);
+            associatedEntertainment.UniqueNeighbors.Add(t);
+            associatedEntertainment.UpdateInternalSource(t, _boost, Transaction.Gain);
+        }
 
         if (deltaCount == 0)
             return;//Count of unique entertainment neighbors didn't change, so nothing to do
 
-        Transaction t;
+        Transaction transaction;
 
         if (deltaCount > 0)
-            t = Transaction.Gain;
+            transaction = Transaction.Gain;
         else
-            t = Transaction.Spent;
+            transaction = Transaction.Spent;
 
-        entertainment.UpdatePoints(_boost * Mathf.Abs(deltaCount), t);
+        associatedEntertainment.UpdatePoints(_boost * Mathf.Abs(deltaCount), transaction);
 
-        entertainment.Tile.UniqueEntertainmentNeighborsCount_SE = uniqueData.Count;
+        associatedEntertainment.Tile.UniqueEntertainmentNeighborsCount_SE = groups.Count();
     }
 
     public override string GetBehaviourDescription()

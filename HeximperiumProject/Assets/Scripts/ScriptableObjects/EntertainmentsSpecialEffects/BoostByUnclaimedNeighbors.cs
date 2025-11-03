@@ -12,7 +12,16 @@ public class BoostByUnclaimedNeighbors : SpecialEffect
 
     public override void RollbackSpecialEntertainment(Entertainment associatedEntertainment)
     {
-        // Nothing to rollback since it only effect this entertainment
+        // Don't remove points, destroying the entertainment will remove all its points anyway
+        foreach (Tile neighbor in associatedEntertainment.Tile.Neighbors)
+        {
+            if (!neighbor)
+                continue;
+            if (!neighbor.Claimed)
+            {
+                neighbor.UpdateImpactedEntByTile(associatedEntertainment.Tile, -_boostAmount);
+            }
+        }
     }
 
     public override void HighlightImpactedEntertainment(Tile associatedTile, bool show)
@@ -28,16 +37,16 @@ public class BoostByUnclaimedNeighbors : SpecialEffect
 
     private void CheckEntertainment(Entertainment associatedEnt)
     {
-        int unclaimedNeighbors = 0;
         foreach (Tile neighbor in associatedEnt.Tile.Neighbors)
         {
             if (!neighbor)
                 continue;
             if (!neighbor.Claimed)
-                unclaimedNeighbors++;
+            {
+                associatedEnt.UpdatePoints(_boostAmount, Transaction.Gain, false, neighbor);
+                neighbor.UpdateImpactedEntByTile(associatedEnt.Tile, _boostAmount);
+            }
         }
-        if (unclaimedNeighbors > 0)
-            associatedEnt.UpdatePoints(_boostAmount * unclaimedNeighbors, Transaction.Gain);
     }
 
     public override string GetBehaviourDescription()

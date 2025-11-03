@@ -47,18 +47,23 @@ public class BoostEntertainmentOnTileAndOnNeighbors : SpecialBehaviour
         }
     }
 
-    public void CheckNewEntertainment(Tile modifiedTile)
+    public void CheckNewEntertainment(Tile modifiedTile, Tile behaviourTile)
     {
         if (modifiedTile.Entertainment != null)
         {
-            BoostEntertainment(modifiedTile.Entertainment, Transaction.Gain);
+            BoostEntertainment(modifiedTile.Entertainment, Transaction.Gain, behaviourTile);
+            behaviourTile.UpdateImpactedEntByTile(modifiedTile, _boost);
         }
-        //No need to remove the boost on Entertainment suppression, its handled by entertainment destruction
+        else
+        {
+            //No need to remove the boost on Entertainment suppression, its handled by entertainment destruction but remove from the tile impact
+            behaviourTile.UpdateImpactedEntByTile(modifiedTile, -_boost);
+        }
     }
 
-    private void BoostEntertainment(Entertainment ent, Transaction transaction)
+    private void BoostEntertainment(Entertainment ent, Transaction transaction, Tile behaviourTile)
     {
-        ent.UpdatePoints(_boost, transaction);
+        ent.UpdatePoints(_boost, transaction, false, null, behaviourTile);
     }
 
     public override string GetBehaviourDescription()
