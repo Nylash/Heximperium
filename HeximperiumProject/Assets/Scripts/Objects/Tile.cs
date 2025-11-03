@@ -46,7 +46,7 @@ public class Tile : MonoBehaviour
     private int _recruitedCarnivalists;
     private int _bufferRecruitedCarnivalists;
     //Dictionary for impacted tiles
-    private Dictionary<Tile, int> _tilesImpactedByEntertainment = new Dictionary<Tile, int>();
+    private Dictionary<Tile, int> _entImpactedByEntertainment = new Dictionary<Tile, int>();//Use the tile to avoid issues with destroyed entertainment
     private Dictionary<Tile, int> _entImpactedByTile = new Dictionary<Tile, int>();//Use the tile to avoid issues with destroyed entertainment
     //Scouts
     private List<Scout> _scouts = new List<Scout>();
@@ -151,7 +151,7 @@ public class Tile : MonoBehaviour
 
     public TileData TargetData { get => _targetData; }
     public Dictionary<TileData, List<ResourceToIntMap>> ExternalIncomesSources { get => _externalIncomesSources; }
-    public Dictionary<Tile, int> TilesImpactedByEntertainment { get => _tilesImpactedByEntertainment; }
+    public Dictionary<Tile, int> TilesImpactedByEntertainment { get => _entImpactedByEntertainment; }
     public Dictionary<Tile, int> EntImpactedByTile { get => _entImpactedByTile; }
     #endregion
 
@@ -566,21 +566,21 @@ public class Tile : MonoBehaviour
     #endregion
 
     #region IMPACTED TILES MANAGEMENT
-    public void UpdateImpactedTileByEntertainment(Tile tile, int entertainmentPoints)
+    public void UpdateImpactedEntertainmentByEntertainment(Tile tile, int entertainmentPoints)
     {
-        if (!_tilesImpactedByEntertainment.ContainsKey(tile))
-            _tilesImpactedByEntertainment.Add(tile, entertainmentPoints);
+        if (!_entImpactedByEntertainment.ContainsKey(tile))
+            _entImpactedByEntertainment.Add(tile, entertainmentPoints);
         else
-            _tilesImpactedByEntertainment[tile] += entertainmentPoints;
-        if (_tilesImpactedByEntertainment[tile] <= 0)
-            _tilesImpactedByEntertainment.Remove(tile);
+            _entImpactedByEntertainment[tile] += entertainmentPoints;
+        if (_entImpactedByEntertainment[tile] <= 0)
+            _entImpactedByEntertainment.Remove(tile);
     }
 
     public void GetTotalPointsImpactedByThisTileEntertainment(out int totalPoints, out int impactedTilesCount)
     {
         totalPoints = 0;
-        impactedTilesCount = _tilesImpactedByEntertainment.Count;
-        foreach (var kvp in _tilesImpactedByEntertainment)
+        impactedTilesCount = _entImpactedByEntertainment.Count;
+        foreach (var kvp in _entImpactedByEntertainment)
         {
             totalPoints += kvp.Value;
         }

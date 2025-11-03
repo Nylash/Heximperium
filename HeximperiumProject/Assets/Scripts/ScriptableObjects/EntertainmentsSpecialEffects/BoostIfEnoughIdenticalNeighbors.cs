@@ -32,7 +32,7 @@ public class BoostIfEnoughIdenticalNeighbors : SpecialEffect
         }
         foreach (Tile item in associatedEntertainment.IdenticalNeighbors)
         {
-            item.UpdateImpactedTileByEntertainment(associatedEntertainment.Tile, -_boostAmount);
+            item.UpdateImpactedEntertainmentByEntertainment(associatedEntertainment.Tile, -_boostAmount);
         }
         associatedEntertainment.IdenticalNeighbors.Clear();
     }
@@ -55,7 +55,7 @@ public class BoostIfEnoughIdenticalNeighbors : SpecialEffect
         // First, remove previous boosts from identical neighbors
         foreach (Tile item in associatedEnt.IdenticalNeighbors)
         {
-            item.UpdateImpactedTileByEntertainment(associatedEnt.Tile, -_boostAmount);
+            item.UpdateImpactedEntertainmentByEntertainment(associatedEnt.Tile, -_boostAmount);
         }
         associatedEnt.IdenticalNeighbors.Clear();
         HashSet<Entertainment> validNeighbors;
@@ -74,7 +74,7 @@ public class BoostIfEnoughIdenticalNeighbors : SpecialEffect
                 foreach (Entertainment ent in validNeighbors)
                 {
                     associatedEnt.IdenticalNeighbors.Add(ent.Tile);
-                    ent.Tile.UpdateImpactedTileByEntertainment(associatedEnt.Tile, _boostAmount);
+                    ent.Tile.UpdateImpactedEntertainmentByEntertainment(associatedEnt.Tile, _boostAmount);
                 }
             }
         }

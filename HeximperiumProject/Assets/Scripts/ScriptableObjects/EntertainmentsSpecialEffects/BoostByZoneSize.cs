@@ -146,8 +146,8 @@ public class BoostByZoneSize : SpecialEffect
                 if (item.Data != _dataBoosting)
                     continue;
                 item.UpdatePoints(_boost, Transaction.Gain, skipVFX);
-                item.Tile.UpdateImpactedTileByEntertainment(newEntertainment.Tile, _boost);
-                newEntertainment.Tile.UpdateImpactedTileByEntertainment(item.Tile, _boost);//Update the impacted tiles for both entertainments here (to use only one loop)
+                item.Tile.UpdateImpactedEntertainmentByEntertainment(newEntertainment.Tile, _boost);
+                newEntertainment.Tile.UpdateImpactedEntertainmentByEntertainment(item.Tile, _boost);//Update the impacted tiles for both entertainments here (to use only one loop)
             }
         }
             
@@ -181,8 +181,8 @@ public class BoostByZoneSize : SpecialEffect
                 if (item.Data != _dataBoosting)
                     continue;
                 item.UpdatePoints(_boost, Transaction.Spent);
-                item.Tile.UpdateImpactedTileByEntertainment(tile, -_boost);
-                tile.UpdateImpactedTileByEntertainment(item.Tile, -_boost);
+                item.Tile.UpdateImpactedEntertainmentByEntertainment(tile, -_boost);
+                tile.UpdateImpactedEntertainmentByEntertainment(item.Tile, -_boost);
             }
         }
 

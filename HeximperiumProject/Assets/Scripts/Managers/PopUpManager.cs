@@ -45,7 +45,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private Dictionary<SpecialEffect, Tile> _highlightingEffects = new Dictionary<SpecialEffect, Tile>();
     private float _maxAllowed;
     private bool _popUpShown;
-    private bool _showSourcesOnPopUp;
+    private bool _showSourcesOnPopUp = true;
     //POPUP ON POPUP Variables
     private GameObject _lockingPopup;
     private bool _isLockingPopup;
@@ -697,7 +697,7 @@ public class PopUpManager : Singleton<PopUpManager>
                 TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
                 List<ResourceToIntMap> ownInc = tile.GetIncomeFromTileOnly();
                 if (ownInc.Count > 0)
-                    sourceInc.text = "(" + ownInc.IncomeToString() + " based on the tile properties)" + "\n";
+                    sourceInc.text = "(" + ownInc.IncomeToString() + " based on the tile effects)" + "\n";
                 foreach (var kvp in tile.ExternalIncomesSources)
                 {
                     sourceInc.text += "(" + kvp.Value.IncomeToString() + " from " + kvp.Key.TileName + ")" + "\n";
@@ -862,7 +862,7 @@ public class PopUpManager : Singleton<PopUpManager>
                 TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
                 int predictedSelfPoints = ent.GetPointsFromEntertainmentOnly();
                 if (predictedSelfPoints > 0)
-                    sourceInc.text = "(+" + predictedSelfPoints + "<sprite name=\"Point_Emoji\"> based on the entertainment properties)" + "\n";
+                    sourceInc.text = "(+" + predictedSelfPoints + "<sprite name=\"Point_Emoji\"> based on the entertainment effects)" + "\n";
                 foreach (var kvp in ent.PointsSpecialSource)
                 {
                     sourceInc.text += "(+" + kvp.Value + "<sprite name=\"Point_Emoji\"> from " + kvp.Key.TileName + ")" + "\n";
@@ -1074,7 +1074,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region POINTS
         TextMeshProUGUI pointsText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        pointsText.text = "<sprite name=\"Puce_Emoji\"> Base points: +" + button.EntertainData.BasePoints + "<sprite name=\"Point_Emoji\">";
+        pointsText.text = "<sprite name=\"Puce_Emoji\"> Base points +" + button.EntertainData.BasePoints + "<sprite name=\"Point_Emoji\">";
         textObjects.Add(pointsText.GetComponent<RectTransform>());
         #endregion
 
@@ -1101,7 +1101,7 @@ public class PopUpManager : Singleton<PopUpManager>
             {
                 TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
                 if (predictedSelfPoints > 0)
-                    sourceInc.text = "(+" + predictedSelfPoints + "<sprite name=\"Point_Emoji\"> from the entertainment itself)" + "\n";
+                    sourceInc.text = "(+" + predictedSelfPoints + "<sprite name=\"Point_Emoji\"> based on the entertainment effects)" + "\n";
                 foreach (var kvp in predictedSources)
                 {
                     sourceInc.text += "(+" + kvp.Value + "<sprite name=\"Point_Emoji\"> from " + kvp.Key.TileName + ")" + "\n";
@@ -1215,7 +1215,7 @@ public class PopUpManager : Singleton<PopUpManager>
             {
                 TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
                 if (predictedSelfInc.Count > 0)
-                    sourceInc.text = "(" + predictedSelfInc.IncomeToString() + " from the tile itself)" + "\n";
+                    sourceInc.text = "(" + predictedSelfInc.IncomeToString() + " based on the tile effects)" + "\n";
                 foreach (var kvp in predictedSources)
                 {
                     sourceInc.text += "(" + kvp.Value.IncomeToString() + " from " + kvp.Key.TileName + ")" + "\n";

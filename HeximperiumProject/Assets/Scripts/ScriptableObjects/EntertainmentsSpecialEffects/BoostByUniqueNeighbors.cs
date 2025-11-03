@@ -39,7 +39,7 @@ public class BoostByUniqueNeighbors : SpecialEffect
             if (isUnique)
             {
                 var n = g.First(); // only one in the group
-                n.UpdateImpactedTileByEntertainment(associatedEntertainment.Tile, _boost);
+                n.UpdateImpactedEntertainmentByEntertainment(associatedEntertainment.Tile, _boost);
                 associatedEntertainment.UniqueNeighbors.Add(n);
             }
         }
@@ -62,7 +62,7 @@ public class BoostByUniqueNeighbors : SpecialEffect
         associatedEntertainment.Tile.UniqueEntertainmentNeighborsCount_SE = 0;
         foreach (Tile item in associatedEntertainment.UniqueNeighbors)
         {
-            item.UpdateImpactedTileByEntertainment(associatedEntertainment.Tile, -_boost);
+            item.UpdateImpactedEntertainmentByEntertainment(associatedEntertainment.Tile, -_boost);
         }
         associatedEntertainment.UniqueNeighbors.Clear();
     }
@@ -83,7 +83,7 @@ public class BoostByUniqueNeighbors : SpecialEffect
     {
         foreach (Tile item in associatedEntertainment.UniqueNeighbors)
         {
-            item.UpdateImpactedTileByEntertainment(associatedEntertainment.Tile, -_boost);
+            item.UpdateImpactedEntertainmentByEntertainment(associatedEntertainment.Tile, -_boost);
         }
         associatedEntertainment.UniqueNeighbors.Clear();
 
@@ -109,7 +109,7 @@ public class BoostByUniqueNeighbors : SpecialEffect
             if (isUnique)
             {
                 var n = g.First(); // only one in the group
-                n.UpdateImpactedTileByEntertainment(associatedEntertainment.Tile, _boost);
+                n.UpdateImpactedEntertainmentByEntertainment(associatedEntertainment.Tile, _boost);
                 associatedEntertainment.UniqueNeighbors.Add(n);
             }
         }
