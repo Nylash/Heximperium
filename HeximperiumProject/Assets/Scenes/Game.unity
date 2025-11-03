@@ -646,14 +646,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Managers
       objectReference: {fileID: 0}
-    - target: {fileID: 8667163343139708830, guid: b67b6ca7df07e5640bffb0e62167570d, type: 3}
-      propertyPath: _turnLimit
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8667163343139708830, guid: b67b6ca7df07e5640bffb0e62167570d, type: 3}
-      propertyPath: _baseClaimPerTurn
-      value: 10
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

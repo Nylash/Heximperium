@@ -19,7 +19,6 @@ public class PopUpManager : Singleton<PopUpManager>
     [SerializeField][Range(0, 1f)] private float _offsetNormX = 0.1f;
     [SerializeField][Range(0, 1f)] private float _maxDistanceBetweenObjectAndPopup = 0.3f;
     [SerializeField][Range(0, 1f)] private float _offsetPopupOnCursor = 0.02f;
-    [SerializeField] private Vector4 _paddingForPhaseBorder;
     [SerializeField] private RectTransform _topLimit;
     [SerializeField] private RectTransform _bottomLimit;
     [SerializeField] private RectTransform _rightLimit;
