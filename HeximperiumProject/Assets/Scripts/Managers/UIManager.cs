@@ -99,6 +99,11 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Sprite _showEntPlacementOff;
     [SerializeField] private Sprite _showEntPlacementOn;
     [Header("_________________________________________________________")]
+    [Header("Show Details Popup button")]
+    [SerializeField] private Image _showDetailsPopupButton;
+    [SerializeField] private Sprite _showDetailsPopupOff;
+    [SerializeField] private Sprite _showDetailsPopupOn;
+    [Header("_________________________________________________________")]
     [Header("VFX Anchors")]
     [SerializeField] private RectTransform _vfxAnchorEndConfetti1;
     [SerializeField] private RectTransform _vfxAnchorEndConfetti2;
@@ -614,6 +619,12 @@ public class UIManager : Singleton<UIManager>
         {
             tile.ShowEntPlacementUI(_areEntPlacementShown);
         }
+    }
+
+    public void SwitchPopupDetailsVisibility()
+    {
+        PopUpManager.Instance.ShowSourcesOnPopUp = !PopUpManager.Instance.ShowSourcesOnPopUp;
+        _showDetailsPopupButton.sprite = PopUpManager.Instance.ShowSourcesOnPopUp ? _showDetailsPopupOn : _showDetailsPopupOff;
     }
 
     public Color GetColorOfPhase(Phase phase)
