@@ -14,7 +14,8 @@ public class Entertainment : MonoBehaviour
     private SpriteRenderer _renderer;
     private int _points;
     private int _pointsBuffer;
-    private Dictionary<TileData, int> _pointsSpecialSource = new Dictionary<TileData, int>();
+    private Dictionary<Tile, int> _externalPointsSource = new Dictionary<Tile, int>();// Points coming from other ent/tile behaviours (only used with tiles)
+    private Dictionary<Entertainment, int> _internalPointsSource = new Dictionary<Entertainment, int>();// Points coming from this ent behaviours (only used with entertainments)
     //Variables for special effects
     private HashSet<Tile> _uniqueNeighbors = new HashSet<Tile>();
     private HashSet<Tile> _identicalNeighbors = new HashSet<Tile>();
@@ -28,7 +29,7 @@ public class Entertainment : MonoBehaviour
     public SpriteRenderer Renderer { get => _renderer; }
     public int Points { get => _points; }
     public bool BoostedByIdenticalNeighbors { get => _boostedByIdenticalNeighbors; set => _boostedByIdenticalNeighbors = value; }
-    public Dictionary<TileData, int> PointsSpecialSource { get => _pointsSpecialSource; }
+    public Dictionary<Tile, int> ExternalPointsSource { get => _externalPointsSource; }
     public HashSet<Tile> UniqueNeighbors { get => _uniqueNeighbors; }
     public HashSet<Tile> IdenticalNeighbors { get => _identicalNeighbors; }
     #endregion
@@ -64,7 +65,8 @@ public class Entertainment : MonoBehaviour
         gameObject.name = _data.name + " (" + (int)_tile.Coordinate.x + ";" + _tile.Coordinate.y + ")";
     }
 
-    public void UpdatePoints(int value, Transaction transaction, bool skipVFX = false, TileData specialBevSource = null)
+    public void UpdatePoints(int value, Transaction transaction, bool skipVFX = false, 
+        Tile extSource = null, Entertainment intSource = null)
     {
         EntertainmentManager.Instance.UpdateScore(value, transaction, _tile, skipVFX);
 
@@ -76,18 +78,18 @@ public class Entertainment : MonoBehaviour
         if (UIManager.Instance.AreIncomesShown)
             _tile.ShowIncomeUI(true);
 
-        if (specialBevSource)
+        if (extSource)
         {
-            if (_pointsSpecialSource.ContainsKey(specialBevSource))
+            if (_externalPointsSource.ContainsKey(extSource))
             {
-                _pointsSpecialSource[specialBevSource] += value;
-                if (_pointsSpecialSource[specialBevSource] == 0)
-                    _pointsSpecialSource.Remove(specialBevSource);
+                _externalPointsSource[extSource] += value;
+                if (_externalPointsSource[extSource] == 0)
+                    _externalPointsSource.Remove(extSource);
             }
             else if (transaction == Transaction.Spent)
                 Debug.LogWarning("Trying to remove points from a source that doesn't exist in the dictionary");
             else
-                _pointsSpecialSource.Add(specialBevSource, value);
+                _externalPointsSource.Add(extSource, value);
         }
     }
 
@@ -109,11 +111,11 @@ public class Entertainment : MonoBehaviour
 
     public int GetPointsFromEntertainmentOnly()
     {
-        if (_pointsSpecialSource.Count == 0)
+        if (_externalPointsSource.Count == 0)
             return _points;
 
         int pointsFromEntOnly = _points;
-        foreach (var kvp in _pointsSpecialSource)
+        foreach (var kvp in _externalPointsSource)
         {
             pointsFromEntOnly -= kvp.Value;
         }

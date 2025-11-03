@@ -255,14 +255,14 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     }
 
     public void GetPredictedPoints(Tile tile, EntertainmentData data,
-        out int predictedPoints, out Dictionary<TileData, int> predictedSources, out int predictedSelfPoints, 
+        out int predictedPoints, out Dictionary<Tile, int> predictedSources, out int predictedSelfPoints, 
         out int totalPointsGivenToEnt, out int entImpacted)
     {
         // If there is already an entertainment, no prediction possible (possible is we spawn an entertainment right before calling this function)
         if (tile.Entertainment != null)
         {
             predictedPoints = 0;
-            predictedSources = new Dictionary<TileData, int>();
+            predictedSources = new Dictionary<Tile, int>();
             predictedSelfPoints = 0;
             totalPointsGivenToEnt = 0;
             entImpacted = 0;
@@ -274,7 +274,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         _isPredictingPoints = true;
         SpawnEntertainment(tile, data, true);
         predictedPoints = tile.Entertainment.Points;
-        predictedSources = new Dictionary<TileData, int>(tile.Entertainment.PointsSpecialSource);
+        predictedSources = new Dictionary<Tile, int>(tile.Entertainment.ExternalPointsSource);
         predictedSelfPoints = tile.Entertainment.GetPointsFromEntertainmentOnly();
         tile.GetTotalPointsImpactedByThisTileEntertainment(out totalPointsGivenToEnt, out entImpacted);
         DestroyEntertainment(tile, true);

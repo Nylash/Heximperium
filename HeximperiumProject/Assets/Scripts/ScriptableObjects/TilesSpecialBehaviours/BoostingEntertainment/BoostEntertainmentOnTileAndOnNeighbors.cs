@@ -63,7 +63,7 @@ public class BoostEntertainmentOnTileAndOnNeighbors : SpecialBehaviour
 
     private void BoostEntertainment(Entertainment ent, Transaction transaction, Tile behaviourTile)
     {
-        ent.UpdatePoints(_boost, transaction, false, behaviourTile.TileData);
+        ent.UpdatePoints(_boost, transaction, false, behaviourTile);
     }
 
     public override string GetBehaviourDescription()

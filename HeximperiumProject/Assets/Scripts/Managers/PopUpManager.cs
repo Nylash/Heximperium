@@ -857,16 +857,22 @@ public class PopUpManager : Singleton<PopUpManager>
         #region POINTS SOURCES
         if (_showSourcesOnPopUp)
         {
-            if (ent.PointsSpecialSource.Count > 0)
+            if (ent.ExternalPointsSource.Count > 0)
             {
                 TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
                 int predictedSelfPoints = ent.GetPointsFromEntertainmentOnly();
                 if (predictedSelfPoints > 0)
                     sourceInc.text = "(+" + predictedSelfPoints + "<sprite name=\"Point_Emoji\"> based on the entertainment effects)" + "\n";
-                foreach (var kvp in ent.PointsSpecialSource)
+                Dictionary<TileData, int> datas = new Dictionary<TileData, int>();
+                foreach (var kvp in ent.ExternalPointsSource)
                 {
-                    sourceInc.text += "(+" + kvp.Value + "<sprite name=\"Point_Emoji\"> from " + kvp.Key.TileName + ")" + "\n";
+                    if (datas.ContainsKey(kvp.Key.TileData))
+                        datas[kvp.Key.TileData] += kvp.Value;
+                    else
+                        datas.Add(kvp.Key.TileData, kvp.Value);
                 }
+                foreach (var kvpBis in datas)
+                    sourceInc.text += "(+" + kvpBis.Value + "<sprite name=\"Point_Emoji\"> from " + kvpBis.Key.TileName + ")" + "\n";
                 sourceInc.alignment = TextAlignmentOptions.Center;
                 sourceInc.fontStyle = FontStyles.Italic;
                 textObjects.Add(sourceInc.GetComponent<RectTransform>());
@@ -1082,7 +1088,7 @@ public class PopUpManager : Singleton<PopUpManager>
         TextMeshProUGUI predictedIncome = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
         int predictedPoints;
         int predictedSelfPoints;
-        Dictionary<TileData, int> predictedSources;
+        Dictionary<Tile, int> predictedSources;
         int totalPointsGiven;
         int nbOfEntImpacted;
         EntertainmentManager.Instance.GetPredictedPoints(button.AssociatedTile, button.EntertainData, 
@@ -1102,10 +1108,16 @@ public class PopUpManager : Singleton<PopUpManager>
                 TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
                 if (predictedSelfPoints > 0)
                     sourceInc.text = "(+" + predictedSelfPoints + "<sprite name=\"Point_Emoji\"> based on the entertainment effects)" + "\n";
+                Dictionary<TileData, int> datas = new Dictionary<TileData, int>();
                 foreach (var kvp in predictedSources)
                 {
-                    sourceInc.text += "(+" + kvp.Value + "<sprite name=\"Point_Emoji\"> from " + kvp.Key.TileName + ")" + "\n";
+                    if (datas.ContainsKey(kvp.Key.TileData))
+                        datas[kvp.Key.TileData] += kvp.Value;
+                    else
+                        datas.Add(kvp.Key.TileData, kvp.Value);
                 }
+                foreach (var kvpBis in datas)
+                    sourceInc.text += "(+" + kvpBis.Value + "<sprite name=\"Point_Emoji\"> from " + kvpBis.Key.TileName + ")" + "\n";
                 sourceInc.alignment = TextAlignmentOptions.Center;
                 sourceInc.fontStyle = FontStyles.Italic;
                 textObjects.Add(sourceInc.GetComponent<RectTransform>());
