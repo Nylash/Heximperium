@@ -692,13 +692,13 @@ public class PopUpManager : Singleton<PopUpManager>
         #region INCOME SOURCES
         if (_showSourcesOnPopUp)
         {
-            if (tile.IncomesSources.Count > 0)
+            if (tile.ExternalIncomesSources.Count > 0)
             {
                 TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
                 List<ResourceToIntMap> ownInc = tile.GetIncomeFromTileOnly();
                 if (ownInc.Count > 0)
                     sourceInc.text = "(" + ownInc.IncomeToString() + " based on the tile properties)" + "\n";
-                foreach (var kvp in tile.IncomesSources)
+                foreach (var kvp in tile.ExternalIncomesSources)
                 {
                     sourceInc.text += "(" + kvp.Value.IncomeToString() + " from " + kvp.Key.TileName + ")" + "\n";
                 }
