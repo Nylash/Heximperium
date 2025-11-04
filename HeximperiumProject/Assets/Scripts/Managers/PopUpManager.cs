@@ -265,7 +265,7 @@ public class PopUpManager : Singleton<PopUpManager>
         {
             foreach (GameObject item in _popUps)
             {
-                    Destroy(item);
+                item.GetComponent<Animator>().SetTrigger("Close");
             }
             _popUps.Clear();
         }
@@ -674,31 +674,6 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
-        #region BEHAVIOURS
-        if (tile.TileData.SpecialBehaviours.Count > 0)
-        {
-            foreach (SpecialBehaviour behaviour in tile.TileData.SpecialBehaviours)
-            {
-                TextMeshProUGUI behaviourText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-                behaviourText.text = "<sprite name=\"Puce_Emoji\"> " + behaviour.GetBehaviourDescription();
-                textObjects.Add(behaviourText.GetComponent<RectTransform>());
-                ClampTextWidth(behaviourText);
-                behaviour.HighlightImpactedTile(tile, true);
-                _highlightingBehaviours.Add(behaviour, tile);
-            }
-        }
-        #endregion
-
-        #region SCOUT STARTING POINT
-        if (tile.TileData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
-        {
-            TextMeshProUGUI scoutText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            scoutText.text = "<sprite name=\"Puce_Emoji\"> Scout<sprite name=\"Scout_Emoji\"> starting point";
-            textObjects.Add(scoutText.GetComponent<RectTransform>());
-            ClampTextWidth(scoutText);
-        }
-        #endregion
-
         #region INCOME
         if (tile.Incomes.Count > 0)
         {
@@ -730,6 +705,56 @@ public class PopUpManager : Singleton<PopUpManager>
                 sourceInc.fontStyle = FontStyles.Italic;
                 textObjects.Add(sourceInc.GetComponent<RectTransform>());
             }
+        }
+        #endregion
+
+        #region INCOME BONUS
+        List<ResourceToIntMap> incomeBonus = new List<ResourceToIntMap>(tile.TileData.Incomes);
+        if (tile.InitialData.Incomes.Count > 0 && tile.TileData != tile.InitialData)
+        {
+            incomeBonus = Utilities.MergeResourceToIntMaps(incomeBonus, tile.InitialData.Incomes);
+        }
+        if (tile.PreviousData != null)
+        {
+            if (tile.PreviousData != tile.InitialData)
+            {
+                if (tile.PreviousData.Incomes.Count > 0)
+                {
+                    incomeBonus = Utilities.MergeResourceToIntMaps(incomeBonus, tile.PreviousData.Incomes);
+                }
+            }
+        }
+        if (incomeBonus.Count > 0)
+        {
+            print(tile.TileData.TileName + " income bonus: " + incomeBonus.IncomeToString());
+            TextMeshProUGUI income = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            income.text = "<sprite name=\"Puce_Emoji\"> Base income " + incomeBonus.IncomeToString() + " per turn";
+            textObjects.Add(income.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region BEHAVIOURS
+        if (tile.TileData.SpecialBehaviours.Count > 0)
+        {
+            foreach (SpecialBehaviour behaviour in tile.TileData.SpecialBehaviours)
+            {
+                TextMeshProUGUI behaviourText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                behaviourText.text = "<sprite name=\"Puce_Emoji\"> " + behaviour.GetBehaviourDescription();
+                textObjects.Add(behaviourText.GetComponent<RectTransform>());
+                ClampTextWidth(behaviourText);
+                behaviour.HighlightImpactedTile(tile, true);
+                _highlightingBehaviours.Add(behaviour, tile);
+            }
+        }
+        #endregion
+
+        #region SCOUT STARTING POINT
+        if (tile.TileData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
+        {
+            TextMeshProUGUI scoutText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            scoutText.text = "<sprite name=\"Puce_Emoji\"> Scout<sprite name=\"Scout_Emoji\"> starting point";
+            textObjects.Add(scoutText.GetComponent<RectTransform>());
+            ClampTextWidth(scoutText);
         }
         #endregion
 
@@ -1247,7 +1272,7 @@ public class PopUpManager : Singleton<PopUpManager>
         if (button.InfrastructureData.Incomes.Count > 0)
         {
             TextMeshProUGUI income = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            income.text = "<sprite name=\"Puce_Emoji\"> Improve income by " + button.InfrastructureData.Incomes.IncomeToString() + " per turn";
+            income.text = "<sprite name=\"Puce_Emoji\"> Improve base income by " + button.InfrastructureData.Incomes.IncomeToString() + " per turn";
             textObjects.Add(income.GetComponent<RectTransform>());
         }
         #endregion
@@ -1832,7 +1857,7 @@ public class PopUpManager : Singleton<PopUpManager>
             if (item.Value == button)
             {
                 popUpToRemove = item.Key;
-                Destroy(item.Key);
+                item.Key.GetComponent<Animator>().SetTrigger("Close");
                 Destroy(item.Value.gameObject);
                 ResetPopUp(null);
                 break;
@@ -1848,7 +1873,7 @@ public class PopUpManager : Singleton<PopUpManager>
     {
         foreach (var item in _lockedPopUps)
         {
-            Destroy(item.Key);
+            item.Key.GetComponent<Animator>().SetTrigger("Close");
             Destroy(item.Value.gameObject);
         }
         _lockedPopUps.Clear();
