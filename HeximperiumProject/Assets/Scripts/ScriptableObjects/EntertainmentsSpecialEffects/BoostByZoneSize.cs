@@ -128,10 +128,6 @@ public class BoostByZoneSize : SpecialEffect
         entertainments.Add(initialEntertainment);
 
         EntertainmentManager.Instance.GroupBoost[newGroupId] = entertainments;
-        if(initialEntertainment.Data == _dataBoosting)
-            EntertainmentManager.Instance.GroupBoostCount[newGroupId] = 1;
-        else
-            EntertainmentManager.Instance.GroupBoostCount[newGroupId] = 0;
 
         initialEntertainment.Tile.GroupID = newGroupId;
         return newGroupId;
@@ -163,7 +159,6 @@ public class BoostByZoneSize : SpecialEffect
                     continue;
                 newEntertainment.UpdatePoints(_boost, Transaction.Gain, skipVFX, ent.Tile);
             }
-            EntertainmentManager.Instance.GroupBoostCount[groupID]++;
         }
 
         newEntertainment.Tile.GroupID = groupID;
@@ -171,11 +166,6 @@ public class BoostByZoneSize : SpecialEffect
 
     private void RemoveEntertainmentFromItsGroup(Tile tile, EntertainmentData removedData, bool checkForSplit = true)
     {
-        if (removedData == _dataBoosting)
-        {
-            EntertainmentManager.Instance.GroupBoostCount[tile.GroupID]--;
-        }
-
         if(tile.Entertainment != null)
             EntertainmentManager.Instance.GroupBoost[tile.GroupID].Remove(tile.Entertainment);//When called by Rollback
         else
@@ -197,7 +187,6 @@ public class BoostByZoneSize : SpecialEffect
         if (EntertainmentManager.Instance.GroupBoost[tile.GroupID].Count == 0)
         {
             EntertainmentManager.Instance.GroupBoost.Remove(tile.GroupID);
-            EntertainmentManager.Instance.GroupBoostCount.Remove(tile.GroupID);
         }
         else if(checkForSplit)
         {
@@ -276,7 +265,6 @@ public class BoostByZoneSize : SpecialEffect
                 AddEntertainmentToGroup(targetGroupId, ent);
             }
             EntertainmentManager.Instance.GroupBoost.Remove(sourceGroupId);
-            EntertainmentManager.Instance.GroupBoostCount.Remove(sourceGroupId);
         }
 
         AddEntertainmentToGroup(targetGroupId, newEntertainment);

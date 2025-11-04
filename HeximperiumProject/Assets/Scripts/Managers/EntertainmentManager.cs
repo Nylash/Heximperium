@@ -25,7 +25,6 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     private List<Entertainment> _entertainments = new List<Entertainment>();
     private int _score;
     private Dictionary<int, List<Entertainment>> _groupBoost = new Dictionary<int, List<Entertainment>>(); //Use for BoostByZoneSize special effect, <GroupID, Entertainments>
-    private Dictionary<int, int> _groupBoostCount = new Dictionary<int, int>(); //Use for BoostByZoneSize special effect, <GroupID, Count>
     private bool _isPredictingPoints;
     private Coroutine _resetPredictBoolCoroutine;
     // Upgrade variables
@@ -37,7 +36,6 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     public List<Entertainment> Entertainments { get => _entertainments; }
     public int Score { get => _score; }
     public Dictionary<int, List<Entertainment>> GroupBoost { get => _groupBoost; }
-    public Dictionary<int, int> GroupBoostCount { get => _groupBoostCount; }
     public bool UpgradeMinstrelStageOnNeighbor { get => _upgradeMinstrelStageOnNeighbor; set => _upgradeMinstrelStageOnNeighbor = value; }
     public EntertainmentData MinstrelData { get => _minstrelData; }
     public AllowEntertainmentOnSpecificInfra UpgradeAllowEntOnSpecificInfra { get => _upgradeAllowEntOnSpecificInfra; set => _upgradeAllowEntOnSpecificInfra = value; }
@@ -319,7 +317,6 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
             if (_groupBoost[tile.GroupID].Count == 0)
             {
                 _groupBoost.Remove(tile.GroupID);
-                _groupBoostCount.Remove(tile.GroupID);
             }
 
             tile.GroupID = 0;
