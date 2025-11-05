@@ -49,6 +49,6 @@ public class AllowEntertainmentOnTileAndNeighbors : SpecialBehaviour
 
     public override string GetBehaviourDescription()
     {
-        return "Allow placing Entertainment on this tile and its neighbors";
+        return "Allow placing " + Family.Entertainment.ToCustomString(true) + " on this tile and its neighbors";
     }
 }

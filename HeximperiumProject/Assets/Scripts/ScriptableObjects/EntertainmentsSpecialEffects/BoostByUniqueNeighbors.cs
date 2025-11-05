@@ -127,6 +127,6 @@ public class BoostByUniqueNeighbors : SpecialEffect
 
     public override string GetBehaviourDescription()
     {
-        return $"Gain +{_boost}<sprite name=\"Point_Emoji\"> for each unique entertainment neighbor";
+        return $"Gain +{_boost}<sprite name=\"Point_Emoji\"> for each unique " + Family.Entertainment.ToCustomString() + " neighbor";
     }
 }

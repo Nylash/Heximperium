@@ -193,7 +193,7 @@ public class CameraManager : Singleton<CameraManager>
 
         foreach (Family family in Enum.GetValues(typeof(Family)))
         {
-            if (Utilities.Matches(underlinedWord, family.ToString()))
+            if (Utilities.Matches(underlinedWord, family.ToString(), true))
             {
                 PopUpManager.Instance.PopUpOnPopUp(text.rectTransform, family);
                 return;
@@ -204,6 +204,15 @@ public class CameraManager : Singleton<CameraManager>
             if (underlinedWord.Equals(infra.TileName))
             {
                 PopUpManager.Instance.PopUpOnPopUp(text.rectTransform, Family.None, infra);
+                return;
+            }
+        }
+        foreach (EntertainmentData ent in EntertainmentManager.Instance.EntertainmentsData)
+        {
+            string entName = ent.Type.ToCustomString(false);
+            if (Utilities.Matches(underlinedWord, entName, false))
+            {
+                PopUpManager.Instance.PopUpOnPopUp(text.rectTransform, Family.None, null, ent);
                 return;
             }
         }

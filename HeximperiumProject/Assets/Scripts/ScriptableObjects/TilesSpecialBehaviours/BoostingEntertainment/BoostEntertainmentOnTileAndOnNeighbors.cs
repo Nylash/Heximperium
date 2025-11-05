@@ -68,6 +68,6 @@ public class BoostEntertainmentOnTileAndOnNeighbors : SpecialBehaviour
 
     public override string GetBehaviourDescription()
     {
-        return $"Entertainments on this tile and around gain +{_boost}<sprite name=\"Point_Emoji\">";
+        return $"{Family.Entertainment.ToCustomString(true)} on this tile and around gain +{_boost}<sprite name=\"Point_Emoji\">";
     }
 }

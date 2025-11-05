@@ -171,6 +171,7 @@ public static class Utilities
                 Family.Temple => "<u>Temples</u><sprite name=\"Temples_Emoji\">",
                 Family.Guild => "<u>Guilds</u><sprite name=\"Guilds_Emoji\">",
                 Family.Stonework => "<u>Stonework</u><sprite name=\"Stonework_Emoji\">",
+                Family.Entertainment => "<u>Entertainments</u><sprite name=\"Ent_Emoji\">",
                 _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
             };
         }
@@ -188,6 +189,7 @@ public static class Utilities
                 Family.Temple => "<u>Temple</u><sprite name=\"Temples_Emoji\">",
                 Family.Guild => "<u>Guild</u><sprite name=\"Guilds_Emoji\">",
                 Family.Stonework => "<u>Stonework</u><sprite name=\"Stonework_Emoji\">",
+                Family.Entertainment => "<u>Entertainment</u><sprite name=\"Ent_Emoji\">",
                 _ => throw new ArgumentOutOfRangeException(nameof(value), value, "Unknown enum value")
             };
         }
@@ -462,13 +464,16 @@ public static class Utilities
         return sb.ToString();
     }
 
-    public static bool Matches(string s, string valeur)
+    public static bool Matches(string s, string valeur, bool falseIfSpace)
     {
         // Mot entier, optionnellement suivi de 's' ou 'es'
         string pattern = $@"\b{Regex.Escape(valeur)}(es|s)?\b";
         bool res = Regex.IsMatch(s, pattern, RegexOptions.IgnoreCase);
-        if (s.Contains(' ')) 
-            return false;
+        if (falseIfSpace)
+        {
+            if (s.Contains(' '))
+                return false;
+        }
         return res;
     }
     #endregion
@@ -524,6 +529,6 @@ public enum TileInteractionAnimationState
 
 public enum Family
 {
-    None, Town, Farm, Mill, Village, Inn, Lumberyard, Temple, Guild, Stonework
+    None, Town, Farm, Mill, Village, Inn, Lumberyard, Temple, Guild, Stonework, Entertainment
 }
 #endregion

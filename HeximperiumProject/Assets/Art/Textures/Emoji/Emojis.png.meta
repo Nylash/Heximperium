@@ -144,7 +144,7 @@ TextureImporter:
       name: Town_Emoji
       rect:
         serializedVersion: 2
-        x: 183
+        x: 184
         y: 368
         width: 92
         height: 92
@@ -321,7 +321,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 185
+        y: 184
         width: 92
         height: 92
       alignment: 0
@@ -431,7 +431,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 93
+        y: 92
         width: 92
         height: 92
       alignment: 0
@@ -470,6 +470,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: Ent_Emoji
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 92
+        width: 92
+        height: 92
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 97f466c46e3000345b94baa6dbb90fa3
+      internalID: -575393897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -482,10 +504,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":5.0,"y":5.0},"gridSpriteSize":{"x":92.0,"y":92.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":1,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       Carnivalist_Emoji: -2101459112
       Claim_Emoji: -891812193
+      Emojis_0: -575393897
+      Ent_Emoji: -575393897
       Farms_Emoji: -2098294763
       Gold_Emoji: -102189476
       Guilds_Emoji: 1760805460

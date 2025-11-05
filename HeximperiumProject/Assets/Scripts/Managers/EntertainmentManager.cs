@@ -40,6 +40,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     public EntertainmentData MinstrelData { get => _minstrelData; }
     public AllowEntertainmentOnSpecificInfra UpgradeAllowEntOnSpecificInfra { get => _upgradeAllowEntOnSpecificInfra; set => _upgradeAllowEntOnSpecificInfra = value; }
     public bool IsPredictingPoints { get => _isPredictingPoints; }
+    public List<EntertainmentData> EntertainmentsData { get => _entertainmentsData; }
 
     public int GetPointsFromMinstrelStage()
     {

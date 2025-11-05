@@ -42,6 +42,6 @@ public class AllowEntertainmentOnSpecificInfra : UpgradeEffect
 
     public override string GetEffectDescription()
     {
-        return $"Allow placing Entertainments directly on {_specificTilesAllowingEntertainment.ToCustomString(true)}";
+        return $"Allow placing {Family.Entertainment.ToCustomString(true)} directly on {_specificTilesAllowingEntertainment.ToCustomString(true)}";
     }
 }
