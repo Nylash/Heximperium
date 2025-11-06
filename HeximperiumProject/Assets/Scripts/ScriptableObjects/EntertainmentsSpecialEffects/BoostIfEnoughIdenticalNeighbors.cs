@@ -58,7 +58,7 @@ public class BoostIfEnoughIdenticalNeighbors : SpecialEffect
         foreach (Tile item in associatedEnt.IdenticalNeighbors)
         {
             item.UpdateImpactedEntertainmentByEntertainment(associatedEnt.Tile, -_boostAmount);
-            associatedEnt.UpdateInternalSource(item, -_boostAmount, Transaction.Spent);
+            associatedEnt.UpdateInternalSources(item, -_boostAmount, Transaction.Spent);
         }
         associatedEnt.IdenticalNeighbors.Clear();
         HashSet<Entertainment> validNeighbors;
@@ -81,7 +81,7 @@ public class BoostIfEnoughIdenticalNeighbors : SpecialEffect
                 {
                     associatedEnt.IdenticalNeighbors.Add(ent.Tile);
                     ent.Tile.UpdateImpactedEntertainmentByEntertainment(associatedEnt.Tile, _boostAmount);
-                    associatedEnt.UpdateInternalSource(ent.Tile, _boostAmount, Transaction.Gain);
+                    associatedEnt.UpdateInternalSources(ent.Tile, _boostAmount, Transaction.Gain);
                 }
             }
         }
@@ -104,7 +104,7 @@ public class BoostIfEnoughIdenticalNeighbors : SpecialEffect
                 {
                     associatedEnt.IdenticalNeighbors.Add(ent.Tile);
                     ent.Tile.UpdateImpactedEntertainmentByEntertainment(associatedEnt.Tile, _boostAmount);
-                    associatedEnt.UpdateInternalSource(ent.Tile, _boostAmount, Transaction.Gain);
+                    associatedEnt.UpdateInternalSources(ent.Tile, _boostAmount, Transaction.Gain);
                 }
             }
         }

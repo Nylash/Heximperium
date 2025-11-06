@@ -151,7 +151,7 @@ public class Tile : MonoBehaviour
 
     public TileData TargetData { get => _targetData; }
     public Dictionary<TileData, List<ResourceToIntMap>> ExternalIncomesSources { get => _externalIncomesSources; }
-    public Dictionary<Tile, int> TilesImpactedByEntertainment { get => _entImpactedByEntertainment; }
+    public Dictionary<Tile, int> EntImpactedByEntertainment { get => _entImpactedByEntertainment; }
     public Dictionary<Tile, int> EntImpactedByTile { get => _entImpactedByTile; }
     #endregion
 
@@ -576,16 +576,6 @@ public class Tile : MonoBehaviour
             _entImpactedByEntertainment.Remove(tile);
     }
 
-    public void GetTotalPointsImpactedByThisTileEntertainment(out int totalPoints, out int impactedTilesCount)
-    {
-        totalPoints = 0;
-        impactedTilesCount = _entImpactedByEntertainment.Count;
-        foreach (var kvp in _entImpactedByEntertainment)
-        {
-            totalPoints += kvp.Value;
-        }
-    }
-
     public void UpdateImpactedEntByTile(Tile tile, int entertainmentPoints)
     {
         if (!_entImpactedByTile.ContainsKey(tile))
@@ -594,16 +584,6 @@ public class Tile : MonoBehaviour
             _entImpactedByTile[tile] += entertainmentPoints;
         if (_entImpactedByTile[tile] <= 0)
             _entImpactedByTile.Remove(tile);
-    }
-
-    public void GetTotalPointsImpactedByTile(out int totalPoints, out int impactedEntCount)
-    {
-        totalPoints = 0;
-        impactedEntCount = _entImpactedByTile.Count;
-        foreach (var kvp in _entImpactedByTile)
-        {
-            totalPoints += kvp.Value;
-        }
     }
     #endregion
 

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class JuiceManager : Singleton<JuiceManager>
 {
@@ -160,6 +161,64 @@ public class JuiceManager : Singleton<JuiceManager>
         main.startColor = new ParticleSystem.MinMaxGradient(color);
 
         particleSystem.Play();
+    }
+    #endregion
+
+    #region VISUALIZING COMBO
+    // Visualize the entertainment combo when there is a entertainment placed on refTile
+    public void VisualizeEntertainmentCombo(
+        Dictionary<Tile, int> internalSources, Dictionary<Tile, int> externalSources, 
+        Dictionary<Tile, int> entImpactedByEnt, Dictionary<Tile, int> entImpactedByTile,
+        Tile refTile)
+    {
+        print("Start visualizing entertainment combo for " + refTile.name);
+
+        if (internalSources.Count == 0 && externalSources.Count == 0)
+        {
+            print("No points sources for " + refTile.name);
+        }
+        Dictionary<Tile, int> pointsSources = new Dictionary<Tile, int>(internalSources);
+        foreach (var kvp in externalSources)
+        {
+            if (kvp.Key == refTile)
+                continue;
+            if (pointsSources.ContainsKey(kvp.Key))
+                pointsSources[kvp.Key] += kvp.Value;
+            else
+                pointsSources[kvp.Key] = kvp.Value;
+        }
+        foreach (var kvp in pointsSources)
+        {
+            print(kvp.Key.name + " contributed " + kvp.Value + " points to " + refTile.name);
+        }
+        if (entImpactedByEnt.Count == 0 && entImpactedByTile.Count == 0)
+        {
+            print(refTile.name + " does not impact any entertainment.");
+        }
+        Dictionary<Tile, int> pointsGiven = new Dictionary<Tile, int>(entImpactedByEnt);
+        foreach (var kvp in entImpactedByTile)
+        {
+            if (kvp.Key == refTile)
+                continue;
+            if (pointsGiven.ContainsKey(kvp.Key))
+                pointsGiven[kvp.Key] += kvp.Value;
+            else
+                pointsGiven[kvp.Key] = kvp.Value;
+        }
+        foreach (var kvp in pointsGiven)
+        {
+            print(refTile.name + " gave " + kvp.Value + " points to " + kvp.Key.name);
+        }
+    }
+
+    // Visualize the entertainment combo when there is no a entertainment placed on refTile
+    public void VisualizeEntertainmentComboFromTileOnly(Tile refTile)
+    {
+        print("Start visualizing entertainment combo for " + refTile.name);
+        foreach (var kvp in refTile.EntImpactedByTile)
+        {
+            print(refTile.name + " gave " + kvp.Value + " points to " + kvp.Key.name);
+        }
     }
     #endregion
 }

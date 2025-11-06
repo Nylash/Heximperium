@@ -14,8 +14,8 @@ public class Entertainment : MonoBehaviour
     private SpriteRenderer _renderer;
     private int _points;
     private int _pointsBuffer;
-    private Dictionary<Tile, int> _externalPointsSource = new Dictionary<Tile, int>();// Points coming from other ent/tile behaviours
-    private Dictionary<Tile, int> _internalPointsSource = new Dictionary<Tile, int>();// Points coming from this ent/tile behaviours
+    private Dictionary<Tile, int> _externalPointsSources = new Dictionary<Tile, int>();// Points coming from other ent/tile behaviours
+    private Dictionary<Tile, int> _internalPointsSources = new Dictionary<Tile, int>();// Points coming from this ent/tile behaviours
     //Variables for special effects
     private HashSet<Tile> _uniqueNeighbors = new HashSet<Tile>();
     private HashSet<Tile> _identicalNeighbors = new HashSet<Tile>();
@@ -29,9 +29,10 @@ public class Entertainment : MonoBehaviour
     public SpriteRenderer Renderer { get => _renderer; }
     public int Points { get => _points; }
     public bool BoostedByIdenticalNeighbors { get => _boostedByIdenticalNeighbors; set => _boostedByIdenticalNeighbors = value; }
-    public Dictionary<Tile, int> ExternalPointsSource { get => _externalPointsSource; }
+    public Dictionary<Tile, int> ExternalPointsSources { get => _externalPointsSources; }
     public HashSet<Tile> UniqueNeighbors { get => _uniqueNeighbors; }
     public HashSet<Tile> IdenticalNeighbors { get => _identicalNeighbors; }
+    public Dictionary<Tile, int> InternalPointsSources { get => _internalPointsSources; }
     #endregion
 
     private void Awake()
@@ -86,35 +87,35 @@ public class Entertainment : MonoBehaviour
 
         if (extSource)
         {
-            if (_externalPointsSource.ContainsKey(extSource))
+            if (_externalPointsSources.ContainsKey(extSource))
             {
-                _externalPointsSource[extSource] += value;
-                if (_externalPointsSource[extSource] == 0)
-                    _externalPointsSource.Remove(extSource);
+                _externalPointsSources[extSource] += value;
+                if (_externalPointsSources[extSource] == 0)
+                    _externalPointsSources.Remove(extSource);
             }
             else if (transaction == Transaction.Spent)
                 Debug.LogWarning("Trying to remove points from a source that doesn't exist in the dictionary");
             else
-                _externalPointsSource.Add(extSource, value);
+                _externalPointsSources.Add(extSource, value);
         }
         if (intSource)
         {
-            UpdateInternalSource(intSource, value, transaction);
+            UpdateInternalSources(intSource, value, transaction);
         }
     }
 
-    public void UpdateInternalSource(Tile intSource, int value, Transaction transaction)
+    public void UpdateInternalSources(Tile intSource, int value, Transaction transaction)
     {
-        if (_internalPointsSource.ContainsKey(intSource))
+        if (_internalPointsSources.ContainsKey(intSource))
         {
-            _internalPointsSource[intSource] += value;
-            if (_internalPointsSource[intSource] == 0)
-                _internalPointsSource.Remove(intSource);
+            _internalPointsSources[intSource] += value;
+            if (_internalPointsSources[intSource] == 0)
+                _internalPointsSources.Remove(intSource);
         }
         else if (transaction == Transaction.Spent)
             Debug.LogWarning("Trying to remove points from a source that doesn't exist in the dictionary");
         else
-            _internalPointsSource.Add(intSource, value);
+            _internalPointsSources.Add(intSource, value);
     }
 
     public void DestroyEntertainment()
@@ -135,11 +136,11 @@ public class Entertainment : MonoBehaviour
 
     public int GetPointsFromEntertainmentOnly()
     {
-        if (_externalPointsSource.Count == 0)
+        if (_externalPointsSources.Count == 0)
             return _points;
 
         int pointsFromEntOnly = _points;
-        foreach (var kvp in _externalPointsSource)
+        foreach (var kvp in _externalPointsSources)
         {
             pointsFromEntOnly -= kvp.Value;
         }

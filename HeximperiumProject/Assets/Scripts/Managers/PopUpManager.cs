@@ -779,13 +779,20 @@ public class PopUpManager : Singleton<PopUpManager>
         #region BOOSTED ENT
         if (tile.EntImpactedByTile.Count > 0)
         {
-            int totalPoints;
-            int nbOfEnt;
-            tile.GetTotalPointsImpactedByTile(out totalPoints, out nbOfEnt);
+            int totalPoints = 0;
+            foreach (var kvp in tile.EntImpactedByTile)
+            {
+                totalPoints += kvp.Value;
+            }
             TextMeshProUGUI boostedEnt = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            boostedEnt.text += "(+" + totalPoints + "<sprite name=\"Point_Emoji\"> given over " + nbOfEnt + " " + Family.Entertainment.ToCustomString(nbOfEnt > 1) + ", through effects or sheer presence)";
+            boostedEnt.text += "(+" + totalPoints + "<sprite name=\"Point_Emoji\"> given over "
+                + tile.EntImpactedByTile.Count + " " + Family.Entertainment.ToCustomString(tile.EntImpactedByTile.Count > 1) 
+                + ", through effects or sheer presence)";
             boostedEnt.alignment = TextAlignmentOptions.Center;
             textObjects.Add(boostedEnt.GetComponent<RectTransform>());
+            
+            if (!tile.Entertainment)
+                JuiceManager.Instance.VisualizeEntertainmentComboFromTileOnly(tile);
         }
         #endregion
 
@@ -874,6 +881,11 @@ public class PopUpManager : Singleton<PopUpManager>
 
     private void EntertainmentPopUp(Entertainment ent)
     {
+        JuiceManager.Instance.VisualizeEntertainmentCombo(
+            ent.InternalPointsSources, ent.ExternalPointsSources, 
+            ent.Tile.EntImpactedByEntertainment, ent.Tile.EntImpactedByTile,
+            ent.Tile);
+
         GameObject popUp;
         popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
         _popUps.Add(popUp);
@@ -901,10 +913,10 @@ public class PopUpManager : Singleton<PopUpManager>
             int predictedSelfPoints = ent.GetPointsFromEntertainmentOnly();
             if (predictedSelfPoints > 0)
                 sourceInc.text = "(+" + predictedSelfPoints + "<sprite name=\"Point_Emoji\"> based on the entertainment effects)" + "\n";
-            if (ent.ExternalPointsSource.Count > 0)
+            if (ent.ExternalPointsSources.Count > 0)
             {
                 Dictionary<TileData, int> datas = new Dictionary<TileData, int>();
-                foreach (var kvp in ent.ExternalPointsSource)
+                foreach (var kvp in ent.ExternalPointsSources)
                 {
                     if (datas.ContainsKey(kvp.Key.TileData))
                         datas[kvp.Key.TileData] += kvp.Value;
@@ -921,13 +933,17 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         #region POINTS GIVEN
-        if (ent.Tile.TilesImpactedByEntertainment.Count > 0)
+        if (ent.Tile.EntImpactedByEntertainment.Count > 0)
         {
             TextMeshProUGUI pointsGiven = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            int pointsGivenValue;
-            int tilesImpactedCount;
-            ent.Tile.GetTotalPointsImpactedByThisTileEntertainment(out pointsGivenValue, out tilesImpactedCount);
-            pointsGiven.text = "(+" + pointsGivenValue + "<sprite name=\"Point_Emoji\"> given over " + tilesImpactedCount + " other " + Family.Entertainment.ToCustomString(tilesImpactedCount > 1) + ", through effects or sheer presence)";
+            int pointsGivenValue = 0;
+            foreach (var kvp in ent.Tile.EntImpactedByEntertainment)
+            {
+                pointsGivenValue += kvp.Value;
+            }
+            pointsGiven.text = "(+" + pointsGivenValue + "<sprite name=\"Point_Emoji\"> given over "
+                + ent.Tile.EntImpactedByEntertainment.Count + " other " + Family.Entertainment.ToCustomString(ent.Tile.EntImpactedByEntertainment.Count > 1) 
+                + ", through effects or sheer presence)";
             pointsGiven.alignment = TextAlignmentOptions.Center;
             textObjects.Add(pointsGiven.GetComponent<RectTransform>());
         }
@@ -1136,16 +1152,22 @@ public class PopUpManager : Singleton<PopUpManager>
         TextMeshProUGUI predictedIncome = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
         int predictedPoints;
         int predictedSelfPoints;
-        Dictionary<Tile, int> predictedSources;
-        int totalPointsGiven;
-        int nbOfEntImpacted;
-        EntertainmentManager.Instance.GetPredictedPoints(button.AssociatedTile, button.EntertainData,
-            out predictedPoints, out predictedSources, out predictedSelfPoints,
-            out totalPointsGiven, out nbOfEntImpacted);
+        Dictionary<Tile, int> predictedExtSources;
+        Dictionary<Tile, int> predictedIntSources;
+        Dictionary<Tile, int> predictedEntImpactedByEnt;
+        Dictionary<Tile, int> predictedEntImpactedByTile;
+        EntertainmentManager.Instance.PredictEntertainmentSpawn(button.AssociatedTile, button.EntertainData,
+            out predictedPoints, out predictedExtSources, out predictedIntSources, out predictedSelfPoints,
+            out predictedEntImpactedByEnt, out predictedEntImpactedByTile);
         predictedIncome.text = "Predicted points: +" + predictedPoints + "<sprite name=\"Point_Emoji\">";
         predictedIncome.fontStyle = FontStyles.Bold;
         predictedIncome.alignment = TextAlignmentOptions.Center;
         textObjects.Add(predictedIncome.GetComponent<RectTransform>());
+
+        JuiceManager.Instance.VisualizeEntertainmentCombo(
+            predictedIntSources, predictedExtSources,
+            predictedEntImpactedByEnt, predictedEntImpactedByTile,
+            button.AssociatedTile);
         #endregion
 
         #region POINTS SOURCES
@@ -1154,10 +1176,10 @@ public class PopUpManager : Singleton<PopUpManager>
             TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
             if (predictedSelfPoints > 0)
                 sourceInc.text = "(+" + predictedSelfPoints + "<sprite name=\"Point_Emoji\"> based on the entertainment effects)" + "\n";
-            if (predictedSources.Count > 0)
+            if (predictedExtSources.Count > 0)
             {
                 Dictionary<TileData, int> datas = new Dictionary<TileData, int>();
-                foreach (var kvp in predictedSources)
+                foreach (var kvp in predictedExtSources)
                 {
                     if (datas.ContainsKey(kvp.Key.TileData))
                         datas[kvp.Key.TileData] += kvp.Value;
@@ -1174,10 +1196,17 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         #region POINTS GIVEN
-        if (nbOfEntImpacted > 0)
+        if (predictedEntImpactedByEnt.Count > 0)
         {
+            int totalPointsGiven = 0;
+            foreach (var kvp in predictedEntImpactedByEnt)
+            {
+                totalPointsGiven += kvp.Value;
+            }
             TextMeshProUGUI pointsGiven = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            pointsGiven.text = "(Would give +" + totalPointsGiven + "<sprite name=\"Point_Emoji\"> over " + nbOfEntImpacted + " other " + Family.Entertainment.ToCustomString(nbOfEntImpacted > 1) + ", through effects or sheer presence)";
+            pointsGiven.text = "(Would give +" + totalPointsGiven + "<sprite name=\"Point_Emoji\"> over " 
+                + predictedEntImpactedByEnt.Count + " other " + Family.Entertainment.ToCustomString(predictedEntImpactedByEnt.Count > 1) 
+                + ", through effects or sheer presence)";
             pointsGiven.alignment = TextAlignmentOptions.Center;
             textObjects.Add(pointsGiven.GetComponent<RectTransform>());
         }
