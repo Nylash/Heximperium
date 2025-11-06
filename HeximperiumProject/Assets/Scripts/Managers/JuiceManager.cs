@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class JuiceManager : Singleton<JuiceManager>
@@ -23,7 +24,17 @@ public class JuiceManager : Singleton<JuiceManager>
     [SerializeField] private float _endGameFireworkPosMaxOffset;
     [SerializeField] private int _endGameFireworkQuantity = 3;
     [SerializeField] private GameObject _resourceVFXforUI;
+    [Header("_________________________________________________________")]
+    [Header("Combo Visualization")]
+    [SerializeField] private GameObject _comboVFX;
+    [SerializeField] private Vector3 _spawnOffset = new Vector3(0,.2f,0);
+    [SerializeField] private float _comboMovementSpeed = 1f;
     #endregion
+
+    private bool _playingIncomingComboVFX;
+    private bool _playingOutgoingComboVFX;
+    private Dictionary<GameObject, VectorPair> _incomingVFX = new Dictionary<GameObject, VectorPair>();
+    private Dictionary<GameObject, VectorPair> _outgoingVFX = new Dictionary<GameObject, VectorPair>();
 
     protected override void OnAwake()
     {
@@ -46,6 +57,52 @@ public class JuiceManager : Singleton<JuiceManager>
 
         //ExploitationManager.Instance.OnInfraBuilded += tile => DustVFX(tile); Not convinced by the visual effect of this
         //ExploitationManager.Instance.OnInfraDestroyed += tile => DustVFX(tile);
+    }
+
+    private void Update()
+    {
+        if (_playingIncomingComboVFX)
+        {
+            _playingIncomingComboVFX = false;
+            foreach (var kvp in _incomingVFX)
+            {
+                if (kvp.Key.activeSelf)
+                {
+                    _playingIncomingComboVFX = true;
+                    kvp.Key.transform.position = Vector3.MoveTowards(kvp.Key.transform.position, kvp.Value.to, _comboMovementSpeed * Time.deltaTime);
+                    if (Vector3.Distance(kvp.Key.transform.position, kvp.Value.to) < 0.001f)
+                    {
+                        kvp.Key.SetActive(false);
+                    }
+                }
+            }
+            if (!_playingIncomingComboVFX)
+            {
+                _playingOutgoingComboVFX = true;
+                foreach (var kvp in _outgoingVFX)
+                    kvp.Key.SetActive(true);
+            }
+        }
+        else if (_playingOutgoingComboVFX)
+        {
+            _playingOutgoingComboVFX = false;
+            foreach (var kvp in _outgoingVFX)
+            {
+                if (kvp.Key.activeSelf)
+                {
+                    _playingOutgoingComboVFX = true;
+                    kvp.Key.transform.position = Vector3.MoveTowards(kvp.Key.transform.position, kvp.Value.to, _comboMovementSpeed * Time.deltaTime);
+                    if (Vector3.Distance(kvp.Key.transform.position, kvp.Value.to) < 0.001f)
+                    {
+                        kvp.Key.SetActive(false);
+                    }
+                }
+            }
+        }
+        else
+        {
+            StartComboAnimation(true);
+        }
     }
 
     #region GAMEPLAY VFX
@@ -165,60 +222,111 @@ public class JuiceManager : Singleton<JuiceManager>
     #endregion
 
     #region VISUALIZING COMBO
+    private void StartComboAnimation(bool resetPos = false)
+    {
+        if (resetPos)
+        {
+            foreach (var kvp in _incomingVFX)
+            {
+                kvp.Key.transform.position = kvp.Value.from;
+            }
+            foreach (var kvp in _outgoingVFX)
+            {
+                kvp.Key.transform.position = kvp.Value.from;
+            }
+        }
+
+        if (_incomingVFX.Count != 0 || _outgoingVFX.Count != 0)
+        {
+            if (_incomingVFX.Count != 0)
+            {
+                _playingIncomingComboVFX = true;
+                foreach (var kvp in _incomingVFX)
+                    kvp.Key.SetActive(true);
+            }
+            else
+            {
+                _playingOutgoingComboVFX = true;
+                foreach (var kvp in _outgoingVFX)
+                    kvp.Key.SetActive(true);
+            }
+        }
+    }
+
+    public void KillAllComboVFX()
+    {
+        foreach (var vfx in _incomingVFX)
+        {
+            Destroy(vfx.Key);
+        }
+        foreach (var vfx in _outgoingVFX)
+        {
+            Destroy(vfx.Key);
+        }
+        _incomingVFX.Clear();
+        _outgoingVFX.Clear();
+    }
+
+    private void CreateEntertainmentComboVFX(Tile fromTile, Tile toTile, int points, Dictionary<GameObject, VectorPair> direction)
+    {
+        GameObject vfx = Instantiate(_comboVFX, fromTile.transform.position + _spawnOffset, CameraManager.Instance.transform.rotation);
+        TextMeshPro text = vfx.GetComponentInChildren<TextMeshPro>();
+        text.text = "+" + points.ToString() + "<sprite name=\"Point_Emoji\">";
+        text.color = UIManager.Instance.ColorEntertain;
+        direction.Add(vfx, new VectorPair(vfx.transform.position, toTile.transform.position + _spawnOffset));
+    }
+
     // Visualize the entertainment combo when there is a entertainment placed on refTile
     public void VisualizeEntertainmentCombo(
         Dictionary<Tile, int> internalSources, Dictionary<Tile, int> externalSources, 
         Dictionary<Tile, int> entImpactedByEnt, Dictionary<Tile, int> entImpactedByTile,
         Tile refTile)
     {
-        print("Start visualizing entertainment combo for " + refTile.name);
-
-        if (internalSources.Count == 0 && externalSources.Count == 0)
+        if (internalSources.Count != 0 || externalSources.Count != 0)
         {
-            print("No points sources for " + refTile.name);
+            Dictionary<Tile, int> pointsSources = new Dictionary<Tile, int>(internalSources);
+            foreach (var kvp in externalSources)
+            {
+                if (kvp.Key == refTile)
+                    continue;
+                if (pointsSources.ContainsKey(kvp.Key))
+                    pointsSources[kvp.Key] += kvp.Value;
+                else
+                    pointsSources[kvp.Key] = kvp.Value;
+            }
+            foreach (var kvp in pointsSources)
+            {
+                CreateEntertainmentComboVFX(kvp.Key, refTile, kvp.Value, _incomingVFX);
+            }
         }
-        Dictionary<Tile, int> pointsSources = new Dictionary<Tile, int>(internalSources);
-        foreach (var kvp in externalSources)
+        if (entImpactedByEnt.Count != 0 || entImpactedByTile.Count != 0)
         {
-            if (kvp.Key == refTile)
-                continue;
-            if (pointsSources.ContainsKey(kvp.Key))
-                pointsSources[kvp.Key] += kvp.Value;
-            else
-                pointsSources[kvp.Key] = kvp.Value;
+            Dictionary<Tile, int> pointsGiven = new Dictionary<Tile, int>(entImpactedByEnt);
+            foreach (var kvp in entImpactedByTile)
+            {
+                if (kvp.Key == refTile)
+                    continue;
+                if (pointsGiven.ContainsKey(kvp.Key))
+                    pointsGiven[kvp.Key] += kvp.Value;
+                else
+                    pointsGiven[kvp.Key] = kvp.Value;
+            }
+            foreach (var kvp in pointsGiven)
+            {
+                CreateEntertainmentComboVFX(refTile, kvp.Key, kvp.Value, _outgoingVFX);
+            }
         }
-        foreach (var kvp in pointsSources)
-        {
-            print(kvp.Key.name + " contributed " + kvp.Value + " points to " + refTile.name);
-        }
-        if (entImpactedByEnt.Count == 0 && entImpactedByTile.Count == 0)
-        {
-            print(refTile.name + " does not impact any entertainment.");
-        }
-        Dictionary<Tile, int> pointsGiven = new Dictionary<Tile, int>(entImpactedByEnt);
-        foreach (var kvp in entImpactedByTile)
-        {
-            if (kvp.Key == refTile)
-                continue;
-            if (pointsGiven.ContainsKey(kvp.Key))
-                pointsGiven[kvp.Key] += kvp.Value;
-            else
-                pointsGiven[kvp.Key] = kvp.Value;
-        }
-        foreach (var kvp in pointsGiven)
-        {
-            print(refTile.name + " gave " + kvp.Value + " points to " + kvp.Key.name);
-        }
+        StartComboAnimation();
     }
 
     // Visualize the entertainment combo when there is no a entertainment placed on refTile
     public void VisualizeEntertainmentComboFromTileOnly(Tile refTile)
     {
-        print("Start visualizing entertainment combo for " + refTile.name);
         foreach (var kvp in refTile.EntImpactedByTile)
         {
-            print(refTile.name + " gave " + kvp.Value + " points to " + kvp.Key.name);
+            CreateEntertainmentComboVFX(refTile, kvp.Key, kvp.Value, _outgoingVFX);
         }
+        StartComboAnimation();
     }
     #endregion
 }

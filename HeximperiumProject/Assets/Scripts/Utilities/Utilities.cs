@@ -532,3 +532,16 @@ public enum Family
     None, Town, Farm, Mill, Village, Inn, Lumberyard, Temple, Guild, Stonework, Entertainment
 }
 #endregion
+
+#region STRUCTS
+public struct VectorPair
+{
+    public Vector3 from;
+    public Vector3 to;
+    public VectorPair(Vector3 from, Vector3 to)
+    {
+        this.from = from;
+        this.to = to;
+    }
+}
+#endregion

@@ -90,6 +90,10 @@ public class PopUpManager : Singleton<PopUpManager>
                 _hoverTimer = 0.0f;
                 _timerOverImage.fillAmount = 0.0f;
                 _timerOverImage.enabled = false;
+
+                if (_lockedPopUps.Count != 0)
+                    JuiceManager.Instance.KillAllComboVFX();
+
                 switch (obj.tag)
                 {
                     case "ScoutLimitUI":
@@ -162,6 +166,10 @@ public class PopUpManager : Singleton<PopUpManager>
                 _hoverTimer = 0.0f;
                 _timerOverImage.fillAmount = 0.0f;
                 _timerOverImage.enabled = false;
+
+                if (_lockedPopUps.Count != 0)
+                    JuiceManager.Instance.KillAllComboVFX();
+
                 if (obj.GetComponent<Tile>() is Tile tile)
                 {
                     TilePopUp(tile);
@@ -238,6 +246,10 @@ public class PopUpManager : Singleton<PopUpManager>
                 _hoverTimer = 0.0f;
                 _timerOverImage.fillAmount = 0.0f;
                 _timerOverImage.enabled = false;
+
+                if (_lockedPopUps.Count != 0)
+                    JuiceManager.Instance.KillAllComboVFX();
+
                 if (family != Family.None)
                 {
                     FamilyPopup(family, refObject);
@@ -267,6 +279,8 @@ public class PopUpManager : Singleton<PopUpManager>
         _timerOverImage.fillAmount = 0.0f;
         _timerOverImage.enabled = true;
         GameManager.Instance.InteractionButtonsFade(false, null);
+
+        JuiceManager.Instance.KillAllComboVFX();
 
         if (_popUps.Count > 0)
         {
