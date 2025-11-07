@@ -31,10 +31,13 @@ public class JuiceManager : Singleton<JuiceManager>
     [SerializeField] private float _comboMovementSpeed = 1f;
     #endregion
 
+    private GameObject _popUpVisualizingCombo;
     private bool _playingIncomingComboVFX;
     private bool _playingOutgoingComboVFX;
     private Dictionary<GameObject, VectorPair> _incomingVFX = new Dictionary<GameObject, VectorPair>();
     private Dictionary<GameObject, VectorPair> _outgoingVFX = new Dictionary<GameObject, VectorPair>();
+
+    public GameObject PopUpVisualizingCombo { get => _popUpVisualizingCombo; set => _popUpVisualizingCombo = value; }
 
     protected override void OnAwake()
     {
@@ -57,52 +60,6 @@ public class JuiceManager : Singleton<JuiceManager>
 
         //ExploitationManager.Instance.OnInfraBuilded += tile => DustVFX(tile); Not convinced by the visual effect of this
         //ExploitationManager.Instance.OnInfraDestroyed += tile => DustVFX(tile);
-    }
-
-    private void Update()
-    {
-        if (_playingIncomingComboVFX)
-        {
-            _playingIncomingComboVFX = false;
-            foreach (var kvp in _incomingVFX)
-            {
-                if (kvp.Key.activeSelf)
-                {
-                    _playingIncomingComboVFX = true;
-                    kvp.Key.transform.position = Vector3.MoveTowards(kvp.Key.transform.position, kvp.Value.to, _comboMovementSpeed * Time.deltaTime);
-                    if (Vector3.Distance(kvp.Key.transform.position, kvp.Value.to) < 0.001f)
-                    {
-                        kvp.Key.SetActive(false);
-                    }
-                }
-            }
-            if (!_playingIncomingComboVFX)
-            {
-                _playingOutgoingComboVFX = true;
-                foreach (var kvp in _outgoingVFX)
-                    kvp.Key.SetActive(true);
-            }
-        }
-        else if (_playingOutgoingComboVFX)
-        {
-            _playingOutgoingComboVFX = false;
-            foreach (var kvp in _outgoingVFX)
-            {
-                if (kvp.Key.activeSelf)
-                {
-                    _playingOutgoingComboVFX = true;
-                    kvp.Key.transform.position = Vector3.MoveTowards(kvp.Key.transform.position, kvp.Value.to, _comboMovementSpeed * Time.deltaTime);
-                    if (Vector3.Distance(kvp.Key.transform.position, kvp.Value.to) < 0.001f)
-                    {
-                        kvp.Key.SetActive(false);
-                    }
-                }
-            }
-        }
-        else
-        {
-            StartComboAnimation(true);
-        }
     }
 
     #region GAMEPLAY VFX
@@ -222,6 +179,52 @@ public class JuiceManager : Singleton<JuiceManager>
     #endregion
 
     #region VISUALIZING COMBO
+    private void Update()
+    {
+        if (_playingIncomingComboVFX)
+        {
+            _playingIncomingComboVFX = false;
+            foreach (var kvp in _incomingVFX)
+            {
+                if (kvp.Key.activeSelf)
+                {
+                    _playingIncomingComboVFX = true;
+                    kvp.Key.transform.position = Vector3.MoveTowards(kvp.Key.transform.position, kvp.Value.to, _comboMovementSpeed * Time.deltaTime);
+                    if (Vector3.Distance(kvp.Key.transform.position, kvp.Value.to) < 0.001f)
+                    {
+                        kvp.Key.SetActive(false);
+                    }
+                }
+            }
+            if (!_playingIncomingComboVFX)
+            {
+                _playingOutgoingComboVFX = true;
+                foreach (var kvp in _outgoingVFX)
+                    kvp.Key.SetActive(true);
+            }
+        }
+        else if (_playingOutgoingComboVFX)
+        {
+            _playingOutgoingComboVFX = false;
+            foreach (var kvp in _outgoingVFX)
+            {
+                if (kvp.Key.activeSelf)
+                {
+                    _playingOutgoingComboVFX = true;
+                    kvp.Key.transform.position = Vector3.MoveTowards(kvp.Key.transform.position, kvp.Value.to, _comboMovementSpeed * Time.deltaTime);
+                    if (Vector3.Distance(kvp.Key.transform.position, kvp.Value.to) < 0.001f)
+                    {
+                        kvp.Key.SetActive(false);
+                    }
+                }
+            }
+        }
+        else
+        {
+            StartComboAnimation(true);
+        }
+    }
+
     private void StartComboAnimation(bool resetPos = false)
     {
         if (resetPos)
@@ -255,6 +258,7 @@ public class JuiceManager : Singleton<JuiceManager>
 
     public void KillAllComboVFX()
     {
+        _popUpVisualizingCombo = null;
         foreach (var vfx in _incomingVFX)
         {
             Destroy(vfx.Key);
@@ -277,7 +281,7 @@ public class JuiceManager : Singleton<JuiceManager>
     }
 
     // Visualize the entertainment combo when there is a entertainment placed on refTile
-    public void VisualizeEntertainmentCombo(
+    public bool VisualizeEntertainmentCombo(
         Dictionary<Tile, int> internalSources, Dictionary<Tile, int> externalSources, 
         Dictionary<Tile, int> entImpactedByEnt, Dictionary<Tile, int> entImpactedByTile,
         Tile refTile)
@@ -317,16 +321,18 @@ public class JuiceManager : Singleton<JuiceManager>
             }
         }
         StartComboAnimation();
+        return (_incomingVFX.Count != 0 || _outgoingVFX.Count != 0);
     }
 
     // Visualize the entertainment combo when there is no a entertainment placed on refTile
-    public void VisualizeEntertainmentComboFromTileOnly(Tile refTile)
+    public bool VisualizeEntertainmentComboFromTileOnly(Tile refTile)
     {
         foreach (var kvp in refTile.EntImpactedByTile)
         {
             CreateEntertainmentComboVFX(refTile, kvp.Key, kvp.Value, _outgoingVFX);
         }
         StartComboAnimation();
+        return (_outgoingVFX.Count != 0);
     }
     #endregion
 }
