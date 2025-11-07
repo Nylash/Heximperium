@@ -11,6 +11,8 @@ public class PopUpManager : Singleton<PopUpManager>
     #region CONFIGURATION
     [Header("_________________________________________________________")]
     [Header("Spawning Configuration")]
+    [SerializeField] private Transform _popUpParent;
+    [SerializeField] private Transform _popUpLockObjectParent;
     [SerializeField] private float _durationHoverForUI = 1f;
     [SerializeField][Range(0f,1f)] private float _percentageOfTimerForVisualHint = 0.75f;
     [SerializeField] private Image _timerOverImage;
@@ -29,6 +31,7 @@ public class PopUpManager : Singleton<PopUpManager>
     [SerializeField] private GameObject _lockingObject;
     [SerializeField] private GameObject _lockedObject;
     [SerializeField] private float _durationForLockingPopup = 5f;
+    [SerializeField] private Vector2 _lockImagePopupOffset;
     #endregion
 
     #region VARIABLES
@@ -305,30 +308,13 @@ public class PopUpManager : Singleton<PopUpManager>
             StopLockingPopup();
         }
     }
-
-    //Used to lock a popup on screen until user closes it
-    private void Update()
-    {
-        if (_isLockingPopup && _lockingImage != null)
-        {
-            _lockingTimer += Time.deltaTime;
-            float t = (_durationForLockingPopup <= 0f) ? 1f : Mathf.Clamp01(_lockingTimer / _durationForLockingPopup);
-            _lockingImage.fillAmount = t;
-            if (_lockingTimer >= _durationForLockingPopup)
-            {
-                _isLockingPopup = false;
-                _lockingTimer = 0f;
-                LockPopup(_lockingPopup);
-            }
-        }
-    }
     #endregion
 
     #region UI POP UP
     private void LimitPopUp(string text)
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -355,7 +341,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void VisibilityPopUp()
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -386,7 +372,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void ClaimPopUp()
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -412,7 +398,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void GoldPopUp()
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -452,7 +438,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void SRPopUp()
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -478,7 +464,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void ScorePopUp()
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -525,7 +511,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void CarnivalistPopUp()
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -566,7 +552,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void ShowIncomePopUp()
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -588,7 +574,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void ShowEntPlacementPopUp()
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -610,7 +596,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void ShowDetailsPopupPopUp()
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -635,7 +621,7 @@ public class PopUpManager : Singleton<PopUpManager>
             return;
 
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -674,7 +660,7 @@ public class PopUpManager : Singleton<PopUpManager>
         }
 
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -840,7 +826,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void ScoutPopUp(Scout scout)
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -903,7 +889,7 @@ public class PopUpManager : Singleton<PopUpManager>
             ent.Tile);
 
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -1004,7 +990,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void ButtonScoutPopUp(InteractionButton button)
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -1074,7 +1060,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void ButtonRedirectScoutPopUp(InteractionButton button)
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -1090,7 +1076,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void ButtonRevealAnywherePopUp(InteractionButton button)
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -1107,7 +1093,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void ButtonClaimPopUp(InteractionButton button)
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -1135,7 +1121,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void ButtonDestroyPopUp(string text, InteractionButton button)
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -1169,7 +1155,7 @@ public class PopUpManager : Singleton<PopUpManager>
             button.AssociatedTile);
 
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -1284,7 +1270,7 @@ public class PopUpManager : Singleton<PopUpManager>
         bool isVisualizingCombo = false; // Call here JuiceManager when implemented
 
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -1695,10 +1681,27 @@ public class PopUpManager : Singleton<PopUpManager>
     #endregion
 
     #region POPUP ON POPUP
+    //Used to lock a popup on screen until user closes it
+    private void Update()
+    {
+        if (_isLockingPopup && _lockingImage != null)
+        {
+            _lockingTimer += Time.deltaTime;
+            float t = (_durationForLockingPopup <= 0f) ? 1f : Mathf.Clamp01(_lockingTimer / _durationForLockingPopup);
+            _lockingImage.fillAmount = t;
+            if (_lockingTimer >= _durationForLockingPopup)
+            {
+                _isLockingPopup = false;
+                _lockingTimer = 0f;
+                LockPopup(_lockingPopup);
+            }
+        }
+    }
+
     public void FamilyPopup(Family family, RectTransform refObject)
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -1744,7 +1747,7 @@ public class PopUpManager : Singleton<PopUpManager>
     public void InfrastructurePopup(InfrastructureData infra, RectTransform refObject)
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -1854,7 +1857,7 @@ public class PopUpManager : Singleton<PopUpManager>
     public void EntertainmentPopup(EntertainmentData ent, RectTransform refObject)
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -1903,13 +1906,21 @@ public class PopUpManager : Singleton<PopUpManager>
         _isLockingPopup = true;
         _lockingTimer = 0f;
 
-        _lockingImage = Instantiate(_lockingObject, UIManager.Instance.PopUpParent).GetComponent<Image>();
-        Utilities.PlacePrefabAroundTargetTopRight(_lockingImage.GetComponent<RectTransform>(), popUp.GetComponent<RectTransform>());
+        GameObject lockObject = Instantiate(_lockingObject, _popUpLockObjectParent);
+        foreach (var item in lockObject.GetComponentsInChildren<Image>())
+        {
+            if (item.type == Image.Type.Filled)
+            {
+                _lockingImage = item;
+                break;
+            }
+        }
+        Utilities.PlacePrefabAroundTargetTopRight(lockObject.GetComponent<RectTransform>(), popUp.GetComponent<RectTransform>(), _lockImagePopupOffset);
     }
 
     private void StopLockingPopup()
     {
-        Destroy(_lockingImage.gameObject);
+        Destroy(_lockingImage.transform.parent.gameObject);
         _lockingImage = null;
         _isLockingPopup = false;
         _lockingPopup = null;
@@ -1919,9 +1930,9 @@ public class PopUpManager : Singleton<PopUpManager>
     private void LockPopup(GameObject popUp)
     {
         _popUps.Remove(popUp);
-        Button lockedButton = Instantiate(_lockedObject, UIManager.Instance.PopUpParent).GetComponent<Button>();
+        Button lockedButton = Instantiate(_lockedObject, _popUpLockObjectParent).GetComponent<Button>();
         _lockedPopUps.Add(popUp, lockedButton);
-        Utilities.PlacePrefabAroundTargetTopRight(lockedButton.GetComponent<RectTransform>(), popUp.GetComponent<RectTransform>());
+        Utilities.PlacePrefabAroundTargetTopRight(lockedButton.GetComponent<RectTransform>(), popUp.GetComponent<RectTransform>(), _lockImagePopupOffset);
         StopLockingPopup();
     }
 

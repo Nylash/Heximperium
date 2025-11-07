@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class UIManager : Singleton<UIManager>
 {
     #region CONFIGURATION
-    [SerializeField] private Transform _popUpParent;
     [Header("_________________________________________________________")]
     [Header("Resources Bar")]
     [SerializeField] private TextMeshProUGUI _scoutsLimitText;
@@ -136,7 +135,6 @@ public class UIManager : Singleton<UIManager>
     public RectTransform VfxAnchorGold { get => _vfxAnchorGold; }
     public RectTransform VfxAnchorSR { get => _vfxAnchorSR; }
     public Button ButtonEndPhase { get => _buttonEndPhase; }
-    public Transform PopUpParent { get => _popUpParent; }
     public GameObject UpgradesChoiceMenuObject { get => _upgradesChoiceMenuObject; }
     public Color ColorEntertain { get => _colorEntertain; }
     public bool UiPhaseInAnimation { get => _uiPhaseInAnimation; set => _uiPhaseInAnimation = value; }

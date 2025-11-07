@@ -17067,6 +17067,41 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &6853898304448515542
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6022605980349266307}
+  m_Layer: 5
+  m_Name: PopUpsLockObjects
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &6022605980349266307
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6853898304448515542}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1276648731444977417}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6957624605633118438
 GameObject:
   m_ObjectHideFlags: 0
@@ -22396,6 +22431,7 @@ RectTransform:
   - {fileID: 3459506069177534122}
   - {fileID: 7733336965883505326}
   - {fileID: 32523236647451451}
+  - {fileID: 6022605980349266307}
   - {fileID: 5140541118999398590}
   - {fileID: 6613764529174209467}
   - {fileID: 3403984325348803791}
@@ -22422,14 +22458,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
+  _popUpParent: {fileID: 32523236647451451}
+  _popUpLockObjectParent: {fileID: 6022605980349266307}
   _durationHoverForUI: 0.5
   _percentageOfTimerForVisualHint: 0.4
   _timerOverImage: {fileID: 896984897485514827}
   _offsetBetweenSeveralPopUps: 0.005
   _maxScreenFraction: 0.3
   _minScreenFraction: 0.15
-  _offsetNormX: 0.1
-  _maxDistanceBetweenObjectAndPopup: 0.25
   _offsetPopupOnCursor: 0.01
   _popUpLeftBottomAnchor: {fileID: 7652193727628323663}
   _basePopUp: {fileID: 6245525707209063558, guid: d5762cd1b2823a44ab37029529fc5308, type: 3}
@@ -22438,6 +22474,7 @@ MonoBehaviour:
   _lockingObject: {fileID: 7037854885280977937, guid: 68460ce107a3fa949a67d23049f98846, type: 3}
   _lockedObject: {fileID: 7037854885280977937, guid: 3e6326d1c2245ea4fac29cd815f0fe9a, type: 3}
   _durationForLockingPopup: 4
+  _lockImagePopupOffset: {x: -0.005, y: -0.005}
 --- !u!114 &5447738742827255451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22451,7 +22488,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
-  _popUpParent: {fileID: 32523236647451451}
   _scoutsLimitText: {fileID: 2957421749578235539}
   _claimText: {fileID: 5128465592845207830}
   _townsLimitText: {fileID: 6453143418820908059}
