@@ -75,9 +75,9 @@ public class JuiceManager : Singleton<JuiceManager>
                 break;
             case ExtendedResource.SpecialResources:
                 if (tile)
-                    PlayResourceVFX(tile, value, _srMat, Color.white);
+                    PlayResourceVFX(tile, value, _srMat, UIManager.Instance.ColorExploit);
                 else
-                    PlayUIResourceVFX(value, _srMat, UIManager.Instance.VfxAnchorSR, Color.white);
+                    PlayUIResourceVFX(value, _srMat, UIManager.Instance.VfxAnchorSR, UIManager.Instance.ColorExploit);
                 break;
             case ExtendedResource.Claim:
                 if (tile)

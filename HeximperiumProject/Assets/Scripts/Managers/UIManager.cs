@@ -15,6 +15,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TextMeshProUGUI _srText;
     [SerializeField] private TextMeshProUGUI _carnivalistText;
     [SerializeField] private Color _colorCantAfford;
+    [SerializeField] private Color _colorIvory;
     [Header("_________________________________________________________")]
     [Header("Phase UI")]
     [SerializeField] private TextMeshProUGUI _confirmPhaseButtonText;
@@ -154,6 +155,7 @@ public class UIManager : Singleton<UIManager>
     public TextMeshProUGUI EntertainChoiceTitle { get => _entertainChoiceTitle; }
     public TextMeshProUGUI EntertainChoiceDetail { get => _entertainChoiceDetail; }
     public Animator RevealAnywhereHint { get => _revealAnywhereHint; }
+    public Color ColorIvory { get => _colorIvory; }
     #endregion
 
     protected override void OnAwake()
@@ -289,7 +291,7 @@ public class UIManager : Singleton<UIManager>
         else
         {
             foreach (TextMeshProUGUI text in _buyButton.GetComponentsInChildren<TextMeshProUGUI>())
-                text.color = Color.white;
+                text.color = _colorIvory;
         }
         if (!ResourcesManager.Instance.CanAfford(ResourcesManager.Instance.TradeSellCost))
         {
@@ -299,7 +301,7 @@ public class UIManager : Singleton<UIManager>
         else
         {
             foreach (TextMeshProUGUI text in _sellButton.GetComponentsInChildren<TextMeshProUGUI>())
-                text.color = Color.white;
+                text.color = _colorIvory;
         }
     }
     #endregion
@@ -633,7 +635,7 @@ public class UIManager : Singleton<UIManager>
             Phase.Expand => _colorExpand,
             Phase.Exploit => _colorExploit,
             Phase.Entertain => _colorEntertain,
-            _ => Color.white,
+            _ => _colorIvory,
         };
     }
 }
