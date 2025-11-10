@@ -29,6 +29,8 @@ public class JuiceManager : Singleton<JuiceManager>
     [SerializeField] private GameObject _comboVFX;
     [SerializeField] private Vector3 _spawnOffset = new Vector3(0,.2f,0);
     [SerializeField] private float _comboMovementSpeed = 1f;
+    [SerializeField] float _arcHeightPerUnit = 0.15f;
+    [SerializeField] float _arcMinHeight = 1f;    
     #endregion
 
     private GameObject _popUpVisualizingCombo;
@@ -189,11 +191,10 @@ public class JuiceManager : Singleton<JuiceManager>
                 if (kvp.Key.activeSelf)
                 {
                     _playingIncomingComboVFX = true;
-                    kvp.Key.transform.position = Vector3.MoveTowards(kvp.Key.transform.position, kvp.Value.to, _comboMovementSpeed * Time.deltaTime);
-                    if (Vector3.Distance(kvp.Key.transform.position, kvp.Value.to) < 0.001f)
-                    {
+
+                    bool arrived = MoveWithArc(kvp.Key, kvp.Value, _comboMovementSpeed);
+                    if (arrived)
                         kvp.Key.SetActive(false);
-                    }
                 }
             }
             if (!_playingIncomingComboVFX)
@@ -211,11 +212,10 @@ public class JuiceManager : Singleton<JuiceManager>
                 if (kvp.Key.activeSelf)
                 {
                     _playingOutgoingComboVFX = true;
-                    kvp.Key.transform.position = Vector3.MoveTowards(kvp.Key.transform.position, kvp.Value.to, _comboMovementSpeed * Time.deltaTime);
-                    if (Vector3.Distance(kvp.Key.transform.position, kvp.Value.to) < 0.001f)
-                    {
+
+                    bool arrived = MoveWithArc(kvp.Key, kvp.Value, _comboMovementSpeed);
+                    if (arrived)
                         kvp.Key.SetActive(false);
-                    }
                 }
             }
         }
@@ -223,6 +223,42 @@ public class JuiceManager : Singleton<JuiceManager>
         {
             StartComboAnimation(true);
         }
+    }
+
+    private bool MoveWithArc(GameObject go, in VectorPair positions, float speed)
+    {
+        // Moving on a straight line
+        Vector3 nextLinear = Vector3.MoveTowards(
+            go.transform.position,
+            positions.to,
+            speed * Time.deltaTime
+        );
+
+        // Get total distance
+        Vector3 axis = positions.to - positions.from;
+        float totalDist = axis.magnitude;
+        if (totalDist <= Mathf.Epsilon)
+        {
+            go.transform.position = positions.to;
+            return true;
+        }
+        Vector3 axisDir = axis / totalDist;
+
+        // Progression
+        float traveled = Vector3.Dot(nextLinear - positions.from, axisDir);
+        float t = Mathf.Clamp01(traveled / totalDist);
+        Vector3 flat = positions.from + axisDir * (t * totalDist);
+        // Arc movement
+        float arcHeight = Mathf.Max(_arcMinHeight, _arcHeightPerUnit * totalDist);
+        flat.y = Mathf.Lerp(positions.from.y, positions.to.y, t) + arcHeight * Mathf.Sin(Mathf.PI * t);
+
+        go.transform.position = flat;
+        if (t >= .999f)
+        {
+            go.transform.position = positions.to;
+            return true;
+        }
+        return false;
     }
 
     private void StartComboAnimation(bool resetPos = false)
