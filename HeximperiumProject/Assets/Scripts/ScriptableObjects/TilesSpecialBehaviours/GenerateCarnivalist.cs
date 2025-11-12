@@ -9,14 +9,14 @@ public class GenerateCarnivalist : SpecialBehaviour
     {
         ResourcesManager.Instance.UpdateCarnivalist(_carnivalistQuantity, Transaction.Gain, behaviourTile);
         ResourcesManager.Instance.UpdateCarnivalistSource(behaviourTile.TileData, _carnivalistQuantity, Transaction.Gain);
-        behaviourTile.RecruitedCarnivalists += _carnivalistQuantity;
+        behaviourTile.UpdateCarnivalists(_carnivalistQuantity);
     }
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
         ResourcesManager.Instance.UpdateCarnivalist(_carnivalistQuantity, Transaction.Spent, behaviourTile);
         ResourcesManager.Instance.UpdateCarnivalistSource(behaviourTile.TileData, _carnivalistQuantity, Transaction.Spent);
-        behaviourTile.RecruitedCarnivalists -= _carnivalistQuantity;
+        behaviourTile.UpdateCarnivalists(-_carnivalistQuantity);
     }
     
     public override void HighlightImpactedTile(Tile behaviourTile, bool show)

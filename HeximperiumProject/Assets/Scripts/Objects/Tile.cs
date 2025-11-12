@@ -137,16 +137,7 @@ public class Tile : MonoBehaviour
     }
 
     public int CarnivalistCostReduction { get => _carnivalistCostReduction; set => _carnivalistCostReduction = value; }
-    public int RecruitedCarnivalists 
-    {   
-        get => _recruitedCarnivalists;
-        set
-        {
-            _recruitedCarnivalists = value;
-            if (UIManager.Instance.AreIncomesShown)
-                ShowIncomeUI(true);
-        } 
-    }
+    public int RecruitedCarnivalists { get => _recruitedCarnivalists; }
 
     public TileData TargetData { get => _targetData; }
     public Dictionary<Tile, List<ResourceToIntMap>> ExternalIncomesSources { get => _externalIncomesSources; }
@@ -224,6 +215,13 @@ public class Tile : MonoBehaviour
         }
 
         OnIncomeModified?.Invoke(this, previousIncomes, _incomes);
+        if (UIManager.Instance.AreIncomesShown)
+            ShowIncomeUI(true);
+    }
+
+    public void UpdateCarnivalists(int value)
+    {
+        _recruitedCarnivalists += value;
         if (UIManager.Instance.AreIncomesShown)
             ShowIncomeUI(true);
     }
@@ -571,6 +569,16 @@ public class Tile : MonoBehaviour
         dictionary[refTile].RemoveAll(r => r.value == 0);
         if (dictionary[refTile].Count == 0)
             dictionary.Remove(refTile);
+    }
+
+    public void UpdateImpactedTilesCarnivalists(Tile tile, int carnivalistPoints)
+    {
+        if (!_impactedTilesCarnivalists.ContainsKey(tile))
+            _impactedTilesCarnivalists.Add(tile, carnivalistPoints);
+        else
+            _impactedTilesCarnivalists[tile] += carnivalistPoints;
+        if (_impactedTilesCarnivalists[tile] <= 0)
+            _impactedTilesCarnivalists.Remove(tile);
     }
 
     public void UpdateImpactedEntertainmentByEntertainment(Tile tile, int entertainmentPoints)

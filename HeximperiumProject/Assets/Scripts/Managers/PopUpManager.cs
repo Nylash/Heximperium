@@ -745,6 +745,34 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
+        #region CARNIVALISTS
+        if (tile.RecruitedCarnivalists > 0)
+        {
+            TextMeshProUGUI carnivalists = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            carnivalists.text = tile.RecruitedCarnivalists + "<sprite name=\"Carnivalist_Emoji\">";
+            carnivalists.fontStyle = FontStyles.Bold;
+            carnivalists.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(carnivalists.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region CARNIVALISTS GIVEN
+        if (tile.ImpactedTilesCarnivalists.Count > 0)
+        {
+            TextMeshProUGUI carnivalistsGiven = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            int totalCarnivalists = 0;
+            foreach (var kvp in tile.ImpactedTilesCarnivalists)
+            {
+                totalCarnivalists += kvp.Value;
+            }
+            carnivalistsGiven.text = $"({totalCarnivalists}<sprite name=\"Carnivalist_Emoji\"> given over " +
+                $"{tile.ImpactedTilesCarnivalists.Count} other {(tile.ImpactedTilesCarnivalists.Count > 1 ? "tiles" : "tile")}" +
+                ", through effects or sheer presence)";
+            carnivalistsGiven.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(carnivalistsGiven.GetComponent<RectTransform>());
+        }
+        #endregion
+
         #region INCOME BONUS
         List<ResourceToIntMap> incomeBonus = new List<ResourceToIntMap>(tile.TileData.Incomes);
         if (tile.InitialData.Incomes.Count > 0 && tile.TileData != tile.InitialData)
@@ -1288,13 +1316,14 @@ public class PopUpManager : Singleton<PopUpManager>
         // Get predicted income
         List<ResourceToIntMap> predictedInc;
         List<ResourceToIntMap> predictedSelfInc;
+        int predictectedCarnivalists;
         Dictionary<Tile, List<ResourceToIntMap>> predictedExtSources;
         Dictionary<Tile, List<ResourceToIntMap>> predictedIntSources;
         Dictionary<Tile, List<ResourceToIntMap>> predictedImpactedTilesIncomes;
         Dictionary<Tile, int> predictedImpactedTilesCarnivalists;
         ExploitationManager.Instance.GetPredictedIncomes(button.AssociatedTile, button.InfrastructureData,
             out predictedInc, out predictedExtSources, out predictedIntSources,
-            out predictedSelfInc,
+            out predictedSelfInc, out predictectedCarnivalists,
             out predictedImpactedTilesIncomes, out predictedImpactedTilesCarnivalists);
 
         bool isVisualizingCombo = false; // Call here JuiceManager when implemented
@@ -1377,6 +1406,47 @@ public class PopUpManager : Singleton<PopUpManager>
                 ", through effects or sheer presence)";
             incomeGiven.alignment = TextAlignmentOptions.Center;
             textObjects.Add(incomeGiven.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region CURRENT CARNIVALISTS
+        if (button.AssociatedTile.RecruitedCarnivalists > 0)
+        {
+            TextMeshProUGUI currentCarni = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            currentCarni.text = "Current recruited "+ (button.AssociatedTile.RecruitedCarnivalists > 1 ? "carnivalists" : "carnivalist") 
+                + ": " + button.AssociatedTile.RecruitedCarnivalists + "<sprite name=\"Carnivalist_Emoji\">";
+            currentCarni.fontStyle = FontStyles.Bold;
+            currentCarni.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(currentCarni.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region PREDICTED CARNIVALISTS
+        if (predictectedCarnivalists > 0)
+        {
+            TextMeshProUGUI predictedCarni = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            predictedCarni.text = "Predicted recruited " + (predictectedCarnivalists > 1 ? "carnivalists" : "carnivalist")
+                + ": " + predictectedCarnivalists + "<sprite name=\"Carnivalist_Emoji\">";
+            predictedCarni.fontStyle = FontStyles.Bold;
+            predictedCarni.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(predictedCarni.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region CARNIVALISTS GIVEN
+        if (predictedImpactedTilesCarnivalists.Count > 0)
+        {
+            TextMeshProUGUI carnivalistsGiven = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            int totalCarnivalists = 0;
+            foreach (var kvp in predictedImpactedTilesCarnivalists)
+            {
+                totalCarnivalists += kvp.Value;
+            }
+            carnivalistsGiven.text = $"(Would give {totalCarnivalists}<sprite name=\"Carnivalist_Emoji\"> over " +
+                $"{predictedImpactedTilesCarnivalists.Count} other {(predictedImpactedTilesCarnivalists.Count > 1 ? "tiles" : "tile")}" +
+                ", through effects or sheer presence)";
+            carnivalistsGiven.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(carnivalistsGiven.GetComponent<RectTransform>());
         }
         #endregion
 

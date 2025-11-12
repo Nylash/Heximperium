@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e0e460f401a6ce44ad84d3534c37a05, type: 3}
   m_Name: ArtistsLodge
   m_EditorClassIdentifier: 
-  _name: "Artists\u2019 Lodge"
+  _name: Artists' Lodge
   _family: 5
   _visualsProps:
   - tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
