@@ -142,6 +142,20 @@ public static class Utilities
     {
         return incomes.FirstOrDefault(r => r.resource == resource)?.value;
     }
+
+    public static bool AreIncomesEqual(List<ResourceToIntMap> a, List<ResourceToIntMap> b)
+    {
+        if (a == null || b == null) return a == b;
+        if (a.Count != b.Count) return false;
+
+        var groupedA = a.GroupBy(r => r.resource)
+                        .ToDictionary(g => g.Key, g => g.Sum(x => x.value));
+        var groupedB = b.GroupBy(r => r.resource)
+                        .ToDictionary(g => g.Key, g => g.Sum(x => x.value));
+
+        return groupedA.Count == groupedB.Count &&
+               groupedA.All(kvp => groupedB.TryGetValue(kvp.Key, out int v) && v == kvp.Value);
+    }
     #endregion
 
     #region CUSTOM STRINGS
