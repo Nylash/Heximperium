@@ -708,9 +708,17 @@ public class PopUpManager : Singleton<PopUpManager>
                     sourceInc.text = "(" + ownInc.IncomeToString() + " based on the tile effects)" + "\n";
                 if (tile.ExternalIncomesSources.Count > 0)
                 {
+                    Dictionary<TileData, List<ResourceToIntMap>> datas = new Dictionary<TileData, List<ResourceToIntMap>>();
                     foreach (var kvp in tile.ExternalIncomesSources)
                     {
-                        sourceInc.text += "(" + kvp.Value.IncomeToString() + " from " + kvp.Key.TileName + ")" + "\n";
+                        if (datas.ContainsKey(kvp.Key.TileData))
+                            datas[kvp.Key.TileData] = Utilities.MergeResourceToIntMaps(datas[kvp.Key.TileData], kvp.Value);
+                        else
+                            datas.Add(kvp.Key.TileData, new List<ResourceToIntMap>(kvp.Value));
+                    }
+                    foreach (var kvpBis in datas)
+                    {
+                        sourceInc.text += "(" + kvpBis.Value.IncomeToString() + " from " + kvpBis.Key.TileName + ")" + "\n";
                     }
                 }
                 sourceInc.alignment = TextAlignmentOptions.Center;
@@ -1263,9 +1271,9 @@ public class PopUpManager : Singleton<PopUpManager>
         // Get predicted income
         List<ResourceToIntMap> predictedInc;
         List<ResourceToIntMap> predictedSelfInc;
-        Dictionary<TileData, List<ResourceToIntMap>> predictedSources;
+        Dictionary<Tile, List<ResourceToIntMap>> predictedExtSources;
         ExploitationManager.Instance.GetPredictedIncomes(button.AssociatedTile, button.InfrastructureData,
-            out predictedInc, out predictedSources, out predictedSelfInc);
+            out predictedInc, out predictedExtSources, out predictedSelfInc);
 
         bool isVisualizingCombo = false; // Call here JuiceManager when implemented
 
@@ -1311,12 +1319,19 @@ public class PopUpManager : Singleton<PopUpManager>
                 TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
                 if (predictedSelfInc.Count > 0)
                     sourceInc.text = "(" + predictedSelfInc.IncomeToString() + " based on the tile effects)" + "\n";
-                if (predictedSources.Count > 0)
+                if (predictedExtSources.Count > 0)
                 {
-
-                    foreach (var kvp in predictedSources)
+                    Dictionary<TileData, List<ResourceToIntMap>> datas = new Dictionary<TileData, List<ResourceToIntMap>>();
+                    foreach (var kvp in predictedExtSources)
                     {
-                        sourceInc.text += "(" + kvp.Value.IncomeToString() + " from " + kvp.Key.TileName + ")" + "\n";
+                        if (datas.ContainsKey(kvp.Key.TileData))
+                            datas[kvp.Key.TileData] = Utilities.MergeResourceToIntMaps(datas[kvp.Key.TileData], kvp.Value);
+                        else
+                            datas.Add(kvp.Key.TileData, new List<ResourceToIntMap>(kvp.Value));
+                    }
+                    foreach (var kvpBis in datas)
+                    {
+                        sourceInc.text += "(" + kvpBis.Value.IncomeToString() + " from " + kvpBis.Key.TileName + ")" + "\n";
                     }
                 }
                 sourceInc.alignment = TextAlignmentOptions.Center;

@@ -27,7 +27,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private Vector2 _coordinate;
     [SerializeField] private List<ResourceToIntMap> _incomes = new List<ResourceToIntMap>();
 
-    private Dictionary<TileData, List<ResourceToIntMap>> _externalIncomesSources = new Dictionary<TileData, List<ResourceToIntMap>>(); // Income coming from other tiles behaviours
+    private Dictionary<Tile, List<ResourceToIntMap>> _externalIncomesSources = new Dictionary<Tile, List<ResourceToIntMap>>(); // Income coming from other tiles behaviours
     private Dictionary<Tile, List<ResourceToIntMap>> _internalIncomesSources = new Dictionary<Tile, List<ResourceToIntMap>>(); // Income coming from this tile behaviours
     private int _claimIncome = 0;
     private Tile[] _neighbors = new Tile[6];
@@ -45,7 +45,10 @@ public class Tile : MonoBehaviour
     private int _carnivalistCostReduction;
     private int _recruitedCarnivalists;
     private int _bufferRecruitedCarnivalists;
+    private Dictionary<BoostByUniqueInfraNeighbors, HashSet<Tile>> _uniqueInfraNeighborsByBehaviour = new Dictionary<BoostByUniqueInfraNeighbors, HashSet<Tile>>();
     //Dictionary for impacted tiles
+    private Dictionary<Tile, List<ResourceToIntMap>> _impactedTilesIncomes = new Dictionary<Tile, List<ResourceToIntMap>>();
+    private Dictionary<Tile, int> _impactedTilesCarnivalists = new Dictionary<Tile, int>();
     private Dictionary<Tile, int> _entImpactedByEntertainment = new Dictionary<Tile, int>();//Use the tile to avoid issues with destroyed entertainment
     private Dictionary<Tile, int> _entImpactedByTile = new Dictionary<Tile, int>();//Use the tile to avoid issues with destroyed entertainment
     //Scouts
@@ -56,8 +59,6 @@ public class Tile : MonoBehaviour
     private Entertainment _previousEntertainment;//Only stay one frame (because the ref is deleted) but needed to clean the group (BoostByZone special effect)
     private EntertainmentData _previousEntertainmentData;
 
-    private int _uniqueInfraNeighborsCount;
-    private int _uniqueEntertainmentNeighborsCount_SB;//Count for special behaviour script
     private int _uniqueEntertainmentNeighborsCount_SE;//Count for special effect script, two count is needed if an entertainment and infra on the same tile use it
     private int _groupID;//Use for BoostByZoneSize entertainment's special effect
     #endregion
@@ -100,9 +101,7 @@ public class Tile : MonoBehaviour
         }  
     }
     public TileData PreviousData { get => _previousData; set => _previousData = value; }
-    public int UniqueInfraNeighborsCount { get => _uniqueInfraNeighborsCount; set => _uniqueInfraNeighborsCount = value; }
     public EntertainmentData PreviousEntertainmentData { get => _previousEntertainmentData; }
-    public int UniqueEntertainmentNeighborsCount_SB { get => _uniqueEntertainmentNeighborsCount_SB; set => _uniqueEntertainmentNeighborsCount_SB = value; }
     public int UniqueEntertainmentNeighborsCount_SE { get => _uniqueEntertainmentNeighborsCount_SE; set => _uniqueEntertainmentNeighborsCount_SE = value; }
     public int GroupID { get => _groupID; set => _groupID = value; }
     public Entertainment PreviousEntertainment { get => _previousEntertainment; }
@@ -150,9 +149,10 @@ public class Tile : MonoBehaviour
     }
 
     public TileData TargetData { get => _targetData; }
-    public Dictionary<TileData, List<ResourceToIntMap>> ExternalIncomesSources { get => _externalIncomesSources; }
+    public Dictionary<Tile, List<ResourceToIntMap>> ExternalIncomesSources { get => _externalIncomesSources; }
     public Dictionary<Tile, int> EntImpactedByEntertainment { get => _entImpactedByEntertainment; }
     public Dictionary<Tile, int> EntImpactedByTile { get => _entImpactedByTile; }
+    public Dictionary<BoostByUniqueInfraNeighbors, HashSet<Tile>> UniqueInfraNeighborsByBehaviour { get => _uniqueInfraNeighborsByBehaviour; }
     #endregion
 
     private void Awake()
@@ -192,62 +192,71 @@ public class Tile : MonoBehaviour
         _incomes = data.Incomes;
     }
 
-    public void UpdateIncomes(List<ResourceToIntMap> inputIncomes, bool merge, TileData source = null)
+    public void UpdateIncomes(List<ResourceToIntMap> inputIncomes, bool merge, Tile extSource = null, Tile intSource = null)
     {
+        if (extSource != null && intSource != null)
+        {
+            Debug.LogError("A tile income update can't have both an external and internal source");
+            return;
+        }
+
         List<ResourceToIntMap> previousIncomes = _incomes;
 
         if (merge)
         {
             _incomes = Utilities.MergeResourceToIntMaps(_incomes, inputIncomes);
-            if (source)
-            {
-                if (!_externalIncomesSources.ContainsKey(source))
-                    _externalIncomesSources.Add(source, inputIncomes);
-                else
-                    _externalIncomesSources[source] = Utilities.MergeResourceToIntMaps(_externalIncomesSources[source], inputIncomes);
-                // Clean the source if all values are 0
-                bool allZero = true;
-                foreach (ResourceToIntMap item in _externalIncomesSources[source])
-                {
-                    if (item.value != 0)
-                    {
-                        allZero = false;
-                        break;
-                    }
-                }
-                if (allZero)
-                    _externalIncomesSources.Remove(source);
-            }
         }
         else
         {
             _incomes = Utilities.SubtractResourceToIntMaps(_incomes, inputIncomes);
-            if (source)
-            {
-                if (_externalIncomesSources.ContainsKey(source))
-                {
-                    _externalIncomesSources[source] = Utilities.SubtractResourceToIntMaps(_externalIncomesSources[source], inputIncomes);
-                    // Clean the source if all values are 0
-                    bool allZero = true;
-                    foreach (ResourceToIntMap item in _externalIncomesSources[source])
-                    {
-                        if (item.value != 0)
-                        {
-                            allZero = false;
-                            break;
-                        }
-                    }
-                    if (allZero)
-                        _externalIncomesSources.Remove(source);
-                }
-                else
-                    Debug.LogWarning("Trying to remove income from a source that doesn't exist in the dictionary");
-            }
+        }
+
+        if (extSource)
+        {
+            UpdateSource(_externalIncomesSources, merge, extSource, inputIncomes);
+        }
+        else if (intSource)
+        {
+            UpdateSource(_internalIncomesSources, merge, intSource, inputIncomes);
         }
 
         OnIncomeModified?.Invoke(this, previousIncomes, _incomes);
         if (UIManager.Instance.AreIncomesShown)
             ShowIncomeUI(true);
+    }
+
+    private void UpdateSource(Dictionary<Tile, List<ResourceToIntMap>> sourceDict, bool merge, Tile source, List<ResourceToIntMap> inputIncomes)
+    {
+        if (merge)
+        {
+            if (!sourceDict.ContainsKey(source))
+                sourceDict.Add(source, inputIncomes);
+            else
+                sourceDict[source] = Utilities.MergeResourceToIntMaps(sourceDict[source], inputIncomes);
+            // Call update source impacted tiles
+        }
+        else
+        {
+            if (sourceDict.ContainsKey(source))
+            {
+                sourceDict[source] = Utilities.SubtractResourceToIntMaps(sourceDict[source], inputIncomes);
+            }
+            else
+                Debug.LogWarning("Trying to remove income from a source that doesn't exist in the dictionary");
+            // Call update source impacted tiles
+        }
+        // Clean the source if all values are 0
+        bool allZero = true;
+        foreach (ResourceToIntMap item in sourceDict[source])
+        {
+            if (item.value != 0)
+            {
+                allZero = false;
+                break;
+            }
+        }
+        if (allZero)
+            sourceDict.Remove(source);
     }
 
     public List<ResourceToIntMap> GetIncomeFromTileOnly()

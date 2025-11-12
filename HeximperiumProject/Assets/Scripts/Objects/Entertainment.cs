@@ -124,7 +124,6 @@ public class Entertainment : MonoBehaviour
 
         foreach (SpecialEffect effect in _data.SpecialEffects)
             effect.RollbackSpecialEntertainment(this);
-        _tile.UniqueEntertainmentNeighborsCount_SB = 0;
         _tile.UniqueEntertainmentNeighborsCount_SE = 0;
         Destroy(gameObject);
     }

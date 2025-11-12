@@ -34,7 +34,7 @@ public class BoostClaimedNeighborsIncome : SpecialBehaviour
                 continue;
             if (neighbor.Claimed)
             {
-                neighbor.UpdateIncomes(_incomeBoost, false, behaviourTile.TileData);
+                neighbor.UpdateIncomes(_incomeBoost, false, behaviourTile);
             }
             else
             {
@@ -58,7 +58,7 @@ public class BoostClaimedNeighborsIncome : SpecialBehaviour
 
     public void ApplyBoostToClaimedTile(Tile behaviourTile, Tile boostedTile)
     {
-        boostedTile.UpdateIncomes(_incomeBoost, true, behaviourTile.TileData);
+        boostedTile.UpdateIncomes(_incomeBoost, true, behaviourTile);
         boostedTile.OnTileClaimed -= behaviourTile.ListenerOnTileClaimed_BoostClaimedNeighborsIncome;
     }
 

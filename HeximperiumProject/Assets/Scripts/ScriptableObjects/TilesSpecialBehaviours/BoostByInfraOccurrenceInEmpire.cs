@@ -13,7 +13,7 @@ public class BoostByInfraOccurrenceInEmpire : SpecialBehaviour
         {
             if (tile.TileData is InfrastructureData data && _tilesBoosting.Contains(data))
             {
-                behaviourTile.UpdateIncomes(_boost, true);
+                behaviourTile.UpdateIncomes(_boost, true, null, tile);
             }
         }
         ExploitationManager.Instance.OnInfraBuilded -= behaviourTile.ListenerOnInfraBuilded_BoostByInfraOccurrenceInEmpire;
@@ -28,7 +28,7 @@ public class BoostByInfraOccurrenceInEmpire : SpecialBehaviour
         {
             if (tile.TileData is InfrastructureData data && _tilesBoosting.Contains(data))
             {
-                behaviourTile.UpdateIncomes(_boost, false);
+                behaviourTile.UpdateIncomes(_boost, false, null, tile);
             }
         }
 
@@ -54,13 +54,13 @@ public class BoostByInfraOccurrenceInEmpire : SpecialBehaviour
             //Check if the previous data didn't already applied the boost
             if (tile.PreviousData is InfrastructureData previousData && _tilesBoosting.Contains(previousData))
                 return;
-            behaviourTile.UpdateIncomes(_boost, true);
+            behaviourTile.UpdateIncomes(_boost, true, null, tile);
         }
         else
         {
             //Check if the previous data did apply a boost, then remove it if yes
             if (tile.PreviousData is InfrastructureData previousData && _tilesBoosting.Contains(previousData))
-                behaviourTile.UpdateIncomes(_boost, false);
+                behaviourTile.UpdateIncomes(_boost, false, null, tile);
         }
     }
 
@@ -68,7 +68,7 @@ public class BoostByInfraOccurrenceInEmpire : SpecialBehaviour
     {
         if(tile.PreviousData is InfrastructureData data && _tilesBoosting.Contains(data))
         {
-            behaviourTile.UpdateIncomes(_boost, false);
+            behaviourTile.UpdateIncomes(_boost, false, null, tile);
         }
     }
 

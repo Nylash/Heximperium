@@ -29,7 +29,8 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
                         income.Add(new ResourceToIntMap(_resource, item.value));
                 }
 
-                behaviourTile.UpdateIncomes(income, true);
+                if (income.Count > 0)
+                    behaviourTile.UpdateIncomes(income, true, null, neighbor);
 
                 //Add a lister to adjust the income when a neighbor adjust its own income
                 neighbor.OnIncomeModified -= behaviourTile.ListenerOnIncomeModified;
@@ -46,7 +47,6 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
-        //Nothing needed, replacing by previous tile will be enough (this behaviour only modify its own tile)
         foreach (Tile neighbor in behaviourTile.Neighbors)
         {
             if (!neighbor)
@@ -65,7 +65,8 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
                         income.Add(new ResourceToIntMap(_resource, item.value));
                 }
 
-                behaviourTile.UpdateIncomes(income, false);
+                if (income.Count > 0)
+                    behaviourTile.UpdateIncomes(income, false, null, neighbor);
             }
 
             neighbor.OnIncomeModified -= behaviourTile.ListenerOnIncomeModified;
@@ -114,8 +115,9 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
                 newInc.Add(new ResourceToIntMap(_resource, item.value));
         }
 
-        // Apply delta (newIncome - previousIncome)
-        behaviourTile.UpdateIncomes(Utilities.SubtractResourceToIntMaps(newInc, previousInc), true);
+        List<ResourceToIntMap> delta = Utilities.SubtractResourceToIntMaps(newInc, previousInc);
+        if (delta.Count > 0)
+            behaviourTile.UpdateIncomes(delta, true, null, neighbor);
     }
 
     public void CheckClaimedTile(Tile behaviourTile, Tile tile)
@@ -132,7 +134,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
                 income.Add(new ResourceToIntMap(_resource, item.value));
         }
 
-        behaviourTile.UpdateIncomes(income, true);
+        behaviourTile.UpdateIncomes(income, true, null, tile);
 
         //Add a listener to adjust the income when a neighbor adjust its own income
         tile.OnIncomeModified -= behaviourTile.ListenerOnIncomeModified;
