@@ -728,6 +728,23 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
+        #region INCOMES GIVEN
+        if (tile.ImpactedTilesIncomes.Count > 0)
+        {
+            TextMeshProUGUI incomeGiven = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            List<ResourceToIntMap> totalGiven = new List<ResourceToIntMap>();
+            foreach (var kvp in tile.ImpactedTilesIncomes)
+            {
+                totalGiven = Utilities.MergeResourceToIntMaps(totalGiven, kvp.Value);
+            }
+            incomeGiven.text = $"({totalGiven.IncomeToString()} given over " +
+                $"{tile.ImpactedTilesIncomes.Count} other {(tile.ImpactedTilesIncomes.Count > 1 ? "tiles" : "tile")}" +
+                ", through effects or sheer presence)";
+            incomeGiven.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(incomeGiven.GetComponent<RectTransform>());
+        }
+        #endregion
+
         #region INCOME BONUS
         List<ResourceToIntMap> incomeBonus = new List<ResourceToIntMap>(tile.TileData.Incomes);
         if (tile.InitialData.Incomes.Count > 0 && tile.TileData != tile.InitialData)
@@ -1272,8 +1289,13 @@ public class PopUpManager : Singleton<PopUpManager>
         List<ResourceToIntMap> predictedInc;
         List<ResourceToIntMap> predictedSelfInc;
         Dictionary<Tile, List<ResourceToIntMap>> predictedExtSources;
+        Dictionary<Tile, List<ResourceToIntMap>> predictedIntSources;
+        Dictionary<Tile, List<ResourceToIntMap>> predictedImpactedTilesIncomes;
+        Dictionary<Tile, int> predictedImpactedTilesCarnivalists;
         ExploitationManager.Instance.GetPredictedIncomes(button.AssociatedTile, button.InfrastructureData,
-            out predictedInc, out predictedExtSources, out predictedSelfInc);
+            out predictedInc, out predictedExtSources, out predictedIntSources,
+            out predictedSelfInc,
+            out predictedImpactedTilesIncomes, out predictedImpactedTilesCarnivalists);
 
         bool isVisualizingCombo = false; // Call here JuiceManager when implemented
 
@@ -1338,6 +1360,23 @@ public class PopUpManager : Singleton<PopUpManager>
                 sourceInc.fontStyle = FontStyles.Italic;
                 textObjects.Add(sourceInc.GetComponent<RectTransform>());
             }
+        }
+        #endregion
+
+        #region INCOMES GIVEN
+        if (predictedImpactedTilesIncomes.Count > 0)
+        {
+            TextMeshProUGUI incomeGiven = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            List<ResourceToIntMap> totalGiven = new List<ResourceToIntMap>();
+            foreach (var kvp in predictedImpactedTilesIncomes)
+            {
+                totalGiven = Utilities.MergeResourceToIntMaps(totalGiven, kvp.Value);
+            }
+            incomeGiven.text = $"(Would give {totalGiven.IncomeToString()} over " +
+                $"{predictedImpactedTilesIncomes.Count} other {(predictedImpactedTilesIncomes.Count > 1 ? "tiles" : "tile")}" +
+                ", through effects or sheer presence)";
+            incomeGiven.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(incomeGiven.GetComponent<RectTransform>());
         }
         #endregion
 

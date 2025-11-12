@@ -153,6 +153,9 @@ public class Tile : MonoBehaviour
     public Dictionary<Tile, int> EntImpactedByEntertainment { get => _entImpactedByEntertainment; }
     public Dictionary<Tile, int> EntImpactedByTile { get => _entImpactedByTile; }
     public Dictionary<BoostByUniqueInfraNeighbors, HashSet<Tile>> UniqueInfraNeighborsByBehaviour { get => _uniqueInfraNeighborsByBehaviour; }
+    public Dictionary<Tile, List<ResourceToIntMap>> ImpactedTilesIncomes { get => _impactedTilesIncomes; }
+    public Dictionary<Tile, int> ImpactedTilesCarnivalists { get => _impactedTilesCarnivalists; }
+    public Dictionary<Tile, List<ResourceToIntMap>> InternalIncomesSources { get => _internalIncomesSources; }
     #endregion
 
     private void Awake()
@@ -213,50 +216,16 @@ public class Tile : MonoBehaviour
 
         if (extSource)
         {
-            UpdateSource(_externalIncomesSources, merge, extSource, inputIncomes);
+            UpdateSourceOrImpactedTiles(_externalIncomesSources, merge, extSource, inputIncomes, true);
         }
         else if (intSource)
         {
-            UpdateSource(_internalIncomesSources, merge, intSource, inputIncomes);
+            UpdateSourceOrImpactedTiles(_internalIncomesSources, merge, intSource, inputIncomes, true);
         }
 
         OnIncomeModified?.Invoke(this, previousIncomes, _incomes);
         if (UIManager.Instance.AreIncomesShown)
             ShowIncomeUI(true);
-    }
-
-    private void UpdateSource(Dictionary<Tile, List<ResourceToIntMap>> sourceDict, bool merge, Tile source, List<ResourceToIntMap> inputIncomes)
-    {
-        if (merge)
-        {
-            if (!sourceDict.ContainsKey(source))
-                sourceDict.Add(source, inputIncomes);
-            else
-                sourceDict[source] = Utilities.MergeResourceToIntMaps(sourceDict[source], inputIncomes);
-            // Call update source impacted tiles
-        }
-        else
-        {
-            if (sourceDict.ContainsKey(source))
-            {
-                sourceDict[source] = Utilities.SubtractResourceToIntMaps(sourceDict[source], inputIncomes);
-            }
-            else
-                Debug.LogWarning("Trying to remove income from a source that doesn't exist in the dictionary");
-            // Call update source impacted tiles
-        }
-        // Clean the source if all values are 0
-        bool allZero = true;
-        foreach (ResourceToIntMap item in sourceDict[source])
-        {
-            if (item.value != 0)
-            {
-                allZero = false;
-                break;
-            }
-        }
-        if (allZero)
-            sourceDict.Remove(source);
     }
 
     public List<ResourceToIntMap> GetIncomeFromTileOnly()
@@ -575,6 +544,35 @@ public class Tile : MonoBehaviour
     #endregion
 
     #region IMPACTED TILES MANAGEMENT
+    public void UpdateSourceOrImpactedTiles(Dictionary<Tile, List<ResourceToIntMap>> dictionary, bool merge, Tile refTile, List<ResourceToIntMap> inputIncomes, bool updateImpactedTiles)
+    {
+        if (merge)
+        {
+            if (!dictionary.ContainsKey(refTile))
+                dictionary.Add(refTile, new List<ResourceToIntMap>(inputIncomes));
+            else
+                dictionary[refTile] = Utilities.MergeResourceToIntMaps(dictionary[refTile], inputIncomes);
+        }
+        else
+        {
+            if (dictionary.ContainsKey(refTile))
+            {
+                dictionary[refTile] = Utilities.SubtractResourceToIntMaps(dictionary[refTile], inputIncomes);
+            }
+            else
+            {
+                Debug.LogWarning("Trying to remove income from a source that doesn't exist in the dictionary");
+                return;
+            }
+        }
+        if (updateImpactedTiles)
+            refTile.UpdateSourceOrImpactedTiles(refTile.ImpactedTilesIncomes, merge, this, inputIncomes, false);
+
+        dictionary[refTile].RemoveAll(r => r.value == 0);
+        if (dictionary[refTile].Count == 0)
+            dictionary.Remove(refTile);
+    }
+
     public void UpdateImpactedEntertainmentByEntertainment(Tile tile, int entertainmentPoints)
     {
         if (!_entImpactedByEntertainment.ContainsKey(tile))
