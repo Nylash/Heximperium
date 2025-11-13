@@ -33,6 +33,7 @@ public class Tile : MonoBehaviour
     private Tile[] _neighbors = new Tile[6];
     private TileData _initialData;
     private TileData _previousData;
+    private List<ResourceToIntMap> _incomeWithPreviousData = new List<ResourceToIntMap>();
     private TileData _targetData;
     private bool _revealed;
     private bool _claimed;
@@ -119,7 +120,6 @@ public class Tile : MonoBehaviour
                 ShowIncomeUI(true);
         }
     }
-
     public bool AllowEntertainment 
     { 
         get => _allowEntertainment;
@@ -135,11 +135,8 @@ public class Tile : MonoBehaviour
                 ShowEntPlacementUI(true);
         }
     }
-
     public int CarnivalistCostReduction { get => _carnivalistCostReduction; set => _carnivalistCostReduction = value; }
     public int RecruitedCarnivalists { get => _recruitedCarnivalists; }
-
-    public TileData TargetData { get => _targetData; }
     public Dictionary<Tile, List<ResourceToIntMap>> ExternalIncomesSources { get => _externalIncomesSources; }
     public Dictionary<Tile, int> EntImpactedByEntertainment { get => _entImpactedByEntertainment; }
     public Dictionary<Tile, int> EntImpactedByTile { get => _entImpactedByTile; }
@@ -147,6 +144,7 @@ public class Tile : MonoBehaviour
     public Dictionary<Tile, List<ResourceToIntMap>> ImpactedTilesIncomes { get => _impactedTilesIncomes; }
     public Dictionary<Tile, int> ImpactedTilesCarnivalists { get => _impactedTilesCarnivalists; }
     public Dictionary<Tile, List<ResourceToIntMap>> InternalIncomesSources { get => _internalIncomesSources; }
+    public List<ResourceToIntMap> IncomeWithPreviousData { get => _incomeWithPreviousData; }
     #endregion
 
     private void Awake()
@@ -245,6 +243,8 @@ public class Tile : MonoBehaviour
     //Update the tile data and call every other methods that impact
     public void UpdateTileData(TileData value, bool updateVisual)
     {
+        _incomeWithPreviousData = Utilities.CloneResourceToIntMaps(_incomes);
+
         _targetData = value;
 
         RollbackSpecialBehaviours();
@@ -687,6 +687,14 @@ public class Tile : MonoBehaviour
         foreach (BoostByUniqueInfraNeighbors behaviour in _tileData.SpecialBehaviours.OfType<BoostByUniqueInfraNeighbors>())
         {
             behaviour.CheckNewData(this);
+        }
+    }
+
+    public void ListenerOnTileDataModified_IncomeComingFromNeighbors(Tile tile)
+    {
+        foreach (IncomeComingFromNeighbors behaviour in _tileData.SpecialBehaviours.OfType<IncomeComingFromNeighbors>())
+        {
+            behaviour.CheckNewData(this, tile, tile.PreviousData, tile.TileData, tile.IncomeWithPreviousData, tile.Incomes);
         }
     }
     #endregion
