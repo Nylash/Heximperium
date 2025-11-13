@@ -585,4 +585,13 @@ public struct VectorPair
         this.to = to;
     }
 }
+
+[Serializable]
+public struct ArcMoveData
+{
+    public VectorPair positions;
+    public float elapsed;
+    public float duration;
+}
+
 #endregion

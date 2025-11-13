@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -28,7 +29,8 @@ public class JuiceManager : Singleton<JuiceManager>
     [Header("Combo Visualization")]
     [SerializeField] private GameObject _comboVFX;
     [SerializeField] private Vector3 _spawnOffset = new Vector3(0,.2f,0);
-    [SerializeField] private float _comboMovementSpeed = 1f;
+    [SerializeField] private float _comboMovementDuration = 0.5f;
+    [SerializeField] private float _durationJitter = 0.10f; // in seconds
     [SerializeField] float _arcHeightPerUnit = 0.15f;
     [SerializeField] float _arcMinHeight = 1f;    
     #endregion
@@ -36,8 +38,8 @@ public class JuiceManager : Singleton<JuiceManager>
     private GameObject _popUpVisualizingCombo;
     private bool _playingIncomingComboVFX;
     private bool _playingOutgoingComboVFX;
-    private Dictionary<GameObject, VectorPair> _incomingVFX = new Dictionary<GameObject, VectorPair>();
-    private Dictionary<GameObject, VectorPair> _outgoingVFX = new Dictionary<GameObject, VectorPair>();
+    private Dictionary<GameObject, ArcMoveData> _incomingVFX = new Dictionary<GameObject, ArcMoveData>();
+    private Dictionary<GameObject, ArcMoveData> _outgoingVFX = new Dictionary<GameObject, ArcMoveData>();
 
     public GameObject PopUpVisualizingCombo { get => _popUpVisualizingCombo; set => _popUpVisualizingCombo = value; }
 
@@ -186,36 +188,45 @@ public class JuiceManager : Singleton<JuiceManager>
         if (_playingIncomingComboVFX)
         {
             _playingIncomingComboVFX = false;
-            foreach (var kvp in _incomingVFX)
+
+            foreach (var key in _incomingVFX.Keys.ToList())
             {
-                if (kvp.Key.activeSelf)
+                if (key.activeSelf)
                 {
                     _playingIncomingComboVFX = true;
 
-                    bool arrived = MoveWithArc(kvp.Key, kvp.Value, _comboMovementSpeed);
+                    var data = _incomingVFX[key];
+                    bool arrived = MoveWithArc(key, ref data);
+                    _incomingVFX[key] = data;
+
                     if (arrived)
-                        kvp.Key.SetActive(false);
+                        key.SetActive(false);
                 }
             }
+
             if (!_playingIncomingComboVFX)
             {
                 _playingOutgoingComboVFX = true;
-                foreach (var kvp in _outgoingVFX)
-                    kvp.Key.SetActive(true);
+                foreach (var key in _outgoingVFX.Keys)
+                    key.SetActive(true);
             }
         }
         else if (_playingOutgoingComboVFX)
         {
             _playingOutgoingComboVFX = false;
-            foreach (var kvp in _outgoingVFX)
+
+            foreach (var key in _outgoingVFX.Keys.ToList())
             {
-                if (kvp.Key.activeSelf)
+                if (key.activeSelf)
                 {
                     _playingOutgoingComboVFX = true;
 
-                    bool arrived = MoveWithArc(kvp.Key, kvp.Value, _comboMovementSpeed);
+                    var data = _outgoingVFX[key];
+                    bool arrived = MoveWithArc(key, ref data);
+                    _outgoingVFX[key] = data;
+
                     if (arrived)
-                        kvp.Key.SetActive(false);
+                        key.SetActive(false);
                 }
             }
         }
@@ -225,16 +236,10 @@ public class JuiceManager : Singleton<JuiceManager>
         }
     }
 
-    private bool MoveWithArc(GameObject go, in VectorPair positions, float speed)
+    private bool MoveWithArc(GameObject go, ref ArcMoveData data)
     {
-        // Moving on a straight line
-        Vector3 nextLinear = Vector3.MoveTowards(
-            go.transform.position,
-            positions.to,
-            speed * Time.deltaTime
-        );
+        VectorPair positions = data.positions;
 
-        // Get total distance
         Vector3 axis = positions.to - positions.from;
         float totalDist = axis.magnitude;
         if (totalDist <= Mathf.Epsilon)
@@ -242,23 +247,34 @@ public class JuiceManager : Singleton<JuiceManager>
             go.transform.position = positions.to;
             return true;
         }
+
         Vector3 axisDir = axis / totalDist;
 
-        // Progression
-        float traveled = Vector3.Dot(nextLinear - positions.from, axisDir);
-        float t = Mathf.Clamp01(traveled / totalDist);
+        data.elapsed += Time.deltaTime;
+        float t = Mathf.Clamp01(data.elapsed / data.duration);
+
         Vector3 flat = positions.from + axisDir * (t * totalDist);
-        // Arc movement
+
         float arcHeight = Mathf.Max(_arcMinHeight, _arcHeightPerUnit * totalDist);
-        flat.y = Mathf.Lerp(positions.from.y, positions.to.y, t) + arcHeight * Mathf.Sin(Mathf.PI * t);
+        flat.y = Mathf.Lerp(positions.from.y, positions.to.y, t)
+                 + arcHeight * Mathf.Sin(Mathf.PI * t);
 
         go.transform.position = flat;
-        if (t >= .999f)
+
+        if (t >= 0.999f)
         {
             go.transform.position = positions.to;
             return true;
         }
+
         return false;
+    }
+
+    private float GetRandomDuration()
+    {
+        float dur = _comboMovementDuration
+                    + Random.Range(-_durationJitter, _durationJitter);
+        return Mathf.Max(0.01f, dur);
     }
 
     private void StartComboAnimation(bool resetPos = false)
@@ -266,29 +282,48 @@ public class JuiceManager : Singleton<JuiceManager>
         if (resetPos)
         {
             foreach (var kvp in _incomingVFX)
-            {
-                kvp.Key.transform.position = kvp.Value.from;
-            }
+                kvp.Key.transform.position = kvp.Value.positions.from;
+
             foreach (var kvp in _outgoingVFX)
-            {
-                kvp.Key.transform.position = kvp.Value.from;
-            }
+                kvp.Key.transform.position = kvp.Value.positions.from;
         }
 
-        if (_incomingVFX.Count != 0 || _outgoingVFX.Count != 0)
+        if (_incomingVFX.Count == 0 && _outgoingVFX.Count == 0)
+            return;
+
+        foreach (var key in _incomingVFX.Keys.ToList())
         {
-            if (_incomingVFX.Count != 0)
-            {
-                _playingIncomingComboVFX = true;
-                foreach (var kvp in _incomingVFX)
-                    kvp.Key.SetActive(true);
-            }
-            else
-            {
-                _playingOutgoingComboVFX = true;
-                foreach (var kvp in _outgoingVFX)
-                    kvp.Key.SetActive(true);
-            }
+            var data = _incomingVFX[key];
+            data.elapsed = 0f;
+            data.duration = GetRandomDuration();
+            _incomingVFX[key] = data;
+            key.SetActive(false);
+        }
+
+        foreach (var key in _outgoingVFX.Keys.ToList())
+        {
+            var data = _outgoingVFX[key];
+            data.elapsed = 0f;
+            data.duration = GetRandomDuration();
+            _outgoingVFX[key] = data;
+            key.SetActive(false);
+        }
+
+        if (_incomingVFX.Count != 0)
+        {
+            _playingIncomingComboVFX = true;
+            _playingOutgoingComboVFX = false;
+
+            foreach (var key in _incomingVFX.Keys)
+                key.SetActive(true);
+        }
+        else
+        {
+            _playingIncomingComboVFX = false;
+            _playingOutgoingComboVFX = true;
+
+            foreach (var key in _outgoingVFX.Keys)
+                key.SetActive(true);
         }
     }
 
@@ -307,20 +342,36 @@ public class JuiceManager : Singleton<JuiceManager>
         _outgoingVFX.Clear();
     }
 
-    private void CreateEntertainmentComboVFX(Tile fromTile, Tile toTile, int points, Dictionary<GameObject, VectorPair> direction)
+    private void CreateEntertainmentComboVFX(Tile fromTile, Tile toTile, int points, Dictionary<GameObject, ArcMoveData> direction)
     {
         GameObject vfx = Instantiate(_comboVFX, fromTile.transform.position + _spawnOffset, CameraManager.Instance.transform.rotation);
         TextMeshPro text = vfx.GetComponentInChildren<TextMeshPro>();
         text.text = "+" + points.ToString() + "<sprite name=\"Point_Emoji\">";
-        direction.Add(vfx, new VectorPair(vfx.transform.position, toTile.transform.position + _spawnOffset));
+        direction.Add(vfx, new ArcMoveData
+        {
+            positions = new VectorPair(
+                vfx.transform.position,
+                toTile.transform.position + _spawnOffset
+            ),
+            elapsed = 0f,
+            duration = 0f
+        });
     }
 
-    private void CreateExploitationComboVFX(Tile fromTile, Tile toTile, string textContent, Dictionary<GameObject, VectorPair> direction)
+    private void CreateExploitationComboVFX(Tile fromTile, Tile toTile, string textContent, Dictionary<GameObject, ArcMoveData> direction)
     {
         GameObject vfx = Instantiate(_comboVFX, fromTile.transform.position + _spawnOffset, CameraManager.Instance.transform.rotation);
         TextMeshPro textObject = vfx.GetComponentInChildren<TextMeshPro>();
         textObject.text = textContent;
-        direction.Add(vfx, new VectorPair(vfx.transform.position, toTile.transform.position + _spawnOffset));
+        direction.Add(vfx, new ArcMoveData
+        {
+            positions = new VectorPair(
+                vfx.transform.position,
+                toTile.transform.position + _spawnOffset
+            ),
+            elapsed = 0f,
+            duration = 0f
+        });
     }
 
     public bool VisualizeExploitationCombo(
