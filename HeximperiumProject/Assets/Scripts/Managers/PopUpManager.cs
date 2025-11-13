@@ -39,8 +39,8 @@ public class PopUpManager : Singleton<PopUpManager>
     private float _hoverTimer;
     private float _delayedHoverTimer;//For filling image purpose
     private List<GameObject> _popUps = new List<GameObject>();
-    private Dictionary<SpecialBehaviour, Tile> _highlightingBehaviours = new Dictionary<SpecialBehaviour, Tile>();
-    private Dictionary<SpecialEffect, Tile> _highlightingEffects = new Dictionary<SpecialEffect, Tile>();
+    //private Dictionary<SpecialBehaviour, Tile> _highlightingBehaviours = new Dictionary<SpecialBehaviour, Tile>();
+    //private Dictionary<SpecialEffect, Tile> _highlightingEffects = new Dictionary<SpecialEffect, Tile>();
     private float _maxAllowed;
     private float _minAllowed;
     private bool _popUpShown;
@@ -287,6 +287,7 @@ public class PopUpManager : Singleton<PopUpManager>
             }
             _popUps.Clear();
         }
+        /*
         if (_highlightingBehaviours.Count > 0)
         {
             foreach (KeyValuePair<SpecialBehaviour, Tile> item in _highlightingBehaviours)
@@ -303,6 +304,7 @@ public class PopUpManager : Singleton<PopUpManager>
             }
             _highlightingEffects.Clear();
         }
+        */
         if (_lockingImage != null)
         {
             StopLockingPopup();
@@ -841,8 +843,10 @@ public class PopUpManager : Singleton<PopUpManager>
                 behaviourText.text = "<sprite name=\"Puce_Emoji\"> " + behaviour.GetBehaviourDescription();
                 textObjects.Add(behaviourText.GetComponent<RectTransform>());
                 ClampTextWidth(behaviourText);
+                /*
                 behaviour.HighlightImpactedTile(tile, true);
                 _highlightingBehaviours.Add(behaviour, tile);
+                */
             }
         }
         #endregion
@@ -1058,8 +1062,10 @@ public class PopUpManager : Singleton<PopUpManager>
                 effectText.text = "<sprite name=\"Puce_Emoji\"> " + effect.GetBehaviourDescription();
                 textObjects.Add(effectText.GetComponent<RectTransform>());
                 ClampTextWidth(effectText);
+                /*
                 effect.HighlightImpactedEntertainment(ent.Tile, true);
                 _highlightingEffects.Add(effect, ent.Tile);
+                */
             }
         }
         #endregion
@@ -1330,8 +1336,10 @@ public class PopUpManager : Singleton<PopUpManager>
                 effectText.text = "<sprite name=\"Puce_Emoji\"> " + effect.GetBehaviourDescription();
                 textObjects.Add(effectText.GetComponent<RectTransform>());
                 ClampTextWidth(effectText);
+                /*
                 effect.HighlightImpactedEntertainment(button.AssociatedTile, true);
                 _highlightingEffects.Add(effect, button.AssociatedTile);
+                */
             }
         }
         #endregion
@@ -1550,8 +1558,10 @@ public class PopUpManager : Singleton<PopUpManager>
                 behaviourText.text = "<sprite name=\"Puce_Emoji\"> " + behaviour.GetBehaviourDescription();
                 textObjects.Add(behaviourText.GetComponent<RectTransform>());
                 ClampTextWidth(behaviourText);
+                /*
                 behaviour.HighlightImpactedTile(button.AssociatedTile, true);
                 _highlightingBehaviours.Add(behaviour, button.AssociatedTile);
+                */
             }
         }
         #endregion
