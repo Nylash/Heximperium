@@ -714,7 +714,7 @@ public class PopUpManager : Singleton<PopUpManager>
                         if (datas.ContainsKey(kvp.Key.TileData))
                             datas[kvp.Key.TileData] = Utilities.MergeResourceToIntMaps(datas[kvp.Key.TileData], kvp.Value);
                         else
-                            datas.Add(kvp.Key.TileData, new List<ResourceToIntMap>(kvp.Value));
+                            datas.Add(kvp.Key.TileData, Utilities.CloneResourceToIntMaps(kvp.Value));
                     }
                     foreach (var kvpBis in datas)
                     {
@@ -791,7 +791,7 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         #region BONUS INCOME CALCULATION
-        List<ResourceToIntMap> incomeBonus = new List<ResourceToIntMap>(tile.TileData.Incomes);
+        List<ResourceToIntMap> incomeBonus = Utilities.CloneResourceToIntMaps(tile.TileData.Incomes);
         if (tile.InitialData.Incomes.Count > 0 && tile.TileData != tile.InitialData)
         {
             incomeBonus = Utilities.MergeResourceToIntMaps(incomeBonus, tile.InitialData.Incomes);
@@ -1446,7 +1446,7 @@ public class PopUpManager : Singleton<PopUpManager>
                         if (datas.ContainsKey(kvp.Key.TileData))
                             datas[kvp.Key.TileData] = Utilities.MergeResourceToIntMaps(datas[kvp.Key.TileData], kvp.Value);
                         else
-                            datas.Add(kvp.Key.TileData, new List<ResourceToIntMap>(kvp.Value));
+                            datas.Add(kvp.Key.TileData, Utilities.CloneResourceToIntMaps(kvp.Value));
                     }
                     foreach (var kvpBis in datas)
                     {

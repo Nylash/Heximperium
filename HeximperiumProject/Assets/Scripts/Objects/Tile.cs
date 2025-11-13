@@ -183,7 +183,7 @@ public class Tile : MonoBehaviour
         _initialData = data;
         _tileData = data;
         name = _tileData.TileName + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
-        _incomes = data.Incomes;
+        _incomes = Utilities.CloneResourceToIntMaps(data.Incomes);
     }
 
     public void UpdateIncomes(List<ResourceToIntMap> inputIncomes, bool merge, Tile extSource = null, Tile intSource = null)
@@ -194,7 +194,7 @@ public class Tile : MonoBehaviour
             return;
         }
 
-        List<ResourceToIntMap> previousIncomes = _incomes;
+        List<ResourceToIntMap> previousIncomes = Utilities.CloneResourceToIntMaps(_incomes);
 
         if (merge)
         {
@@ -214,7 +214,7 @@ public class Tile : MonoBehaviour
             UpdateSourceOrImpactedTiles(_internalIncomesSources, merge, intSource, inputIncomes, true);
         }
 
-        OnIncomeModified?.Invoke(this, previousIncomes, _incomes);
+        OnIncomeModified?.Invoke(this, Utilities.CloneResourceToIntMaps(previousIncomes), Utilities.CloneResourceToIntMaps(_incomes));
         if (UIManager.Instance.AreIncomesShown)
             ShowIncomeUI(true);
     }
@@ -231,7 +231,7 @@ public class Tile : MonoBehaviour
         if (_incomes.Count == 0)
             return new List<ResourceToIntMap>();
         if (_externalIncomesSources.Count == 0)
-            return _incomes;
+            return Utilities.CloneResourceToIntMaps(_incomes);
 
         List<ResourceToIntMap> incomeFromTileOnly = new List<ResourceToIntMap>();
         incomeFromTileOnly = Utilities.MergeResourceToIntMaps(incomeFromTileOnly, _incomes);
@@ -547,7 +547,7 @@ public class Tile : MonoBehaviour
         if (merge)
         {
             if (!dictionary.ContainsKey(refTile))
-                dictionary.Add(refTile, new List<ResourceToIntMap>(inputIncomes));
+                dictionary.Add(refTile, Utilities.CloneResourceToIntMaps(inputIncomes));
             else
                 dictionary[refTile] = Utilities.MergeResourceToIntMaps(dictionary[refTile], inputIncomes);
         }

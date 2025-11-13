@@ -156,6 +156,17 @@ public static class Utilities
         return groupedA.Count == groupedB.Count &&
                groupedA.All(kvp => groupedB.TryGetValue(kvp.Key, out int v) && v == kvp.Value);
     }
+
+    public static List<ResourceToIntMap> CloneResourceToIntMaps(IEnumerable<ResourceToIntMap> source)
+    {
+        if (source == null)
+            return new List<ResourceToIntMap>();
+
+        return source
+            .Select(item => new ResourceToIntMap(item.resource, item.value))
+            .ToList();
+    }
+
     #endregion
 
     #region CUSTOM STRINGS
