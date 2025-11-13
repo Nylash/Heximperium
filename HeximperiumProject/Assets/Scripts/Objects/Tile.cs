@@ -29,6 +29,7 @@ public class Tile : MonoBehaviour
 
     private Dictionary<Tile, List<ResourceToIntMap>> _externalIncomesSources = new Dictionary<Tile, List<ResourceToIntMap>>(); // Income coming from other tiles behaviours
     private Dictionary<Tile, List<ResourceToIntMap>> _internalIncomesSources = new Dictionary<Tile, List<ResourceToIntMap>>(); // Income coming from this tile behaviours
+    private Dictionary<Tile, int> _internalCarnivalistsSources = new Dictionary<Tile, int>(); // There is only internal source of carnivalists
     private int _claimIncome = 0;
     private Tile[] _neighbors = new Tile[6];
     private TileData _initialData;
@@ -145,6 +146,7 @@ public class Tile : MonoBehaviour
     public Dictionary<Tile, int> ImpactedTilesCarnivalists { get => _impactedTilesCarnivalists; }
     public Dictionary<Tile, List<ResourceToIntMap>> InternalIncomesSources { get => _internalIncomesSources; }
     public List<ResourceToIntMap> IncomeWithPreviousData { get => _incomeWithPreviousData; }
+    public Dictionary<Tile, int> InternalCarnivalistsSources { get => _internalCarnivalistsSources; }
     #endregion
 
     private void Awake()
@@ -217,9 +219,16 @@ public class Tile : MonoBehaviour
             ShowIncomeUI(true);
     }
 
-    public void UpdateCarnivalists(int value)
+    public void UpdateCarnivalists(int value, Tile source = null)
     {
         _recruitedCarnivalists += value;
+
+        if (source != null)
+        {
+            UpdateSourceCarnivalists(source, value);
+            source.UpdateImpactedTilesCarnivalists(this, value);
+        }
+
         if (UIManager.Instance.AreIncomesShown)
             ShowIncomeUI(true);
     }
@@ -569,6 +578,16 @@ public class Tile : MonoBehaviour
         dictionary[refTile].RemoveAll(r => r.value == 0);
         if (dictionary[refTile].Count == 0)
             dictionary.Remove(refTile);
+    }
+
+    private void UpdateSourceCarnivalists(Tile source, int carnivalistsQuantity)
+    {
+        if (!_internalCarnivalistsSources.ContainsKey(source))
+            _internalCarnivalistsSources.Add(source, carnivalistsQuantity);
+        else
+            _internalCarnivalistsSources[source] += carnivalistsQuantity;
+        if (_internalCarnivalistsSources[source] <= 0)
+            _internalCarnivalistsSources.Remove(source);
     }
 
     public void UpdateImpactedTilesCarnivalists(Tile tile, int carnivalistPoints)

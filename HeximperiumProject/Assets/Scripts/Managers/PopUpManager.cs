@@ -656,7 +656,9 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         else
         {
-            // COMBO HERE
+            isVisualizingCombo = JuiceManager.Instance.VisualizeExploitationCombo(
+                tile.InternalIncomesSources, tile.ExternalIncomesSources, tile.InternalCarnivalistsSources,
+                tile.ImpactedTilesIncomes, tile.ImpactedTilesCarnivalists, tile);
         }
 
         GameObject popUp;
@@ -1371,14 +1373,18 @@ public class PopUpManager : Singleton<PopUpManager>
         int predictectedCarnivalists;
         Dictionary<Tile, List<ResourceToIntMap>> predictedExtSources;
         Dictionary<Tile, List<ResourceToIntMap>> predictedIntSources;
+        Dictionary<Tile, int> predictedInternalCarnivalistsSources;
         Dictionary<Tile, List<ResourceToIntMap>> predictedImpactedTilesIncomes;
         Dictionary<Tile, int> predictedImpactedTilesCarnivalists;
         ExploitationManager.Instance.GetPredictedIncomes(button.AssociatedTile, button.InfrastructureData,
             out predictedInc, out predictedExtSources, out predictedIntSources,
-            out predictedSelfInc, out predictectedCarnivalists,
+            out predictedSelfInc, out predictectedCarnivalists, out predictedInternalCarnivalistsSources,
             out predictedImpactedTilesIncomes, out predictedImpactedTilesCarnivalists);
 
-        bool isVisualizingCombo = false; // Call here JuiceManager when implemented
+        bool isVisualizingCombo = JuiceManager.Instance.VisualizeExploitationCombo(
+            predictedIntSources, predictedExtSources, predictedInternalCarnivalistsSources,
+            predictedImpactedTilesIncomes, predictedImpactedTilesCarnivalists,
+            button.AssociatedTile);
 
         GameObject popUp;
         popUp = Instantiate(_basePopUp, _popUpParent);

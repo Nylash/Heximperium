@@ -15,8 +15,7 @@ public class GenerateCarnivalistPerOccurrenceInEmpire : SpecialBehaviour
             {
                 ResourcesManager.Instance.UpdateCarnivalist(_carnivalistQuantity, Transaction.Gain, behaviourTile);
                 ResourcesManager.Instance.UpdateCarnivalistSource(behaviourTile.TileData, _carnivalistQuantity, Transaction.Gain);
-                behaviourTile.UpdateCarnivalists(_carnivalistQuantity);
-                tile.UpdateImpactedTilesCarnivalists(behaviourTile, _carnivalistQuantity);
+                behaviourTile.UpdateCarnivalists(_carnivalistQuantity, tile);
             }
         }
         ExploitationManager.Instance.OnInfraBuilded -= behaviourTile.ListenerOnInfraBuilded_GenerateCarnivalistPerOccurrenceInEmpire;
@@ -33,8 +32,7 @@ public class GenerateCarnivalistPerOccurrenceInEmpire : SpecialBehaviour
             {
                 ResourcesManager.Instance.UpdateCarnivalist(_carnivalistQuantity, Transaction.Spent, behaviourTile);
                 ResourcesManager.Instance.UpdateCarnivalistSource(behaviourTile.TileData, _carnivalistQuantity, Transaction.Spent);
-                behaviourTile.UpdateCarnivalists(-_carnivalistQuantity);
-                tile.UpdateImpactedTilesCarnivalists(behaviourTile, -_carnivalistQuantity);
+                behaviourTile.UpdateCarnivalists(-_carnivalistQuantity, tile);
             }
         }
 
@@ -62,8 +60,7 @@ public class GenerateCarnivalistPerOccurrenceInEmpire : SpecialBehaviour
                 return;
             ResourcesManager.Instance.UpdateCarnivalist(_carnivalistQuantity, Transaction.Gain, behaviourTile);
             ResourcesManager.Instance.UpdateCarnivalistSource(behaviourTile.TileData, _carnivalistQuantity, Transaction.Gain);
-            behaviourTile.UpdateCarnivalists(_carnivalistQuantity);
-            tile.UpdateImpactedTilesCarnivalists(behaviourTile, _carnivalistQuantity);
+            behaviourTile.UpdateCarnivalists(_carnivalistQuantity, tile);
         }
         else
         {
@@ -72,8 +69,7 @@ public class GenerateCarnivalistPerOccurrenceInEmpire : SpecialBehaviour
             {
                 ResourcesManager.Instance.UpdateCarnivalist(_carnivalistQuantity, Transaction.Spent, behaviourTile);
                 ResourcesManager.Instance.UpdateCarnivalistSource(behaviourTile.TileData, _carnivalistQuantity, Transaction.Spent);
-                behaviourTile.UpdateCarnivalists(-_carnivalistQuantity);
-                tile.UpdateImpactedTilesCarnivalists(behaviourTile, -_carnivalistQuantity);
+                behaviourTile.UpdateCarnivalists(-_carnivalistQuantity, tile);
             }
         }
     }
@@ -84,8 +80,7 @@ public class GenerateCarnivalistPerOccurrenceInEmpire : SpecialBehaviour
         {
             ResourcesManager.Instance.UpdateCarnivalist(_carnivalistQuantity, Transaction.Spent, behaviourTile);
             ResourcesManager.Instance.UpdateCarnivalistSource(behaviourTile.TileData, _carnivalistQuantity, Transaction.Spent);
-            behaviourTile.UpdateCarnivalists(-_carnivalistQuantity);
-            tile.UpdateImpactedTilesCarnivalists(behaviourTile, -_carnivalistQuantity);
+            behaviourTile.UpdateCarnivalists(-_carnivalistQuantity, tile);
         }
     }
 

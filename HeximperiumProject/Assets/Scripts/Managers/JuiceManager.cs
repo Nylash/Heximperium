@@ -312,9 +312,90 @@ public class JuiceManager : Singleton<JuiceManager>
         GameObject vfx = Instantiate(_comboVFX, fromTile.transform.position + _spawnOffset, CameraManager.Instance.transform.rotation);
         TextMeshPro text = vfx.GetComponentInChildren<TextMeshPro>();
         text.text = "+" + points.ToString() + "<sprite name=\"Point_Emoji\">";
-        text.color = UIManager.Instance.ColorEntertain;
         direction.Add(vfx, new VectorPair(vfx.transform.position, toTile.transform.position + _spawnOffset));
     }
+
+    private void CreateExploitationComboVFX(Tile fromTile, Tile toTile, string textContent, Dictionary<GameObject, VectorPair> direction)
+    {
+        GameObject vfx = Instantiate(_comboVFX, fromTile.transform.position + _spawnOffset, CameraManager.Instance.transform.rotation);
+        TextMeshPro textObject = vfx.GetComponentInChildren<TextMeshPro>();
+        textObject.text = textContent;
+        direction.Add(vfx, new VectorPair(vfx.transform.position, toTile.transform.position + _spawnOffset));
+    }
+
+    public bool VisualizeExploitationCombo(
+        Dictionary<Tile, List<ResourceToIntMap>> internalIncomeSources, Dictionary<Tile, List<ResourceToIntMap>> externalIncomeSources,
+        Dictionary<Tile, int> internalCarnivalistsSources,
+        Dictionary<Tile, List<ResourceToIntMap>> impactedTilesIncomes, Dictionary<Tile, int> impactedTilesCarnivalists,
+        Tile refTile)
+    {
+        if (internalIncomeSources.Count != 0 || externalIncomeSources.Count != 0 || internalCarnivalistsSources.Count != 0)
+        {
+            Dictionary<Tile, List<ResourceToIntMap>> incomeSources = new Dictionary<Tile, List<ResourceToIntMap>>();
+            foreach (var kvp in internalIncomeSources)
+            {
+                if (kvp.Key == refTile)
+                    continue;
+                if (incomeSources.ContainsKey(kvp.Key))
+                    incomeSources[kvp.Key] = Utilities.MergeResourceToIntMaps(incomeSources[kvp.Key], kvp.Value);
+                else
+                    incomeSources[kvp.Key] = Utilities.CloneResourceToIntMaps(kvp.Value);
+            }
+            foreach (var kvpBis in externalIncomeSources)
+            {
+                if (kvpBis.Key == refTile)
+                    continue;
+                if (incomeSources.ContainsKey(kvpBis.Key))
+                    incomeSources[kvpBis.Key] = Utilities.MergeResourceToIntMaps(incomeSources[kvpBis.Key], kvpBis.Value);
+                else
+                    incomeSources[kvpBis.Key] = Utilities.CloneResourceToIntMaps(kvpBis.Value);
+            }
+            Dictionary<Tile, string> sourcesToText = new Dictionary<Tile, string>();
+            foreach (var kvpTer in incomeSources)
+            {
+                sourcesToText[kvpTer.Key] = kvpTer.Value.IncomeToString();
+            }
+            foreach (var kvpQuatro in internalCarnivalistsSources)
+            {
+                if (kvpQuatro.Key == refTile)
+                    continue;
+                if (sourcesToText.ContainsKey(kvpQuatro.Key))
+                    sourcesToText[kvpQuatro.Key] += $" & {kvpQuatro.Value}<sprite name=\"Carnivalist_Emoji\">";
+                else
+                    sourcesToText[kvpQuatro.Key] = $"{kvpQuatro.Value}<sprite name=\"Carnivalist_Emoji\">";
+            }
+            foreach (var kvp in sourcesToText)
+            {
+                CreateExploitationComboVFX(kvp.Key, refTile, kvp.Value, _incomingVFX);
+            }
+        }
+        if (impactedTilesIncomes.Count != 0 || impactedTilesCarnivalists.Count != 0)
+        {
+            Dictionary<Tile, string> impactToText = new Dictionary<Tile, string>();
+            foreach (var kvp in impactedTilesIncomes)
+            {
+                if (kvp.Key == refTile)
+                    continue;
+                impactToText[kvp.Key] = kvp.Value.IncomeToString();
+            }
+            foreach (var kvpBis in impactedTilesCarnivalists)
+            {
+                if (kvpBis.Key == refTile)
+                    continue;
+                if (impactToText.ContainsKey(kvpBis.Key))
+                    impactToText[kvpBis.Key] += $" & {kvpBis.Value}<sprite name=\"Carnivalist_Emoji\">";
+                else
+                    impactToText[kvpBis.Key] = $"{kvpBis.Value}<sprite name=\"Carnivalist_Emoji\">";
+            }
+            foreach (var kvp in impactToText)
+            {
+                CreateExploitationComboVFX(refTile, kvp.Key, kvp.Value, _outgoingVFX);
+            }
+        }
+        StartComboAnimation();
+        return (_incomingVFX.Count != 0 || _outgoingVFX.Count != 0);
+    }
+
 
     // Visualize the entertainment combo when there is a entertainment placed on refTile
     public bool VisualizeEntertainmentCombo(
