@@ -169,6 +169,16 @@ public static class Utilities
 
     #endregion
 
+    public static List<T> CloneScriptableObjects<T>(IEnumerable<T> source) where T : ScriptableObject
+    {
+        if (source == null)
+            return new List<T>();
+
+        return source
+            .Select(item => item ? ScriptableObject.Instantiate(item) : null)
+            .ToList();
+    }
+
     #region CUSTOM STRINGS
     public static string ToCustomString(this Resource value)//The "this" is used to extend the enum Resource with a method
     {
