@@ -13,7 +13,7 @@ public class BoostInfraOnEmpire : SpecialBehaviour
         {
             if (tile.TileData is InfrastructureData data && _infrastructuresBoosted.Contains(data))
             {
-                tile.UpdateIncomes(_incomeBoost, true, behaviourTile.TileData);
+                tile.UpdateIncomes(_incomeBoost, true, behaviourTile);
             }
         }
         ExploitationManager.Instance.OnInfraBuilded -= behaviourTile.ListenerOnInfraBuilded_BoostInfraOnEmpire;
@@ -28,7 +28,7 @@ public class BoostInfraOnEmpire : SpecialBehaviour
         {
             if (tile.TileData is InfrastructureData data && _infrastructuresBoosted.Contains(data))
             {
-                tile.UpdateIncomes(_incomeBoost, false, behaviourTile.TileData);
+                tile.UpdateIncomes(_incomeBoost, false, behaviourTile);
             }
         }
 
@@ -54,13 +54,13 @@ public class BoostInfraOnEmpire : SpecialBehaviour
             //Check if the previous data didn't already get the boost
             if (tile.PreviousData is InfrastructureData previousData && _infrastructuresBoosted.Contains(previousData))
                 return;
-            tile.UpdateIncomes(_incomeBoost, true, behaviourTile.TileData);
+            tile.UpdateIncomes(_incomeBoost, true, behaviourTile);
         }
         else
         {
             //Check if the previous data did get a boost, then remove it if yes
             if (tile.PreviousData is InfrastructureData previousData && _infrastructuresBoosted.Contains(previousData))
-                tile.UpdateIncomes(_incomeBoost, false, behaviourTile.TileData);
+                tile.UpdateIncomes(_incomeBoost, false, behaviourTile);
         }
     }
 
@@ -68,7 +68,7 @@ public class BoostInfraOnEmpire : SpecialBehaviour
     {
         if (tile.PreviousData is InfrastructureData data && _infrastructuresBoosted.Contains(data))
         {
-            tile.UpdateIncomes(_incomeBoost, false, behaviourTile.TileData);
+            tile.UpdateIncomes(_incomeBoost, false, behaviourTile);
         }
     }
 

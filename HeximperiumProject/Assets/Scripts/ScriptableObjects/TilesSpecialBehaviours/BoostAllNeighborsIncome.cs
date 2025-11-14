@@ -12,7 +12,7 @@ public class BoostAllNeighborsIncome : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
-            neighbor.UpdateIncomes(_incomeBoost, true, behaviourTile.TileData);
+            neighbor.UpdateIncomes(_incomeBoost, true, behaviourTile);
         }
     }
 
@@ -22,7 +22,7 @@ public class BoostAllNeighborsIncome : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
-            neighbor.UpdateIncomes(_incomeBoost, false, behaviourTile.TileData);
+            neighbor.UpdateIncomes(_incomeBoost, false, behaviourTile);
         }
     }
 

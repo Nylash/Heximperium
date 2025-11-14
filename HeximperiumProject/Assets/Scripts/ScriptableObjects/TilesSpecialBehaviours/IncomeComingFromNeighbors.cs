@@ -16,6 +16,11 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
                 continue;
             if (neighbor.Claimed)
             {
+                //Add a lister to adjust the income when a neighbor adjust its own income or change its data
+                neighbor.OnIncomeModified -= behaviourTile.ListenerOnIncomeModified;
+                neighbor.OnIncomeModified += behaviourTile.ListenerOnIncomeModified;
+                neighbor.OnTileDataModified -= behaviourTile.ListenerOnTileDataModified_IncomeComingFromNeighbors;
+                neighbor.OnTileDataModified += behaviourTile.ListenerOnTileDataModified_IncomeComingFromNeighbors;
 
                 //Don't do the adjustement if the neighbor is excluded
                 if (neighbor.TileData is InfrastructureData data && _excludedTiles.Contains(data))
@@ -29,11 +34,8 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
                         income.Add(new ResourceToIntMap(_resource, item.value));
                 }
 
-                behaviourTile.UpdateIncomes(income, true);
-
-                //Add a lister to adjust the income when a neighbor adjust its own income
-                neighbor.OnIncomeModified -= behaviourTile.ListenerOnIncomeModified;
-                neighbor.OnIncomeModified += behaviourTile.ListenerOnIncomeModified;
+                if (income.Count > 0)
+                    behaviourTile.UpdateIncomes(income, true, null, neighbor);
             }
             else
             {
@@ -46,7 +48,6 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
-        //Nothing needed, replacing by previous tile will be enough (this behaviour only modify its own tile)
         foreach (Tile neighbor in behaviourTile.Neighbors)
         {
             if (!neighbor)
@@ -65,10 +66,12 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
                         income.Add(new ResourceToIntMap(_resource, item.value));
                 }
 
-                behaviourTile.UpdateIncomes(income, false);
+                if (income.Count > 0)
+                    behaviourTile.UpdateIncomes(income, false, null, neighbor);
             }
 
             neighbor.OnIncomeModified -= behaviourTile.ListenerOnIncomeModified;
+            neighbor.OnTileDataModified -= behaviourTile.ListenerOnTileDataModified_IncomeComingFromNeighbors;
             neighbor.OnTileClaimed -= behaviourTile.ListenerOnTileClaimed_IncomeComingFromNeighbors;
         }
     }
@@ -94,6 +97,51 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
         }
     }
 
+    public void CheckNewData(
+        Tile behaviourTile,
+        Tile neighbor,
+        TileData previousData,
+        TileData newData,
+        List<ResourceToIntMap> previousIncome,
+        List<ResourceToIntMap> newIncome)
+    {
+        // previousData / newData are TileData
+        // -> if cast fail, we know they aren't exlcuded
+        bool wasExcluded = previousData is InfrastructureData prevInfra &&
+                           _excludedTiles.Contains(prevInfra);
+
+        bool isExcluded = newData is InfrastructureData newInfra &&
+                           _excludedTiles.Contains(newInfra);
+
+        // Same status, nothing to do here
+        if (wasExcluded == isExcluded)
+            return;
+
+        // Get income relative to the right resource
+        List<ResourceToIntMap> prevInc = new();
+        foreach (var item in previousIncome)
+            if (item.resource == _resource)
+                prevInc.Add(new ResourceToIntMap(_resource, item.value));
+
+        List<ResourceToIntMap> newInc = new();
+        foreach (var item in newIncome)
+            if (item.resource == _resource)
+                newInc.Add(new ResourceToIntMap(_resource, item.value));
+
+        if (!wasExcluded && isExcluded)
+        {
+            // Included -> excluded : remove previous income
+            if (prevInc.Count > 0)
+                behaviourTile.UpdateIncomes(prevInc, false, null, neighbor);
+        }
+        else if (wasExcluded && !isExcluded)
+        {
+            // Excluded -> included : add new income
+            if (newInc.Count > 0)
+                behaviourTile.UpdateIncomes(newInc, true, null, neighbor);
+        }
+    }
+
     public void CheckNewIncome(Tile behaviourTile, Tile neighbor, List<ResourceToIntMap> previousIncome, List<ResourceToIntMap> newIncome)
     {
         //Don't do the adjustement if the neighbor is excluded
@@ -114,12 +162,19 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
                 newInc.Add(new ResourceToIntMap(_resource, item.value));
         }
 
-        // Apply delta (newIncome - previousIncome)
-        behaviourTile.UpdateIncomes(Utilities.SubtractResourceToIntMaps(newInc, previousInc), true);
+        List<ResourceToIntMap> delta = Utilities.SubtractResourceToIntMaps(newInc, previousInc);
+        if (delta.Count > 0)
+            behaviourTile.UpdateIncomes(delta, true, null, neighbor);
     }
 
     public void CheckClaimedTile(Tile behaviourTile, Tile tile)
     {
+        //Add a listener to adjust the income when a neighbor adjust its own income or change its data
+        tile.OnIncomeModified -= behaviourTile.ListenerOnIncomeModified;
+        tile.OnIncomeModified += behaviourTile.ListenerOnIncomeModified;
+        tile.OnTileDataModified -= behaviourTile.ListenerOnTileDataModified_IncomeComingFromNeighbors;
+        tile.OnTileDataModified += behaviourTile.ListenerOnTileDataModified_IncomeComingFromNeighbors;
+
         //Don't do the adjustement if the tile is excluded
         if (tile.TileData is InfrastructureData data && _excludedTiles.Contains(data))
             return;
@@ -132,11 +187,7 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
                 income.Add(new ResourceToIntMap(_resource, item.value));
         }
 
-        behaviourTile.UpdateIncomes(income, true);
-
-        //Add a listener to adjust the income when a neighbor adjust its own income
-        tile.OnIncomeModified -= behaviourTile.ListenerOnIncomeModified;
-        tile.OnIncomeModified += behaviourTile.ListenerOnIncomeModified;
+        behaviourTile.UpdateIncomes(income, true, null, tile);
     }
 
     public override string GetBehaviourDescription()

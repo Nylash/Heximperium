@@ -22,7 +22,7 @@ public class NeighborsBoostingIncome : SpecialBehaviour
         foreach (Tile neighbor in directNeighbors)
         {
             if (neighbor.TileData is InfrastructureData d1 && _boostingInfrastructures.Contains(d1))
-                behaviourTile.UpdateIncomes(_incomeBoost, true);
+                behaviourTile.UpdateIncomes(_incomeBoost, true, null, neighbor);
 
             neighbor.OnTileDataModified -= behaviourTile.ListenerOnTileDataModified_NeighborsBoostingIncome;
             neighbor.OnTileDataModified += behaviourTile.ListenerOnTileDataModified_NeighborsBoostingIncome;
@@ -36,7 +36,7 @@ public class NeighborsBoostingIncome : SpecialBehaviour
                 if (!seen.Add(secondNeighbor)) continue;        // skip self, ring-1, and duplicates
 
                 if (secondNeighbor.TileData is InfrastructureData d2 && _boostingInfrastructures.Contains(d2))
-                    behaviourTile.UpdateIncomes(_incomeBoost, true);
+                    behaviourTile.UpdateIncomes(_incomeBoost, true, null, secondNeighbor);
 
                 secondNeighbor.OnTileDataModified -= behaviourTile.ListenerOnTileDataModified_NeighborsBoostingIncome;
                 secondNeighbor.OnTileDataModified += behaviourTile.ListenerOnTileDataModified_NeighborsBoostingIncome;
@@ -56,7 +56,7 @@ public class NeighborsBoostingIncome : SpecialBehaviour
         foreach (Tile neighbor in directNeighbors)
         {
             if (neighbor.TileData is InfrastructureData d1 && _boostingInfrastructures.Contains(d1))
-                behaviourTile.UpdateIncomes(_incomeBoost, false);
+                behaviourTile.UpdateIncomes(_incomeBoost, false, null, neighbor);
 
             neighbor.OnTileDataModified -= behaviourTile.ListenerOnTileDataModified_NeighborsBoostingIncome;
 
@@ -69,7 +69,7 @@ public class NeighborsBoostingIncome : SpecialBehaviour
                 if (!seen.Add(secondNeighbor)) continue;        // skip self, ring-1, and duplicates
 
                 if (secondNeighbor.TileData is InfrastructureData d2 && _boostingInfrastructures.Contains(d2))
-                    behaviourTile.UpdateIncomes(_incomeBoost, false);
+                    behaviourTile.UpdateIncomes(_incomeBoost, false, null, secondNeighbor);
 
                 secondNeighbor.OnTileDataModified -= behaviourTile.ListenerOnTileDataModified_NeighborsBoostingIncome;
             }
@@ -110,13 +110,13 @@ public class NeighborsBoostingIncome : SpecialBehaviour
             //Check if the previous data didn't already applied the boost
             if (tile.PreviousData is InfrastructureData d && _boostingInfrastructures.Contains(d))
                 return;
-            behaviourTile.UpdateIncomes(_incomeBoost, true);
+            behaviourTile.UpdateIncomes(_incomeBoost, true, null, tile);
         }
         else
         {
             //Check if the previous data did apply a boost, then remove it if yes
             if (tile.PreviousData is InfrastructureData d && _boostingInfrastructures.Contains(d))
-                behaviourTile.UpdateIncomes(_incomeBoost, false);
+                behaviourTile.UpdateIncomes(_incomeBoost, false, null, tile);
         }
     }
 

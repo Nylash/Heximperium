@@ -16,7 +16,7 @@ public class BoostNeighborsIncome : SpecialBehaviour
                 continue;
             if (neighbor.TileData is InfrastructureData data && _infrastructuresBoosted.Contains(data))
             {
-                neighbor.UpdateIncomes(_incomeBoost, true, behaviourTile.TileData);
+                neighbor.UpdateIncomes(_incomeBoost, true, behaviourTile);
             }
             //BehaviourTile is needed even if the reference isn't in the method to create a unique pair of behaviourTile and neighbor, avoiding conflict between events
             neighbor.OnTileDataModified -= behaviourTile.ListenerOnTileDataModified_BoostNeighborsIncome;
@@ -33,7 +33,7 @@ public class BoostNeighborsIncome : SpecialBehaviour
                 continue;
             if (neighbor.TileData is InfrastructureData data && _infrastructuresBoosted.Contains(data))
             {
-                neighbor.UpdateIncomes(_incomeBoost, false, behaviourTile.TileData);
+                neighbor.UpdateIncomes(_incomeBoost, false, behaviourTile);
             }
             neighbor.OnTileDataModified -= behaviourTile.ListenerOnTileDataModified_BoostNeighborsIncome;
         }
@@ -59,13 +59,13 @@ public class BoostNeighborsIncome : SpecialBehaviour
             //Check if the previous data didn't already get the boost
             if (tile.PreviousData is InfrastructureData d && _infrastructuresBoosted.Contains(d))
                 return;
-            tile.UpdateIncomes(_incomeBoost, true, behaviourTile.TileData);
+            tile.UpdateIncomes(_incomeBoost, true, behaviourTile);
         }
         else
         {
             //Check if the previous data did get a boost, then remove it if yes
             if (tile.PreviousData is InfrastructureData d && _infrastructuresBoosted.Contains(d))
-                tile.UpdateIncomes(_incomeBoost, false, behaviourTile.TileData);
+                tile.UpdateIncomes(_incomeBoost, false, behaviourTile);
         }
     }
 

@@ -253,18 +253,19 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
             AnimateInteractableTiles();
     }
 
-    public void GetPredictedPoints(Tile tile, EntertainmentData data,
-        out int predictedPoints, out Dictionary<Tile, int> predictedSources, out int predictedSelfPoints, 
-        out int totalPointsGivenToEnt, out int entImpacted)
+    public void PredictEntertainmentSpawn(Tile tile, EntertainmentData data,
+        out int predictedPoints, out Dictionary<Tile, int> predictedExtSources, out Dictionary<Tile, int> predictedIntSources, out int predictedSelfPoints, 
+        out Dictionary<Tile, int> predictedEntImpactedByEnt, out Dictionary<Tile, int> predictedEntImpactedByTile)
     {
         // If there is already an entertainment, no prediction possible (possible is we spawn an entertainment right before calling this function)
         if (tile.Entertainment != null)
         {
             predictedPoints = 0;
-            predictedSources = new Dictionary<Tile, int>();
+            predictedExtSources = new Dictionary<Tile, int>();
+            predictedIntSources = new Dictionary<Tile, int>();
             predictedSelfPoints = 0;
-            totalPointsGivenToEnt = 0;
-            entImpacted = 0;
+            predictedEntImpactedByEnt = new Dictionary<Tile, int>();
+            predictedEntImpactedByTile = new Dictionary<Tile, int>();
             return;
         }
 
@@ -273,9 +274,11 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         _isPredictingPoints = true;
         SpawnEntertainment(tile, data, true);
         predictedPoints = tile.Entertainment.Points;
-        predictedSources = new Dictionary<Tile, int>(tile.Entertainment.ExternalPointsSource);
+        predictedExtSources = new Dictionary<Tile, int>(tile.Entertainment.ExternalPointsSources);
+        predictedIntSources = new Dictionary<Tile, int>(tile.Entertainment.InternalPointsSources);
         predictedSelfPoints = tile.Entertainment.GetPointsFromEntertainmentOnly();
-        tile.GetTotalPointsImpactedByThisTileEntertainment(out totalPointsGivenToEnt, out entImpacted);
+        predictedEntImpactedByEnt = new Dictionary<Tile, int>(tile.EntImpactedByEntertainment);
+        predictedEntImpactedByTile = new Dictionary<Tile, int>(tile.EntImpactedByTile);
         DestroyEntertainment(tile, true);
         _resetPredictBoolCoroutine = StartCoroutine(ResetPredictionBool());
     }

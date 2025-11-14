@@ -142,7 +142,42 @@ public static class Utilities
     {
         return incomes.FirstOrDefault(r => r.resource == resource)?.value;
     }
+
+    public static bool AreIncomesEqual(List<ResourceToIntMap> a, List<ResourceToIntMap> b)
+    {
+        if (a == null || b == null) return a == b;
+        if (a.Count != b.Count) return false;
+
+        var groupedA = a.GroupBy(r => r.resource)
+                        .ToDictionary(g => g.Key, g => g.Sum(x => x.value));
+        var groupedB = b.GroupBy(r => r.resource)
+                        .ToDictionary(g => g.Key, g => g.Sum(x => x.value));
+
+        return groupedA.Count == groupedB.Count &&
+               groupedA.All(kvp => groupedB.TryGetValue(kvp.Key, out int v) && v == kvp.Value);
+    }
+
+    public static List<ResourceToIntMap> CloneResourceToIntMaps(IEnumerable<ResourceToIntMap> source)
+    {
+        if (source == null)
+            return new List<ResourceToIntMap>();
+
+        return source
+            .Select(item => new ResourceToIntMap(item.resource, item.value))
+            .ToList();
+    }
+
     #endregion
+
+    public static List<T> CloneScriptableObjects<T>(IEnumerable<T> source) where T : ScriptableObject
+    {
+        if (source == null)
+            return new List<T>();
+
+        return source
+            .Select(item => item ? ScriptableObject.Instantiate(item) : null)
+            .ToList();
+    }
 
     #region CUSTOM STRINGS
     public static string ToCustomString(this Resource value)//The "this" is used to extend the enum Resource with a method
@@ -374,12 +409,12 @@ public static class Utilities
         wrapper.sizeDelta = Vector2.zero;
     }
 
-    public static void PlacePrefabAroundTargetTopRight(RectTransform prefabRect, RectTransform targetRect)
+    public static void PlacePrefabAroundTargetTopRight(RectTransform prefabRect, RectTransform targetRect, Vector2 offsetNorm)
     {
-        // 1) Parent commun (le parent imm�diat du prefab)
+        // 1) Parent commun (le parent immédiat du prefab)
         var parentRect = (RectTransform)prefabRect.parent;
 
-        // 2) R�cup�rer le point monde du coin haut-droit de la cible
+        // 2) Récupérer le point monde du coin haut-droit de la cible
         var corners = new Vector3[4];
         targetRect.GetWorldCorners(corners);
         Vector3 worldTopRight = corners[2];
@@ -393,28 +428,34 @@ public static class Utilities
             out localPoint
         );
 
-        // 4) Convertir en coordonn�es normalis�es [0..1] dans le parent
+        // 4) Convertir en coordonnées normalisées [0..1] dans le parent
         Vector2 parentSize = parentRect.rect.size;
-        Vector2 parentBL = -parentSize * parentRect.pivot;     // bas-gauche du parent en local
+        Vector2 parentBL = -parentSize * parentRect.pivot; // bas-gauche du parent en local
         Vector2 normalized = (localPoint - parentBL);
         normalized.x /= parentSize.x;
         normalized.y /= parentSize.y;
 
-        // 5) Conserver l��cart d�ancres (span) et les recentrer sur "normalized"
-        Vector2 span = prefabRect.anchorMax - prefabRect.anchorMin; // A CONSERVER
+        // 5) Appliquer l’offset en coordonnées normalisées
+        normalized += offsetNorm;
+
+        // 6) Conserver l’écart d’ancres (span) et recentrer sur normalized
+        Vector2 span = prefabRect.anchorMax - prefabRect.anchorMin;
         Vector2 half = span * 0.5f;
 
         Vector2 newMin = normalized - half;
         Vector2 newMax = normalized + half;
 
-        // Clamp pour rester dans [0,1]
-        newMin = new Vector2(Mathf.Clamp01(newMin.x), Mathf.Clamp01(newMin.y));
-        newMax = new Vector2(Mathf.Clamp01(newMax.x), Mathf.Clamp01(newMax.y));
+        // 7) Clamp [0,1]
+        newMin.x = Mathf.Clamp01(newMin.x);
+        newMin.y = Mathf.Clamp01(newMin.y);
+        newMax.x = Mathf.Clamp01(newMax.x);
+        newMax.y = Mathf.Clamp01(newMax.y);
 
+        // 8) Appliquer
         prefabRect.anchorMin = newMin;
         prefabRect.anchorMax = newMax;
         prefabRect.anchoredPosition = Vector2.zero;
-        }
+    }
 
     public static bool IsUnderlined(TMP_Text text, int firstChar, int lastChar)
     {
@@ -531,4 +572,26 @@ public enum Family
 {
     None, Town, Farm, Mill, Village, Inn, Lumberyard, Temple, Guild, Stonework, Entertainment
 }
+#endregion
+
+#region STRUCTS
+public struct VectorPair
+{
+    public Vector3 from;
+    public Vector3 to;
+    public VectorPair(Vector3 from, Vector3 to)
+    {
+        this.from = from;
+        this.to = to;
+    }
+}
+
+[Serializable]
+public struct ArcMoveData
+{
+    public VectorPair positions;
+    public float elapsed;
+    public float duration;
+}
+
 #endregion

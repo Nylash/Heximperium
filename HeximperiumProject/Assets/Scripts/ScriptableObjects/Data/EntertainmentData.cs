@@ -41,6 +41,6 @@ public class EntertainmentData : ScriptableObject
 
     public void ResetRuntimeSpecialEffects()
     {
-        _runtimeSpecialEffects = new List<SpecialEffect>(_specialEffects);
+        _runtimeSpecialEffects = Utilities.CloneScriptableObjects(_specialEffects);
     }
 }

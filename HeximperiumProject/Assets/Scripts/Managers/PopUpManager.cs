@@ -11,19 +11,16 @@ public class PopUpManager : Singleton<PopUpManager>
     #region CONFIGURATION
     [Header("_________________________________________________________")]
     [Header("Spawning Configuration")]
+    [SerializeField] private Transform _popUpParent;
+    [SerializeField] private Transform _popUpLockObjectParent;
     [SerializeField] private float _durationHoverForUI = 1f;
     [SerializeField][Range(0f,1f)] private float _percentageOfTimerForVisualHint = 0.75f;
     [SerializeField] private Image _timerOverImage;
     [SerializeField][Range(0, 1f)] private float _offsetBetweenSeveralPopUps;
     [SerializeField][Range(0, 1f)] private float _maxScreenFraction = 0.3f;
     [SerializeField][Range(0, 1f)] private float _minScreenFraction = 0.1f;
-    [SerializeField][Range(0, 1f)] private float _offsetNormX = 0.1f;
-    [SerializeField][Range(0, 1f)] private float _maxDistanceBetweenObjectAndPopup = 0.3f;
     [SerializeField][Range(0, 1f)] private float _offsetPopupOnCursor = 0.02f;
-    [SerializeField] private RectTransform _topLimit;
-    [SerializeField] private RectTransform _bottomLimit;
-    [SerializeField] private RectTransform _rightLimit;
-    [SerializeField] private RectTransform _leftLimit;
+    [SerializeField] private RectTransform _popUpLeftBottomAnchor;
     [Header("_________________________________________________________")]
     [Header("Prefabs")]
     [SerializeField] private GameObject _basePopUp;
@@ -34,6 +31,7 @@ public class PopUpManager : Singleton<PopUpManager>
     [SerializeField] private GameObject _lockingObject;
     [SerializeField] private GameObject _lockedObject;
     [SerializeField] private float _durationForLockingPopup = 5f;
+    [SerializeField] private Vector2 _lockImagePopupOffset;
     #endregion
 
     #region VARIABLES
@@ -41,8 +39,8 @@ public class PopUpManager : Singleton<PopUpManager>
     private float _hoverTimer;
     private float _delayedHoverTimer;//For filling image purpose
     private List<GameObject> _popUps = new List<GameObject>();
-    private Dictionary<SpecialBehaviour, Tile> _highlightingBehaviours = new Dictionary<SpecialBehaviour, Tile>();
-    private Dictionary<SpecialEffect, Tile> _highlightingEffects = new Dictionary<SpecialEffect, Tile>();
+    //private Dictionary<SpecialBehaviour, Tile> _highlightingBehaviours = new Dictionary<SpecialBehaviour, Tile>();
+    //private Dictionary<SpecialEffect, Tile> _highlightingEffects = new Dictionary<SpecialEffect, Tile>();
     private float _maxAllowed;
     private float _minAllowed;
     private bool _popUpShown;
@@ -90,6 +88,9 @@ public class PopUpManager : Singleton<PopUpManager>
                 _hoverTimer = 0.0f;
                 _timerOverImage.fillAmount = 0.0f;
                 _timerOverImage.enabled = false;
+
+                JuiceManager.Instance.KillAllComboVFX();
+
                 switch (obj.tag)
                 {
                     case "ScoutLimitUI":
@@ -162,16 +163,19 @@ public class PopUpManager : Singleton<PopUpManager>
                 _hoverTimer = 0.0f;
                 _timerOverImage.fillAmount = 0.0f;
                 _timerOverImage.enabled = false;
+
+                JuiceManager.Instance.KillAllComboVFX();
+
                 if (obj.GetComponent<Tile>() is Tile tile)
                 {
+                    if (tile.Entertainment != null)
+                        EntertainmentPopUp(tile.Entertainment);
                     TilePopUp(tile);
                     if (tile.Scouts.Count > 0)
                     {
                         foreach (Scout item in tile.Scouts)
                             ScoutPopUp(item);
                     }
-                    if (tile.Entertainment != null)
-                        EntertainmentPopUp(tile.Entertainment);
                 }
                 else if (obj.GetComponent<InteractionButton>() is InteractionButton button)
                 {
@@ -238,6 +242,9 @@ public class PopUpManager : Singleton<PopUpManager>
                 _hoverTimer = 0.0f;
                 _timerOverImage.fillAmount = 0.0f;
                 _timerOverImage.enabled = false;
+
+                JuiceManager.Instance.KillAllComboVFX();
+
                 if (family != Family.None)
                 {
                     FamilyPopup(family, refObject);
@@ -273,9 +280,14 @@ public class PopUpManager : Singleton<PopUpManager>
             foreach (GameObject item in _popUps)
             {
                 item.GetComponent<Animator>().SetTrigger("Close");
+                if (item == JuiceManager.Instance.PopUpVisualizingCombo)
+                {
+                    JuiceManager.Instance.KillAllComboVFX();
+                }
             }
             _popUps.Clear();
         }
+        /*
         if (_highlightingBehaviours.Count > 0)
         {
             foreach (KeyValuePair<SpecialBehaviour, Tile> item in _highlightingBehaviours)
@@ -292,26 +304,10 @@ public class PopUpManager : Singleton<PopUpManager>
             }
             _highlightingEffects.Clear();
         }
+        */
         if (_lockingImage != null)
         {
             StopLockingPopup();
-        }
-    }
-
-    //Used to lock a popup on screen until user closes it
-    private void Update()
-    {
-        if (_isLockingPopup && _lockingImage != null)
-        {
-            _lockingTimer += Time.deltaTime;
-            float t = (_durationForLockingPopup <= 0f) ? 1f : Mathf.Clamp01(_lockingTimer / _durationForLockingPopup);
-            _lockingImage.fillAmount = t;
-            if (_lockingTimer >= _durationForLockingPopup)
-            {
-                _isLockingPopup = false;
-                _lockingTimer = 0f;
-                LockPopup(_lockingPopup);
-            }
         }
     }
     #endregion
@@ -320,7 +316,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void LimitPopUp(string text)
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -347,7 +343,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void VisibilityPopUp()
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -378,7 +374,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void ClaimPopUp()
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -404,7 +400,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void GoldPopUp()
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -444,7 +440,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void SRPopUp()
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -470,7 +466,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void ScorePopUp()
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -517,7 +513,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void CarnivalistPopUp()
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -558,7 +554,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void ShowIncomePopUp()
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -580,7 +576,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void ShowEntPlacementPopUp()
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -602,7 +598,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void ShowDetailsPopupPopUp()
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -627,7 +623,7 @@ public class PopUpManager : Singleton<PopUpManager>
             return;
 
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -654,8 +650,21 @@ public class PopUpManager : Singleton<PopUpManager>
     #region ON TILE POP UP
     private void TilePopUp(Tile tile)
     {
+        bool isVisualizingCombo = false;
+        if (GameManager.Instance.CurrentPhase == Phase.Entertain)
+        {
+            if (!tile.Entertainment && tile.EntImpactedByTile.Count > 0) // If tile an entertainment, its popup handle the combo visualization
+                isVisualizingCombo = JuiceManager.Instance.VisualizeEntertainmentComboFromTileOnly(tile);
+        }
+        else
+        {
+            isVisualizingCombo = JuiceManager.Instance.VisualizeExploitationCombo(
+                tile.InternalIncomesSources, tile.ExternalIncomesSources, tile.InternalCarnivalistsSources,
+                tile.ImpactedTilesIncomes, tile.ImpactedTilesCarnivalists, tile);
+        }
+
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -667,7 +676,7 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         #region HAZARDOUS TILE
-        if (tile.TileData is HazardousTileData && !tile.Claimed)
+        if (tile.TileData is HazardousTileData)
         {
             TextMeshProUGUI slow = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
             slow.text = "Slow down scouts, cannot be claimed";
@@ -703,9 +712,17 @@ public class PopUpManager : Singleton<PopUpManager>
                     sourceInc.text = "(" + ownInc.IncomeToString() + " based on the tile effects)" + "\n";
                 if (tile.ExternalIncomesSources.Count > 0)
                 {
+                    Dictionary<TileData, List<ResourceToIntMap>> datas = new Dictionary<TileData, List<ResourceToIntMap>>();
                     foreach (var kvp in tile.ExternalIncomesSources)
                     {
-                        sourceInc.text += "(" + kvp.Value.IncomeToString() + " from " + kvp.Key.TileName + ")" + "\n";
+                        if (datas.ContainsKey(kvp.Key.TileData))
+                            datas[kvp.Key.TileData] = Utilities.MergeResourceToIntMaps(datas[kvp.Key.TileData], kvp.Value);
+                        else
+                            datas.Add(kvp.Key.TileData, Utilities.CloneResourceToIntMaps(kvp.Value));
+                    }
+                    foreach (var kvpBis in datas)
+                    {
+                        sourceInc.text += "(" + kvpBis.Value.IncomeToString() + " from " + kvpBis.Key.TileName + ")" + "\n";
                     }
                 }
                 sourceInc.alignment = TextAlignmentOptions.Center;
@@ -715,8 +732,70 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
-        #region INCOME BONUS
-        List<ResourceToIntMap> incomeBonus = new List<ResourceToIntMap>(tile.TileData.Incomes);
+        #region INCOMES GIVEN
+        if (tile.ImpactedTilesIncomes.Count > 0)
+        {
+            TextMeshProUGUI incomeGiven = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            List<ResourceToIntMap> totalGiven = new List<ResourceToIntMap>();
+            foreach (var kvp in tile.ImpactedTilesIncomes)
+            {
+                totalGiven = Utilities.MergeResourceToIntMaps(totalGiven, kvp.Value);
+            }
+            incomeGiven.text = $"({totalGiven.IncomeToString()} given over " +
+                $"{tile.ImpactedTilesIncomes.Count} other {(tile.ImpactedTilesIncomes.Count > 1 ? "tiles" : "tile")}" +
+                ", through effects or sheer presence)";
+            incomeGiven.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(incomeGiven.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region CARNIVALISTS
+        if (tile.RecruitedCarnivalists > 0)
+        {
+            TextMeshProUGUI carnivalists = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            carnivalists.text = tile.RecruitedCarnivalists + "<sprite name=\"Carnivalist_Emoji\">";
+            carnivalists.fontStyle = FontStyles.Bold;
+            carnivalists.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(carnivalists.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region CARNIVALISTS GIVEN
+        if (tile.ImpactedTilesCarnivalists.Count > 0)
+        {
+            TextMeshProUGUI carnivalistsGiven = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            int totalCarnivalists = 0;
+            foreach (var kvp in tile.ImpactedTilesCarnivalists)
+            {
+                totalCarnivalists += kvp.Value;
+            }
+            carnivalistsGiven.text = $"({totalCarnivalists}<sprite name=\"Carnivalist_Emoji\"> given over " +
+                $"{tile.ImpactedTilesCarnivalists.Count} other {(tile.ImpactedTilesCarnivalists.Count > 1 ? "tiles" : "tile")}" +
+                ", through effects or sheer presence)";
+            carnivalistsGiven.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(carnivalistsGiven.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region BOOSTED ENT
+        if (tile.EntImpactedByTile.Count > 0)
+        {
+            int totalPoints = 0;
+            foreach (var kvp in tile.EntImpactedByTile)
+            {
+                totalPoints += kvp.Value;
+            }
+            TextMeshProUGUI boostedEnt = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            boostedEnt.text += "(+" + totalPoints + "<sprite name=\"Point_Emoji\"> given over "
+                + tile.EntImpactedByTile.Count + " " + Family.Entertainment.ToCustomString(tile.EntImpactedByTile.Count > 1)
+                + ", through effects or sheer presence)";
+            boostedEnt.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(boostedEnt.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region BONUS INCOME CALCULATION
+        List<ResourceToIntMap> incomeBonus = Utilities.CloneResourceToIntMaps(tile.TileData.Incomes);
         if (tile.InitialData.Incomes.Count > 0 && tile.TileData != tile.InitialData)
         {
             incomeBonus = Utilities.MergeResourceToIntMaps(incomeBonus, tile.InitialData.Incomes);
@@ -731,6 +810,22 @@ public class PopUpManager : Singleton<PopUpManager>
                 }
             }
         }
+        #endregion
+
+        #region EFFECTS SEPARATION
+        if ((tile.TileData is not HazardousTileData) && 
+            (incomeBonus.Count > 0 || tile.TileData.SpecialBehaviours.Count > 0 
+            || (tile.TileData is InfrastructureData infraData && infraData.ScoutStartingPoint)))
+        {
+            TextMeshProUGUI separationEffects = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            separationEffects.text = "--- Effects ---";
+            separationEffects.fontStyle = FontStyles.Bold;
+            separationEffects.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(separationEffects.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region INCOME BONUS
         if (incomeBonus.Count > 0)
         {
             TextMeshProUGUI income = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
@@ -748,8 +843,10 @@ public class PopUpManager : Singleton<PopUpManager>
                 behaviourText.text = "<sprite name=\"Puce_Emoji\"> " + behaviour.GetBehaviourDescription();
                 textObjects.Add(behaviourText.GetComponent<RectTransform>());
                 ClampTextWidth(behaviourText);
+                /*
                 behaviour.HighlightImpactedTile(tile, true);
                 _highlightingBehaviours.Add(behaviour, tile);
+                */
             }
         }
         #endregion
@@ -764,6 +861,18 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
+        #region DETAILS SEPARATION
+        if ((tile.TileData.AvailableInfrastructures.Count > 0 && GameManager.Instance.CurrentPhase != Phase.Entertain) 
+            || (!tile.Claimed && tile.TileData is not HazardousTileData))
+        {
+            TextMeshProUGUI separationDetails = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            separationDetails.text = "--- Details ---";
+            separationDetails.fontStyle = FontStyles.Bold;
+            separationDetails.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(separationDetails.GetComponent<RectTransform>());
+        }
+        #endregion
+
         #region ENHANCEMENTS
         if (tile.TileData.AvailableInfrastructures.Count > 0 && GameManager.Instance.CurrentPhase != Phase.Entertain)
         {
@@ -773,19 +882,6 @@ public class PopUpManager : Singleton<PopUpManager>
             ClampTextWidth(enhancement);
             enhancement.fontStyle = FontStyles.Italic;
             enhancement.alignment = TextAlignmentOptions.Center;
-        }
-        #endregion
-
-        #region BOOSTED ENT
-        if (tile.EntImpactedByTile.Count > 0)
-        {
-            int totalPoints;
-            int nbOfEnt;
-            tile.GetTotalPointsImpactedByTile(out totalPoints, out nbOfEnt);
-            TextMeshProUGUI boostedEnt = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            boostedEnt.text += "(+" + totalPoints + "<sprite name=\"Point_Emoji\"> given over " + nbOfEnt + " " + Family.Entertainment.ToCustomString(nbOfEnt > 1) + ", through effects or sheer presence)";
-            boostedEnt.alignment = TextAlignmentOptions.Center;
-            textObjects.Add(boostedEnt.GetComponent<RectTransform>());
         }
         #endregion
 
@@ -809,15 +905,15 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         SetPopUpContentAnchors(textObjects);
-        PositionPopup(popUp.GetComponent<RectTransform>(), tile.transform, tile.TileData.SpecialBehaviours.Count == 0);
-        if (GameManager.Instance.CurrentPhase != Phase.Entertain)
+        PositionPopup(popUp.GetComponent<RectTransform>(), tile.transform, !isVisualizingCombo);
+        if (tile.Entertainment == null) // If tile has an entertainment, its popup will be the one lockable
             StartLockingPopup(popUp);
     }
 
     private void ScoutPopUp(Scout scout)
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -874,8 +970,13 @@ public class PopUpManager : Singleton<PopUpManager>
 
     private void EntertainmentPopUp(Entertainment ent)
     {
+        bool isVisualizingCombo = JuiceManager.Instance.VisualizeEntertainmentCombo(
+            ent.InternalPointsSources, ent.ExternalPointsSources, 
+            ent.Tile.EntImpactedByEntertainment, ent.Tile.EntImpactedByTile,
+            ent.Tile);
+
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -901,10 +1002,10 @@ public class PopUpManager : Singleton<PopUpManager>
             int predictedSelfPoints = ent.GetPointsFromEntertainmentOnly();
             if (predictedSelfPoints > 0)
                 sourceInc.text = "(+" + predictedSelfPoints + "<sprite name=\"Point_Emoji\"> based on the entertainment effects)" + "\n";
-            if (ent.ExternalPointsSource.Count > 0)
+            if (ent.ExternalPointsSources.Count > 0)
             {
                 Dictionary<TileData, int> datas = new Dictionary<TileData, int>();
-                foreach (var kvp in ent.ExternalPointsSource)
+                foreach (var kvp in ent.ExternalPointsSources)
                 {
                     if (datas.ContainsKey(kvp.Key.TileData))
                         datas[kvp.Key.TileData] += kvp.Value;
@@ -921,16 +1022,28 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         #region POINTS GIVEN
-        if (ent.Tile.TilesImpactedByEntertainment.Count > 0)
+        if (ent.Tile.EntImpactedByEntertainment.Count > 0)
         {
             TextMeshProUGUI pointsGiven = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            int pointsGivenValue;
-            int tilesImpactedCount;
-            ent.Tile.GetTotalPointsImpactedByThisTileEntertainment(out pointsGivenValue, out tilesImpactedCount);
-            pointsGiven.text = "(+" + pointsGivenValue + "<sprite name=\"Point_Emoji\"> given over " + tilesImpactedCount + " other " + Family.Entertainment.ToCustomString(tilesImpactedCount > 1) + ", through effects or sheer presence)";
+            int pointsGivenValue = 0;
+            foreach (var kvp in ent.Tile.EntImpactedByEntertainment)
+            {
+                pointsGivenValue += kvp.Value;
+            }
+            pointsGiven.text = "(+" + pointsGivenValue + "<sprite name=\"Point_Emoji\"> given over "
+                + ent.Tile.EntImpactedByEntertainment.Count + " other " + Family.Entertainment.ToCustomString(ent.Tile.EntImpactedByEntertainment.Count > 1) 
+                + ", through effects or sheer presence)";
             pointsGiven.alignment = TextAlignmentOptions.Center;
             textObjects.Add(pointsGiven.GetComponent<RectTransform>());
         }
+        #endregion
+
+        #region EFFECTS SEPARATION
+        TextMeshProUGUI separationEffects = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        separationEffects.text = "--- Effects ---";
+        separationEffects.fontStyle = FontStyles.Bold;
+        separationEffects.alignment = TextAlignmentOptions.Center;
+        textObjects.Add(separationEffects.GetComponent<RectTransform>());
         #endregion
 
         #region BASE POINTS
@@ -949,8 +1062,10 @@ public class PopUpManager : Singleton<PopUpManager>
                 effectText.text = "<sprite name=\"Puce_Emoji\"> " + effect.GetBehaviourDescription();
                 textObjects.Add(effectText.GetComponent<RectTransform>());
                 ClampTextWidth(effectText);
+                /*
                 effect.HighlightImpactedEntertainment(ent.Tile, true);
                 _highlightingEffects.Add(effect, ent.Tile);
+                */
             }
         }
         #endregion
@@ -963,7 +1078,7 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         SetPopUpContentAnchors(textObjects);
-        PositionPopup(popUp.GetComponent<RectTransform>(), ent.Tile.transform, ent.Data.SpecialEffects.Count == 0);
+        PositionPopup(popUp.GetComponent<RectTransform>(), ent.Tile.transform, !isVisualizingCombo);
         StartLockingPopup(popUp);
     }
     #endregion
@@ -972,7 +1087,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void ButtonScoutPopUp(InteractionButton button)
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -1042,7 +1157,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void ButtonRedirectScoutPopUp(InteractionButton button)
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -1058,7 +1173,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void ButtonRevealAnywherePopUp(InteractionButton button)
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -1075,7 +1190,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void ButtonClaimPopUp(InteractionButton button)
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -1103,7 +1218,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void ButtonDestroyPopUp(string text, InteractionButton button)
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -1120,8 +1235,24 @@ public class PopUpManager : Singleton<PopUpManager>
 
     private void ButtonEntertainmentPopUp(InteractionButton button)
     {
+        // Prediction
+        int predictedPoints;
+        int predictedSelfPoints;
+        Dictionary<Tile, int> predictedExtSources;
+        Dictionary<Tile, int> predictedIntSources;
+        Dictionary<Tile, int> predictedEntImpactedByEnt;
+        Dictionary<Tile, int> predictedEntImpactedByTile;
+        EntertainmentManager.Instance.PredictEntertainmentSpawn(button.AssociatedTile, button.EntertainData,
+            out predictedPoints, out predictedExtSources, out predictedIntSources, out predictedSelfPoints,
+            out predictedEntImpactedByEnt, out predictedEntImpactedByTile);
+
+        bool isVisualizionCombo = JuiceManager.Instance.VisualizeEntertainmentCombo(
+            predictedIntSources, predictedExtSources,
+            predictedEntImpactedByEnt, predictedEntImpactedByTile,
+            button.AssociatedTile);
+
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -1134,14 +1265,6 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region PREDICTED POINTS
         TextMeshProUGUI predictedIncome = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        int predictedPoints;
-        int predictedSelfPoints;
-        Dictionary<Tile, int> predictedSources;
-        int totalPointsGiven;
-        int nbOfEntImpacted;
-        EntertainmentManager.Instance.GetPredictedPoints(button.AssociatedTile, button.EntertainData,
-            out predictedPoints, out predictedSources, out predictedSelfPoints,
-            out totalPointsGiven, out nbOfEntImpacted);
         predictedIncome.text = "Predicted points: +" + predictedPoints + "<sprite name=\"Point_Emoji\">";
         predictedIncome.fontStyle = FontStyles.Bold;
         predictedIncome.alignment = TextAlignmentOptions.Center;
@@ -1154,10 +1277,10 @@ public class PopUpManager : Singleton<PopUpManager>
             TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
             if (predictedSelfPoints > 0)
                 sourceInc.text = "(+" + predictedSelfPoints + "<sprite name=\"Point_Emoji\"> based on the entertainment effects)" + "\n";
-            if (predictedSources.Count > 0)
+            if (predictedExtSources.Count > 0)
             {
                 Dictionary<TileData, int> datas = new Dictionary<TileData, int>();
-                foreach (var kvp in predictedSources)
+                foreach (var kvp in predictedExtSources)
                 {
                     if (datas.ContainsKey(kvp.Key.TileData))
                         datas[kvp.Key.TileData] += kvp.Value;
@@ -1174,13 +1297,28 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         #region POINTS GIVEN
-        if (nbOfEntImpacted > 0)
+        if (predictedEntImpactedByEnt.Count > 0)
         {
+            int totalPointsGiven = 0;
+            foreach (var kvp in predictedEntImpactedByEnt)
+            {
+                totalPointsGiven += kvp.Value;
+            }
             TextMeshProUGUI pointsGiven = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            pointsGiven.text = "(Would give +" + totalPointsGiven + "<sprite name=\"Point_Emoji\"> over " + nbOfEntImpacted + " other " + Family.Entertainment.ToCustomString(nbOfEntImpacted > 1) + ", through effects or sheer presence)";
+            pointsGiven.text = "(Would give +" + totalPointsGiven + "<sprite name=\"Point_Emoji\"> over " 
+                + predictedEntImpactedByEnt.Count + " other " + Family.Entertainment.ToCustomString(predictedEntImpactedByEnt.Count > 1) 
+                + ", through effects or sheer presence)";
             pointsGiven.alignment = TextAlignmentOptions.Center;
             textObjects.Add(pointsGiven.GetComponent<RectTransform>());
         }
+        #endregion
+
+        #region EFFECTS SEPARATION
+        TextMeshProUGUI separationEffects = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        separationEffects.text = "--- Effects ---";
+        separationEffects.fontStyle = FontStyles.Bold;
+        separationEffects.alignment = TextAlignmentOptions.Center;
+        textObjects.Add(separationEffects.GetComponent<RectTransform>());
         #endregion
 
         #region POINTS
@@ -1198,10 +1336,20 @@ public class PopUpManager : Singleton<PopUpManager>
                 effectText.text = "<sprite name=\"Puce_Emoji\"> " + effect.GetBehaviourDescription();
                 textObjects.Add(effectText.GetComponent<RectTransform>());
                 ClampTextWidth(effectText);
+                /*
                 effect.HighlightImpactedEntertainment(button.AssociatedTile, true);
                 _highlightingEffects.Add(effect, button.AssociatedTile);
+                */
             }
         }
+        #endregion
+
+        #region DETAILS SEPARATION
+        TextMeshProUGUI separationDetails = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        separationDetails.text = "--- Details ---";
+        separationDetails.fontStyle = FontStyles.Bold;
+        separationDetails.alignment = TextAlignmentOptions.Center;
+        textObjects.Add(separationDetails.GetComponent<RectTransform>());
         #endregion
 
         #region COST
@@ -1221,14 +1369,33 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         SetPopUpContentAnchors(textObjects);
-        PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, button.EntertainData.SpecialEffects.Count == 0);
+        PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, !isVisualizionCombo);
         StartLockingPopup(popUp);
     }
 
     private void ButtonInfraPopUp(InteractionButton button)
     {
+        // Get predicted income
+        List<ResourceToIntMap> predictedInc;
+        List<ResourceToIntMap> predictedSelfInc;
+        int predictectedCarnivalists;
+        Dictionary<Tile, List<ResourceToIntMap>> predictedExtSources;
+        Dictionary<Tile, List<ResourceToIntMap>> predictedIntSources;
+        Dictionary<Tile, int> predictedInternalCarnivalistsSources;
+        Dictionary<Tile, List<ResourceToIntMap>> predictedImpactedTilesIncomes;
+        Dictionary<Tile, int> predictedImpactedTilesCarnivalists;
+        ExploitationManager.Instance.GetPredictedIncomes(button.AssociatedTile, button.InfrastructureData,
+            out predictedInc, out predictedExtSources, out predictedIntSources,
+            out predictedSelfInc, out predictectedCarnivalists, out predictedInternalCarnivalistsSources,
+            out predictedImpactedTilesIncomes, out predictedImpactedTilesCarnivalists);
+
+        bool isVisualizingCombo = JuiceManager.Instance.VisualizeExploitationCombo(
+            predictedIntSources, predictedExtSources, predictedInternalCarnivalistsSources,
+            predictedImpactedTilesIncomes, predictedImpactedTilesCarnivalists,
+            button.AssociatedTile);
+
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -1239,31 +1406,43 @@ public class PopUpManager : Singleton<PopUpManager>
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
-        #region CURRENT INCOME
-        if (button.AssociatedTile.Incomes.Count > 0)
+        if (!Utilities.AreIncomesEqual(button.AssociatedTile.Incomes, predictedInc))
         {
-            TextMeshProUGUI currentIncome = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            currentIncome.text = "Current income: " + button.AssociatedTile.Incomes.IncomeToString() + " per turn";
-            currentIncome.fontStyle = FontStyles.Bold;
-            currentIncome.alignment = TextAlignmentOptions.Center;
-            textObjects.Add(currentIncome.GetComponent<RectTransform>());
-        }
-        #endregion
+            #region CURRENT INCOME
+            if (button.AssociatedTile.Incomes.Count > 0)
+            {
+                TextMeshProUGUI currentIncome = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                currentIncome.text = "Current income: " + button.AssociatedTile.Incomes.IncomeToString() + " per turn";
+                currentIncome.fontStyle = FontStyles.Bold;
+                currentIncome.alignment = TextAlignmentOptions.Center;
+                textObjects.Add(currentIncome.GetComponent<RectTransform>());
+            }
+            #endregion
 
-        #region PREDICTED INCOME
-        List<ResourceToIntMap> predictedInc;
-        List<ResourceToIntMap> predictedSelfInc;
-        Dictionary<TileData, List<ResourceToIntMap>> predictedSources;
-        ExploitationManager.Instance.GetPredictedIncomes(button.AssociatedTile, button.InfrastructureData, out predictedInc, out predictedSources, out predictedSelfInc);
-        if (predictedInc.Count > 0)
-        {
-            TextMeshProUGUI predictedIncome = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            predictedIncome.text = "Predicted income: " + predictedInc.IncomeToString() + " per turn";
-            predictedIncome.fontStyle = FontStyles.Bold;
-            predictedIncome.alignment = TextAlignmentOptions.Center;
-            textObjects.Add(predictedIncome.GetComponent<RectTransform>());
+            #region PREDICTED INCOME
+            if (predictedInc.Count > 0)
+            {
+                TextMeshProUGUI predictedIncome = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                predictedIncome.text = "Predicted income: " + predictedInc.IncomeToString() + " per turn";
+                predictedIncome.fontStyle = FontStyles.Bold;
+                predictedIncome.alignment = TextAlignmentOptions.Center;
+                textObjects.Add(predictedIncome.GetComponent<RectTransform>());
+            }
+            #endregion
         }
-        #endregion
+        else
+        {
+            #region INCOME
+            if (button.AssociatedTile.Incomes.Count > 0)
+            {
+                TextMeshProUGUI income = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                income.text = button.AssociatedTile.Incomes.IncomeToString() + " per turn";
+                income.fontStyle = FontStyles.Bold;
+                income.alignment = TextAlignmentOptions.Center;
+                textObjects.Add(income.GetComponent<RectTransform>());
+            }
+            #endregion
+        }
 
         #region INCOME SOURCES
         if (_showSourcesOnPopUp)
@@ -1273,12 +1452,19 @@ public class PopUpManager : Singleton<PopUpManager>
                 TextMeshProUGUI sourceInc = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
                 if (predictedSelfInc.Count > 0)
                     sourceInc.text = "(" + predictedSelfInc.IncomeToString() + " based on the tile effects)" + "\n";
-                if (predictedSources.Count > 0)
+                if (predictedExtSources.Count > 0)
                 {
-
-                    foreach (var kvp in predictedSources)
+                    Dictionary<TileData, List<ResourceToIntMap>> datas = new Dictionary<TileData, List<ResourceToIntMap>>();
+                    foreach (var kvp in predictedExtSources)
                     {
-                        sourceInc.text += "(" + kvp.Value.IncomeToString() + " from " + kvp.Key.TileName + ")" + "\n";
+                        if (datas.ContainsKey(kvp.Key.TileData))
+                            datas[kvp.Key.TileData] = Utilities.MergeResourceToIntMaps(datas[kvp.Key.TileData], kvp.Value);
+                        else
+                            datas.Add(kvp.Key.TileData, Utilities.CloneResourceToIntMaps(kvp.Value));
+                    }
+                    foreach (var kvpBis in datas)
+                    {
+                        sourceInc.text += "(" + kvpBis.Value.IncomeToString() + " from " + kvpBis.Key.TileName + ")" + "\n";
                     }
                 }
                 sourceInc.alignment = TextAlignmentOptions.Center;
@@ -1286,6 +1472,72 @@ public class PopUpManager : Singleton<PopUpManager>
                 textObjects.Add(sourceInc.GetComponent<RectTransform>());
             }
         }
+        #endregion
+
+        #region INCOMES GIVEN
+        if (predictedImpactedTilesIncomes.Count > 0)
+        {
+            TextMeshProUGUI incomeGiven = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            List<ResourceToIntMap> totalGiven = new List<ResourceToIntMap>();
+            foreach (var kvp in predictedImpactedTilesIncomes)
+            {
+                totalGiven = Utilities.MergeResourceToIntMaps(totalGiven, kvp.Value);
+            }
+            incomeGiven.text = $"(Would give {totalGiven.IncomeToString()} over " +
+                $"{predictedImpactedTilesIncomes.Count} other {(predictedImpactedTilesIncomes.Count > 1 ? "tiles" : "tile")}" +
+                ", through effects or sheer presence)";
+            incomeGiven.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(incomeGiven.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region CURRENT CARNIVALISTS
+        if (button.AssociatedTile.RecruitedCarnivalists > 0)
+        {
+            TextMeshProUGUI currentCarni = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            currentCarni.text = "Current recruited "+ (button.AssociatedTile.RecruitedCarnivalists > 1 ? "carnivalists" : "carnivalist") 
+                + ": " + button.AssociatedTile.RecruitedCarnivalists + "<sprite name=\"Carnivalist_Emoji\">";
+            currentCarni.fontStyle = FontStyles.Bold;
+            currentCarni.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(currentCarni.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region PREDICTED CARNIVALISTS
+        if (predictectedCarnivalists > 0)
+        {
+            TextMeshProUGUI predictedCarni = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            predictedCarni.text = "Predicted recruited " + (predictectedCarnivalists > 1 ? "carnivalists" : "carnivalist")
+                + ": " + predictectedCarnivalists + "<sprite name=\"Carnivalist_Emoji\">";
+            predictedCarni.fontStyle = FontStyles.Bold;
+            predictedCarni.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(predictedCarni.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region CARNIVALISTS GIVEN
+        if (predictedImpactedTilesCarnivalists.Count > 0)
+        {
+            TextMeshProUGUI carnivalistsGiven = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            int totalCarnivalists = 0;
+            foreach (var kvp in predictedImpactedTilesCarnivalists)
+            {
+                totalCarnivalists += kvp.Value;
+            }
+            carnivalistsGiven.text = $"(Would give {totalCarnivalists}<sprite name=\"Carnivalist_Emoji\"> over " +
+                $"{predictedImpactedTilesCarnivalists.Count} other {(predictedImpactedTilesCarnivalists.Count > 1 ? "tiles" : "tile")}" +
+                ", through effects or sheer presence)";
+            carnivalistsGiven.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(carnivalistsGiven.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region EFFECTS SEPARATION
+        TextMeshProUGUI separationEffects = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        separationEffects.text = "--- Effects ---";
+        separationEffects.fontStyle = FontStyles.Bold;
+        separationEffects.alignment = TextAlignmentOptions.Center;
+        textObjects.Add(separationEffects.GetComponent<RectTransform>());
         #endregion
 
         #region INCOME BONUS
@@ -1306,8 +1558,10 @@ public class PopUpManager : Singleton<PopUpManager>
                 behaviourText.text = "<sprite name=\"Puce_Emoji\"> " + behaviour.GetBehaviourDescription();
                 textObjects.Add(behaviourText.GetComponent<RectTransform>());
                 ClampTextWidth(behaviourText);
+                /*
                 behaviour.HighlightImpactedTile(button.AssociatedTile, true);
                 _highlightingBehaviours.Add(behaviour, button.AssociatedTile);
+                */
             }
         }
         #endregion
@@ -1320,6 +1574,14 @@ public class PopUpManager : Singleton<PopUpManager>
             textObjects.Add(scoutText.GetComponent<RectTransform>());
             ClampTextWidth(scoutText);
         }
+        #endregion
+
+        #region DETAILS SEPARATION
+        TextMeshProUGUI separationDetails = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        separationDetails.text = "--- Details ---";
+        separationDetails.fontStyle = FontStyles.Bold;
+        separationDetails.alignment = TextAlignmentOptions.Center;
+        textObjects.Add(separationDetails.GetComponent<RectTransform>());
         #endregion
 
         #region ENHANCEMENTS
@@ -1382,7 +1644,7 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         SetPopUpContentAnchors(textObjects);
-        PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, button.InfrastructureData.SpecialBehaviours.Count == 0);
+        PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, !isVisualizingCombo);
         StartLockingPopup(popUp);
     }
     #endregion
@@ -1390,6 +1652,9 @@ public class PopUpManager : Singleton<PopUpManager>
     #region POSITIONING & LAYOUT
     private void PositionPopup(RectTransform popupRect, Transform refTransform, bool nextToCursor)
     {
+        if (!nextToCursor) // If not next to cursor it indicates that we are visualizing combo with this popup;
+            JuiceManager.Instance.PopUpVisualizingCombo = popupRect.gameObject;
+
         Utilities.AnchorWrapperToContent(popupRect, popupRect.GetChild(1).GetComponent<RectTransform>());
 
         Vector3 refPos = Camera.main.WorldToScreenPoint(refTransform.position);
@@ -1406,17 +1671,13 @@ public class PopUpManager : Singleton<PopUpManager>
             }
             else
             {
-                SnapVerticalEdge(refTransform, popupRect, isBottom ? _topLimit : _bottomLimit, snapTopEdge: isBottom);
-                PlaceHorizontal(popupRect, refTransform, isLeft, _offsetNormX, _leftLimit, _rightLimit);
+                SnapToBottomLeftAnchor(popupRect);
             }
         }
         // Subsequent popups → stack relative to previous
         else
         {
-            RectTransform prev = _popUps[_popUps.Count - 2].GetComponent<RectTransform>();
-
-            SnapVerticalAfterPrev(popupRect, prev, isBottom, _offsetBetweenSeveralPopUps);
-            AlignHorizontalToPrevEdge(popupRect, prev, isLeft, _leftLimit, _rightLimit);
+            SnapToRelatives(popupRect);
         }
     }
 
@@ -1474,205 +1735,150 @@ public class PopUpManager : Singleton<PopUpManager>
         popup.offsetMax = Vector2.zero;
     }
 
-    private void SnapVerticalEdge(Transform refObject, RectTransform popup, RectTransform lineLimit, bool snapTopEdge)
+    private void SnapToRelatives(RectTransform popup)
     {
-        // assume popup.parent == lineLimit.parent
-        RectTransform parent = popup.parent as RectTransform;
+        // Récupère l'index du popup dans la liste
+        int i = _popUps.IndexOf(popup.gameObject);
+        if (i < 1) return; // rien à faire si pas de précédent
 
-        float parentH = parent.rect.height;
-        float normHeight = popup.rect.height / parentH;
-
-        // if your "line" rect has identical min/max Y anchors, either is fine:
-        float lineY = lineLimit.anchorMin.y; // == lineLimit.anchorMax.y
-
-        // avoid being too far from the reference Y (clamp the popup edge)
-        float refY = Mathf.Clamp01(Camera.main.WorldToViewportPoint(refObject.position).y);
-
-        // current edge based on which edge we snap
-        float edgeY = snapTopEdge ? (lineY - normHeight)   // bottom edge
-                                  : (lineY + normHeight);  // top edge
-
-        float dist = Mathf.Abs(edgeY - refY);
-        if (dist > _maxDistanceBetweenObjectAndPopup)
-        {
-            // keep edge on the same side of refY it currently is
-            float desiredEdge =
-                (edgeY > refY)
-                ? (refY + _maxDistanceBetweenObjectAndPopup)
-                : (refY - _maxDistanceBetweenObjectAndPopup);
-
-            // rebuild lineY from the desired edge + known height
-            lineY = snapTopEdge
-                ? (desiredEdge + normHeight)  // edge = line - H  -> line = edge + H
-                : (desiredEdge - normHeight); // edge = line + H  -> line = edge - H
-        }
-
-        Vector2 aMin = popup.anchorMin;
-        Vector2 aMax = popup.anchorMax;
-
-        if (snapTopEdge)
-        {
-            // snap popup's TOP to the line
-            aMax.y = lineY;
-            aMin.y = lineY - normHeight;
-        }
-        else
-        {
-            // snap popup's BOTTOM to the line
-            aMin.y = lineY;
-            aMax.y = lineY + normHeight;
-        }
-
-        // clamp to [0,1] to avoid drift
-        aMin.y = Mathf.Clamp01(aMin.y);
-        aMax.y = Mathf.Clamp01(aMax.y);
-
-        popup.anchorMin = aMin;
-        popup.anchorMax = aMax;
-
-        // zero offsets so it's purely anchor-driven
-        popup.anchoredPosition = new Vector2(popup.anchoredPosition.x, 0f);
-        popup.sizeDelta = new Vector2(popup.sizeDelta.x, 0f);
-    }
-
-    private void PlaceHorizontal(RectTransform popup, Transform refTransform, bool isLeft, float offsetNorm, RectTransform _leftLimit, RectTransform _rightLimit)
-    {
-        RectTransform parent = popup.parent as RectTransform;
-        float parentW = parent.rect.width;
-        float normWidth = popup.rect.width / parentW;
-
-        // 1) tile x in normalized [0..1] using viewport space (works for overlay/camera canvases covering the screen)
-        float centerNorm = Mathf.Clamp01(Camera.main.WorldToViewportPoint(refTransform.position).x);
-
-        // 2) available horizontal band from limits (assumes limits share parent and are vertical "lines")
-        float bandMin = _leftLimit.anchorMin.x;   // == _leftLimit.anchorMax.x
-        float bandMax = _rightLimit.anchorMin.x;  // == _rightLimit.anchorMax.x
-
-        // If popup wider than band, clamp to band
-        if (normWidth >= (bandMax - bandMin))
-        {
-            popup.anchorMin = new Vector2(bandMin, popup.anchorMin.y);
-            popup.anchorMax = new Vector2(bandMax, popup.anchorMax.y);
-            popup.anchoredPosition = new Vector2(0f, popup.anchoredPosition.y);
-            popup.sizeDelta = new Vector2(0f, popup.sizeDelta.y);
-            return;
-        }
-
-        // 3) initial placement: edge relative to tile.x ± offset
-        float aMinX, aMaxX;
-        if (isLeft)
-        {
-            // popup to the RIGHT of the tile: left edge starts at tile + offset
-            aMinX = centerNorm + offsetNorm;
-            aMaxX = aMinX + normWidth;
-        }
-        else
-        {
-            // popup to the LEFT of the tile: right edge ends at tile - offset
-            aMaxX = centerNorm - offsetNorm;
-            aMinX = aMaxX - normWidth;
-        }
-
-        // 4) clamp inside [bandMin, bandMax] by shifting the rect if needed
-        float shift = 0f;
-        if (aMinX < bandMin) shift = bandMin - aMinX;
-        else if (aMaxX > bandMax) shift = bandMax - aMaxX;
-
-        aMinX += shift;
-        aMaxX += shift;
-
-        // 5) assign anchors and zero offsets (pure anchor-driven on X)
-        Vector2 aMin = popup.anchorMin;
-        Vector2 aMax = popup.anchorMax;
-        aMin.x = Mathf.Clamp01(aMinX);
-        aMax.x = Mathf.Clamp01(aMaxX);
-
-        popup.anchorMin = aMin;
-        popup.anchorMax = aMax;
-
-        popup.anchoredPosition = new Vector2(0f, popup.anchoredPosition.y);
-        popup.sizeDelta = new Vector2(0f, popup.sizeDelta.y);
-    }
-
-    private void SnapVerticalAfterPrev(RectTransform popup, RectTransform prev, bool isBottom, float offsetNormY)
-    {
         RectTransform parent = (RectTransform)popup.parent;
-        float parentH = parent.rect.height;
-        float normH = popup.rect.height / parentH;
+        if (parent == null) return;
 
-        // offsetNormY is already normalized (0–1)
-        float oy = offsetNormY;
+        // Normes de taille du popup
+        float normW = popup.rect.width / parent.rect.width;
+        float normH = popup.rect.height / parent.rect.height;
 
-        float prevMinY = prev.anchorMin.y; // prev bottom
-        float prevMaxY = prev.anchorMax.y; // prev top
+        // Récupère prev et (optionnel) beforePrev
+        RectTransform prev = _popUps[i - 1]?.GetComponent<RectTransform>();
+        if (prev == null) return;
 
-        Vector2 aMin = popup.anchorMin;
-        Vector2 aMax = popup.anchorMax;
+        RectTransform beforePrev = (i >= 2) ? _popUps[i - 2]?.GetComponent<RectTransform>() : null;
 
-        if (isBottom)
+        // Décision verticale + horizontale
+        bool placeAbove;
+        bool alignLeft;
+
+        if (beforePrev == null)
         {
-            // TOP to prev BOTTOM (gap goes downward)
-            aMax.y = prevMinY - oy;
-            aMin.y = aMax.y - normH;
+            // Cas: un seul autre popup déjà placé -> quadrant du prev
+            float centerX = (prev.anchorMin.x + prev.anchorMax.x) * 0.5f;
+            float centerY = (prev.anchorMin.y + prev.anchorMax.y) * 0.5f;
+
+            bool isLeft = centerX <= 0.5f;
+            bool isBottom = centerY <= 0.5f;
+
+            placeAbove = isBottom;     // bas -> on place au-dessus, sinon en dessous
+            alignLeft = isLeft;       // gauche -> aligner sur X min, sinon X max
         }
         else
         {
-            // BOTTOM to prev TOP (gap goes upward)
-            aMin.y = prevMaxY + oy;
-            aMax.y = aMin.y + normH;
+            // Cas: plusieurs déjà placés -> reproduire la logique des deux derniers
+            float prevCenterY = (prev.anchorMin.y + prev.anchorMax.y) * 0.5f;
+            float beforePrevCenterY = (beforePrev.anchorMin.y + beforePrev.anchorMax.y) * 0.5f;
+
+            placeAbove = prevCenterY >= beforePrevCenterY;
+
+            const float eps = 1e-4f;
+            bool sameMin = Mathf.Abs(prev.anchorMin.x - beforePrev.anchorMin.x) <= eps;
+            bool sameMax = Mathf.Abs(prev.anchorMax.x - beforePrev.anchorMax.x) <= eps;
+
+            // Si les mins sont alignés, on continue à aligner à gauche, sinon à droite.
+            // (Si rien ne matche exactement, on privilégie le côté le plus proche.)
+            if (sameMin) alignLeft = true;
+            else if (sameMax) alignLeft = false;
+            else
+            {
+                // Heuristique : choisir le côté dont l'écart est le plus faible
+                float dMin = Mathf.Abs(prev.anchorMin.x - beforePrev.anchorMin.x);
+                float dMax = Mathf.Abs(prev.anchorMax.x - beforePrev.anchorMax.x);
+                alignLeft = (dMin <= dMax);
+            }
         }
 
-        aMin.y = Mathf.Clamp01(aMin.y);
-        aMax.y = Mathf.Clamp01(aMax.y);
-
-        popup.anchorMin = aMin;
-        popup.anchorMax = aMax;
-        popup.anchoredPosition = new Vector2(popup.anchoredPosition.x, 0f);
-        popup.sizeDelta = new Vector2(popup.sizeDelta.x, 0f);
-    }
-
-    private void AlignHorizontalToPrevEdge(RectTransform popup, RectTransform prev, bool isLeft, RectTransform _leftLimit, RectTransform _rightLimit)
-    {
-        RectTransform parent = (RectTransform)popup.parent;
-        float parentW = parent.rect.width;
-        float normW = popup.rect.width / parentW;
-
-        float bandMin = _leftLimit.anchorMin.x;
-        float bandMax = _rightLimit.anchorMin.x;
-
+        // Calcul des anchors
         Vector2 aMin = popup.anchorMin;
         Vector2 aMax = popup.anchorMax;
 
-        if (isLeft)
+        // Horizontal : aligner sur le bord choisi du prev
+        if (alignLeft)
         {
-            // Right edge to prev right
-            aMax.x = prev.anchorMax.x;
-            aMin.x = aMax.x - normW;
-        }
-        else
-        {
-            // Left edge to prev left
             aMin.x = prev.anchorMin.x;
             aMax.x = aMin.x + normW;
         }
+        else
+        {
+            aMax.x = prev.anchorMax.x;
+            aMin.x = aMax.x - normW;
+        }
 
-        // Clamp inside limits by shifting if necessary
-        float shift = 0f;
-        if (aMin.x < bandMin) shift = bandMin - aMin.x;
-        else if (aMax.x > bandMax) shift = bandMax - aMax.x;
+        // Vertical : empilement avec l'offset normalisé
+        float oy = _offsetBetweenSeveralPopUps;
+        if (placeAbove)
+        {
+            // au-dessus du prev
+            aMin.y = prev.anchorMax.y + oy;
+            aMax.y = aMin.y + normH;
+        }
+        else
+        {
+            // en dessous du prev
+            aMax.y = prev.anchorMin.y - oy;
+            aMin.y = aMax.y - normH;
+        }
 
-        aMin.x += shift;
-        aMax.x += shift;
-
+        // Clamp [0,1] (même philosophie que tes méthodes existantes)
         aMin.x = Mathf.Clamp01(aMin.x);
         aMax.x = Mathf.Clamp01(aMax.x);
+        aMin.y = Mathf.Clamp01(aMin.y);
+        aMax.y = Mathf.Clamp01(aMax.y);
 
+        // Appliquer
         popup.anchorMin = aMin;
         popup.anchorMax = aMax;
 
-        // zero X offsets (anchor-driven)
-        popup.anchoredPosition = new Vector2(0f, popup.anchoredPosition.y);
-        popup.sizeDelta = new Vector2(0f, popup.sizeDelta.y);
+        // Zéro offsets pour un layout 100% drivé par les anchors
+        popup.offsetMin = Vector2.zero;
+        popup.offsetMax = Vector2.zero;
+        popup.anchoredPosition = Vector2.zero;
+        popup.sizeDelta = Vector2.zero;
+    }
+
+    private void SnapToBottomLeftAnchor(RectTransform popup)
+    {
+        RectTransform parent = popup.parent as RectTransform;
+        if (parent == null) return;
+
+        // Taille du popup en normalisé du parent
+        float widthNorm = popup.rect.width / parent.rect.width;
+        float heightNorm = popup.rect.height / parent.rect.height;
+
+        // Position MONDE du point (_bottomLeftSnap est un point : anchorMin == anchorMax)
+        Vector3 worldPos = _popUpLeftBottomAnchor.transform.position;
+
+        // Conversion en local parent du popup
+        Vector2 localPos = parent.InverseTransformPoint(worldPos);
+
+        // Local -> normalisé [0..1] du parent
+        Rect pr = parent.rect;
+        Vector2 pNorm = new Vector2(
+            (localPos.x - pr.xMin) / pr.width,
+            (localPos.y - pr.yMin) / pr.height
+        );
+
+        Vector2 aMin = new Vector2(pNorm.x, pNorm.y);
+        Vector2 aMax = new Vector2(aMin.x + widthNorm, aMin.y + heightNorm);
+
+        // Clamp [0,1] (même comportement que SnapToCursor)
+        aMin.x = Mathf.Clamp01(aMin.x);
+        aMin.y = Mathf.Clamp01(aMin.y);
+        aMax.x = Mathf.Clamp01(aMax.x);
+        aMax.y = Mathf.Clamp01(aMax.y);
+
+        // Appliquer (anchors only)
+        popup.anchorMin = aMin;
+        popup.anchorMax = aMax;
+        popup.offsetMin = Vector2.zero;
+        popup.offsetMax = Vector2.zero;
     }
 
     private void ClampTextWidth(TextMeshProUGUI tmp)
@@ -1699,10 +1905,27 @@ public class PopUpManager : Singleton<PopUpManager>
     #endregion
 
     #region POPUP ON POPUP
+    //Used to lock a popup on screen until user closes it
+    private void Update()
+    {
+        if (_isLockingPopup && _lockingImage != null)
+        {
+            _lockingTimer += Time.deltaTime;
+            float t = (_durationForLockingPopup <= 0f) ? 1f : Mathf.Clamp01(_lockingTimer / _durationForLockingPopup);
+            _lockingImage.fillAmount = t;
+            if (_lockingTimer >= _durationForLockingPopup)
+            {
+                _isLockingPopup = false;
+                _lockingTimer = 0f;
+                LockPopup(_lockingPopup);
+            }
+        }
+    }
+
     public void FamilyPopup(Family family, RectTransform refObject)
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -1748,7 +1971,7 @@ public class PopUpManager : Singleton<PopUpManager>
     public void InfrastructurePopup(InfrastructureData infra, RectTransform refObject)
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -1858,7 +2081,7 @@ public class PopUpManager : Singleton<PopUpManager>
     public void EntertainmentPopup(EntertainmentData ent, RectTransform refObject)
     {
         GameObject popUp;
-        popUp = Instantiate(_basePopUp, UIManager.Instance.PopUpParent);
+        popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
 
         List<RectTransform> textObjects = new List<RectTransform>();
@@ -1907,13 +2130,21 @@ public class PopUpManager : Singleton<PopUpManager>
         _isLockingPopup = true;
         _lockingTimer = 0f;
 
-        _lockingImage = Instantiate(_lockingObject, UIManager.Instance.PopUpParent).GetComponent<Image>();
-        Utilities.PlacePrefabAroundTargetTopRight(_lockingImage.GetComponent<RectTransform>(), popUp.GetComponent<RectTransform>());
+        GameObject lockObject = Instantiate(_lockingObject, _popUpLockObjectParent);
+        foreach (var item in lockObject.GetComponentsInChildren<Image>())
+        {
+            if (item.type == Image.Type.Filled)
+            {
+                _lockingImage = item;
+                break;
+            }
+        }
+        Utilities.PlacePrefabAroundTargetTopRight(lockObject.GetComponent<RectTransform>(), popUp.GetComponent<RectTransform>(), _lockImagePopupOffset);
     }
 
     private void StopLockingPopup()
     {
-        Destroy(_lockingImage.gameObject);
+        Destroy(_lockingImage.transform.parent.gameObject);
         _lockingImage = null;
         _isLockingPopup = false;
         _lockingPopup = null;
@@ -1923,9 +2154,9 @@ public class PopUpManager : Singleton<PopUpManager>
     private void LockPopup(GameObject popUp)
     {
         _popUps.Remove(popUp);
-        Button lockedButton = Instantiate(_lockedObject, UIManager.Instance.PopUpParent).GetComponent<Button>();
+        Button lockedButton = Instantiate(_lockedObject, _popUpLockObjectParent).GetComponent<Button>();
         _lockedPopUps.Add(popUp, lockedButton);
-        Utilities.PlacePrefabAroundTargetTopRight(lockedButton.GetComponent<RectTransform>(), popUp.GetComponent<RectTransform>());
+        Utilities.PlacePrefabAroundTargetTopRight(lockedButton.GetComponent<RectTransform>(), popUp.GetComponent<RectTransform>(), _lockImagePopupOffset);
         StopLockingPopup();
     }
 
@@ -1937,7 +2168,11 @@ public class PopUpManager : Singleton<PopUpManager>
             if (item.Value == button)
             {
                 popUpToRemove = item.Key;
-                item.Key.GetComponent<Animator>().SetTrigger("Close");
+                if (popUpToRemove == JuiceManager.Instance.PopUpVisualizingCombo)
+                {
+                    JuiceManager.Instance.KillAllComboVFX();
+                }
+                popUpToRemove.GetComponent<Animator>().SetTrigger("Close");
                 Destroy(item.Value.gameObject);
                 ResetPopUp(null);
                 break;
@@ -1953,6 +2188,10 @@ public class PopUpManager : Singleton<PopUpManager>
     {
         foreach (var item in _lockedPopUps)
         {
+            if (item.Key == JuiceManager.Instance.PopUpVisualizingCombo)
+            {
+                JuiceManager.Instance.KillAllComboVFX();
+            }
             item.Key.GetComponent<Animator>().SetTrigger("Close");
             Destroy(item.Value.gameObject);
         }

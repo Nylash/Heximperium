@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/Special Behaviour/BoostByUniqueInfraNeighbors")]
@@ -8,24 +9,29 @@ public class BoostByUniqueInfraNeighbors : SpecialBehaviour
 
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
     {
-        //Create a hashset to count unique infra around
-        HashSet<InfrastructureData> uniqueData = new HashSet<InfrastructureData>();
-        foreach (Tile neighbor in behaviourTile.Neighbors) 
+        var validNeighbors = new List<Tile>();
+        foreach (var neighbor in behaviourTile.Neighbors)
         {
-            if (!neighbor) 
+            if (!neighbor)
                 continue;
-            if( neighbor.TileData is InfrastructureData data)
-                uniqueData.Add(data);
 
             neighbor.OnTileDataModified -= behaviourTile.ListenerOnTileDataModified_BoostByUniqueInfraNeighbors;
             neighbor.OnTileDataModified += behaviourTile.ListenerOnTileDataModified_BoostByUniqueInfraNeighbors;
+
+            if (neighbor.TileData is InfrastructureData)
+                validNeighbors.Add(neighbor);
         }
 
-        behaviourTile.UniqueInfraNeighborsCount = uniqueData.Count;
-
-        //Boost for each unique infra
-        for (int i = 0; i < behaviourTile.UniqueInfraNeighborsCount; i++)
-            behaviourTile.UpdateIncomes(_boost, true);
+        var groups = validNeighbors.GroupBy(n => (InfrastructureData)n.TileData);
+        
+        var set = GetSet(behaviourTile);
+        set.Clear();
+        foreach (var g in groups)
+        {
+            var refTile = g.First();
+            set.Add(refTile);
+            behaviourTile.UpdateIncomes(_boost, true, null, refTile);
+        }
     }
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
@@ -37,11 +43,13 @@ public class BoostByUniqueInfraNeighbors : SpecialBehaviour
             neighbor.OnTileDataModified -= behaviourTile.ListenerOnTileDataModified_BoostByUniqueInfraNeighbors;
         }
 
-        //Remove boost for each unique infra
-        for (int i = 0; i < behaviourTile.UniqueInfraNeighborsCount; i++)
-            behaviourTile.UpdateIncomes(_boost, false);
+        if (behaviourTile.UniqueInfraNeighborsByBehaviour.TryGetValue(this, out var set))
+        {
+            foreach (var t in set)
+                behaviourTile.UpdateIncomes(_boost, false, null, t);
 
-        behaviourTile.UniqueInfraNeighborsCount = 0;
+            behaviourTile.UniqueInfraNeighborsByBehaviour.Remove(this);
+        }
     }
 
     public override void HighlightImpactedTile(Tile behaviourTile, bool show)
@@ -57,38 +65,43 @@ public class BoostByUniqueInfraNeighbors : SpecialBehaviour
 
     public void CheckNewData(Tile behaviourTile)
     {
-        HashSet<InfrastructureData> uniqueData = new HashSet<InfrastructureData>();
-        foreach (Tile neighbor in behaviourTile.Neighbors)
+        var set = GetSet(behaviourTile);
+        foreach (var t in set)
+            behaviourTile.UpdateIncomes(_boost, false, null, t);
+        set.Clear();
+
+        var validNeighbors = new List<Tile>();
+        foreach (var neighbor in behaviourTile.Neighbors)
         {
             if (!neighbor)
                 continue;
-            if (neighbor.TileData is InfrastructureData data)
-                uniqueData.Add(data);
+
+            if (neighbor.TileData is InfrastructureData)
+                validNeighbors.Add(neighbor);
         }
 
-        int delta = uniqueData.Count - behaviourTile.UniqueInfraNeighborsCount;
+        var groups = validNeighbors.GroupBy(n => (InfrastructureData)n.TileData);
 
-        if (delta == 0)
-            return;//Same count, nothing to do
-
-        if (delta > 0)
+        foreach (var g in groups)
         {
-            // Add boost delta times
-            for (int i = 0; i < delta; i++)
-                behaviourTile.UpdateIncomes(_boost, true);
+            var refTile = g.First();
+            set.Add(refTile);
+            behaviourTile.UpdateIncomes(_boost, true, null, refTile);
         }
-        else
-        {
-            // Remove boost |delta| times
-            for (int i = 0; i < -delta; i++)
-                behaviourTile.UpdateIncomes(_boost, false);
-        }
-
-        behaviourTile.UniqueInfraNeighborsCount = uniqueData.Count;
     }
 
     public override string GetBehaviourDescription()
     {
         return $"Income boosted by {_boost.IncomeToString()} for each unique neighboring infrastructure";
+    }
+
+    private HashSet<Tile> GetSet(Tile tile)
+    {
+        if (!tile.UniqueInfraNeighborsByBehaviour.TryGetValue(this, out var set))
+        {
+            set = new HashSet<Tile>();
+            tile.UniqueInfraNeighborsByBehaviour[this] = set;
+        }
+        return set;
     }
 }

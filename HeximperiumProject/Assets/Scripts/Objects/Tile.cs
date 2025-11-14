@@ -27,12 +27,14 @@ public class Tile : MonoBehaviour
     [SerializeField] private Vector2 _coordinate;
     [SerializeField] private List<ResourceToIntMap> _incomes = new List<ResourceToIntMap>();
 
-    private Dictionary<TileData, List<ResourceToIntMap>> _externalIncomesSources = new Dictionary<TileData, List<ResourceToIntMap>>(); // Income coming from other tiles behaviours
+    private Dictionary<Tile, List<ResourceToIntMap>> _externalIncomesSources = new Dictionary<Tile, List<ResourceToIntMap>>(); // Income coming from other tiles behaviours
     private Dictionary<Tile, List<ResourceToIntMap>> _internalIncomesSources = new Dictionary<Tile, List<ResourceToIntMap>>(); // Income coming from this tile behaviours
+    private Dictionary<Tile, int> _internalCarnivalistsSources = new Dictionary<Tile, int>(); // There is only internal source of carnivalists
     private int _claimIncome = 0;
     private Tile[] _neighbors = new Tile[6];
     private TileData _initialData;
     private TileData _previousData;
+    private List<ResourceToIntMap> _incomeWithPreviousData = new List<ResourceToIntMap>();
     private TileData _targetData;
     private bool _revealed;
     private bool _claimed;
@@ -45,7 +47,10 @@ public class Tile : MonoBehaviour
     private int _carnivalistCostReduction;
     private int _recruitedCarnivalists;
     private int _bufferRecruitedCarnivalists;
+    private Dictionary<BoostByUniqueInfraNeighbors, HashSet<Tile>> _uniqueInfraNeighborsByBehaviour = new Dictionary<BoostByUniqueInfraNeighbors, HashSet<Tile>>();
     //Dictionary for impacted tiles
+    private Dictionary<Tile, List<ResourceToIntMap>> _impactedTilesIncomes = new Dictionary<Tile, List<ResourceToIntMap>>();
+    private Dictionary<Tile, int> _impactedTilesCarnivalists = new Dictionary<Tile, int>();
     private Dictionary<Tile, int> _entImpactedByEntertainment = new Dictionary<Tile, int>();//Use the tile to avoid issues with destroyed entertainment
     private Dictionary<Tile, int> _entImpactedByTile = new Dictionary<Tile, int>();//Use the tile to avoid issues with destroyed entertainment
     //Scouts
@@ -56,8 +61,6 @@ public class Tile : MonoBehaviour
     private Entertainment _previousEntertainment;//Only stay one frame (because the ref is deleted) but needed to clean the group (BoostByZone special effect)
     private EntertainmentData _previousEntertainmentData;
 
-    private int _uniqueInfraNeighborsCount;
-    private int _uniqueEntertainmentNeighborsCount_SB;//Count for special behaviour script
     private int _uniqueEntertainmentNeighborsCount_SE;//Count for special effect script, two count is needed if an entertainment and infra on the same tile use it
     private int _groupID;//Use for BoostByZoneSize entertainment's special effect
     #endregion
@@ -100,9 +103,7 @@ public class Tile : MonoBehaviour
         }  
     }
     public TileData PreviousData { get => _previousData; set => _previousData = value; }
-    public int UniqueInfraNeighborsCount { get => _uniqueInfraNeighborsCount; set => _uniqueInfraNeighborsCount = value; }
     public EntertainmentData PreviousEntertainmentData { get => _previousEntertainmentData; }
-    public int UniqueEntertainmentNeighborsCount_SB { get => _uniqueEntertainmentNeighborsCount_SB; set => _uniqueEntertainmentNeighborsCount_SB = value; }
     public int UniqueEntertainmentNeighborsCount_SE { get => _uniqueEntertainmentNeighborsCount_SE; set => _uniqueEntertainmentNeighborsCount_SE = value; }
     public int GroupID { get => _groupID; set => _groupID = value; }
     public Entertainment PreviousEntertainment { get => _previousEntertainment; }
@@ -120,7 +121,6 @@ public class Tile : MonoBehaviour
                 ShowIncomeUI(true);
         }
     }
-
     public bool AllowEntertainment 
     { 
         get => _allowEntertainment;
@@ -136,23 +136,17 @@ public class Tile : MonoBehaviour
                 ShowEntPlacementUI(true);
         }
     }
-
     public int CarnivalistCostReduction { get => _carnivalistCostReduction; set => _carnivalistCostReduction = value; }
-    public int RecruitedCarnivalists 
-    {   
-        get => _recruitedCarnivalists;
-        set
-        {
-            _recruitedCarnivalists = value;
-            if (UIManager.Instance.AreIncomesShown)
-                ShowIncomeUI(true);
-        } 
-    }
-
-    public TileData TargetData { get => _targetData; }
-    public Dictionary<TileData, List<ResourceToIntMap>> ExternalIncomesSources { get => _externalIncomesSources; }
-    public Dictionary<Tile, int> TilesImpactedByEntertainment { get => _entImpactedByEntertainment; }
+    public int RecruitedCarnivalists { get => _recruitedCarnivalists; }
+    public Dictionary<Tile, List<ResourceToIntMap>> ExternalIncomesSources { get => _externalIncomesSources; }
+    public Dictionary<Tile, int> EntImpactedByEntertainment { get => _entImpactedByEntertainment; }
     public Dictionary<Tile, int> EntImpactedByTile { get => _entImpactedByTile; }
+    public Dictionary<BoostByUniqueInfraNeighbors, HashSet<Tile>> UniqueInfraNeighborsByBehaviour { get => _uniqueInfraNeighborsByBehaviour; }
+    public Dictionary<Tile, List<ResourceToIntMap>> ImpactedTilesIncomes { get => _impactedTilesIncomes; }
+    public Dictionary<Tile, int> ImpactedTilesCarnivalists { get => _impactedTilesCarnivalists; }
+    public Dictionary<Tile, List<ResourceToIntMap>> InternalIncomesSources { get => _internalIncomesSources; }
+    public List<ResourceToIntMap> IncomeWithPreviousData { get => _incomeWithPreviousData; }
+    public Dictionary<Tile, int> InternalCarnivalistsSources { get => _internalCarnivalistsSources; }
     #endregion
 
     private void Awake()
@@ -189,63 +183,52 @@ public class Tile : MonoBehaviour
         _initialData = data;
         _tileData = data;
         name = _tileData.TileName + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
-        _incomes = data.Incomes;
+        _incomes = Utilities.CloneResourceToIntMaps(data.Incomes);
     }
 
-    public void UpdateIncomes(List<ResourceToIntMap> inputIncomes, bool merge, TileData source = null)
+    public void UpdateIncomes(List<ResourceToIntMap> inputIncomes, bool merge, Tile extSource = null, Tile intSource = null)
     {
-        List<ResourceToIntMap> previousIncomes = _incomes;
+        if (extSource != null && intSource != null)
+        {
+            Debug.LogError("A tile income update can't have both an external and internal source");
+            return;
+        }
+
+        List<ResourceToIntMap> previousIncomes = Utilities.CloneResourceToIntMaps(_incomes);
 
         if (merge)
         {
             _incomes = Utilities.MergeResourceToIntMaps(_incomes, inputIncomes);
-            if (source)
-            {
-                if (!_externalIncomesSources.ContainsKey(source))
-                    _externalIncomesSources.Add(source, inputIncomes);
-                else
-                    _externalIncomesSources[source] = Utilities.MergeResourceToIntMaps(_externalIncomesSources[source], inputIncomes);
-                // Clean the source if all values are 0
-                bool allZero = true;
-                foreach (ResourceToIntMap item in _externalIncomesSources[source])
-                {
-                    if (item.value != 0)
-                    {
-                        allZero = false;
-                        break;
-                    }
-                }
-                if (allZero)
-                    _externalIncomesSources.Remove(source);
-            }
         }
         else
         {
             _incomes = Utilities.SubtractResourceToIntMaps(_incomes, inputIncomes);
-            if (source)
-            {
-                if (_externalIncomesSources.ContainsKey(source))
-                {
-                    _externalIncomesSources[source] = Utilities.SubtractResourceToIntMaps(_externalIncomesSources[source], inputIncomes);
-                    // Clean the source if all values are 0
-                    bool allZero = true;
-                    foreach (ResourceToIntMap item in _externalIncomesSources[source])
-                    {
-                        if (item.value != 0)
-                        {
-                            allZero = false;
-                            break;
-                        }
-                    }
-                    if (allZero)
-                        _externalIncomesSources.Remove(source);
-                }
-                else
-                    Debug.LogWarning("Trying to remove income from a source that doesn't exist in the dictionary");
-            }
         }
 
-        OnIncomeModified?.Invoke(this, previousIncomes, _incomes);
+        if (extSource)
+        {
+            UpdateSourceOrImpactedTiles(_externalIncomesSources, merge, extSource, inputIncomes, true);
+        }
+        else if (intSource)
+        {
+            UpdateSourceOrImpactedTiles(_internalIncomesSources, merge, intSource, inputIncomes, true);
+        }
+
+        OnIncomeModified?.Invoke(this, Utilities.CloneResourceToIntMaps(previousIncomes), Utilities.CloneResourceToIntMaps(_incomes));
+        if (UIManager.Instance.AreIncomesShown)
+            ShowIncomeUI(true);
+    }
+
+    public void UpdateCarnivalists(int value, Tile source = null)
+    {
+        _recruitedCarnivalists += value;
+
+        if (source != null)
+        {
+            UpdateSourceCarnivalists(source, value);
+            source.UpdateImpactedTilesCarnivalists(this, value);
+        }
+
         if (UIManager.Instance.AreIncomesShown)
             ShowIncomeUI(true);
     }
@@ -255,7 +238,7 @@ public class Tile : MonoBehaviour
         if (_incomes.Count == 0)
             return new List<ResourceToIntMap>();
         if (_externalIncomesSources.Count == 0)
-            return _incomes;
+            return Utilities.CloneResourceToIntMaps(_incomes);
 
         List<ResourceToIntMap> incomeFromTileOnly = new List<ResourceToIntMap>();
         incomeFromTileOnly = Utilities.MergeResourceToIntMaps(incomeFromTileOnly, _incomes);
@@ -269,6 +252,8 @@ public class Tile : MonoBehaviour
     //Update the tile data and call every other methods that impact
     public void UpdateTileData(TileData value, bool updateVisual)
     {
+        _incomeWithPreviousData = Utilities.CloneResourceToIntMaps(_incomes);
+
         _targetData = value;
 
         RollbackSpecialBehaviours();
@@ -566,6 +551,55 @@ public class Tile : MonoBehaviour
     #endregion
 
     #region IMPACTED TILES MANAGEMENT
+    public void UpdateSourceOrImpactedTiles(Dictionary<Tile, List<ResourceToIntMap>> dictionary, bool merge, Tile refTile, List<ResourceToIntMap> inputIncomes, bool updateImpactedTiles)
+    {
+        if (merge)
+        {
+            if (!dictionary.ContainsKey(refTile))
+                dictionary.Add(refTile, Utilities.CloneResourceToIntMaps(inputIncomes));
+            else
+                dictionary[refTile] = Utilities.MergeResourceToIntMaps(dictionary[refTile], inputIncomes);
+        }
+        else
+        {
+            if (dictionary.ContainsKey(refTile))
+            {
+                dictionary[refTile] = Utilities.SubtractResourceToIntMaps(dictionary[refTile], inputIncomes);
+            }
+            else
+            {
+                Debug.LogWarning("Trying to remove income from a source that doesn't exist in the dictionary");
+                return;
+            }
+        }
+        if (updateImpactedTiles)
+            refTile.UpdateSourceOrImpactedTiles(refTile.ImpactedTilesIncomes, merge, this, inputIncomes, false);
+
+        dictionary[refTile].RemoveAll(r => r.value == 0);
+        if (dictionary[refTile].Count == 0)
+            dictionary.Remove(refTile);
+    }
+
+    private void UpdateSourceCarnivalists(Tile source, int carnivalistsQuantity)
+    {
+        if (!_internalCarnivalistsSources.ContainsKey(source))
+            _internalCarnivalistsSources.Add(source, carnivalistsQuantity);
+        else
+            _internalCarnivalistsSources[source] += carnivalistsQuantity;
+        if (_internalCarnivalistsSources[source] <= 0)
+            _internalCarnivalistsSources.Remove(source);
+    }
+
+    public void UpdateImpactedTilesCarnivalists(Tile tile, int carnivalistPoints)
+    {
+        if (!_impactedTilesCarnivalists.ContainsKey(tile))
+            _impactedTilesCarnivalists.Add(tile, carnivalistPoints);
+        else
+            _impactedTilesCarnivalists[tile] += carnivalistPoints;
+        if (_impactedTilesCarnivalists[tile] <= 0)
+            _impactedTilesCarnivalists.Remove(tile);
+    }
+
     public void UpdateImpactedEntertainmentByEntertainment(Tile tile, int entertainmentPoints)
     {
         if (!_entImpactedByEntertainment.ContainsKey(tile))
@@ -576,16 +610,6 @@ public class Tile : MonoBehaviour
             _entImpactedByEntertainment.Remove(tile);
     }
 
-    public void GetTotalPointsImpactedByThisTileEntertainment(out int totalPoints, out int impactedTilesCount)
-    {
-        totalPoints = 0;
-        impactedTilesCount = _entImpactedByEntertainment.Count;
-        foreach (var kvp in _entImpactedByEntertainment)
-        {
-            totalPoints += kvp.Value;
-        }
-    }
-
     public void UpdateImpactedEntByTile(Tile tile, int entertainmentPoints)
     {
         if (!_entImpactedByTile.ContainsKey(tile))
@@ -594,16 +618,6 @@ public class Tile : MonoBehaviour
             _entImpactedByTile[tile] += entertainmentPoints;
         if (_entImpactedByTile[tile] <= 0)
             _entImpactedByTile.Remove(tile);
-    }
-
-    public void GetTotalPointsImpactedByTile(out int totalPoints, out int impactedEntCount)
-    {
-        totalPoints = 0;
-        impactedEntCount = _entImpactedByTile.Count;
-        foreach (var kvp in _entImpactedByTile)
-        {
-            totalPoints += kvp.Value;
-        }
     }
     #endregion
 
@@ -692,6 +706,14 @@ public class Tile : MonoBehaviour
         foreach (BoostByUniqueInfraNeighbors behaviour in _tileData.SpecialBehaviours.OfType<BoostByUniqueInfraNeighbors>())
         {
             behaviour.CheckNewData(this);
+        }
+    }
+
+    public void ListenerOnTileDataModified_IncomeComingFromNeighbors(Tile tile)
+    {
+        foreach (IncomeComingFromNeighbors behaviour in _tileData.SpecialBehaviours.OfType<IncomeComingFromNeighbors>())
+        {
+            behaviour.CheckNewData(this, tile, tile.PreviousData, tile.TileData, tile.IncomeWithPreviousData, tile.Incomes);
         }
     }
     #endregion

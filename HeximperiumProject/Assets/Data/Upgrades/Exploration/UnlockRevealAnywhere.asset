@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11e0fd449ca79e046a0c46d7f80c4ed1, type: 3}
   m_Name: UnlockRevealAnywhere
   m_EditorClassIdentifier: 
-  EffectName: "Emperor\u2019s Vision"
+  EffectName: Emperor's Vision
   AssociatedSystem: 0
   _revealRadius: 1

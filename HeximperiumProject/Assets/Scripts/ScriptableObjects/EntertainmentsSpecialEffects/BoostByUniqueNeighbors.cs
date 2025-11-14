@@ -38,7 +38,7 @@ public class BoostByUniqueNeighbors : SpecialEffect
             var t = g.First(); // only one by group
             t.UpdateImpactedEntertainmentByEntertainment(associatedEntertainment.Tile, _boost);
             associatedEntertainment.UniqueNeighbors.Add(t);
-            associatedEntertainment.UpdateInternalSource(t, _boost, Transaction.Gain);
+            associatedEntertainment.UpdateInternalSources(t, _boost, Transaction.Gain);
         }
 
         // Update points and store count
@@ -81,7 +81,7 @@ public class BoostByUniqueNeighbors : SpecialEffect
         foreach (Tile item in associatedEntertainment.UniqueNeighbors)
         {
             item.UpdateImpactedEntertainmentByEntertainment(associatedEntertainment.Tile, -_boost);
-            associatedEntertainment.UpdateInternalSource(item, -_boost, Transaction.Spent);
+            associatedEntertainment.UpdateInternalSources(item, -_boost, Transaction.Spent);
         }
         associatedEntertainment.UniqueNeighbors.Clear();
 
@@ -107,7 +107,7 @@ public class BoostByUniqueNeighbors : SpecialEffect
             var t = g.First(); // only one by group
             t.UpdateImpactedEntertainmentByEntertainment(associatedEntertainment.Tile, _boost);
             associatedEntertainment.UniqueNeighbors.Add(t);
-            associatedEntertainment.UpdateInternalSource(t, _boost, Transaction.Gain);
+            associatedEntertainment.UpdateInternalSources(t, _boost, Transaction.Gain);
         }
 
         if (deltaCount == 0)

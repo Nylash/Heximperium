@@ -1418,3 +1418,4 @@ MonoBehaviour:
   _endGameFireworkPosMaxOffset: 1.5
   _endGameFireworkQuantity: 5
   _resourceVFXforUI: {fileID: 5963754222799164501, guid: dc2605811fc8e944e90229e09b7eb3c3, type: 3}
+  _comboVFX: {fileID: 7337190964190525983, guid: fe47feb8265c70640ae521665eaa6840, type: 3}

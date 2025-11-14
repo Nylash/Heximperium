@@ -41,7 +41,7 @@ public class TileData : ScriptableObject
 
     public virtual void ResetRuntimeValues()
     {
-        _runtimeSpecialBehaviours = new List<SpecialBehaviour>(_specialBehaviours);
-        _runtimeIncomes = new List<ResourceToIntMap>(_incomes);
+        _runtimeSpecialBehaviours = Utilities.CloneScriptableObjects(_specialBehaviours);
+        _runtimeIncomes = Utilities.CloneResourceToIntMaps(_incomes);
     }
 }
