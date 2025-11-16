@@ -29,7 +29,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
         {
             _upgradeClaimRange = value;
             if (GameManager.Instance.CurrentPhase == Phase.Expand)
-                AnimateInteractableTiles();
+                UpdateInteractableTiles();
         } 
     }
 
@@ -63,7 +63,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
             ResourcesManager.Instance.UpdateClaim(tile.ClaimIncome, Transaction.Gain);
         }
 
-        AnimateInteractableTiles();
+        UpdateInteractableTiles();
     }
 
     protected override void ConfirmPhase()
@@ -73,7 +73,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
 
         GameManager.Instance.UnselectTile();
 
-        StopAllAnimations(true);
+        ClearInteractableTiles();
 
         StartCoroutine(PhaseFinalized());
     }
@@ -89,8 +89,8 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
         //Claimed tiles can only be used for town
         if (tile.Claimed)
         {
-            //We can only build town on basic tile
-            if (tile.TileData is BasicTileData)
+            //We can only build town on basic and resource tile
+            if (tile.TileData is BasicTileData || tile.TileData is ResourceTileData)
             {
                 _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
                 TownInteraction(tile, 0);
@@ -99,8 +99,8 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
         }
 
         _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 2);
-        //We can only build town on basic tile
-        if (tile.TileData is BasicTileData)
+        //We can only build town on basic and resource tile
+        if (tile.TileData is BasicTileData || tile.TileData is ResourceTileData)
             TownInteraction(tile, 0);
         //We can only claimed tiles adjacent to already claimed tiles (except if we got the upgrade)
         if (tile.IsOneNeighborClaimed())
@@ -150,7 +150,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
             OnTileClaimed?.Invoke(tile);
 
             if (fromInteraction)
-                AnimateInteractableTiles();
+                UpdateInteractableTiles();
         }
     }
 
@@ -179,28 +179,25 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
                 }
 
                 if (fromInteraction)
-                    AnimateInteractableTiles();
+                    UpdateInteractableTiles();
             }
         }
     }
     #endregion
 
-    public override void AnimateInteractableTiles()
+    public override void UpdateInteractableTiles()
     {
-        SyncAnimationInteractableTiles();
-        StopAllAnimations();
-
-        HashSet<Tile> tilesToAnimate = new HashSet<Tile>();
+        bool townBuildable = false;
+        HashSet<Tile> validTiles = new HashSet<Tile>();
 
         foreach (Tile tile in ExplorationManager.Instance.RevealedTiles)
         {
             if (tile.Claimed)
             {
-                if (tile.TileData is not BasicTileData)
-                    continue;
-                else if (ResourcesManager.Instance.CanAffordClaim(_townData.ClaimCost) && ExploitationManager.Instance.IsInfraAvailable(_townData))
+                if (tile.TileData is not InfrastructureData)
                 {
-                    tilesToAnimate.Add(tile);
+                    if (ResourcesManager.Instance.CanAffordClaim(_townData.ClaimCost) && ExploitationManager.Instance.IsInfraAvailable(_townData))
+                        townBuildable = true;
                 }
             }
             else
@@ -211,18 +208,54 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
                     {
                         if (ResourcesManager.Instance.CanAffordClaim(tile.TileData.ClaimCost))
                         {
-                            tilesToAnimate.Add(tile);
-                            continue;
+                            validTiles.Add(tile);
                         }
                     }
                 }
-                if (tile.TileData is BasicTileData && ResourcesManager.Instance.CanAffordClaim(_townData.ClaimCost) && ExploitationManager.Instance.IsInfraAvailable(_townData))
+                if (tile.TileData is not HazardousTileData)
                 {
-                    tilesToAnimate.Add(tile);
+                    if (ResourcesManager.Instance.CanAffordClaim(_townData.ClaimCost) && ExploitationManager.Instance.IsInfraAvailable(_townData))
+                        townBuildable = true;
                 }
             }
         }
 
-        LaunchAnimation(tilesToAnimate);
+        LaunchInteractableTiles(validTiles);
+        if (townBuildable)
+            UIManager.Instance.BuildTownHint.gameObject.SetActive(true);
+        else
+            UIManager.Instance.BuildTownHint.SetTrigger("Hide");
+    }
+
+    protected override void LaunchInteractableTiles(HashSet<Tile> validTiles)
+    {
+        bool alreadyAffected = false;
+        if (_interactibleTiles.Count == 0)
+        {
+            alreadyAffected = true;
+            _interactibleTiles = new HashSet<Tile>(validTiles);
+        }
+
+        foreach (Tile tile in validTiles)
+            tile.PreviewBorder(true);
+        foreach (Tile tile in _interactibleTiles)
+        {
+            if (!validTiles.Contains(tile))
+                tile.PreviewBorder(false);
+        }
+
+        if (!alreadyAffected)
+            _interactibleTiles = new HashSet<Tile>(validTiles);
+    }
+
+    protected override void ClearInteractableTiles()
+    {
+        foreach (Tile tile in _interactibleTiles)
+        {
+            tile.PreviewBorder(false);
+        }
+        _interactibleTiles.Clear();
+        if (UIManager.Instance.BuildTownHint.gameObject.activeSelf)
+            UIManager.Instance.BuildTownHint.SetTrigger("Hide");
     }
 }

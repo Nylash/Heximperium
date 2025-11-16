@@ -139,7 +139,8 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         ResourcesManager.Instance.UpdateCarnivalist(goldCarnivalist + srCarnivalist, Transaction.Gain);
         ResourcesManager.Instance.UpdateCarnivalistSource(_emptyDataForString, goldCarnivalist + srCarnivalist, Transaction.Gain);
 
-        AnimateInteractableTiles();
+        if (!UIManager.Instance.AreEntPlacementShown)
+            UIManager.Instance.SwitchEntPlacementVisibility();
 
         if (UIManager.Instance.AreIncomesShown)
         {
@@ -153,8 +154,6 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     protected override void ConfirmPhase()
     {
         GameManager.Instance.UnselectTile();
-
-        StopAllAnimations(true);
 
         StartCoroutine(PhaseFinalized());
     }
@@ -231,9 +230,6 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
             currentEntertainment.Initialize(tile, data);
             tile.Entertainment = currentEntertainment;
             OnEntertainmentSpawned?.Invoke(currentEntertainment);
-
-            if (!isPredictionRelated)
-                AnimateInteractableTiles();
         }
     }
 
@@ -248,9 +244,6 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         OnEntertainmentRemoved?.Invoke(removedEntertainmentData, tile);
         //Call the check empty group after the Entertainment assignation, so the event and its listener is done before
         CheckEmptyGroup(tile);
-
-        if (!isPredictionRelated)
-            AnimateInteractableTiles();
     }
 
     public void PredictEntertainmentSpawn(Tile tile, EntertainmentData data,
@@ -325,24 +318,5 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
 
             tile.GroupID = 0;
         }
-    }
-
-    public override void AnimateInteractableTiles()
-    {
-        SyncAnimationInteractableTiles();
-        StopAllAnimations();
-
-        HashSet<Tile> tilesToAnimate = new HashSet<Tile>();
-
-        foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
-        {
-            if (tile.CanReceiveEntertainment() && tile.Entertainment == null)
-            {
-                if (tile.CanAffordCheapestEntertainment())
-                    tilesToAnimate.Add(tile);
-            }
-        }
-
-        LaunchAnimation(tilesToAnimate);
     }
 }

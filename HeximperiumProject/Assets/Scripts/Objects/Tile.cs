@@ -10,6 +10,7 @@ public class Tile : MonoBehaviour
     [Header("_________________________________________________________")]
     [Header("Configuration")]
     [SerializeField] private GameObject _borderPrefab;
+    [SerializeField] private GameObject _previewBorderPrefab;
     [SerializeField] private GameObject _highlightPrefab;
     [SerializeField] private Transform _visual;
     [SerializeField] private SpriteRenderer _infraLvlRenderer;
@@ -39,6 +40,7 @@ public class Tile : MonoBehaviour
     private bool _revealed;
     private bool _claimed;
     private Border _border;
+    private Border _previewBorder;
     private Animator _animator;
     private GameObject _highlightObject;
     private Coroutine _interactionCoroutine;
@@ -72,6 +74,7 @@ public class Tile : MonoBehaviour
     public event Action<Tile> OnTileDataModified;
     public event Action<Tile> OnEntertainmentModified;
     public Action OnClaimBorderAnimationDone;//No event keyword because it is Invoked in the Border script
+    public Action OnPreviewBorderAnimationDone;//No event keyword because it is Invoked in the Border script
     #endregion
 
     #region ACCESSORS
@@ -161,6 +164,7 @@ public class Tile : MonoBehaviour
                 if (!neighbor)
                     continue;
                 neighbor.OnClaimBorderAnimationDone += CheckBorder;
+                neighbor.OnPreviewBorderAnimationDone += CheckPreviewBorder;
             }
         };
     }
@@ -316,13 +320,46 @@ public class Tile : MonoBehaviour
         _border.GetComponent<Border>().associatedTile = this;
         _claimTintAnimator.SetTrigger("Claim");
         _border.name = "Border" + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
+
+        PreviewBorder(false, true);
+    }
+
+    public void PreviewBorder(bool activate, bool quickDeath = false)
+    {
+        if (activate)
+        {
+            if (_previewBorder != null)
+            {
+                CheckPreviewBorder();
+                return;
+            }
+            _previewBorder = Instantiate(_previewBorderPrefab, _visual).GetComponent<Border>();
+            _previewBorder.transform.localPosition += new Vector3(0, 0.01f, 0);
+            _previewBorder.GetComponent<Border>().associatedTile = this;
+            _previewBorder.name = "PreviewBorder" + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
+            CheckPreviewBorder();
+        }
+        else if(_previewBorder != null)
+        {
+            if (!quickDeath)
+                _previewBorder.GetComponent<Animator>().SetTrigger("Destroy");
+            else
+                Destroy(_previewBorder.gameObject);
+            _previewBorder = null;
+        }
     }
 
     //Called when a tile is claimed
     public void CheckBorder()
     {
-        if(_border)
+        if (_border)
             _border.CheckBorderVisibility();
+    }
+
+    private void CheckPreviewBorder()
+    {
+        if (_previewBorder)
+            _previewBorder.CheckPreviewBorderVisibility();
     }
 
     //Change tile's visual based on the tile data

@@ -58,7 +58,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
             _scoutsLimit = value;
             OnScoutsLimitModified?.Invoke();
             if (GameManager.Instance.CurrentPhase == Phase.Explore)
-                AnimateInteractableTiles();
+                UpdateInteractableTiles();
         }
     }
     public int CurrentScoutsCount
@@ -112,7 +112,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         {
             _upgradeScoutRedirectable = value;
             if (GameManager.Instance.CurrentPhase == Phase.Explore)
-                AnimateInteractableTiles();
+                UpdateInteractableTiles();
         } 
     }
     public List<Tile> RevealedTiles { get => _revealedTiles; }
@@ -168,7 +168,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
 
         GameManager.Instance.UnselectTile();
 
-        AnimateInteractableTiles();
+        UpdateInteractableTiles();
 
         ResourcesManager.Instance.CHEAT_RESOURCES();
     }
@@ -177,12 +177,12 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     {
         _finalizingPhase = true;
 
+        ClearInteractableTiles();
+
         foreach (Scout scout in _scouts)
         {
             StartCoroutine(scout.Move());
         }
-
-        StopAllAnimations(true);
 
         GameManager.Instance.UnselectTile();
     }
@@ -268,7 +268,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
             UIManager.Instance.ScoutHint.SetTrigger("Show");
 
             if (fromInteraction)
-                AnimateInteractableTiles();
+                UpdateInteractableTiles();
         }
     }
 
@@ -281,7 +281,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         scout.Animator.SetTrigger("Redirecting");
         UIManager.Instance.ScoutHint.SetTrigger("RedirectShow");
 
-        AnimateInteractableTiles();
+        UpdateInteractableTiles();
     }
 
     public void RevealAnywhere(Tile tile)
@@ -413,12 +413,9 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     }
     #endregion
 
-    public override void AnimateInteractableTiles()
+    public override void UpdateInteractableTiles()
     {
-        SyncAnimationInteractableTiles();
-        StopAllAnimations();
-
-        HashSet<Tile> tilesToAnimate = new HashSet<Tile>();
+        HashSet<Tile> validTiles = new HashSet<Tile>();
 
         if (_currentScoutsCount < _scoutsLimit)
         {
@@ -428,7 +425,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
                 {
                     if (data.ScoutStartingPoint)
                     {
-                        tilesToAnimate.Add(tile);
+                        validTiles.Add(tile);
                     }
                 }
             }
@@ -439,11 +436,34 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
             {
                 if (!scout.HasRedirected)
                 {
-                    tilesToAnimate.Add(scout.CurrentTile);
+                    validTiles.Add(scout.CurrentTile);
                 }
             }
         }
 
-        LaunchAnimation(tilesToAnimate);
+        LaunchInteractableTiles(validTiles);
+    }
+
+    protected override void LaunchInteractableTiles(HashSet<Tile> validTiles)
+    {
+        bool alreadyAffected = false;
+        if (_interactibleTiles.Count == 0)
+        {
+            alreadyAffected = true;
+            _interactibleTiles = new HashSet<Tile>(validTiles);
+        }
+        foreach (var tile in _interactibleTiles) 
+            tile.Highlight(validTiles.Contains(tile));
+        if (!alreadyAffected)
+            _interactibleTiles = new HashSet<Tile>(validTiles);
+    }
+
+    protected override void ClearInteractableTiles()
+    {
+        foreach (Tile tile in _interactibleTiles)
+        {
+            tile.Highlight(false);
+        }
+        _interactibleTiles.Clear();
     }
 }

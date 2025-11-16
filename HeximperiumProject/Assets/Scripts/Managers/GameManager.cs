@@ -300,11 +300,11 @@ public class GameManager : Singleton<GameManager>
                 if(_currentPhase == Phase.Expand)
                     ExpansionManager.Instance.BuildTown(button.AssociatedTile, true);
                 else
-                    ExploitationManager.Instance.BuildInfrastructure(button.AssociatedTile, button.InfrastructureData, true);
+                    ExploitationManager.Instance.BuildInfrastructure(button.AssociatedTile, button.InfrastructureData);
                 break;
             case Interaction.Destroy:
                 if(_currentPhase == Phase.Exploit)
-                    ExploitationManager.Instance.DestroyInfrastructure(button.AssociatedTile, true);
+                    ExploitationManager.Instance.DestroyInfrastructure(button.AssociatedTile);
                 else
                     EntertainmentManager.Instance.DestroyEntertainment(button.AssociatedTile);
                 break;

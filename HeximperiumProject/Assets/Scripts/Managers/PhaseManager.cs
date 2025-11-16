@@ -9,7 +9,11 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
     protected List<Vector3> _interactionPositions = new List<Vector3>();
     protected List<GameObject> _buttons = new List<GameObject>();
 
-    //Variables for animated tiles
+    protected HashSet<Tile> _interactibleTiles = new HashSet<Tile>();
+
+    public HashSet<Tile> InteractibleTiles { get => _interactibleTiles; }
+
+    /*Variables for animated tiles
     private HashSet<Tile> _animatedTiles = new HashSet<Tile>();
     private HashSet<Tile> _stoppingAnimationTiles = new HashSet<Tile>();
     private bool _animWasPlaying = false;
@@ -18,6 +22,7 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
     private const float _bouncePeriod = 1f;
     private const float _bounceHeight = 0.05f;
     private const float _returnDuration = 0.15f;// Make sure this is lower than UIPhase animation rotation duration to avoid needing sync between phases
+    */
 
     public event Action OnPhaseFinalized;
 
@@ -53,8 +58,13 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
     }
 
     #region TILE INTERACTION ANIMATION
-    public abstract void AnimateInteractableTiles();
+    public virtual void UpdateInteractableTiles() { }
 
+    protected virtual void LaunchInteractableTiles(HashSet<Tile> validTiles) { }
+
+    protected virtual void ClearInteractableTiles() { }
+
+    /* Tiles animations
     protected void StopAllAnimations(bool endOfPhase = false)
     {
         while (_animatedTiles.Count > 0)
@@ -168,5 +178,6 @@ public abstract class PhaseManager<T> : Singleton<T> where T : MonoBehaviour
             _progress = 0f;
         }
     }
+        */
     #endregion
 }

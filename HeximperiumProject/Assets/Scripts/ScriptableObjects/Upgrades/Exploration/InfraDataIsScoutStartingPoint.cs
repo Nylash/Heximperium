@@ -13,7 +13,7 @@ public class InfraDataIsScoutStartingPoint : UpgradeEffect
             data.ScoutStartingPoint = true;
         }
         if (GameManager.Instance.CurrentPhase == Phase.Explore)
-            ExplorationManager.Instance.AnimateInteractableTiles();
+            ExplorationManager.Instance.UpdateInteractableTiles();
     }
 
     public override string GetEffectDescription()
