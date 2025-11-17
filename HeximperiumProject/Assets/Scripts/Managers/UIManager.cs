@@ -599,7 +599,10 @@ public class UIManager : Singleton<UIManager>
         if (nextTurn == -1)
             _counterForNextUpgrade.text = "No more Upgrades";
         else
-            _counterForNextUpgrade.text = "Next upgrade in " + (nextTurn - currentTurn) + " turns";
+        {
+            int counter = nextTurn - currentTurn;
+            _counterForNextUpgrade.text = $"Next upgrade in {counter} {(counter > 1 ? "turns" : "turn")}";
+        } 
     }
     #endregion
 

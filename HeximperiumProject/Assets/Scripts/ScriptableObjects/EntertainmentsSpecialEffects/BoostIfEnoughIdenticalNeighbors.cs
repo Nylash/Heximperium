@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/SpecialEffect/BoostIfEnoughIdenticalNeighbors")]
 public class BoostIfEnoughIdenticalNeighbors : SpecialEffect
