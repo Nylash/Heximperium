@@ -110,7 +110,6 @@ public class Scout : MonoBehaviour
             _lastValidTile = _currentTile;
             _currentTile.Scouts.Add(this);
             transform.position = _currentTile.transform.position + new Vector3(0,_yOffset,0);
-            transform.parent = _currentTile.Visual;
 
             if (_currentTile.TileData is HazardousTileData && !_currentTile.Claimed && !ExplorationManager.Instance.UpgradeScoutIgnoreHazard) 
                i++;              
@@ -126,6 +125,7 @@ public class Scout : MonoBehaviour
             yield return new WaitForSeconds(ExplorationManager.Instance.AwaitTimeScoutMovement);
         }
 
+        transform.parent = _currentTile.Visual;
         _hasDoneMoving = true;
         _hasRedirected = false;
     }
