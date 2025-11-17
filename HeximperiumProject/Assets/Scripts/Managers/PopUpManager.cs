@@ -171,11 +171,10 @@ public class PopUpManager : Singleton<PopUpManager>
                     if (tile.Entertainment != null)
                         EntertainmentPopUp(tile.Entertainment);
                     TilePopUp(tile);
-                    if (tile.Scouts.Count > 0)
-                    {
-                        foreach (Scout item in tile.Scouts)
-                            ScoutPopUp(item);
-                    }
+                    if (tile.Scouts.Count > 1)
+                        MultipleScoutsPopUp(tile);
+                    else if (tile.Scouts.Count == 1)
+                        ScoutPopUp(tile.Scouts.First());
                 }
                 else if (obj.GetComponent<InteractionButton>() is InteractionButton button)
                 {
@@ -940,19 +939,23 @@ public class PopUpManager : Singleton<PopUpManager>
         TextMeshProUGUI lifespanText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
         lifespanText.text = "Remaining turns: " + scout.Lifespan;
         textObjects.Add(lifespanText.GetComponent<RectTransform>());
+        ClampTextWidth(lifespanText);
         #endregion
 
         #region REDIRECTABLE
         if (ExplorationManager.Instance.UpgradeScoutRedirectable)
         {
-            TextMeshProUGUI redirectText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            if (scout.HasRedirected)
-                redirectText.text = "Scout has already been redirected";
-            else
-                redirectText.text = "Scout can be redirected";
-            redirectText.fontStyle = FontStyles.Italic;
-            redirectText.alignment = TextAlignmentOptions.Center;
-            textObjects.Add(redirectText.GetComponent<RectTransform>());
+            if (GameManager.Instance.CurrentPhase == Phase.Explore)
+            {
+                TextMeshProUGUI redirectText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                if (scout.HasRedirected)
+                    redirectText.text = "Scout has already been redirected";
+                else
+                    redirectText.text = "Scout can be redirected";
+                redirectText.fontStyle = FontStyles.Italic;
+                redirectText.alignment = TextAlignmentOptions.Center;
+                textObjects.Add(redirectText.GetComponent<RectTransform>());
+            }
         }
         #endregion
 
@@ -966,6 +969,67 @@ public class PopUpManager : Singleton<PopUpManager>
 
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>(), scout.CurrentTile.transform, true);
+    }
+
+    private void MultipleScoutsPopUp(Tile tile)
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, _popUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        #region TITLE
+        TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        title.text = $"{tile.Scouts.Count} Scouts";
+        textObjects.Add(title.GetComponent<RectTransform>());
+        #endregion
+
+        #region DIRECTION
+        Dictionary<Direction, int> directionCounts = new Dictionary<Direction, int>();
+        foreach (Scout scout in tile.Scouts)
+        {
+            if (directionCounts.ContainsKey(scout.Direction))
+                directionCounts[scout.Direction]++;
+            else
+                directionCounts.Add(scout.Direction, 1);
+        }
+        foreach (var kvp in directionCounts)
+        {
+            TextMeshProUGUI directionText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            directionText.text = $"{kvp.Value} {(kvp.Value > 1 ? "scouts" : "scout")} heading {kvp.Key.ToCustomString()}";
+            textObjects.Add(directionText.GetComponent<RectTransform>());
+            ClampTextWidth(directionText);
+        }
+        #endregion
+
+        #region REDIRECTABLE
+        if (ExplorationManager.Instance.UpgradeScoutRedirectable)
+        {
+            if (GameManager.Instance.CurrentPhase == Phase.Explore)
+            {
+                int redirectableCount = 0;
+                foreach (Scout scout in tile.Scouts)
+                {
+                    if (!scout.HasRedirected)
+                        redirectableCount++;
+                }
+                TextMeshProUGUI redirectText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                if (redirectableCount == 0)
+                    redirectText.text = "All scouts have already been redirected";
+                else if (redirectableCount == tile.Scouts.Count)
+                    redirectText.text = "All scouts can be redirected";
+                else
+                    redirectText.text = $"{redirectableCount} {(redirectableCount > 1 ? "scouts" : "scout")} can be redirected";
+                redirectText.fontStyle = FontStyles.Italic;
+                redirectText.alignment = TextAlignmentOptions.Center;
+                textObjects.Add(redirectText.GetComponent<RectTransform>());
+            }
+        }
+        #endregion
+
+        SetPopUpContentAnchors(textObjects);
+        PositionPopup(popUp.GetComponent<RectTransform>(), tile.transform, true);
     }
 
     private void EntertainmentPopUp(Entertainment ent)
@@ -1118,6 +1182,7 @@ public class PopUpManager : Singleton<PopUpManager>
         else
             revealText.text = "Reveal radius: " + (button.ScoutData.RevealRadius + ExplorationManager.Instance.BoostScoutRevealRadius);
         textObjects.Add(revealText.GetComponent<RectTransform>());
+        ClampTextWidth(revealText);
         #endregion
 
         #region LIFESPAN

@@ -105,6 +105,12 @@ public class CameraManager : Singleton<CameraManager>
         }
         Zoom();
 
+        if (ExplorationManager.Instance.ChoosingScoutDirection)
+        {
+            PopUpManager.Instance.ResetPopUp(null);
+            return;
+        }   
+
         ObjectUnderMouseDetection();
     }
 
