@@ -224,7 +224,10 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
         if (townBuildable)
             UIManager.Instance.BuildTownHint.gameObject.SetActive(true);
         else
-            UIManager.Instance.BuildTownHint.SetTrigger("Hide");
+        {
+            if (UIManager.Instance.BuildTownHint.gameObject.activeSelf)
+                UIManager.Instance.BuildTownHint.SetTrigger("Hide");
+        }
     }
 
     protected override void LaunchInteractableTiles(HashSet<Tile> validTiles)

@@ -14,6 +14,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private GameObject _highlightPrefab;
     [SerializeField] private Transform _visual;
     [SerializeField] private SpriteRenderer _infraLvlRenderer;
+    [SerializeField] private GameObject _maxInfraReached;
     [SerializeField] private Sprite[] _spriteInfraLvl = new Sprite[3];
     [SerializeField] private Animator _claimTintAnimator;
     [SerializeField] private TextMeshPro[] _incomesUI = new TextMeshPro[6];
@@ -366,9 +367,18 @@ public class Tile : MonoBehaviour
     public void UpdateVisual()
     {
         if (_tileData is InfrastructureData infraData)
+        {
             _infraLvlRenderer.sprite = _spriteInfraLvl[infraData.InfrastructureLevel - 1];
+            if (_tileData.AvailableInfrastructures.Count == 0)
+                _maxInfraReached.SetActive(true);
+            else
+                _maxInfraReached.SetActive(false);
+        }   
         else
+        {
             _infraLvlRenderer.sprite = null;
+            _maxInfraReached.SetActive(false);
+        }
 
         if (_tileData is HazardousTileData)
             _claimTintAnimator.gameObject.SetActive(false);

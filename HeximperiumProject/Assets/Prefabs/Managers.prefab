@@ -266,7 +266,7 @@ MonoBehaviour:
   _tilePrefab: {fileID: 5751803865783233614, guid: 8438ded482f00494aa769242da2958cd, type: 3}
   _emptyMap: {fileID: 3026037459454811544, guid: 8e788ee934d5849459ad1a6b7658af73, type: 3}
   _mapRadius: 12
-  _predefinedMap: {fileID: 4807003823569402037, guid: 21bbb7cb1b8504842b65c9850b3d269a, type: 3}
+  _predefinedMap: {fileID: 7591512512568006490, guid: a9163d356a9776a498a0590d0df5b08a, type: 3}
   _mapDictionnary:
     tiles:
     - {x: -6, y: -12}
@@ -1419,3 +1419,8 @@ MonoBehaviour:
   _endGameFireworkQuantity: 5
   _resourceVFXforUI: {fileID: 5963754222799164501, guid: dc2605811fc8e944e90229e09b7eb3c3, type: 3}
   _comboVFX: {fileID: 7337190964190525983, guid: fe47feb8265c70640ae521665eaa6840, type: 3}
+  _spawnOffset: {x: 0, y: 0.2, z: 0}
+  _comboMovementDuration: 0.5
+  _durationJitter: 0.1
+  _arcHeightPerUnit: 0.15
+  _arcMinHeight: 1
