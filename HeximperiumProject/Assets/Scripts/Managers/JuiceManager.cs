@@ -29,8 +29,10 @@ public class JuiceManager : Singleton<JuiceManager>
     [Header("Combo Visualization")]
     [SerializeField] private GameObject _comboVFX;
     [SerializeField] private Vector3 _spawnOffset = new Vector3(0,.2f,0);
-    [SerializeField] private float _comboMovementDuration = 0.5f;
-    [SerializeField] private float _durationJitter = 0.10f; // in seconds
+    [SerializeField] private float _minComboDuration = 1.0f;
+    [SerializeField] private float _maxComboDuration = 3.0f;
+    [SerializeField] private float _durationJitter = 0.1f;
+    [SerializeField] private float _maxDurationDistance = 10f;
     [SerializeField] float _arcHeightPerUnit = 0.15f;
     [SerializeField] float _arcMinHeight = 1f;    
     #endregion
@@ -270,10 +272,13 @@ public class JuiceManager : Singleton<JuiceManager>
         return false;
     }
 
-    private float GetRandomDuration()
+    private float GetDurationForArc(ArcMoveData data)
     {
-        float dur = _comboMovementDuration
-                    + Random.Range(-_durationJitter, _durationJitter);
+        float dist = (data.positions.to - data.positions.from).magnitude;
+        print(dist);
+        float t = Mathf.InverseLerp(0f, _maxDurationDistance, dist);
+        float baseDuration = Mathf.Lerp(_minComboDuration, _maxComboDuration, t);
+        float dur = baseDuration + Random.Range(-_durationJitter, _durationJitter);
         return Mathf.Max(0.01f, dur);
     }
 
@@ -295,7 +300,7 @@ public class JuiceManager : Singleton<JuiceManager>
         {
             var data = _incomingVFX[key];
             data.elapsed = 0f;
-            data.duration = GetRandomDuration();
+            data.duration = GetDurationForArc(data);
             _incomingVFX[key] = data;
             key.SetActive(false);
         }
@@ -304,7 +309,7 @@ public class JuiceManager : Singleton<JuiceManager>
         {
             var data = _outgoingVFX[key];
             data.elapsed = 0f;
-            data.duration = GetRandomDuration();
+            data.duration = GetDurationForArc(data);
             _outgoingVFX[key] = data;
             key.SetActive(false);
         }
