@@ -1605,12 +1605,23 @@ public class PopUpManager : Singleton<PopUpManager>
         textObjects.Add(separationEffects.GetComponent<RectTransform>());
         #endregion
 
+        #region AUTO CLAIM TOWN UPGRADE
+        if (GameManager.Instance.CurrentPhase == Phase.Expand && ExpansionManager.Instance.UpgradeTownAutoClaim)
+        {
+            TextMeshProUGUI autoClaimText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            autoClaimText.text = "<sprite name=\"Puce_Emoji\"> Automatically claims<sprite name=\"Claim_Emoji\"> the 6 surrounding tiles";
+            textObjects.Add(autoClaimText.GetComponent<RectTransform>());
+            ClampTextWidth(autoClaimText);
+        }
+        #endregion
+
         #region INCOME BONUS
         if (button.InfrastructureData.Incomes.Count > 0)
         {
             TextMeshProUGUI income = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
             income.text = "<sprite name=\"Puce_Emoji\"> Improve base income by " + button.InfrastructureData.Incomes.IncomeToString() + " per turn";
             textObjects.Add(income.GetComponent<RectTransform>());
+            ClampTextWidth(income);
         }
         #endregion
 
