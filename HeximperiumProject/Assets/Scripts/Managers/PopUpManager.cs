@@ -94,13 +94,13 @@ public class PopUpManager : Singleton<PopUpManager>
                 switch (obj.tag)
                 {
                     case "ScoutLimitUI":
-                        LimitPopUp("Scouts<sprite name=\"Scout_Emoji\">");
+                        ScoutLimitPopUp();
                         break;
                     case "ClaimUI":
                         ClaimPopUp();
                         break;
                     case "TownLimitUI":
-                        LimitPopUp("Towns<sprite name=\"Town_Emoji\">");
+                        TownLimitPopUp();
                         break;
                     case "GoldUI":
                         GoldPopUp();
@@ -312,7 +312,7 @@ public class PopUpManager : Singleton<PopUpManager>
     #endregion
 
     #region UI POP UP
-    private void LimitPopUp(string text)
+    private void ScoutLimitPopUp()
     {
         GameObject popUp;
         popUp = Instantiate(_basePopUp, _popUpParent);
@@ -322,21 +322,138 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        title.text = text + " limit";
+        title.text = "Scouts<sprite name=\"Scout_Emoji\"> limit";
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
         #region DETAIL
         TextMeshProUGUI detail = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        detail.text = "Can be upgrades with specifics enhancements and upgrades";
-        ClampTextWidth(detail);
+        detail.text = "Can be upgrades with specifics infrastructures";
         detail.alignment = TextAlignmentOptions.Center;
         detail.fontStyle = FontStyles.Italic;
         textObjects.Add(detail.GetComponent<RectTransform>());
         #endregion
 
+        #region AVAILABILITY
+        TextMeshProUGUI availability = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        availability.text = $"{ExplorationManager.Instance.ScoutsLimit - ExplorationManager.Instance.CurrentScoutsCount}<sprite name=\"Scout_Emoji\"> available";
+        ClampTextWidth(availability);
+        textObjects.Add(availability.GetComponent<RectTransform>());
+        #endregion
+
+        #region SOURCE
+        Dictionary<Family, int> scoutSources = new Dictionary<Family, int>();
+        foreach (var item in ExploitationManager.Instance.Infrastructures)
+        {
+            if (item.TileData.SpecialBehaviours.Any(b => b.GetType() == typeof(BoostScoutsLimit)))
+            {
+                foreach (SpecialBehaviour behaviour in item.TileData.SpecialBehaviours)
+                {
+                    if (behaviour.GetType() == typeof(BoostScoutsLimit))
+                    {
+                        BoostScoutsLimit boost = (BoostScoutsLimit)behaviour;
+                        if (scoutSources.ContainsKey(item.TileData.Family))
+                            scoutSources[item.TileData.Family] += boost.ScoutsIncrease;
+                        else
+                            scoutSources.Add(item.TileData.Family, boost.ScoutsIncrease);
+                    }
+                }
+            }
+        }
+        TextMeshProUGUI baseSource = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        baseSource.text = $"Base value: +{ExplorationManager.Instance.BaseScoutsLimit}<sprite name=\"Scout_Emoji\"> limit";
+        ClampTextWidth(baseSource);
+        textObjects.Add(baseSource.GetComponent<RectTransform>());
+        if (scoutSources.Count > 0)
+        {
+            foreach (var kvp in scoutSources)
+            {
+                TextMeshProUGUI source = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                source.text = $"{kvp.Key.ToCustomString(true)}: +{kvp.Value}<sprite name=\"Scout_Emoji\"> limit";
+                ClampTextWidth(source);
+                textObjects.Add(source.GetComponent<RectTransform>());
+            }
+        }
+        #endregion
+
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
+        StartLockingPopup(popUp);
+    }
+
+    private void TownLimitPopUp()
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, _popUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        #region TITLE
+        TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        title.text = "Towns<sprite name=\"Town_Emoji\"> limit";
+        textObjects.Add(title.GetComponent<RectTransform>());
+        #endregion
+
+        #region DETAIL
+        TextMeshProUGUI detail = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        detail.text = "Can be upgrades with specifics infrastructures and upgrade";
+        detail.alignment = TextAlignmentOptions.Center;
+        detail.fontStyle = FontStyles.Italic;
+        textObjects.Add(detail.GetComponent<RectTransform>());
+        #endregion
+
+        #region AVAILABILITY
+        TextMeshProUGUI availability = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        availability.text = $"{ExploitationManager.Instance.GetTownLimit()}<sprite name=\"Town_Emoji\"> available";
+        ClampTextWidth(availability);
+        textObjects.Add(availability.GetComponent<RectTransform>());
+        #endregion
+
+        #region SOURCE
+        TextMeshProUGUI baseSource = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        baseSource.text = "Base value: +2<sprite name=\"Town_Emoji\"> limit";
+        ClampTextWidth(baseSource);
+        textObjects.Add(baseSource.GetComponent<RectTransform>());
+        if (UpgradesManager.Instance.AppliedUpgrades.Any(b => b.GetType() == typeof(UpgradeTownLimit)))
+        {
+            TextMeshProUGUI upgradeSource = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            upgradeSource.text = "Imperial Mandate: +3<sprite name=\"Town_Emoji\"> limit";
+            ClampTextWidth(upgradeSource);
+            textObjects.Add(upgradeSource.GetComponent<RectTransform>());
+        }
+        Dictionary<Family, int> townSources = new Dictionary<Family, int>();
+        foreach (var item in ExploitationManager.Instance.Infrastructures)
+        {
+            if (item.TileData.SpecialBehaviours.Any(b => b.GetType() == typeof(BoostTownsLimit)))
+            {
+                foreach (SpecialBehaviour behaviour in item.TileData.SpecialBehaviours)
+                {
+                    if (behaviour.GetType() == typeof(BoostTownsLimit))
+                    {
+                        if (townSources.ContainsKey(item.TileData.Family))
+                            townSources[item.TileData.Family] += 1;
+                        else
+                            townSources.Add(item.TileData.Family, 1);
+                    }
+                }
+            }
+        }
+        if (townSources.Count > 0)
+        {
+            foreach (var kvp in townSources)
+            {
+                TextMeshProUGUI source = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                source.text = $"{kvp.Key.ToCustomString(true)}: +{kvp.Value}<sprite name=\"Town_Emoji\"> limit";
+                ClampTextWidth(source);
+                textObjects.Add(source.GetComponent<RectTransform>());
+            }
+        }
+        #endregion
+
+        SetPopUpContentAnchors(textObjects);
+        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
+        StartLockingPopup(popUp);
     }
 
     private void VisibilityPopUp()
@@ -380,15 +497,50 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        title.text = "Claims<sprite name=\"Claim_Emoji\">";
+        title.text = $"{ResourcesManager.Instance.Claim} Claims<sprite name=\"Claim_Emoji\">";
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
         #region INCOME
         TextMeshProUGUI income = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        income.text = "Claim per turn: +" + ExpansionManager.Instance.ClaimPerTurn + "<sprite name=\"Claim_Emoji\">";
+        income.text = "Total <sprite name=\"Claim_Emoji\"> per turn +" + ExpansionManager.Instance.ClaimPerTurn + "<sprite name=\"Claim_Emoji\">";
         ClampTextWidth(income);
         textObjects.Add(income.GetComponent<RectTransform>());
+        #endregion
+
+        #region SOURCES
+        TextMeshProUGUI baseSource = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        baseSource.text = $"Base value: +{GameManager.Instance.BaseClaimPerTurn}<sprite name=\"Claim_Emoji\">";
+        ClampTextWidth(baseSource);
+        textObjects.Add(baseSource.GetComponent<RectTransform>());
+        Dictionary<Family, int> claimSources = new Dictionary<Family, int>();
+        foreach (var item in ExploitationManager.Instance.Infrastructures)
+        {
+            if (item.TileData.SpecialBehaviours.Any(b => b.GetType() == typeof(BoostClaimIncome)))
+            {
+                foreach (SpecialBehaviour behaviour in item.TileData.SpecialBehaviours)
+                {
+                    if (behaviour.GetType() == typeof(BoostClaimIncome))
+                    {
+                        BoostClaimIncome boost = (BoostClaimIncome)behaviour;
+                        if (claimSources.ContainsKey(item.TileData.Family))
+                            claimSources[item.TileData.Family] += boost.ClaimQuantity;
+                        else
+                            claimSources.Add(item.TileData.Family, boost.ClaimQuantity);
+                    }
+                }
+            }
+        }
+        if (claimSources.Count > 0)
+        {
+            foreach (var kvp in claimSources)
+            {
+                TextMeshProUGUI source = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                source.text = $"{kvp.Key.ToCustomString(true)}: +{kvp.Value}<sprite name=\"Claim_Emoji\">";
+                ClampTextWidth(source);
+                textObjects.Add(source.GetComponent<RectTransform>());
+            }
+        }
         #endregion
 
         SetPopUpContentAnchors(textObjects);
@@ -406,29 +558,40 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        title.text = "Gold<sprite name=\"Gold_Emoji\">";
+        title.text = $"{ResourcesManager.Instance.GetResourceStock(Resource.Gold)} Gold<sprite name=\"Gold_Emoji\">";
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
         #region INCOME
         TextMeshProUGUI income = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        income.text = "Total <sprite name=\"Gold_Emoji\"> per turn: +" + ExploitationManager.Instance.GetResourceIncomeByAllTiles(Resource.Gold) + "<sprite name=\"Gold_Emoji\">";
+        income.text = "Total <sprite name=\"Gold_Emoji\"> per turn +" + ExploitationManager.Instance.GetResourceIncomeByAllTiles(Resource.Gold) + "<sprite name=\"Gold_Emoji\">";
         ClampTextWidth(income);
         textObjects.Add(income.GetComponent<RectTransform>());
         #endregion
 
         #region INCOME NO INFRA
-        TextMeshProUGUI incomeNoInfra = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        incomeNoInfra.text = "<sprite name=\"Gold_Emoji\"> from non enhanced tiles: +" + ExploitationManager.Instance.GetResourceIncomeByNoInfraTiles(Resource.Gold) + "<sprite name=\"Gold_Emoji\">";
-        ClampTextWidth(incomeNoInfra);
-        textObjects.Add(incomeNoInfra.GetComponent<RectTransform>());
+        int noInfraGoldIncome = ExploitationManager.Instance.GetResourceIncomeByNoInfraTiles(Resource.Gold);
+        if (noInfraGoldIncome > 0)
+        {
+            TextMeshProUGUI incomeNoInfra = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            incomeNoInfra.text = "Basic tiles: +" + noInfraGoldIncome + "<sprite name=\"Gold_Emoji\">";
+            ClampTextWidth(incomeNoInfra);
+            textObjects.Add(incomeNoInfra.GetComponent<RectTransform>());
+        }
         #endregion
 
         #region INCOME INFRA
-        TextMeshProUGUI incomeInfra = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        incomeInfra.text = "<sprite name=\"Gold_Emoji\"> from enhanced tiles: +" + ExploitationManager.Instance.GetResourceIncomeByInfra(Resource.Gold) + "<sprite name=\"Gold_Emoji\">";
-        ClampTextWidth(incomeInfra);
-        textObjects.Add(incomeInfra.GetComponent<RectTransform>());
+        Dictionary<Family, int> familyProducingGold = ExploitationManager.Instance.GetResourceIncomeByFamilly(Resource.Gold);
+        if (familyProducingGold.Count > 0)
+        {
+            foreach (var kvp in familyProducingGold)
+            {
+                TextMeshProUGUI source = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                source.text = kvp.Key.ToCustomString(true) + ": +" + kvp.Value + "<sprite name=\"Gold_Emoji\">";
+                ClampTextWidth(source);
+                textObjects.Add(source.GetComponent<RectTransform>());
+            }
+        }
         #endregion
 
         SetPopUpContentAnchors(textObjects);
@@ -446,15 +609,29 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        title.text = "Stone<sprite name=\"SR_Emoji\">";
+        title.text = $"{ResourcesManager.Instance.GetResourceStock(Resource.SpecialResources)} Stone<sprite name=\"SR_Emoji\">";
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
         #region INCOME
         TextMeshProUGUI income = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        income.text = "<sprite name=\"SR_Emoji\"> per turn: +" + ExploitationManager.Instance.GetResourceIncomeByAllTiles(Resource.SpecialResources) + "<sprite name=\"SR_Emoji\">";
+        income.text = "Total <sprite name=\"SR_Emoji\"> per turn +" + ExploitationManager.Instance.GetResourceIncomeByAllTiles(Resource.SpecialResources) + "<sprite name=\"SR_Emoji\">";
         ClampTextWidth(income);
         textObjects.Add(income.GetComponent<RectTransform>());
+        #endregion
+
+        #region SOURCE
+        Dictionary<Family, int> familyProducingSR = ExploitationManager.Instance.GetResourceIncomeByFamilly(Resource.SpecialResources);
+        if (familyProducingSR.Count > 0)
+        {
+            foreach (var kvp in familyProducingSR)
+            {
+                TextMeshProUGUI source = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                source.text = kvp.Key.ToCustomString(true) + ": +" + kvp.Value + "<sprite name=\"SR_Emoji\">";
+                ClampTextWidth(source);
+                textObjects.Add(source.GetComponent<RectTransform>());
+            }
+        }
         #endregion
 
         SetPopUpContentAnchors(textObjects);
@@ -472,7 +649,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        title.text = "Points<sprite name=\"Point_Emoji\">";
+        title.text = $"{EntertainmentManager.Instance.Score} Points<sprite name=\"Point_Emoji\">";
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
@@ -519,7 +696,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        title.text = "Carnivalists<sprite name=\"Carnivalist_Emoji\">";
+        title.text = $"{ResourcesManager.Instance.Carnivalist} Carnivalists<sprite name=\"Carnivalist_Emoji\">";
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
@@ -535,10 +712,28 @@ public class PopUpManager : Singleton<PopUpManager>
         #region SOURCE
         if (ResourcesManager.Instance.CarnivalistSources.Count > 0)
         {
+            Dictionary<Family, int> familyProducingCarnivalists = new Dictionary<Family, int>();
             foreach (KeyValuePair<TileData, int> pair in ResourcesManager.Instance.CarnivalistSources)
             {
+                if ( pair.Key.Family == Family.None)
+                {
+                    TextMeshProUGUI source = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                    source.text = pair.Key.TileName + ": " + pair.Value + "<sprite name=\"Carnivalist_Emoji\">";
+                    ClampTextWidth(source);
+                    textObjects.Add(source.GetComponent<RectTransform>());
+                }
+                else
+                {
+                    if (familyProducingCarnivalists.ContainsKey(pair.Key.Family))
+                        familyProducingCarnivalists[pair.Key.Family] += pair.Value;
+                    else
+                        familyProducingCarnivalists.Add(pair.Key.Family, pair.Value);
+                }
+            }
+            foreach (var kvp in familyProducingCarnivalists)
+            {
                 TextMeshProUGUI source = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-                source.text = pair.Key.TileName + ": " + pair.Value + "<sprite name=\"Carnivalist_Emoji\">";
+                source.text = kvp.Key.ToCustomString(true) + ": " + kvp.Value + "<sprite name=\"Carnivalist_Emoji\">";
                 ClampTextWidth(source);
                 textObjects.Add(source.GetComponent<RectTransform>());
             }

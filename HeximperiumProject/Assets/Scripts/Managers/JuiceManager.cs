@@ -275,7 +275,6 @@ public class JuiceManager : Singleton<JuiceManager>
     private float GetDurationForArc(ArcMoveData data)
     {
         float dist = (data.positions.to - data.positions.from).magnitude;
-        print(dist);
         float t = Mathf.InverseLerp(0f, _maxDurationDistance, dist);
         float baseDuration = Mathf.Lerp(_minComboDuration, _maxComboDuration, t);
         float dur = baseDuration + Random.Range(-_durationJitter, _durationJitter);

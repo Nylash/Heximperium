@@ -73,6 +73,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
     public bool LastTurn { get => _lastTurn; }
+    public int BaseClaimPerTurn { get => _baseClaimPerTurn; }
     #endregion
 
     private void OnEnable() => _inputActions.Player.Enable();

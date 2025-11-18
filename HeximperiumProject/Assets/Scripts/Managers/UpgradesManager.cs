@@ -19,6 +19,8 @@ public class UpgradesManager : Singleton<UpgradesManager>
     private UpgradeEffect _currentExploitUpgrade;
     private UpgradeEffect _currentEntertainUpgrade;
 
+    public List<UpgradeEffect> AppliedUpgrades { get => _appliedUpgrades; }
+
     protected override void OnAwake()
     {
         GameManager.Instance.OnNewTurn += CheckNewTurnValue;

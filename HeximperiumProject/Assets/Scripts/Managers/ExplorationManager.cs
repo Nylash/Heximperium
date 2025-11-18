@@ -125,6 +125,8 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
                 UIManager.Instance.RevealAnywhereHint.gameObject.SetActive(true);
         }
     }
+
+    public int BaseScoutsLimit { get => _baseScoutsLimit; }
     #endregion
 
     protected override void OnAwake()
