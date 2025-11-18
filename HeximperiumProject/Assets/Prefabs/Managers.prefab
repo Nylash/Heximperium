@@ -1417,10 +1417,12 @@ MonoBehaviour:
   _endGameFireworkVFX: {fileID: 5445069053781343791, guid: 203ad3c60e691f649b2afebfe03d6044, type: 3}
   _endGameFireworkPosMaxOffset: 1.5
   _endGameFireworkQuantity: 5
-  _resourceVFXforUI: {fileID: 5963754222799164501, guid: dc2605811fc8e944e90229e09b7eb3c3, type: 3}
+  _resourceVFXforUI: {fileID: 7337190964190525983, guid: a7c265992c4cabe448d510e1d8b39d99, type: 3}
   _comboVFX: {fileID: 7337190964190525983, guid: fe47feb8265c70640ae521665eaa6840, type: 3}
   _spawnOffset: {x: 0, y: 0.2, z: 0}
-  _comboMovementDuration: 0.5
+  _minComboDuration: 1
+  _maxComboDuration: 3
   _durationJitter: 0.1
+  _maxDurationDistance: 10
   _arcHeightPerUnit: 0.15
   _arcMinHeight: 1

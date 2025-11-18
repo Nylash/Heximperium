@@ -60,7 +60,8 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
 
         foreach (Tile tile in _claimedTiles)
         {
-            ResourcesManager.Instance.UpdateClaim(tile.ClaimIncome, Transaction.Gain);
+            if (tile.ClaimIncome > 0)
+                ResourcesManager.Instance.UpdateClaim(tile.ClaimIncome, Transaction.Gain);
         }
 
         UpdateInteractableTiles();

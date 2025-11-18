@@ -54,11 +54,11 @@ public class JuiceManager : Singleton<JuiceManager>
         EntertainmentManager.Instance.OnScoreLost += (tile, value) => PlayResourceVFX(tile, value, _scoreMat, UIManager.Instance.ColorCantAfford);
 
         ResourcesManager.Instance.OnGoldGained += (tile, value) => ResourceGain(tile, value, ExtendedResource.Gold);
-        ResourcesManager.Instance.OnGoldSpent += (value) => PlayUIResourceVFX(value, _goldMat, UIManager.Instance.VfxAnchorGold, UIManager.Instance.ColorCantAfford);
+        ResourcesManager.Instance.OnGoldSpent += (value) => PlayUIResourceVFX(value, ExtendedResource.Gold, UIManager.Instance.VfxAnchorGold, Transaction.Spent);
         ResourcesManager.Instance.OnSpecialResourcesGained += (tile, value) => ResourceGain(tile, value, ExtendedResource.SpecialResources);
-        ResourcesManager.Instance.OnSpecialResourcesSpent += (value) => PlayUIResourceVFX(value, _srMat, UIManager.Instance.VfxAnchorSR, UIManager.Instance.ColorCantAfford);
+        ResourcesManager.Instance.OnSpecialResourcesSpent += (value) => PlayUIResourceVFX(value, ExtendedResource.SpecialResources, UIManager.Instance.VfxAnchorSR, Transaction.Spent);
         ResourcesManager.Instance.OnClaimGained += (tile, value) => ResourceGain(tile, value, ExtendedResource.Claim);
-        ResourcesManager.Instance.OnClaimSpent += (value) => PlayUIResourceVFX(value, _claimMat, UIManager.Instance.VfxAnchorClaim, UIManager.Instance.ColorCantAfford);
+        ResourcesManager.Instance.OnClaimSpent += (value) => PlayUIResourceVFX(value, ExtendedResource.Claim, UIManager.Instance.VfxAnchorClaim, Transaction.Spent);
         ResourcesManager.Instance.OnCarnivalistGained += (tile, value) => ResourceGain(tile, value, ExtendedResource.Carnivalist);
         ResourcesManager.Instance.OnCarnivalistSpent += (tile, value) => CarnivalistSpent(tile, value);
 
@@ -77,25 +77,25 @@ public class JuiceManager : Singleton<JuiceManager>
                 if (tile)
                     PlayResourceVFX(tile, value, _goldMat, UIManager.Instance.ColorExploit);
                 else
-                    PlayUIResourceVFX(value, _goldMat, UIManager.Instance.VfxAnchorGold, UIManager.Instance.ColorExploit);
+                    PlayUIResourceVFX(value, ExtendedResource.Gold, UIManager.Instance.VfxAnchorGold, Transaction.Gain);
                 break;
             case ExtendedResource.SpecialResources:
                 if (tile)
                     PlayResourceVFX(tile, value, _srMat, UIManager.Instance.ColorExploit);
                 else
-                    PlayUIResourceVFX(value, _srMat, UIManager.Instance.VfxAnchorSR, UIManager.Instance.ColorExploit);
+                    PlayUIResourceVFX(value, ExtendedResource.SpecialResources, UIManager.Instance.VfxAnchorSR, Transaction.Gain);
                 break;
             case ExtendedResource.Claim:
                 if (tile)
                     PlayResourceVFX(tile, value, _claimMat, UIManager.Instance.ColorExpand);
                 else
-                    PlayUIResourceVFX(value, _claimMat, UIManager.Instance.VfxAnchorClaim, UIManager.Instance.ColorExpand);
+                    PlayUIResourceVFX(value, ExtendedResource.Claim, UIManager.Instance.VfxAnchorClaim, Transaction.Gain);
                 break;
             case ExtendedResource.Carnivalist:
                 if (tile)
                     PlayResourceVFX(tile, value, _carnivalistMat, UIManager.Instance.ColorEntertain);
                 else
-                    PlayUIResourceVFX(value, _carnivalistMat, UIManager.Instance.VfxAnchorCarnivalist, UIManager.Instance.ColorEntertain);
+                    PlayUIResourceVFX(value, ExtendedResource.Carnivalist, UIManager.Instance.VfxAnchorCarnivalist, Transaction.Gain);
                 break;
         }
     }
@@ -128,7 +128,7 @@ public class JuiceManager : Singleton<JuiceManager>
         if (tile)
             PlayResourceVFX(tile, value, _carnivalistMat, UIManager.Instance.ColorCantAfford);
         else
-            PlayUIResourceVFX(value, _carnivalistMat, UIManager.Instance.VfxAnchorCarnivalist, UIManager.Instance.ColorCantAfford);
+            PlayUIResourceVFX(value, ExtendedResource.Carnivalist, UIManager.Instance.VfxAnchorCarnivalist, Transaction.Spent);
     }
 
     private void DustVFX(Tile tile)
@@ -167,20 +167,30 @@ public class JuiceManager : Singleton<JuiceManager>
         return worldPos + new Vector3(dx, dy, 0f);
     }
 
-    private void PlayUIResourceVFX(int value, Material mat, RectTransform uiElement, Color color)
+    private void PlayUIResourceVFX(int value, ExtendedResource resource, RectTransform uiElement, Transaction transaction)
     {
-        GameObject vfx = GameObject.Instantiate(_resourceVFXforUI, PlaceAtViewport(uiElement), _resourceVFXforUI.transform.rotation);
+        GameObject vfx = Instantiate(_resourceVFXforUI, PlaceAtViewport(uiElement), _resourceVFXforUI.transform.rotation);
 
-        ParticleSystem particleSystem = vfx.GetComponent<ParticleSystem>();
-
-        particleSystem.emission.SetBurst(0, new ParticleSystem.Burst(0, value));
-
-        vfx.GetComponent<ParticleSystemRenderer>().material = mat;
-
-        ParticleSystem.MainModule main = particleSystem.main;
-        main.startColor = new ParticleSystem.MinMaxGradient(color);
-
-        particleSystem.Play();
+        TextMeshPro text = vfx.GetComponentInChildren<TextMeshPro>();
+        text.text = $"{(transaction == Transaction.Gain ? "+" : "-")}{value}";
+        switch (resource)
+        {
+            case ExtendedResource.Gold:
+                text.text += "<sprite name=\"Gold_Emoji\">";
+                break;
+            case ExtendedResource.SpecialResources:
+                text.text += "<sprite name=\"SR_Emoji\">";
+                break;
+            case ExtendedResource.Claim:
+                text.text += "<sprite name=\"Claim_Emoji\">";
+                break;
+            case ExtendedResource.Carnivalist:
+                text.text += "<sprite name=\"Carnivalist_Emoji\">";
+                break;
+        }
+        vfx.SetActive(true);
+        string trigger = transaction == Transaction.Gain ? "Gain" : "Spent";
+        vfx.GetComponent<Animator>().SetTrigger(trigger);
     }
     #endregion
 
