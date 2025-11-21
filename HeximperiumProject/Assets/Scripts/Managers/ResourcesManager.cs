@@ -168,11 +168,15 @@ public class ResourcesManager : Singleton<ResourcesManager>
 
     public void HelperOnCarnivalistGained(Tile tile, int value)
     {
+        if (value == 0)
+            return;
         OnCarnivalistGained?.Invoke(tile, value);
     }
 
     public void HelperOnCarnivalistSpent(Tile tile, int value)
     {
+        if (value == 0)
+            return;
         OnCarnivalistSpent?.Invoke(tile, Mathf.Abs(value));
     }
 

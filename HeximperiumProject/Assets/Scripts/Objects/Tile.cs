@@ -22,36 +22,39 @@ public class Tile : MonoBehaviour
     #endregion
 
     #region VARIABLES
-    //Remove the serializedField when the map creation is fixed
+    //Remove the serializedField when the map creation is implemented
     [Header("_________________________________________________________")]
     [Header("Map Generation Only")]
     [SerializeField] private TileData _tileData;
     [SerializeField] private Vector2 _coordinate;
     [SerializeField] private List<ResourceToIntMap> _incomes = new List<ResourceToIntMap>();
 
-    private Dictionary<Tile, List<ResourceToIntMap>> _externalIncomesSources = new Dictionary<Tile, List<ResourceToIntMap>>(); // Income coming from other tiles behaviours
-    private Dictionary<Tile, List<ResourceToIntMap>> _internalIncomesSources = new Dictionary<Tile, List<ResourceToIntMap>>(); // Income coming from this tile behaviours
-    private Dictionary<Tile, int> _internalCarnivalistsSources = new Dictionary<Tile, int>(); // There is only internal source of carnivalists
-    private int _claimIncome = 0;
+    //Objects
     private Tile[] _neighbors = new Tile[6];
-    private TileData _initialData;
-    private TileData _previousData;
-    private List<ResourceToIntMap> _incomeWithPreviousData = new List<ResourceToIntMap>();
-    private TileData _targetData;
-    private bool _revealed;
-    private bool _claimed;
     private Border _border;
     private Border _previewBorder;
     private Animator _animator;
     private GameObject _highlightObject;
-    private Coroutine _interactionCoroutine;
-    private TileInteractionAnimationState _interactionAnimationState = TileInteractionAnimationState.None;
     private GameObject _visualAssets;
+    //Runtime variables
+    private TileData _initialData;
+    private TileData _previousData;
+    private bool _revealed;
+    private bool _claimed;
+    private int _claimIncome = 0;
     private int _carnivalistCostReduction;
     private int _recruitedCarnivalists;
     private int _bufferRecruitedCarnivalists;
+    private int _infraFromTurn = -1;
+    private List<ResourceToIntMap> _incomeWithPreviousData = new List<ResourceToIntMap>();
     private Dictionary<BoostByUniqueInfraNeighbors, HashSet<Tile>> _uniqueInfraNeighborsByBehaviour = new Dictionary<BoostByUniqueInfraNeighbors, HashSet<Tile>>();
-    //Dictionary for impacted tiles
+    //Variables for boucing animations (no more used)
+    private Coroutine _interactionCoroutine;
+    private TileInteractionAnimationState _interactionAnimationState = TileInteractionAnimationState.None;
+    //Dictionary for impacted tiles and sources
+    private Dictionary<Tile, List<ResourceToIntMap>> _externalIncomesSources = new Dictionary<Tile, List<ResourceToIntMap>>(); // Income coming from other tiles behaviours
+    private Dictionary<Tile, List<ResourceToIntMap>> _internalIncomesSources = new Dictionary<Tile, List<ResourceToIntMap>>(); // Income coming from this tile behaviours
+    private Dictionary<Tile, int> _internalCarnivalistsSources = new Dictionary<Tile, int>(); // There is only internal source of carnivalists
     private Dictionary<Tile, List<ResourceToIntMap>> _impactedTilesIncomes = new Dictionary<Tile, List<ResourceToIntMap>>();
     private Dictionary<Tile, int> _impactedTilesCarnivalists = new Dictionary<Tile, int>();
     private Dictionary<Tile, int> _entImpactedByEntertainment = new Dictionary<Tile, int>();//Use the tile to avoid issues with destroyed entertainment
@@ -63,7 +66,6 @@ public class Tile : MonoBehaviour
     private Entertainment _entertainment;
     private Entertainment _previousEntertainment;//Only stay one frame (because the ref is deleted) but needed to clean the group (BoostByZone special effect)
     private EntertainmentData _previousEntertainmentData;
-
     private int _uniqueEntertainmentNeighborsCount_SE;//Count for special effect script, two count is needed if an entertainment and infra on the same tile use it
     private int _groupID;//Use for BoostByZoneSize entertainment's special effect
     #endregion
@@ -111,7 +113,6 @@ public class Tile : MonoBehaviour
     public int UniqueEntertainmentNeighborsCount_SE { get => _uniqueEntertainmentNeighborsCount_SE; set => _uniqueEntertainmentNeighborsCount_SE = value; }
     public int GroupID { get => _groupID; set => _groupID = value; }
     public Entertainment PreviousEntertainment { get => _previousEntertainment; }
-    public Animator Animator { get => _animator; }
     public Transform Visual { get => _visual; }
     public Coroutine InteractionCoroutine { get => _interactionCoroutine; set => _interactionCoroutine = value; }
     public TileInteractionAnimationState InteractionAnimationState { get => _interactionAnimationState; set => _interactionAnimationState = value; }
@@ -151,6 +152,7 @@ public class Tile : MonoBehaviour
     public Dictionary<Tile, List<ResourceToIntMap>> InternalIncomesSources { get => _internalIncomesSources; }
     public List<ResourceToIntMap> IncomeWithPreviousData { get => _incomeWithPreviousData; }
     public Dictionary<Tile, int> InternalCarnivalistsSources { get => _internalCarnivalistsSources; }
+    public int InfraFromTurn { get => _infraFromTurn; set => _infraFromTurn = value; }
     #endregion
 
     private void Awake()
@@ -259,8 +261,6 @@ public class Tile : MonoBehaviour
     {
         _incomeWithPreviousData = Utilities.CloneResourceToIntMaps(_incomes);
 
-        _targetData = value;
-
         RollbackSpecialBehaviours();
 
         //Set the new income
@@ -280,7 +280,6 @@ public class Tile : MonoBehaviour
         name = value.TileName + " (" + (int)_coordinate.x + ";" + (int)_coordinate.y + ")";
         _previousData = _tileData;
         _tileData = value;
-        _targetData = null;
 
         if (updateVisual)
             _animator.SetTrigger("UpdateVisual");

@@ -244,6 +244,9 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         OnEntertainmentRemoved?.Invoke(removedEntertainmentData, tile);
         //Call the check empty group after the Entertainment assignation, so the event and its listener is done before
         CheckEmptyGroup(tile);
+        //Refund
+        if (!isPredictionRelated)
+            ResourcesManager.Instance.UpdateCarnivalist(removedEntertainmentData.GetActualCarnivalistCost(tile), Transaction.Gain);
     }
 
     public void PredictEntertainmentSpawn(Tile tile, EntertainmentData data,
