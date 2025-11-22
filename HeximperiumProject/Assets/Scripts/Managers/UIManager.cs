@@ -181,12 +181,6 @@ public class UIManager : Singleton<UIManager>
         ExplorationManager.Instance.OnScoutsLimitModified += UpdateScoutLimit;
 
         EntertainmentManager.Instance.OnScoreUpdated += () => _scoreText.text = EntertainmentManager.Instance.Score.ToString();
-
-        if (TutorialManager.Instance != null)
-        {
-            _tradeMenuButton.SetActive(false);
-            _upgradesMenuButton.SetActive(false);
-        }
     }
 
     private void Start()

@@ -32,7 +32,5 @@ public class UI_MainMenu : MonoBehaviour
 
         string digits = string.Concat(label.Where(char.IsDigit));
         int value = int.Parse(digits);
-
-        LoadingManager.Instance.GameDuration = value;
     }
 }
