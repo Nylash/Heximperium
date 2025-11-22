@@ -35,13 +35,6 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Button _buttonEndPhase;
     [SerializeField] private Material _phaseMaterial;
     [Header("_________________________________________________________")]
-    [Header("Units visibility UI")]
-    [SerializeField] private Image _visibilityImage;
-    [SerializeField] private Image _scoutImageVisibility;
-    [SerializeField] private Image _entertainmentImageVisibility;
-    [SerializeField] private Sprite _visible;
-    [SerializeField] private Sprite _hidden;
-    [Header("_________________________________________________________")]
     [Header("Menu")]
     [SerializeField] private GameObject _menu;
     [SerializeField] private GameObject _confirmQuit;
@@ -88,6 +81,11 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Animator _animatorExpand;
     [SerializeField] private Animator _animatorExploit;
     [SerializeField] private Animator _animatorEntertain;
+    [Header("_________________________________________________________")]
+    [Header("Visibility button")]
+    [SerializeField] private Image _visibilityButton;
+    [SerializeField] private Sprite _visibilityOff;
+    [SerializeField] private Sprite _visibilityOn;
     [Header("_________________________________________________________")]
     [Header("Show Income button")]
     [SerializeField] private Image _showIncomeButton;
@@ -158,6 +156,7 @@ public class UIManager : Singleton<UIManager>
     public Animator RevealAnywhereHint { get => _revealAnywhereHint; }
     public Color ColorIvory { get => _colorIvory; }
     public Animator BuildTownHint { get => _buildTownHint; }
+    public bool AreUnitsVisible { get => _areUnitsVisible; set => _areUnitsVisible = value; }
     #endregion
 
     protected override void OnAwake()
@@ -197,10 +196,8 @@ public class UIManager : Singleton<UIManager>
 
     private void UpdateUIForEntertainment()
     {
-        _scoutImageVisibility.enabled = false;
-        _entertainmentImageVisibility.enabled = true;
-        _visibilityImage.sprite = _visible;
-
+        if (!_areUnitsVisible)
+            UnitsVisibility();
         _scoreUI.SetActive(true);
     }
 
@@ -308,13 +305,13 @@ public class UIManager : Singleton<UIManager>
     }
     #endregion
 
-    #region UNITS VISIBILITY UI
+    #region FILTER UI
     //OnClick for UI button
     public void UnitsVisibility()
     {
         _areUnitsVisible = !_areUnitsVisible;
 
-        _visibilityImage.sprite = _areUnitsVisible ? _visible : _hidden;
+        _visibilityButton.sprite = _areUnitsVisible ? _visibilityOn : _visibilityOff;
 
         if (GameManager.Instance.CurrentPhase != Phase.Entertain)
         {
@@ -336,12 +333,38 @@ public class UIManager : Singleton<UIManager>
     {
         _areUnitsVisible = visible;
 
-        _visibilityImage.sprite = _areUnitsVisible ? _visible : _hidden;
+        _visibilityButton.sprite = _areUnitsVisible ? _visibilityOn : _visibilityOff;
 
         foreach (Scout item in ExplorationManager.Instance.Scouts)
         {
             item.ScoutVisibility(visible);
         }
+    }
+
+    public void SwitchIncomesVisibility()
+    {
+        _areIncomesShown = !_areIncomesShown;
+        _showIncomeButton.sprite = _areIncomesShown ? _showIncomeOn : _showIncomeOff;
+        foreach (Tile tile in ExplorationManager.Instance.RevealedTiles)
+        {
+            tile.ShowIncomeUI(_areIncomesShown);
+        }
+    }
+
+    public void SwitchEntPlacementVisibility()
+    {
+        _areEntPlacementShown = !_areEntPlacementShown;
+        _showEntPlacementButton.sprite = _areEntPlacementShown ? _showEntPlacementOn : _showEntPlacementOff;
+        foreach (Tile tile in ExplorationManager.Instance.RevealedTiles)
+        {
+            tile.ShowEntPlacementUI(_areEntPlacementShown);
+        }
+    }
+
+    public void SwitchPopupDetailsVisibility()
+    {
+        PopUpManager.Instance.ShowSourcesOnPopUp = !PopUpManager.Instance.ShowSourcesOnPopUp;
+        _showDetailsPopupButton.sprite = PopUpManager.Instance.ShowSourcesOnPopUp ? _showDetailsPopupOn : _showDetailsPopupOff;
     }
     #endregion
 
@@ -605,32 +628,6 @@ public class UIManager : Singleton<UIManager>
         } 
     }
     #endregion
-
-    public void SwitchIncomesVisibility()
-    {
-        _areIncomesShown = !_areIncomesShown;
-        _showIncomeButton.sprite = _areIncomesShown ? _showIncomeOn : _showIncomeOff;
-        foreach (Tile tile in ExplorationManager.Instance.RevealedTiles)
-        {
-            tile.ShowIncomeUI(_areIncomesShown);
-        }
-    }
-
-    public void SwitchEntPlacementVisibility()
-    {
-        _areEntPlacementShown = !_areEntPlacementShown;
-        _showEntPlacementButton.sprite = _areEntPlacementShown ? _showEntPlacementOn : _showEntPlacementOff;
-        foreach (Tile tile in ExplorationManager.Instance.RevealedTiles)
-        {
-            tile.ShowEntPlacementUI(_areEntPlacementShown);
-        }
-    }
-
-    public void SwitchPopupDetailsVisibility()
-    {
-        PopUpManager.Instance.ShowSourcesOnPopUp = !PopUpManager.Instance.ShowSourcesOnPopUp;
-        _showDetailsPopupButton.sprite = PopUpManager.Instance.ShowSourcesOnPopUp ? _showDetailsPopupOn : _showDetailsPopupOff;
-    }
 
     public Color GetColorOfPhase(Phase phase)
     {

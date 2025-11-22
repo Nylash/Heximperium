@@ -219,7 +219,11 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
         if (ResourcesManager.Instance.CanAffordCarnivalist(data.GetActualCarnivalistCost(tile)) || isPredictionRelated)
         {
             if (!isPredictionRelated)
+            {
                 ResourcesManager.Instance.UpdateCarnivalist(data.GetActualCarnivalistCost(tile), Transaction.Spent);
+                if (!UIManager.Instance.AreUnitsVisible)
+                    UIManager.Instance.UnitsVisibility();
+            }
 
             Entertainment currentEntertainment = Instantiate(_entertainmentPrefab,
                 tile.transform.position + _entertainmentPrefab.transform.localPosition,

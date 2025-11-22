@@ -456,37 +456,6 @@ public class PopUpManager : Singleton<PopUpManager>
         StartLockingPopup(popUp);
     }
 
-    private void VisibilityPopUp()
-    {
-        GameObject popUp;
-        popUp = Instantiate(_basePopUp, _popUpParent);
-        _popUps.Add(popUp);
-
-        List<RectTransform> textObjects = new List<RectTransform>();
-
-        #region TITLE
-        TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        if (GameManager.Instance.CurrentPhase == Phase.Entertain)
-            title.text = Family.Entertainment.ToCustomString(true) + " visibility";
-        else
-            title.text = "Scouts visibility";
-        textObjects.Add(title.GetComponent<RectTransform>());
-        #endregion
-
-        #region DETAIL
-        TextMeshProUGUI detail = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        if (GameManager.Instance.CurrentPhase == Phase.Entertain)
-            detail.text = "Hide or show " + Family.Entertainment.ToCustomString(true);
-        else
-            detail.text = "Hide or show Scouts";
-        ClampTextWidth(detail);
-        textObjects.Add(detail.GetComponent<RectTransform>());
-        #endregion
-
-        SetPopUpContentAnchors(textObjects);
-        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
-    }
-
     private void ClaimPopUp()
     {
         GameObject popUp;
@@ -745,6 +714,33 @@ public class PopUpManager : Singleton<PopUpManager>
         StartLockingPopup(popUp);
     }
 
+    private void VisibilityPopUp()
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, _popUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        #region DETAIL
+        TextMeshProUGUI detail = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        if (UIManager.Instance.AreUnitsVisible)
+            detail.text = "Hide " +
+                $"{(GameManager.Instance.CurrentPhase == Phase.Entertain ? Family.Entertainment.ToCustomString(true) : "Scouts<sprite name=\"Scout_Emoji\">")} " +
+                "on tiles";
+        else
+            detail.text = "Show " +
+                $"{(GameManager.Instance.CurrentPhase == Phase.Entertain ? Family.Entertainment.ToCustomString(true) : "Scouts<sprite name=\"Scout_Emoji\">")} " +
+                "on tiles";
+        ClampTextWidth(detail);
+        detail.alignment = TextAlignmentOptions.Center;
+        textObjects.Add(detail.GetComponent<RectTransform>());
+        #endregion
+
+        SetPopUpContentAnchors(textObjects);
+        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
+    }
+
     private void ShowIncomePopUp()
     {
         GameObject popUp;
@@ -760,6 +756,7 @@ public class PopUpManager : Singleton<PopUpManager>
         else
             detail.text = "Show tiles' incomes and bonuses";
         ClampTextWidth(detail);
+        detail.alignment = TextAlignmentOptions.Center;
         textObjects.Add(detail.GetComponent<RectTransform>());
         #endregion
 
@@ -782,6 +779,7 @@ public class PopUpManager : Singleton<PopUpManager>
         else
             detail.text = "Show which tiles can receive an " + Family.Entertainment.ToCustomString();
         ClampTextWidth(detail);
+        detail.alignment = TextAlignmentOptions.Center;
         textObjects.Add(detail.GetComponent<RectTransform>());
         #endregion
 
@@ -804,6 +802,7 @@ public class PopUpManager : Singleton<PopUpManager>
         else
             detail.text = "Show advanced incomes/points sources details on pop-ups";
         ClampTextWidth(detail);
+        detail.alignment = TextAlignmentOptions.Center;
         textObjects.Add(detail.GetComponent<RectTransform>());
         #endregion
 
