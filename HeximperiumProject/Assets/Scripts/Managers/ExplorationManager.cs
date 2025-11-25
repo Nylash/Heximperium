@@ -198,6 +198,12 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         if (GameManager.Instance.CurrentPhase != Phase.Explore)
             return;
 
+        if (TutorialManager.Instance != null)
+        {
+            if (!TutorialManager.Instance.IsSpawningScout)
+                return;
+        }
+
         _interactionPositions.Clear();
 
         List<Interaction> interactions = new List<Interaction>();
@@ -273,7 +279,8 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
             _choosingScoutDirection = true;
 
             OnScoutSpawned?.Invoke(_currentScout);
-            UIManager.Instance.ScoutHint.SetTrigger("Show");
+            if (TutorialManager.Instance == null) // Can't cancel scout in Tutorial
+                UIManager.Instance.ScoutHint.SetTrigger("Show");
 
             if (fromInteraction)
                 UpdateInteractableTiles();
@@ -356,10 +363,10 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
 
     public void CancelScout()
     {
-        if (_currentScout.HasRedirected)// We were redirecting a scout, no cancel
-        {
+        if (TutorialManager.Instance != null)//Don't allow cancel in tutorial
             return;
-        }
+        if (_currentScout.HasRedirected)// We were redirecting a scout, no cancel
+            return;
         else// We were spawning a new scout, we need to remove it
         {
             _choosingScoutDirection = false;

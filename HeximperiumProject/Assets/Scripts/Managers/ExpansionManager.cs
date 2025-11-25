@@ -40,7 +40,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     public event Action<Tile> OnTileClaimed;
     //Tutorial events
     public event Action OnClaimableTileSelected;
-    public event Action OnBasicTileSelected;
+    public event Action OnTownableTileSelected;
     #endregion
 
     protected override void OnAwake()
@@ -87,37 +87,53 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
 
         _interactionPositions.Clear();
 
-        //Claimed tiles can only be used for town
-        if (tile.Claimed)
+        if (TutorialManager.Instance == null)
         {
+            //Claimed tiles can only be used for town
+            if (tile.Claimed)
+            {
+                //We can only build town on basic and resource tile
+                if (tile.TileData is BasicTileData || tile.TileData is ResourceTileData)
+                {
+                    _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
+                    TownInteraction(tile, 0);
+                }
+                return;
+            }
+
+            _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 2);
             //We can only build town on basic and resource tile
             if (tile.TileData is BasicTileData || tile.TileData is ResourceTileData)
-            {
-                _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
                 TownInteraction(tile, 0);
-            }
-            return;
-        }
-
-        _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 2);
-        //We can only build town on basic and resource tile
-        if (tile.TileData is BasicTileData || tile.TileData is ResourceTileData)
-            TownInteraction(tile, 0);
-        //We can only claimed tiles adjacent to already claimed tiles (except if we got the upgrade)
-        if (tile.IsOneNeighborClaimed())
-        {
-            if (tile.TileData is not HazardousTileData)
+            //We can only claimed tiles adjacent to already claimed tiles (except if we got the upgrade)
+            if (tile.IsOneNeighborClaimed())
             {
-                ClaimInteraction(tile, 1);
-                OnClaimableTileSelected?.Invoke();
-            }
-        }
-        else if (_upgradeClaimRange)
-        {
-            if (tile.TileData is not HazardousTileData)
-            {
-                if (tile.IsOneNeighborOfNeighborClaimed())
+                if (tile.TileData is not HazardousTileData)
+                {
                     ClaimInteraction(tile, 1);
+                }
+            }
+            else if (_upgradeClaimRange)
+            {
+                if (tile.TileData is not HazardousTileData)
+                {
+                    if (tile.IsOneNeighborOfNeighborClaimed())
+                        ClaimInteraction(tile, 1);
+                }
+            }
+        }
+        else
+        {
+            if (TutorialManager.Instance.IsClaimingTile)
+            {
+                if (tile.IsOneNeighborClaimed() && !tile.Claimed)
+                {
+                    if (tile.TileData is not HazardousTileData)
+                    {
+                        _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
+                        ClaimInteraction(tile, 0);
+                    }
+                }
             }
         }
     }
@@ -125,12 +141,13 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     #region INTERACTION
     private void ClaimInteraction(Tile tile, int positionIndex)
     {
+        OnClaimableTileSelected?.Invoke();
         _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Claim));
     }
 
     private void TownInteraction(Tile tile, int positionIndex)
     {
-        OnBasicTileSelected?.Invoke();
+        OnTownableTileSelected?.Invoke();
         _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Infrastructure, _townData));
     }
 

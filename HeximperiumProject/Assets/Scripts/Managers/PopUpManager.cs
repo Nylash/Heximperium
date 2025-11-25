@@ -512,6 +512,18 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
+        #region LOOSABLE CLAIMS
+        if (ExpansionManager.Instance.UpgradeConserveClaims == false)
+        {
+            TextMeshProUGUI loosingClaims = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            loosingClaims.text = "Not used Claims<sprite name=\"Claim_Emoji\"> are lost at the end of the phase";
+            ClampTextWidth(loosingClaims);
+            loosingClaims.fontStyle = FontStyles.Italic;
+            loosingClaims.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(loosingClaims.GetComponent<RectTransform>());
+        }
+        #endregion
+
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
         StartLockingPopup(popUp);
