@@ -69,7 +69,7 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
 
     protected override void ConfirmPhase()
     {
-        if (!_upgradeConserveClaims)
+        if (!_upgradeConserveClaims && ResourcesManager.Instance.Claim > 0)
             ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim, Transaction.Spent);
 
         GameManager.Instance.UnselectTile();
@@ -133,6 +133,15 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
                         _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
                         ClaimInteraction(tile, 0);
                     }
+                }
+            }
+            else if (TutorialManager.Instance.IsBuildingTown)
+            {
+                //We can only build town on basic and resource tile
+                if (tile.TileData is BasicTileData || tile.TileData is ResourceTileData)
+                {
+                    _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
+                    TownInteraction(tile, 0);
                 }
             }
         }

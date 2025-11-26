@@ -51,13 +51,6 @@ public class CameraManager : Singleton<CameraManager>
     //Tutorial variables
     private Vector2 _lastPositionEventXZ;
     private float _lastZoomEventY;
-    private bool _tutorialNoPopup;
-    #endregion
-
-    #region ACCESSORS
-    public float MaxZoomLevel { get => _maxZoomLevel; }
-    public float MinZoomLevel { get => _minZoomLevel; }
-    public bool TutorialNoPopup { get => _tutorialNoPopup; set => _tutorialNoPopup = value; }
     #endregion
 
     #region EVENTS
@@ -143,8 +136,6 @@ public class CameraManager : Singleton<CameraManager>
             return;
         }   
 
-        if (_tutorialNoPopup)
-            return;
         ObjectUnderMouseDetection();
     }
 

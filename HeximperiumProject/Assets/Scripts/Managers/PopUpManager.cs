@@ -2408,6 +2408,9 @@ public class PopUpManager : Singleton<PopUpManager>
 
     private void StartLockingPopup(GameObject popUp)
     {
+        if (TutorialManager.Instance != null)
+            return;
+
         _lockingPopup = popUp;
         _isLockingPopup = true;
         _lockingTimer = 0f;
