@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TutorialManager : Singleton<TutorialManager>
 {
@@ -40,8 +41,8 @@ public class TutorialManager : Singleton<TutorialManager>
         S31_IntroEntertainment,
         S32_SelectTile,
         S33_PlaceEntertainment,
-        S34_Outro,
-        S35_EndTutorial
+        S34_EndGame,
+        S35_Outro
     }
 
     #region CONFIGURATION
@@ -105,6 +106,8 @@ public class TutorialManager : Singleton<TutorialManager>
     [SerializeField] private Animator _step32;
     [SerializeField] private Animator _step33;
     [SerializeField] private Animator _step34;
+    [Header("_________________________________________________________")]
+    [Header("Outro")]
     [SerializeField] private Animator _step35;
     #endregion
 
@@ -120,7 +123,6 @@ public class TutorialManager : Singleton<TutorialManager>
     private bool _isBuildingTown;
     private bool _isBuildingWindmill;
     private bool _isUpgradingWindmill;
-    private bool _isPlacingEntertainment;
 
     public bool IsClaimingTile { get => _isClaimingTile; }
     public bool IsSpawningScout { get => _isSpawningScout; }
@@ -128,7 +130,6 @@ public class TutorialManager : Singleton<TutorialManager>
     public bool IsBuildingTown { get => _isBuildingTown; }
     public bool IsBuildingWindmill { get => _isBuildingWindmill; }
     public bool IsUpgradingWindmill { get => _isUpgradingWindmill; }
-    public bool IsPlacingEntertainment { get => _isPlacingEntertainment; }
     #endregion
 
     protected override void OnAwake()
@@ -724,7 +725,6 @@ public class TutorialManager : Singleton<TutorialManager>
         UIManager.Instance.ButtonEndPhase.interactable = true;
         GameManager.Instance.TutorialLockingPhase = false;
         _isBuildingTown = false;
-        _isClaimingTile = true;
 
         GameManager.Instance.OnExpansionPhaseEnded += HideStep24;
         GameManager.Instance.OnExploitationPhaseStarted += ShowStep25;
@@ -735,7 +735,6 @@ public class TutorialManager : Singleton<TutorialManager>
         GameManager.Instance.OnExpansionPhaseEnded -= HideStep24;
         _step24.SetTrigger("Shrink");
         _commandsReminder_6.SetTrigger("Shrink");
-        _isClaimingTile = false;
     }
     #endregion
 
@@ -931,7 +930,116 @@ public class TutorialManager : Singleton<TutorialManager>
     #region ENTERTAINMENT TUTORIAL
     private void ShowStep31()
     {
-        // To be implemented
+        if (_step != TutorialStep.S30_EndTurn)
+            return;
+
+        UIManager.Instance.ButtonEndPhase.interactable = false;
+        GameManager.Instance.TutorialLockingPhase = true;
+        GameManager.Instance.GamePaused = true;
+
+        GameManager.Instance.OnEntertainmentPhaseStarted -= ShowStep31;
+
+        _step = TutorialStep.S31_IntroEntertainment;
+        _step31.SetTrigger("Show");
+    }
+
+    public void Button_ValidateStep31()
+    {
+        _step31.SetTrigger("Shrink");
+        GameManager.Instance.GamePaused = false;
+        ShowStep32();
+    }
+
+    private void ShowStep32()
+    {
+        if (_step != TutorialStep.S31_IntroEntertainment)
+            return;
+
+        _step = TutorialStep.S32_SelectTile;
+        _commandsReminder_8.SetTrigger("Show");
+        _step32.SetTrigger("Show");
+
+        EntertainmentManager.Instance.OnTileAllowingEntSelected += ShowStep33;
+    }
+
+    private void ShowStep33()
+    {
+        if (_step != TutorialStep.S32_SelectTile)
+            return;
+
+        EntertainmentManager.Instance.OnTileAllowingEntSelected -= ShowStep33;
+
+        _step = TutorialStep.S33_PlaceEntertainment;
+        _step32.SetTrigger("Shrink");
+        _step33.SetTrigger("Show");
+
+        EntertainmentManager.Instance.OnEntertainmentSpawned += ShowStep34;
+        GameManager.Instance.OnTileUnselected += RollBackToStep32;
+    }
+
+    private void RollBackToStep32()
+    {
+        if (_step != TutorialStep.S33_PlaceEntertainment)
+            return;
+        StartCoroutine(Coroutine_RollBackToStep32());
+    }
+
+    private IEnumerator Coroutine_RollBackToStep32()
+    {
+        // Wait one frame to ensure that is a deselection and not the unselect called when doing an action
+        yield return null;
+        if (_step != TutorialStep.S33_PlaceEntertainment)
+            yield break;
+
+        // Check if the new tile allows placing entertainment
+        if (GameManager.Instance.SelectedTile != null)
+        {
+            if (GameManager.Instance.SelectedTile.CanReceiveEntertainment())
+                yield break;
+        }
+
+        GameManager.Instance.OnTileUnselected -= RollBackToStep32;
+        EntertainmentManager.Instance.OnEntertainmentSpawned -= ShowStep34;
+
+        _step = TutorialStep.S32_SelectTile;
+        _step33.SetTrigger("Shrink");
+        _step32.SetTrigger("Show");
+
+        EntertainmentManager.Instance.OnTileAllowingEntSelected += ShowStep33;
+    }
+
+    private void ShowStep34(Entertainment ent)
+    {
+        if (_step != TutorialStep.S33_PlaceEntertainment)
+            return;
+
+        EntertainmentManager.Instance.OnEntertainmentSpawned -= ShowStep34;
+
+        _step = TutorialStep.S34_EndGame;
+        _step33.SetTrigger("Shrink");
+        _step34.SetTrigger("Show");
+
+        UIManager.Instance.ButtonEndPhase.interactable = true;
+        GameManager.Instance.TutorialLockingPhase = false;
+
+        GameManager.Instance.OnGameFinished += ShowStep35;
     }
     #endregion
+
+    private void ShowStep35()
+    {
+        if (_step != TutorialStep.S34_EndGame)
+            return;
+
+        GameManager.Instance.OnGameFinished -= ShowStep35;
+
+        _step = TutorialStep.S35_Outro;
+        _step34.SetTrigger("Shrink");
+        _step35.SetTrigger("Show");
+    }
+
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
 }

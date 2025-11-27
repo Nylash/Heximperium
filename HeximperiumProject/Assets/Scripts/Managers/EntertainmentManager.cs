@@ -99,7 +99,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     public event Action<Tile, int> OnScoreGained;
     public Action<Tile, int> OnScoreLost;//Directly called by Entertainment when it lose points (or by the manager on destroy)
     //Tutorial event
-    public event Action OnClaimedTileSelected;
+    public event Action OnTileAllowingEntSelected;
     #endregion
 
     protected override void OnAwake()
@@ -169,19 +169,28 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
 
         if (tile.Claimed)
         {
-            OnClaimedTileSelected?.Invoke();
-
             //Interaction depend on if the tile got an entertainment or not
             if (tile.Entertainment != null)
             {
-                _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
-                DestroyInteraction(tile, 0);
-                return;
+                if (TutorialManager.Instance == null) // No destroy interaction in tutorial
+                {
+                    _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
+                    DestroyInteraction(tile, 0);
+                    return;
+                }
             }
             else
             {
                 if (tile.CanReceiveEntertainment())
                 {
+                    OnTileAllowingEntSelected?.Invoke();
+                    if (TutorialManager.Instance != null)
+                    {
+                        _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
+                        EntertainmentInteraction(tile, 0, _entertainmentsData[1]); // In tutorial, only allow tasting pavilion placement
+                        return;
+                    }
+
                     if (!tile.AllowEntertainment)
                     {
                         _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
@@ -233,7 +242,18 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
             _entertainments.Add(currentEntertainment);
             currentEntertainment.Initialize(tile, data);
             tile.Entertainment = currentEntertainment;
-            OnEntertainmentSpawned?.Invoke(currentEntertainment);
+
+            if (TutorialManager.Instance != null)
+            {
+                if (!isPredictionRelated) // Don't fire the event during points prediction when in tutorial
+                {
+                    OnEntertainmentSpawned?.Invoke(currentEntertainment);
+                }
+            }
+            else
+            {
+                OnEntertainmentSpawned?.Invoke(currentEntertainment);
+            }
         }
     }
 
