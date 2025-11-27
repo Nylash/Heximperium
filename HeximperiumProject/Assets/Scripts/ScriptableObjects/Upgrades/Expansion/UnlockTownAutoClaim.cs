@@ -10,6 +10,6 @@ public class UnlockTownAutoClaim : UpgradeEffect
 
     public override string GetEffectDescription()
     {
-        return "Founding a New Town automatically claim<sprite name=\"Claim_Emoji\"> the 6 surrounding tiles";
+        return "Founding a New Town<sprite name=\"Town_Emoji\"> automatically claims<sprite name=\"Claim_Emoji\"> the 6 surrounding tiles";
     }
 }
