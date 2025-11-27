@@ -470,6 +470,18 @@ public class PopUpManager : Singleton<PopUpManager>
         textObjects.Add(title.GetComponent<RectTransform>());
         #endregion
 
+        #region LOOSABLE CLAIMS
+        if (ExpansionManager.Instance.UpgradeConserveClaims == false)
+        {
+            TextMeshProUGUI loosingClaims = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            loosingClaims.text = "Not used Claims<sprite name=\"Claim_Emoji\"> are lost at the end of the phase";
+            ClampTextWidth(loosingClaims);
+            loosingClaims.fontStyle = FontStyles.Italic;
+            loosingClaims.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(loosingClaims.GetComponent<RectTransform>());
+        }
+        #endregion
+
         #region INCOME
         TextMeshProUGUI income = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
         income.text = "Total <sprite name=\"Claim_Emoji\"> per turn +" + ExpansionManager.Instance.ClaimPerTurn + "<sprite name=\"Claim_Emoji\">";
@@ -509,18 +521,6 @@ public class PopUpManager : Singleton<PopUpManager>
                 ClampTextWidth(source);
                 textObjects.Add(source.GetComponent<RectTransform>());
             }
-        }
-        #endregion
-
-        #region LOOSABLE CLAIMS
-        if (ExpansionManager.Instance.UpgradeConserveClaims == false)
-        {
-            TextMeshProUGUI loosingClaims = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            loosingClaims.text = "Not used Claims<sprite name=\"Claim_Emoji\"> are lost at the end of the phase";
-            ClampTextWidth(loosingClaims);
-            loosingClaims.fontStyle = FontStyles.Italic;
-            loosingClaims.alignment = TextAlignmentOptions.Center;
-            textObjects.Add(loosingClaims.GetComponent<RectTransform>());
         }
         #endregion
 

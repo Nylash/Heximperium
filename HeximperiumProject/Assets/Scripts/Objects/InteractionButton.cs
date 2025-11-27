@@ -95,6 +95,8 @@ public class InteractionButton : MonoBehaviour
     {
         if (!ResourcesManager.Instance.CanAffordClaim(_associatedTile.TileData.ClaimCost))
             _renderer.color = UIManager.Instance.ColorCantAfford;
+        else
+            _renderer.color = UIManager.Instance.ColorExpand;
         LoadSprite(Interaction.Claim.ToString());
     }
 
@@ -103,6 +105,8 @@ public class InteractionButton : MonoBehaviour
         _scoutData = ExplorationManager.Instance.ScoutData;
         if (ExplorationManager.Instance.CurrentScoutsCount >= ExplorationManager.Instance.ScoutsLimit)
             _renderer.color = UIManager.Instance.ColorCantAfford;
+        else
+            _renderer.color = UIManager.Instance.ColorExplo;
         LoadSprite(Interaction.Scout.ToString());
     }
 
@@ -113,7 +117,27 @@ public class InteractionButton : MonoBehaviour
             || !ResourcesManager.Instance.CanAffordClaim(_infraData.ClaimCost)
             || !ExploitationManager.Instance.IsInfraAvailable(infraData))
             _renderer.color = UIManager.Instance.ColorCantAfford;
-        LoadSprite(infraData.name);
+        else
+        {
+            switch (infraData.AssociatedPhase)
+            {
+                case Phase.Explore:
+                    _renderer.color = UIManager.Instance.ColorExplo;
+                    break;
+                case Phase.Expand:
+                    _renderer.color = UIManager.Instance.ColorExpand;
+                    break;
+                case Phase.Exploit:
+                    _renderer.color = UIManager.Instance.ColorExploit;
+                    break;
+                case Phase.Entertain:
+                    _renderer.color = UIManager.Instance.ColorEntertain;
+                    break;
+                default:
+                    break;
+            }
+        }
+            LoadSprite(infraData.name);
     }
 
     private void InitializeDestroy()
@@ -126,17 +150,21 @@ public class InteractionButton : MonoBehaviour
         _entertainData = data;
         if (!ResourcesManager.Instance.CanAffordCarnivalist(_entertainData.GetActualCarnivalistCost(_associatedTile)))
             _renderer.color = UIManager.Instance.ColorCantAfford;
+        else
+            _renderer.color = UIManager.Instance.ColorEntertain;
         LoadSprite(_entertainData.name);
     }
 
     private void InitializeRedirectScout(Scout scout)
     {
+        _renderer.color = UIManager.Instance.ColorExplo;
         _associatedScout = scout;
         LoadSprite(Interaction.RedirectScout.ToString());
     }
 
     private void InitializeRevealAnywhere()
     {
+        _renderer.color = UIManager.Instance.ColorExplo;
         LoadSprite(Interaction.RevealAnywhere.ToString());
     }
 
