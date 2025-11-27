@@ -142,6 +142,7 @@ public class InteractionButton : MonoBehaviour
 
     private void InitializeDestroy()
     {
+        _renderer.color = UIManager.Instance.ColorIvory;
         LoadSprite(Interaction.Destroy.ToString());
     }
 
