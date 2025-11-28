@@ -147,6 +147,7 @@ public class TutorialManager : Singleton<TutorialManager>
     {
         UIManager.Instance.ButtonEndPhase.interactable = false;
         GameManager.Instance.TutorialLockingPhase = true;
+        OnTutorialStarted?.Invoke();
 
         _step1.SetTrigger("Show");
         _step = TutorialStep.S1_Intro;
@@ -157,7 +158,6 @@ public class TutorialManager : Singleton<TutorialManager>
     public void Button_ValidateStep1()
     {
         _step1.SetTrigger("Shrink");
-        OnTutorialStarted?.Invoke();
         ShowStep2();
     }
     #endregion
