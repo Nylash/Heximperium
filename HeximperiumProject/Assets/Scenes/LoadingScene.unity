@@ -396,6 +396,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1339657215}
   - component: {fileID: 1339657214}
+  - component: {fileID: 1339657216}
   m_Layer: 0
   m_Name: LoadingManager
   m_TagString: Untagged
@@ -434,6 +435,14 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!81 &1339657216
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1339657213}
+  m_Enabled: 0
 --- !u!1 &2002526945
 GameObject:
   m_ObjectHideFlags: 0

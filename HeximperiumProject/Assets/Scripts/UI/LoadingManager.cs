@@ -27,6 +27,7 @@ public class LoadingManager : Singleton<LoadingManager>
 
     public void StartLoading(string targetScene)
     {
+        GetComponent<AudioListener>().enabled = true;
         _targetSceneName = targetScene;
         _loadingUI.alpha = 1;
         _progress.fillAmount = 0f;
@@ -72,6 +73,7 @@ public class LoadingManager : Singleton<LoadingManager>
         StartCoroutine(DoCleanup());
         Utilities.OnGameInitialized -= LoadOver;
 
+        GetComponent<AudioListener>().enabled = false;
         OnLoadingDone?.Invoke();
     }
 

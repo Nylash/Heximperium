@@ -140,6 +140,8 @@ public class GameManager : Singleton<GameManager>
     //Tmp until save and game setting logic
     private void InitializeGame()
     {
+        CameraManager.Instance.GetComponent<AudioListener>().enabled = true;
+
         _gamePaused = false;
 
         if (_currentPhase != Phase.Explore)

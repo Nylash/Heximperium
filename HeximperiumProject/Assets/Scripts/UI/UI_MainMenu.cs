@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class UI_MainMenu : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _bestScore;
+    [SerializeField] private AudioListener _listener;
 
     private void Start()
     {
@@ -19,6 +20,7 @@ public class UI_MainMenu : MonoBehaviour
 
     public void LaunchGame(string targetScene)
     {
+        _listener.enabled = false;
         FindAnyObjectByType<LoadingManager>().StartLoading(targetScene);
         SceneManager.UnloadSceneAsync("MainMenu");
     }
