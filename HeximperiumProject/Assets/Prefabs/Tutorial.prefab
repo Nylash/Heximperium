@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 380466832754161715}
   - component: {fileID: 7680432359314271538}
   - component: {fileID: 8839526830270189847}
-  - component: {fileID: 2666592977664648064}
   m_Layer: 0
   m_Name: Step3
   m_TagString: Untagged
@@ -71,18 +70,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &2666592977664648064
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 21589757274864080}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &25764787687606235
 GameObject:
   m_ObjectHideFlags: 0
@@ -319,7 +306,6 @@ GameObject:
   - component: {fileID: 1984084120467853719}
   - component: {fileID: 8445009846946150376}
   - component: {fileID: 1134110490826974578}
-  - component: {fileID: 7892163064143363025}
   m_Layer: 0
   m_Name: Step2
   m_TagString: Untagged
@@ -380,18 +366,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7892163064143363025
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 154364490550540288}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &169439321102681641
 GameObject:
   m_ObjectHideFlags: 0
@@ -638,7 +612,6 @@ GameObject:
   - component: {fileID: 7094674857464516380}
   - component: {fileID: 8832718817548556218}
   - component: {fileID: 5194807916416234999}
-  - component: {fileID: 889929773937713756}
   m_Layer: 0
   m_Name: CommandsReminder_6
   m_TagString: Untagged
@@ -698,18 +671,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &889929773937713756
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 283059106239216580}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &294069771481284940
 GameObject:
   m_ObjectHideFlags: 0
@@ -721,7 +682,6 @@ GameObject:
   - component: {fileID: 1964354768519584366}
   - component: {fileID: 4590914906019498643}
   - component: {fileID: 741766803122869495}
-  - component: {fileID: 4093409778842186009}
   m_Layer: 0
   m_Name: CommandsReminder_7
   m_TagString: Untagged
@@ -781,18 +741,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4093409778842186009
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 294069771481284940}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &303651960540634399
 GameObject:
   m_ObjectHideFlags: 0
@@ -879,7 +827,6 @@ GameObject:
   - component: {fileID: 3010181036029797706}
   - component: {fileID: 2111167858917571138}
   - component: {fileID: 8043605514261077522}
-  - component: {fileID: 5884990519847324975}
   m_Layer: 0
   m_Name: Step7
   m_TagString: Untagged
@@ -939,18 +886,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5884990519847324975
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 402871046249450243}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &450689577593522340
 GameObject:
   m_ObjectHideFlags: 0
@@ -962,7 +897,6 @@ GameObject:
   - component: {fileID: 7519978621679151530}
   - component: {fileID: 3469965235384356791}
   - component: {fileID: 4393565057368264936}
-  - component: {fileID: 3494606279348753386}
   m_Layer: 0
   m_Name: Step22
   m_TagString: Untagged
@@ -1022,18 +956,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3494606279348753386
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 450689577593522340}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &598516584676973272
 GameObject:
   m_ObjectHideFlags: 0
@@ -1181,7 +1103,6 @@ GameObject:
   - component: {fileID: 3274046294018294597}
   - component: {fileID: 2170457015464535623}
   - component: {fileID: 4559223722693594711}
-  - component: {fileID: 923147893684246366}
   m_Layer: 0
   m_Name: Step30
   m_TagString: Untagged
@@ -1241,18 +1162,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &923147893684246366
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 679276635316888703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &828590440987034325
 GameObject:
   m_ObjectHideFlags: 0
@@ -1758,7 +1667,6 @@ GameObject:
   - component: {fileID: 2438742869632503908}
   - component: {fileID: 403973188057669872}
   - component: {fileID: 319947102186482603}
-  - component: {fileID: 6944910984592660834}
   m_Layer: 0
   m_Name: Step17
   m_TagString: Untagged
@@ -1818,18 +1726,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6944910984592660834
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1125926583763905702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1145048319836465523
 GameObject:
   m_ObjectHideFlags: 0
@@ -2049,7 +1945,6 @@ GameObject:
   - component: {fileID: 4008601410244081999}
   - component: {fileID: 3879388776220541851}
   - component: {fileID: 8940541039392804984}
-  - component: {fileID: 6323709164506287363}
   m_Layer: 0
   m_Name: Step27
   m_TagString: Untagged
@@ -2109,18 +2004,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6323709164506287363
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1187643784973966918}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1223806137839333287
 GameObject:
   m_ObjectHideFlags: 0
@@ -2493,7 +2376,6 @@ GameObject:
   - component: {fileID: 1534136030920999363}
   - component: {fileID: 6129175862094917788}
   - component: {fileID: 5609690361767603528}
-  - component: {fileID: 942217072707561537}
   m_Layer: 0
   m_Name: Step21
   m_TagString: Untagged
@@ -2554,18 +2436,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &942217072707561537
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1362887429391306458}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1431848752250097685
 GameObject:
   m_ObjectHideFlags: 0
@@ -4391,7 +4261,6 @@ GameObject:
   - component: {fileID: 7996966166100083707}
   - component: {fileID: 4123486041166129270}
   - component: {fileID: 3948697981924602781}
-  - component: {fileID: 5486334518169919303}
   m_Layer: 0
   m_Name: CommandsReminder_4
   m_TagString: Untagged
@@ -4451,18 +4320,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5486334518169919303
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2451085340301792569}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2454335598010035105
 GameObject:
   m_ObjectHideFlags: 0
@@ -4474,7 +4331,6 @@ GameObject:
   - component: {fileID: 978357169700640498}
   - component: {fileID: 6147031823591537419}
   - component: {fileID: 2244031481118368430}
-  - component: {fileID: 5466707447066971}
   m_Layer: 0
   m_Name: Step6
   m_TagString: Untagged
@@ -4535,18 +4391,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5466707447066971
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2454335598010035105}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2470377029096492017
 GameObject:
   m_ObjectHideFlags: 0
@@ -5342,7 +5186,6 @@ GameObject:
   - component: {fileID: 7121019812769692749}
   - component: {fileID: 6996017262081657409}
   - component: {fileID: 5857269649636980806}
-  - component: {fileID: 4885826865519761759}
   m_Layer: 0
   m_Name: Step24
   m_TagString: Untagged
@@ -5402,18 +5245,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4885826865519761759
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2713367897909812732}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2718624948656782081
 GameObject:
   m_ObjectHideFlags: 0
@@ -7307,7 +7138,6 @@ GameObject:
   - component: {fileID: 1943548434548885130}
   - component: {fileID: 747357340824806138}
   - component: {fileID: 7527885118427404786}
-  - component: {fileID: 743252504882626805}
   m_Layer: 0
   m_Name: Step23
   m_TagString: Untagged
@@ -7367,18 +7197,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &743252504882626805
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3560334890989683576}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3590506156602038900
 GameObject:
   m_ObjectHideFlags: 0
@@ -7598,7 +7416,6 @@ GameObject:
   - component: {fileID: 451227373474047358}
   - component: {fileID: 4969631839930258883}
   - component: {fileID: 2123831469302823484}
-  - component: {fileID: 8932800490753036679}
   m_Layer: 0
   m_Name: CommandsReminder_2
   m_TagString: Untagged
@@ -7658,18 +7475,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8932800490753036679
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3622965877700252554}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3710969368008300652
 GameObject:
   m_ObjectHideFlags: 0
@@ -7831,7 +7636,6 @@ GameObject:
   - component: {fileID: 9040952124206316320}
   - component: {fileID: 3300050360639070057}
   - component: {fileID: 5525691500027849194}
-  - component: {fileID: 6421094717403411005}
   m_Layer: 0
   m_Name: Step34
   m_TagString: Untagged
@@ -7891,18 +7695,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6421094717403411005
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3754138850478914972}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3762308876657397583
 GameObject:
   m_ObjectHideFlags: 0
@@ -7914,7 +7706,6 @@ GameObject:
   - component: {fileID: 5788399444131283466}
   - component: {fileID: 5371965085823926049}
   - component: {fileID: 7656132344771925853}
-  - component: {fileID: 1820561082542892630}
   m_Layer: 0
   m_Name: Step19
   m_TagString: Untagged
@@ -7975,18 +7766,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1820561082542892630
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3762308876657397583}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3789971714385181350
 GameObject:
   m_ObjectHideFlags: 0
@@ -8209,7 +7988,6 @@ GameObject:
   - component: {fileID: 3231067488426770859}
   - component: {fileID: 8203816704615322065}
   - component: {fileID: 6176333001881603488}
-  - component: {fileID: 14701371758489247}
   m_Layer: 0
   m_Name: Step8
   m_TagString: Untagged
@@ -8269,18 +8047,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &14701371758489247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3830345812307259923}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3923927701199599913
 GameObject:
   m_ObjectHideFlags: 0
@@ -8484,7 +8250,6 @@ GameObject:
   - component: {fileID: 8234933372978528129}
   - component: {fileID: 6065582376157553166}
   - component: {fileID: 8549913369421088074}
-  - component: {fileID: 4800283959065341788}
   m_Layer: 0
   m_Name: CommandsReminder_3
   m_TagString: Untagged
@@ -8544,18 +8309,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4800283959065341788
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3988462181341044078}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4022980557659468979
 GameObject:
   m_ObjectHideFlags: 0
@@ -8792,7 +8545,6 @@ GameObject:
   - component: {fileID: 3708307845865329425}
   - component: {fileID: 1726844300355192519}
   - component: {fileID: 8545407176474048277}
-  - component: {fileID: 1063986829561517827}
   m_Layer: 0
   m_Name: CommandsReminder_6
   m_TagString: Untagged
@@ -8852,18 +8604,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1063986829561517827
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4271176216609379247}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4526233172862843974
 GameObject:
   m_ObjectHideFlags: 0
@@ -9836,7 +9576,6 @@ GameObject:
   - component: {fileID: 4513406814708160692}
   - component: {fileID: 5190247937103228393}
   - component: {fileID: 4831114885863355849}
-  - component: {fileID: 270081457251771036}
   m_Layer: 0
   m_Name: Step9
   m_TagString: Untagged
@@ -9896,18 +9635,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &270081457251771036
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4892812110859727757}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4911170011473755936
 GameObject:
   m_ObjectHideFlags: 0
@@ -10069,7 +9796,6 @@ GameObject:
   - component: {fileID: 6914101994262446115}
   - component: {fileID: 2219632034913687210}
   - component: {fileID: 2031172854851216142}
-  - component: {fileID: 6471946343488134078}
   m_Layer: 0
   m_Name: Step5
   m_TagString: Untagged
@@ -10129,18 +9855,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6471946343488134078
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4929434245521149783}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4987002006074847901
 GameObject:
   m_ObjectHideFlags: 0
@@ -10227,7 +9941,6 @@ GameObject:
   - component: {fileID: 7331987731093132778}
   - component: {fileID: 3005621741142055023}
   - component: {fileID: 8633213761532327546}
-  - component: {fileID: 9179120885094810540}
   m_Layer: 0
   m_Name: Step15
   m_TagString: Untagged
@@ -10288,18 +10001,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &9179120885094810540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5033797503720161469}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5040960010355649074
 GameObject:
   m_ObjectHideFlags: 0
@@ -10449,7 +10150,6 @@ GameObject:
   - component: {fileID: 4649374732134975707}
   - component: {fileID: 1483336665408938489}
   - component: {fileID: 9170462213121968680}
-  - component: {fileID: 1521674031183160779}
   m_Layer: 0
   m_Name: Step31
   m_TagString: Untagged
@@ -10510,18 +10210,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1521674031183160779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5171650979911462850}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5212146645331563443
 GameObject:
   m_ObjectHideFlags: 0
@@ -10533,7 +10221,6 @@ GameObject:
   - component: {fileID: 4277535840593801726}
   - component: {fileID: 7399812198036211794}
   - component: {fileID: 2444625878995278858}
-  - component: {fileID: 805853755667226903}
   m_Layer: 0
   m_Name: Step29
   m_TagString: Untagged
@@ -10593,18 +10280,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &805853755667226903
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5212146645331563443}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5234592612238982349
 GameObject:
   m_ObjectHideFlags: 0
@@ -11474,7 +11149,6 @@ GameObject:
   - component: {fileID: 3799447870826325233}
   - component: {fileID: 971467989044112931}
   - component: {fileID: 5454613223625234552}
-  - component: {fileID: 7692011411225541341}
   m_Layer: 0
   m_Name: Step1
   m_TagString: Untagged
@@ -11536,18 +11210,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7692011411225541341
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5778917760201617262}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5782646257154362348
 GameObject:
   m_ObjectHideFlags: 0
@@ -11559,7 +11221,6 @@ GameObject:
   - component: {fileID: 3505836187927399923}
   - component: {fileID: 9132947187006925252}
   - component: {fileID: 614369928352500231}
-  - component: {fileID: 6336362953138812664}
   m_Layer: 0
   m_Name: Step11
   m_TagString: Untagged
@@ -11620,18 +11281,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6336362953138812664
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5782646257154362348}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5816235384360618801
 GameObject:
   m_ObjectHideFlags: 0
@@ -11643,7 +11292,6 @@ GameObject:
   - component: {fileID: 886438096298409010}
   - component: {fileID: 7979193928579125951}
   - component: {fileID: 6689125691342370596}
-  - component: {fileID: 196263823948337770}
   m_Layer: 0
   m_Name: Step16
   m_TagString: Untagged
@@ -11703,18 +11351,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &196263823948337770
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5816235384360618801}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5898354594180069673
 GameObject:
   m_ObjectHideFlags: 0
@@ -11726,7 +11362,6 @@ GameObject:
   - component: {fileID: 1995000402819184994}
   - component: {fileID: 7515881131252860416}
   - component: {fileID: 898543944986278769}
-  - component: {fileID: 650499468611030455}
   m_Layer: 0
   m_Name: Step10
   m_TagString: Untagged
@@ -11786,18 +11421,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &650499468611030455
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5898354594180069673}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5954170500007383451
 GameObject:
   m_ObjectHideFlags: 0
@@ -12875,7 +12498,6 @@ GameObject:
   - component: {fileID: 3023597372914819566}
   - component: {fileID: 3315995255766763128}
   - component: {fileID: 5072825593587973683}
-  - component: {fileID: 1269550158524753257}
   m_Layer: 0
   m_Name: CommandsReminder_5
   m_TagString: Untagged
@@ -12935,18 +12557,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1269550158524753257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6399980569528226319}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6416728547999177468
 GameObject:
   m_ObjectHideFlags: 0
@@ -12958,7 +12568,6 @@ GameObject:
   - component: {fileID: 1641095304569571271}
   - component: {fileID: 3474820213990947026}
   - component: {fileID: 2674911891195828522}
-  - component: {fileID: 2353110110371385731}
   m_Layer: 0
   m_Name: Step33
   m_TagString: Untagged
@@ -13018,18 +12627,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &2353110110371385731
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6416728547999177468}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6424437712855710779
 GameObject:
   m_ObjectHideFlags: 0
@@ -13041,7 +12638,6 @@ GameObject:
   - component: {fileID: 8457251006275753575}
   - component: {fileID: 5571371155174327289}
   - component: {fileID: 2079310535216615096}
-  - component: {fileID: 262316545673412036}
   m_Layer: 0
   m_Name: Step12
   m_TagString: Untagged
@@ -13101,18 +12697,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &262316545673412036
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6424437712855710779}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6431141609802221214
 GameObject:
   m_ObjectHideFlags: 0
@@ -13263,7 +12847,6 @@ GameObject:
   - component: {fileID: 736312327134887067}
   - component: {fileID: 3356873708996906564}
   - component: {fileID: 7014376614612046730}
-  - component: {fileID: 2043580737998767611}
   m_Layer: 0
   m_Name: Step14
   m_TagString: Untagged
@@ -13323,18 +12906,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &2043580737998767611
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6453416952663916130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6543043202545100965
 GameObject:
   m_ObjectHideFlags: 0
@@ -13559,7 +13130,6 @@ GameObject:
   - component: {fileID: 6726430038572737620}
   - component: {fileID: 6841568549178449210}
   - component: {fileID: 9055391422955006688}
-  - component: {fileID: 4932911851820306760}
   m_Layer: 0
   m_Name: Step28
   m_TagString: Untagged
@@ -13619,18 +13189,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4932911851820306760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6578426050574054536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6586078268811051327
 GameObject:
   m_ObjectHideFlags: 0
@@ -13820,7 +13378,6 @@ GameObject:
   - component: {fileID: 1438496177034501504}
   - component: {fileID: 8530181939058701510}
   - component: {fileID: 8997959650614650023}
-  - component: {fileID: 8820418988954683929}
   m_Layer: 0
   m_Name: Step32
   m_TagString: Untagged
@@ -13880,18 +13437,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8820418988954683929
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6655208573140872891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6764084529319819363
 GameObject:
   m_ObjectHideFlags: 0
@@ -14039,7 +13584,6 @@ GameObject:
   - component: {fileID: 9126643258161287994}
   - component: {fileID: 2828890201994312044}
   - component: {fileID: 3615709679050191543}
-  - component: {fileID: 6965876522338691562}
   m_Layer: 0
   m_Name: Step20
   m_TagString: Untagged
@@ -14099,18 +13643,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6965876522338691562
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6798602024682155564}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6841840721707668860
 GameObject:
   m_ObjectHideFlags: 0
@@ -14488,7 +14020,6 @@ GameObject:
   - component: {fileID: 4105641942450625435}
   - component: {fileID: 6724407479244480445}
   - component: {fileID: 8977785554948716143}
-  - component: {fileID: 791973491779511396}
   m_Layer: 0
   m_Name: Step13
   m_TagString: Untagged
@@ -14548,18 +14079,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &791973491779511396
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7153296900119660831}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7154139244145069577
 GameObject:
   m_ObjectHideFlags: 0
@@ -14857,7 +14376,6 @@ GameObject:
   - component: {fileID: 7742299698250131045}
   - component: {fileID: 1352632501435056144}
   - component: {fileID: 1568122620492900580}
-  - component: {fileID: 3521867788876138964}
   m_Layer: 0
   m_Name: CommandsReminder_1
   m_TagString: Untagged
@@ -14917,18 +14435,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3521867788876138964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7241115388356538782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7436322271633361381
 GameObject:
   m_ObjectHideFlags: 0
@@ -15437,7 +14943,6 @@ GameObject:
   - component: {fileID: 5527949684419459056}
   - component: {fileID: 4875009802713059218}
   - component: {fileID: 6541366487499031798}
-  - component: {fileID: 6251798324643439334}
   m_Layer: 0
   m_Name: Step35
   m_TagString: Untagged
@@ -15499,18 +15004,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6251798324643439334
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7685017166694884669}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7754518899654604692
 GameObject:
   m_ObjectHideFlags: 0
@@ -15792,7 +15285,6 @@ GameObject:
   - component: {fileID: 7015109627938195921}
   - component: {fileID: 7256284293300818213}
   - component: {fileID: 4573361059548848857}
-  - component: {fileID: 5821083625658216370}
   m_Layer: 0
   m_Name: Step18
   m_TagString: Untagged
@@ -15852,18 +15344,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &5821083625658216370
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7813232633812961421}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7870373701259064654
 GameObject:
   m_ObjectHideFlags: 0
@@ -16780,7 +16260,6 @@ GameObject:
   - component: {fileID: 91518997272841367}
   - component: {fileID: 9045557170506090251}
   - component: {fileID: 2291725882200977046}
-  - component: {fileID: 336931556673462902}
   m_Layer: 0
   m_Name: Step26
   m_TagString: Untagged
@@ -16840,18 +16319,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &336931556673462902
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8201284995678202916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8303229161397804111
 GameObject:
   m_ObjectHideFlags: 0
@@ -17039,7 +16506,6 @@ GameObject:
   - component: {fileID: 3357456752260928136}
   - component: {fileID: 216829345946329216}
   - component: {fileID: 4638075899879878756}
-  - component: {fileID: 295316184157833826}
   m_Layer: 0
   m_Name: Step4
   m_TagString: Untagged
@@ -17099,18 +16565,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &295316184157833826
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8334869662708758620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8339278326260028368
 GameObject:
   m_ObjectHideFlags: 0
@@ -18539,7 +17993,6 @@ GameObject:
   - component: {fileID: 3685425910127686404}
   - component: {fileID: 470756706352027446}
   - component: {fileID: 7536780179689373152}
-  - component: {fileID: 1580320289029230082}
   m_Layer: 0
   m_Name: Step25
   m_TagString: Untagged
@@ -18600,18 +18053,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1580320289029230082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9067460931344173117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63b6c2de6aa598d47bbbbbb48b5f02a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &9084480894554448816
 GameObject:
   m_ObjectHideFlags: 0

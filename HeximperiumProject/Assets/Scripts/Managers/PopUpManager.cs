@@ -6,7 +6,14 @@ using UnityEngine.UI;
 
 public class PopUpManager : Singleton<PopUpManager>
 {
+    #region CONSTANTS
     const float REF_WIDTH = 1920f;
+    const string INFRA_LVL_TUTO_KEY = "InfraLvlTutoShown";
+    const string REMOVING_INFRA_TUTO_KEY = "RemoveInfraTutoShown";
+    const string LOCK_POPUP_TUTO_KEY = "LockPopupTutoShown";
+    const string UPGRADE_TUTO_KEY = "UpgradeTutoShown";
+    const string SAVINGS_TUTO_KEY = "SavingsTutoShown";
+    #endregion
 
     #region CONFIGURATION
     [Header("_________________________________________________________")]
@@ -32,6 +39,13 @@ public class PopUpManager : Singleton<PopUpManager>
     [SerializeField] private GameObject _lockedObject;
     [SerializeField] private float _durationForLockingPopup = 5f;
     [SerializeField] private Vector2 _lockImagePopupOffset;
+    [Header("_________________________________________________________")]
+    [Header("Tutorial Popup")]
+    [SerializeField] private Animator _infraLevelTutoPopup;
+    [SerializeField] private Animator _removeInfraTutoPopup;
+    [SerializeField] private Animator _lockPopupTutoPopup;
+    [SerializeField] private Animator _upgradeTutoPopup;
+    [SerializeField] private Animator _savingsTutoPopup;
     #endregion
 
     #region VARIABLES
@@ -65,6 +79,8 @@ public class PopUpManager : Singleton<PopUpManager>
 
         // delay start for pop up UI
         _delayedHoverTimer = _durationHoverForUI * _percentageOfTimerForVisualHint;
+
+        GameManager.Instance.OnLastTurnStarted += ShowSavingsTutoPopUp;
     }
 
     #region BASE LOGIC
@@ -1502,6 +1518,8 @@ public class PopUpManager : Singleton<PopUpManager>
 
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, true);
+
+        ShowRemoveInfraTutoPopUp();
     }
 
     private void ButtonEntertainmentPopUp(InteractionButton button)
@@ -2443,6 +2461,8 @@ public class PopUpManager : Singleton<PopUpManager>
         _lockedPopUps.Add(popUp, lockedButton);
         Utilities.PlacePrefabAroundTargetTopRight(lockedButton.GetComponent<RectTransform>(), popUp.GetComponent<RectTransform>(), _lockImagePopupOffset);
         StopLockingPopup();
+
+        ShowLockPopupTutoPopUp();
     }
 
     public void CloseLockedPopup(Button button)
@@ -2482,6 +2502,113 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         _lockedPopUps.Clear();
         ResetPopUp(null);
+    }
+    #endregion
+
+    #region TUTORIAL POPUP
+    public void ShowInfraLevelTutoPopUp()
+    {
+        if (TutorialManager.Instance != null) // Prevent pop-up if tutorial is running
+            return;
+
+        if (PlayerPrefs.GetInt(INFRA_LVL_TUTO_KEY, 0) == 1)
+            return;
+
+        GameManager.Instance.GamePaused = true;
+        _infraLevelTutoPopup.SetTrigger("Show");
+
+        PlayerPrefs.SetInt(INFRA_LVL_TUTO_KEY, 1);
+        PlayerPrefs.Save();
+    }
+
+    public void HideInfraLevelTutoPopUp()
+    {
+        GameManager.Instance.GamePaused = false;
+        _infraLevelTutoPopup.SetTrigger("Shrink");
+    }
+
+    public void ShowRemoveInfraTutoPopUp()
+    {
+        if (TutorialManager.Instance != null) // Prevent pop-up if tutorial is running
+            return;
+
+        if (PlayerPrefs.GetInt(REMOVING_INFRA_TUTO_KEY, 0) == 1)
+            return;
+
+        GameManager.Instance.GamePaused = true;
+        _removeInfraTutoPopup.SetTrigger("Show");
+
+        PlayerPrefs.SetInt(REMOVING_INFRA_TUTO_KEY, 1);
+        PlayerPrefs.Save();
+    }
+
+    public void HideRemoveInfraTutoPopUp()
+    {
+        GameManager.Instance.GamePaused = false;
+        _removeInfraTutoPopup.SetTrigger("Shrink");
+    }
+
+    public void ShowLockPopupTutoPopUp()
+    {
+        if (TutorialManager.Instance != null) // Prevent pop-up if tutorial is running
+            return;
+
+        if (PlayerPrefs.GetInt(LOCK_POPUP_TUTO_KEY, 0) == 1)
+            return;
+
+        GameManager.Instance.GamePaused = true;
+        _lockPopupTutoPopup.SetTrigger("Show");
+
+        PlayerPrefs.SetInt(LOCK_POPUP_TUTO_KEY, 1);
+        PlayerPrefs.Save();
+    }
+
+    public void HideLockPopupTutoPopUp()
+    {
+        GameManager.Instance.GamePaused = false;
+        _lockPopupTutoPopup.SetTrigger("Shrink");
+    }
+
+    public void ShowUpgradeTutoPopUp()
+    {
+        if (TutorialManager.Instance != null) // Prevent pop-up if tutorial is running
+            return;
+
+        if (PlayerPrefs.GetInt(UPGRADE_TUTO_KEY, 0) == 1)
+            return;
+
+        GameManager.Instance.GamePaused = true;
+        _upgradeTutoPopup.SetTrigger("Show");
+
+        PlayerPrefs.SetInt(UPGRADE_TUTO_KEY, 1);
+        PlayerPrefs.Save();
+    }
+
+    public void HideUpgradeTutoPopUp()
+    {
+        GameManager.Instance.GamePaused = false;
+        _upgradeTutoPopup.SetTrigger("Shrink");
+    }
+
+    public void ShowSavingsTutoPopUp()
+    {
+        if (TutorialManager.Instance != null) // Prevent pop-up if tutorial is running
+            return;
+
+        if (PlayerPrefs.GetInt(SAVINGS_TUTO_KEY, 0) == 1)
+            return;
+
+        GameManager.Instance.GamePaused = true;
+        _savingsTutoPopup.SetTrigger("Show");
+
+        PlayerPrefs.SetInt(SAVINGS_TUTO_KEY, 1);
+        PlayerPrefs.Save();
+    }
+
+    public void HideSavingsTutoPopUp()
+    {
+        GameManager.Instance.GamePaused = false;
+        _savingsTutoPopup.SetTrigger("Shrink");
     }
     #endregion
 }
