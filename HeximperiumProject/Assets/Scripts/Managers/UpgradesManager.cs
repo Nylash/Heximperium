@@ -61,6 +61,8 @@ public class UpgradesManager : Singleton<UpgradesManager>
 
     private void StartUpgradesChoice()
     {
+        PopUpManager.Instance.ShowUpgradeTutoPopUp();
+
         _currentExploUpgrade = _remainingExploUpgrades[Random.Range(0, _remainingExploUpgrades.Count)];
         UIManager.Instance.ExploChoiceTitle.text = _currentExploUpgrade.EffectName;
         UIManager.Instance.ExploChoiceDetail.text = _currentExploUpgrade.GetEffectDescription();

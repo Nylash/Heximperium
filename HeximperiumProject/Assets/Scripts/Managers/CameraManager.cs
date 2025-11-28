@@ -14,6 +14,7 @@ public class CameraManager : Singleton<CameraManager>
     [Header("Camera Movement Settings")]
     [SerializeField] private float _cameraMovementSpeed = 5;
     [SerializeField] private float _cameraDragSpeed = 2;
+    [SerializeField] private float _moveEventThreshold = 2f;
     [Header("_________________________________________________________")]
     [Header("Edge Pan Settings")]
 #pragma warning disable CS0414
@@ -25,6 +26,7 @@ public class CameraManager : Singleton<CameraManager>
     [SerializeField] private float _cameraZoomSpeed = 10;
     [SerializeField] private float _maxZoomLevel = 20.0f; //Far
     [SerializeField] private float _minZoomLevel = 3.5f; //Close
+    [SerializeField] private float _zoomEventThreshold = 1f;
     #endregion
 
     #region VARIABLES
@@ -46,11 +48,16 @@ public class CameraManager : Singleton<CameraManager>
     private Ray _mouseRay;
     private RaycastHit _mouseRayHit;
     private InteractionButton _shrinkedButton;
+    //Tutorial variables
+    private Vector2 _lastPositionEventXZ;
+    private float _lastZoomEventY;
     #endregion
 
-    #region ACCESSORS
-    public float MaxZoomLevel { get => _maxZoomLevel; }
-    public float MinZoomLevel { get => _minZoomLevel; }
+    #region EVENTS
+    //Tutorial events
+    public event Action OnCameraMoved;
+    public event Action OnCameraZoomed;
+    public event Action OnCameraCentered;
     #endregion
 
     private void OnEnable() => _inputActions.Player.Enable();
@@ -87,6 +94,9 @@ public class CameraManager : Singleton<CameraManager>
           .FirstOrDefault();
 
         eventSystem = EventSystem.current;
+
+        _lastPositionEventXZ = new Vector2(transform.position.x, transform.position.z);
+        _lastZoomEventY = transform.position.y;
     }
 
     private void Update()
@@ -104,6 +114,21 @@ public class CameraManager : Singleton<CameraManager>
             EdgePan();
         }
         Zoom();
+
+        if (TutorialManager.Instance != null)
+        {
+            Vector3 pos = transform.position;
+            Vector2 currentXZ = new Vector2(pos.x, pos.z);
+
+            Vector2 delta = currentXZ - _lastPositionEventXZ;
+
+            // Fire event only if we've moved enough since last event
+            if (delta.sqrMagnitude >= _moveEventThreshold * _moveEventThreshold)
+            {
+                _lastPositionEventXZ = currentXZ;
+                OnCameraMoved?.Invoke();
+            }
+        }
 
         if (ExplorationManager.Instance.ChoosingScoutDirection)
         {
@@ -232,15 +257,36 @@ public class CameraManager : Singleton<CameraManager>
             return;
 
         transform.position = _initialPos;
+
+        OnCameraCentered?.Invoke();
     }
 
     private void Zoom()
     {
-        transform.position = new Vector3(
-            transform.position.x,
-            Mathf.Clamp(Mathf.Lerp(transform.position.y, transform.position.y + _cameraZoom, _cameraZoomSpeed * Time.deltaTime), _maxZoomLevel, _minZoomLevel),
-            transform.position.z
-            );
+        var pos = transform.position;
+
+        float currentY = pos.y;
+        float targetY = Mathf.Clamp(
+            currentY + _cameraZoom,
+            _maxZoomLevel,
+            _minZoomLevel
+        );
+
+        float newY = Mathf.Lerp(
+            currentY,
+            targetY,
+            _cameraZoomSpeed * Time.deltaTime
+        );
+
+        pos.y = newY;
+        transform.position = pos;
+
+        // Fire event only if we've moved enough since last event
+        if (Mathf.Abs(newY - _lastZoomEventY) >= _zoomEventThreshold)
+        {
+            _lastZoomEventY = newY;
+            OnCameraZoomed?.Invoke();
+        }
     }
 
     private void MoveCamera(Vector2 direction, float speed)

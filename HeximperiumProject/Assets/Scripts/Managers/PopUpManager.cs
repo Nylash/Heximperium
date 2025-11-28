@@ -6,7 +6,14 @@ using UnityEngine.UI;
 
 public class PopUpManager : Singleton<PopUpManager>
 {
+    #region CONSTANTS
     const float REF_WIDTH = 1920f;
+    const string INFRA_LVL_TUTO_KEY = "InfraLvlTutoShown";
+    const string REMOVING_INFRA_TUTO_KEY = "RemoveInfraTutoShown";
+    const string LOCK_POPUP_TUTO_KEY = "LockPopupTutoShown";
+    const string UPGRADE_TUTO_KEY = "UpgradeTutoShown";
+    const string SAVINGS_TUTO_KEY = "SavingsTutoShown";
+    #endregion
 
     #region CONFIGURATION
     [Header("_________________________________________________________")]
@@ -32,6 +39,13 @@ public class PopUpManager : Singleton<PopUpManager>
     [SerializeField] private GameObject _lockedObject;
     [SerializeField] private float _durationForLockingPopup = 5f;
     [SerializeField] private Vector2 _lockImagePopupOffset;
+    [Header("_________________________________________________________")]
+    [Header("Tutorial Popup")]
+    [SerializeField] private Animator _infraLevelTutoPopup;
+    [SerializeField] private Animator _removeInfraTutoPopup;
+    [SerializeField] private Animator _lockPopupTutoPopup;
+    [SerializeField] private Animator _upgradeTutoPopup;
+    [SerializeField] private Animator _savingsTutoPopup;
     #endregion
 
     #region VARIABLES
@@ -65,6 +79,8 @@ public class PopUpManager : Singleton<PopUpManager>
 
         // delay start for pop up UI
         _delayedHoverTimer = _durationHoverForUI * _percentageOfTimerForVisualHint;
+
+        GameManager.Instance.OnLastTurnStarted += ShowSavingsTutoPopUp;
     }
 
     #region BASE LOGIC
@@ -456,37 +472,6 @@ public class PopUpManager : Singleton<PopUpManager>
         StartLockingPopup(popUp);
     }
 
-    private void VisibilityPopUp()
-    {
-        GameObject popUp;
-        popUp = Instantiate(_basePopUp, _popUpParent);
-        _popUps.Add(popUp);
-
-        List<RectTransform> textObjects = new List<RectTransform>();
-
-        #region TITLE
-        TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        if (GameManager.Instance.CurrentPhase == Phase.Entertain)
-            title.text = Family.Entertainment.ToCustomString(true) + " visibility";
-        else
-            title.text = "Scouts visibility";
-        textObjects.Add(title.GetComponent<RectTransform>());
-        #endregion
-
-        #region DETAIL
-        TextMeshProUGUI detail = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        if (GameManager.Instance.CurrentPhase == Phase.Entertain)
-            detail.text = "Hide or show " + Family.Entertainment.ToCustomString(true);
-        else
-            detail.text = "Hide or show Scouts";
-        ClampTextWidth(detail);
-        textObjects.Add(detail.GetComponent<RectTransform>());
-        #endregion
-
-        SetPopUpContentAnchors(textObjects);
-        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
-    }
-
     private void ClaimPopUp()
     {
         GameObject popUp;
@@ -499,6 +484,18 @@ public class PopUpManager : Singleton<PopUpManager>
         TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
         title.text = $"{ResourcesManager.Instance.Claim} Claims<sprite name=\"Claim_Emoji\">";
         textObjects.Add(title.GetComponent<RectTransform>());
+        #endregion
+
+        #region LOOSABLE CLAIMS
+        if (ExpansionManager.Instance.UpgradeConserveClaims == false)
+        {
+            TextMeshProUGUI loosingClaims = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            loosingClaims.text = "Not used Claims<sprite name=\"Claim_Emoji\"> are lost at the end of the phase";
+            ClampTextWidth(loosingClaims);
+            loosingClaims.fontStyle = FontStyles.Italic;
+            loosingClaims.alignment = TextAlignmentOptions.Center;
+            textObjects.Add(loosingClaims.GetComponent<RectTransform>());
+        }
         #endregion
 
         #region INCOME
@@ -702,7 +699,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region DETAIL
         TextMeshProUGUI detail = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        detail.text = "<sprite name=\"Carnivalist_Emoji\"> are used during the Grand Jubilee to place " + Family.Entertainment.ToCustomString(true);
+        detail.text = "Carnivalists<sprite name=\"Carnivalist_Emoji\"> are used during the Grand Jubilee to place " + Family.Entertainment.ToCustomString(true);
         ClampTextWidth(detail);
         detail.alignment = TextAlignmentOptions.Center;
         detail.fontStyle = FontStyles.Italic;
@@ -745,6 +742,33 @@ public class PopUpManager : Singleton<PopUpManager>
         StartLockingPopup(popUp);
     }
 
+    private void VisibilityPopUp()
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, _popUpParent);
+        _popUps.Add(popUp);
+
+        List<RectTransform> textObjects = new List<RectTransform>();
+
+        #region DETAIL
+        TextMeshProUGUI detail = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        if (UIManager.Instance.AreUnitsVisible)
+            detail.text = "Hide " +
+                $"{(GameManager.Instance.CurrentPhase == Phase.Entertain ? Family.Entertainment.ToCustomString(true) : "Scouts<sprite name=\"Scout_Emoji\">")} " +
+                "on tiles";
+        else
+            detail.text = "Show " +
+                $"{(GameManager.Instance.CurrentPhase == Phase.Entertain ? Family.Entertainment.ToCustomString(true) : "Scouts<sprite name=\"Scout_Emoji\">")} " +
+                "on tiles";
+        ClampTextWidth(detail);
+        detail.alignment = TextAlignmentOptions.Center;
+        textObjects.Add(detail.GetComponent<RectTransform>());
+        #endregion
+
+        SetPopUpContentAnchors(textObjects);
+        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
+    }
+
     private void ShowIncomePopUp()
     {
         GameObject popUp;
@@ -760,6 +784,7 @@ public class PopUpManager : Singleton<PopUpManager>
         else
             detail.text = "Show tiles' incomes and bonuses";
         ClampTextWidth(detail);
+        detail.alignment = TextAlignmentOptions.Center;
         textObjects.Add(detail.GetComponent<RectTransform>());
         #endregion
 
@@ -782,6 +807,7 @@ public class PopUpManager : Singleton<PopUpManager>
         else
             detail.text = "Show which tiles can receive an " + Family.Entertainment.ToCustomString();
         ClampTextWidth(detail);
+        detail.alignment = TextAlignmentOptions.Center;
         textObjects.Add(detail.GetComponent<RectTransform>());
         #endregion
 
@@ -804,6 +830,7 @@ public class PopUpManager : Singleton<PopUpManager>
         else
             detail.text = "Show advanced incomes/points sources details on pop-ups";
         ClampTextWidth(detail);
+        detail.alignment = TextAlignmentOptions.Center;
         textObjects.Add(detail.GetComponent<RectTransform>());
         #endregion
 
@@ -1491,6 +1518,8 @@ public class PopUpManager : Singleton<PopUpManager>
 
         SetPopUpContentAnchors(textObjects);
         PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, true);
+
+        ShowRemoveInfraTutoPopUp();
     }
 
     private void ButtonEntertainmentPopUp(InteractionButton button)
@@ -2397,6 +2426,9 @@ public class PopUpManager : Singleton<PopUpManager>
 
     private void StartLockingPopup(GameObject popUp)
     {
+        if (TutorialManager.Instance != null)
+            return;
+
         _lockingPopup = popUp;
         _isLockingPopup = true;
         _lockingTimer = 0f;
@@ -2429,6 +2461,8 @@ public class PopUpManager : Singleton<PopUpManager>
         _lockedPopUps.Add(popUp, lockedButton);
         Utilities.PlacePrefabAroundTargetTopRight(lockedButton.GetComponent<RectTransform>(), popUp.GetComponent<RectTransform>(), _lockImagePopupOffset);
         StopLockingPopup();
+
+        ShowLockPopupTutoPopUp();
     }
 
     public void CloseLockedPopup(Button button)
@@ -2468,6 +2502,113 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         _lockedPopUps.Clear();
         ResetPopUp(null);
+    }
+    #endregion
+
+    #region TUTORIAL POPUP
+    public void ShowInfraLevelTutoPopUp()
+    {
+        if (TutorialManager.Instance != null) // Prevent pop-up if tutorial is running
+            return;
+
+        if (PlayerPrefs.GetInt(INFRA_LVL_TUTO_KEY, 0) == 1)
+            return;
+
+        GameManager.Instance.GamePaused = true;
+        _infraLevelTutoPopup.SetTrigger("Show");
+
+        PlayerPrefs.SetInt(INFRA_LVL_TUTO_KEY, 1);
+        PlayerPrefs.Save();
+    }
+
+    public void HideInfraLevelTutoPopUp()
+    {
+        GameManager.Instance.GamePaused = false;
+        _infraLevelTutoPopup.SetTrigger("Shrink");
+    }
+
+    public void ShowRemoveInfraTutoPopUp()
+    {
+        if (TutorialManager.Instance != null) // Prevent pop-up if tutorial is running
+            return;
+
+        if (PlayerPrefs.GetInt(REMOVING_INFRA_TUTO_KEY, 0) == 1)
+            return;
+
+        GameManager.Instance.GamePaused = true;
+        _removeInfraTutoPopup.SetTrigger("Show");
+
+        PlayerPrefs.SetInt(REMOVING_INFRA_TUTO_KEY, 1);
+        PlayerPrefs.Save();
+    }
+
+    public void HideRemoveInfraTutoPopUp()
+    {
+        GameManager.Instance.GamePaused = false;
+        _removeInfraTutoPopup.SetTrigger("Shrink");
+    }
+
+    public void ShowLockPopupTutoPopUp()
+    {
+        if (TutorialManager.Instance != null) // Prevent pop-up if tutorial is running
+            return;
+
+        if (PlayerPrefs.GetInt(LOCK_POPUP_TUTO_KEY, 0) == 1)
+            return;
+
+        GameManager.Instance.GamePaused = true;
+        _lockPopupTutoPopup.SetTrigger("Show");
+
+        PlayerPrefs.SetInt(LOCK_POPUP_TUTO_KEY, 1);
+        PlayerPrefs.Save();
+    }
+
+    public void HideLockPopupTutoPopUp()
+    {
+        GameManager.Instance.GamePaused = false;
+        _lockPopupTutoPopup.SetTrigger("Shrink");
+    }
+
+    public void ShowUpgradeTutoPopUp()
+    {
+        if (TutorialManager.Instance != null) // Prevent pop-up if tutorial is running
+            return;
+
+        if (PlayerPrefs.GetInt(UPGRADE_TUTO_KEY, 0) == 1)
+            return;
+
+        GameManager.Instance.GamePaused = true;
+        _upgradeTutoPopup.SetTrigger("Show");
+
+        PlayerPrefs.SetInt(UPGRADE_TUTO_KEY, 1);
+        PlayerPrefs.Save();
+    }
+
+    public void HideUpgradeTutoPopUp()
+    {
+        GameManager.Instance.GamePaused = false;
+        _upgradeTutoPopup.SetTrigger("Shrink");
+    }
+
+    public void ShowSavingsTutoPopUp()
+    {
+        if (TutorialManager.Instance != null) // Prevent pop-up if tutorial is running
+            return;
+
+        if (PlayerPrefs.GetInt(SAVINGS_TUTO_KEY, 0) == 1)
+            return;
+
+        GameManager.Instance.GamePaused = true;
+        _savingsTutoPopup.SetTrigger("Show");
+
+        PlayerPrefs.SetInt(SAVINGS_TUTO_KEY, 1);
+        PlayerPrefs.Save();
+    }
+
+    public void HideSavingsTutoPopUp()
+    {
+        GameManager.Instance.GamePaused = false;
+        _savingsTutoPopup.SetTrigger("Shrink");
     }
     #endregion
 }

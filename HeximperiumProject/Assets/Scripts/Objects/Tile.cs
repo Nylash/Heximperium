@@ -369,7 +369,10 @@ public class Tile : MonoBehaviour
         {
             _infraLvlRenderer.sprite = _spriteInfraLvl[infraData.InfrastructureLevel - 1];
             if (_tileData.AvailableInfrastructures.Count == 0)
+            {
                 _maxInfraReached.SetActive(true);
+                PopUpManager.Instance.ShowInfraLevelTutoPopUp();
+            }
             else
                 _maxInfraReached.SetActive(false);
         }   

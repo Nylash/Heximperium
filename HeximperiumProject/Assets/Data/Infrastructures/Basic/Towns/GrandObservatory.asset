@@ -43,3 +43,4 @@ MonoBehaviour:
   _scoutStartingPoint: 1
   isTown: 1
   _infrastructureLevel: 4
+  _associatedPhase: 0

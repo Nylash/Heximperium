@@ -170,9 +170,9 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
 
         GameManager.Instance.UnselectTile();
 
-        UpdateInteractableTiles();
-
         ResourcesManager.Instance.CHEAT_RESOURCES();
+
+        UpdateInteractableTiles();
     }
 
     protected override void ConfirmPhase()
@@ -180,6 +180,9 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         _finalizingPhase = true;
 
         ClearInteractableTiles();
+
+        if (!UIManager.Instance.AreUnitsVisible)
+            UIManager.Instance.UnitsVisibility();
 
         foreach (Scout scout in _scouts)
         {
@@ -194,6 +197,12 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     {
         if (GameManager.Instance.CurrentPhase != Phase.Explore)
             return;
+
+        if (TutorialManager.Instance != null)
+        {
+            if (!TutorialManager.Instance.IsSpawningScout)
+                return;
+        }
 
         _interactionPositions.Clear();
 
@@ -250,6 +259,9 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     {
         if(_currentScoutsCount < _scoutsLimit)
         {
+            if (!UIManager.Instance.AreUnitsVisible)
+                UIManager.Instance.UnitsVisibility();
+
             _currentScout = Instantiate(_scoutPrefab, 
                 tile.transform.position + _scoutPrefab.transform.localPosition,
                 _scoutPrefab.transform.rotation, tile.Visual).GetComponent<Scout>();
@@ -267,7 +279,8 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
             _choosingScoutDirection = true;
 
             OnScoutSpawned?.Invoke(_currentScout);
-            UIManager.Instance.ScoutHint.SetTrigger("Show");
+            if (TutorialManager.Instance == null) // Can't cancel scout in Tutorial
+                UIManager.Instance.ScoutHint.SetTrigger("Show");
 
             if (fromInteraction)
                 UpdateInteractableTiles();
@@ -350,10 +363,10 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
 
     public void CancelScout()
     {
-        if (_currentScout.HasRedirected)// We were redirecting a scout, no cancel
-        {
+        if (TutorialManager.Instance != null)//Don't allow cancel in tutorial
             return;
-        }
+        if (_currentScout.HasRedirected)// We were redirecting a scout, no cancel
+            return;
         else// We were spawning a new scout, we need to remove it
         {
             _choosingScoutDirection = false;

@@ -1,1035 +1,1045 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-/// <summary>
-/// Manages the in-game tutorial sequence. This component controls
-/// which instructions are displayed and monitors player actions to
-/// progress through each tutorial step.
-/// </summary>
 public class TutorialManager : Singleton<TutorialManager>
 {
     private enum TutorialStep
     {
         None,
-        Intro,
-        Explo1_Init,
-        Explo1_ObjSelectTown,
-        Explo1_ObjScoutSpawn,
-        Explo1_ObjDirectScout,
-        Explo1_ObjEndPhase,
-        Expand1_Init,
-        Expand1_ObjSelectTile,
-        Expand1_ObjClaimTile,
-        Expand1_ObjEndPhase,
-        Exploit1_Init,
-        Exploit1_ObjSelectTile,
-        Exploit1_ObjBuildFarm,
-        Exploit1bis_Init,
-        Exploit1bis_ObjSelectTile,
-        Exploit1_ObjBuildWindmill,
-        Exploit1ter_Init,
-        Exploit1_ObjEndTurn,
-        Explo2_Init,
-        Explo2_ObjEndPhase,
-        Expand2_Init,
-        Expand2_ObjSelectTile,
-        Expand2_ObjBuildTown,
-        Expand2_ObjEndPhase,
-        Exploit2_Init,
-        Exploit2_ObjSelectTile,
-        Exploit2_ObjEnchanceInfra,
-        Exploit2bis_Init,
-        Exploit2_ObjEndTurn,
-        Entertain_Init,
-        Entertain_ObjSelectTile,
-        Entertain_ObjPlaceEntertainment,
-        Entertain_ObjEndGame,
-        Outro
+        S1_Intro,
+        S2_IntroCommands,
+        S3_CamMovement,
+        S4_CamZoom,
+        S5_CamCenter,
+        S6_IntroScout,
+        S7_SelectTile,
+        S8_SpawnScout,
+        S9_DirectScout,
+        S10_EndPhase,
+        S11_IntroClaim,
+        S12_SelectTile,
+        S13_ClaimTile,
+        S14_EndPhase,
+        S15_IntroInfrastructure,
+        S16_SelectTile,
+        S17_BuildInfrastructure,
+        S18_EndTurn,
+        S19_IntroNoMoreScout,
+        S20_EndPhase,
+        S21_IntroTown,
+        S22_SelectTile,
+        S23_BuildTown,
+        S24_EndPhase,
+        S25_WindmillIntro,
+        S26_SelectTile,
+        S27_BuildWindmill,
+        S28_SelectWindmill,
+        S29_UpgradeWindmill,
+        S30_EndTurn,
+        S31_IntroEntertainment,
+        S32_SelectTile,
+        S33_PlaceEntertainment,
+        S34_EndGame,
+        S35_Outro
     }
 
     #region CONFIGURATION
     [Header("_________________________________________________________")]
     [Header("Intro")]
-    [SerializeField] private GameObject _introduction;
+    [SerializeField] private Animator _step1;
     [Header("_________________________________________________________")]
-    [Header("Exploration Turn 1")]
-    [SerializeField] private GameObject _explo1;
-    [SerializeField] private Animator _explo1_ObjSelectTown;
-    [SerializeField] private Animator _explo1_ObjScoutSpawn;
-    [SerializeField] private Animator _explo1_ObjDirectScout;
-    [SerializeField] private Animator _explo1_ObjEndPhase;
+    [Header("Commands")]
+    [SerializeField] private Animator _step2;
+    [SerializeField] private Animator _commandsReminder_1;
+    [SerializeField] private Animator _step3;
+    [SerializeField] private Animator _step4;
+    [SerializeField] private Animator _step5;
     [Header("_________________________________________________________")]
-    [Header("Expansion Turn 1")]
-    [SerializeField] private GameObject _expand1;
-    [SerializeField] private Animator _expand1_ObjSelectTile;
-    [SerializeField] private Animator _expand1_ObjClaimTile;
-    [SerializeField] private Animator _expand1_ObjEndPhase;
+    [Header("Scout")]
+    [SerializeField] private Animator _step6;
+    [SerializeField] private Animator _commandsReminder_2;
+    [SerializeField] private Animator _step7;
+    [SerializeField] private Animator _step8;
+    [SerializeField] private Animator _step9;
+    [SerializeField] private Animator _step10;
     [Header("_________________________________________________________")]
-    [Header("Exploitation Turn 1")]
-    [SerializeField] private GameObject _exploit1;
-    [SerializeField] private Animator _exploit1_ObjSelectTile;
-    [SerializeField] private Vector2 _exploit1_TargetTileCoor;
-    [SerializeField] private InfrastructureData _farmData;
-    [SerializeField] private Animator _exploit1_ObjBuildFarm;
-    [SerializeField] private GameObject _exploit1bis;
-    [SerializeField] private Animator _exploit1bis_ObjSelectTile;
-    [SerializeField] private Vector2 _exploit1bis_TargetTileCoor;
-    [SerializeField] private InfrastructureData _windmillData;
-    [SerializeField] private Animator _exploit1_ObjBuildWindmill;
-    [SerializeField] private GameObject _exploit1ter;
-    [SerializeField] private Animator _exploit1_ObjEndTurn;
+    [Header("Claim")]
+    [SerializeField] private Animator _step11;
+    [SerializeField] private Animator _commandsReminder_3;
+    [SerializeField] private Animator _step12;
+    [SerializeField] private Animator _step13;
+    [SerializeField] private Animator _step14;
     [Header("_________________________________________________________")]
-    [Header("Exploration Turn 2")]
-    [SerializeField] private GameObject _explo2;
-    [SerializeField] private Animator _explo2_ObjEndPhase;
+    [Header("Farm")]
+    [SerializeField] private Animator _step15;
+    [SerializeField] private Animator _commandsReminder_4;
+    [SerializeField] private Animator _step16;
+    [SerializeField] private Animator _step17;
+    [SerializeField] private Animator _step18;
     [Header("_________________________________________________________")]
-    [Header("Expansion Turn 2")]
-    [SerializeField] private GameObject _expand2;
-    [SerializeField] private InfrastructureData _townData;
-    [SerializeField] private Animator _expand2_ObjSelectTile;
-    [SerializeField] private Animator _expand2_ObjBuildTown;
-    [SerializeField] private Animator _expand2_ObjEndPhase;
+    [Header("No more scout")]
+    [SerializeField] private Animator _step19;
+    [SerializeField] private Animator _commandsReminder_5;
+    [SerializeField] private Animator _step20;
     [Header("_________________________________________________________")]
-    [Header("Exploitation Turn 2")]
-    [SerializeField] private GameObject _exploit2;
-    [SerializeField] private Animator _exploit2_ObjSelectTile;
-    [SerializeField] private Vector2 _exploit2_TargetTileCoor;
-    [SerializeField] private InfrastructureData _enchancementData;
-    [SerializeField] private Animator _exploit2_ObjEnchanceInfra;
-    [SerializeField] private GameObject _exploit2bis;
-    [SerializeField] private Animator _exploit2_ObjEndTurn;
+    [Header("Town")]
+    [SerializeField] private Animator _step21;
+    [SerializeField] private Animator _commandsReminder_6;
+    [SerializeField] private Animator _step22;
+    [SerializeField] private Animator _step23;
+    [SerializeField] private Animator _step24;
+    [Header("_________________________________________________________")]
+    [Header("Windmill")]
+    [SerializeField] private Animator _step25;
+    [SerializeField] private Animator _commandsReminder_7;
+    [SerializeField] private Animator _step26;
+    [SerializeField] private Animator _step27;
+    [SerializeField] private Animator _step28;
+    [SerializeField] private Animator _step29;
+    [SerializeField] private Animator _step30;
     [Header("_________________________________________________________")]
     [Header("Entertainment")]
-    [SerializeField] private GameObject _entertain;
-    [SerializeField] private List<ResourceToIntMap> _budget = new List<ResourceToIntMap>();
-    [SerializeField] private Animator _entertain_ObjSelectTile;
-    [SerializeField] private Animator _entertain_ObjPlaceEntertainment;
-    [SerializeField] private Animator _entertain_ObjEndGame;
+    [SerializeField] private Animator _step31;
+    [SerializeField] private Animator _commandsReminder_8;
+    [SerializeField] private Animator _step32;
+    [SerializeField] private Animator _step33;
+    [SerializeField] private Animator _step34;
     [Header("_________________________________________________________")]
     [Header("Outro")]
-    [SerializeField] private GameObject _outro;
+    [SerializeField] private Animator _step35;
     #endregion
 
     #region EVENTS
     public event Action OnTutorialStarted;
-    //Event handlers
-    private Action<Scout> _scoutSpawnedHandler;
-    private Action<Tile> _tileClaimedHandler;
-    private Action<Tile> _infraBuildHandler;
-    private Action<Entertainment> _entertainmentSpawnedHandler;
     #endregion
 
     #region VARIABLES
     private TutorialStep _step = TutorialStep.None;
-    private Tile _targetTile;
+    private bool _isSpawningScout;
+    private bool _isClaimingTile;
+    private bool _isBuildingFarm;
+    private bool _isBuildingTown;
+    private bool _isBuildingWindmill;
+    private bool _isUpgradingWindmill;
 
-    public Tile TargetTile { get => _targetTile; }
+    public bool IsClaimingTile { get => _isClaimingTile; }
+    public bool IsSpawningScout { get => _isSpawningScout; }
+    public bool IsBuildingFarm { get => _isBuildingFarm; }
+    public bool IsBuildingTown { get => _isBuildingTown; }
+    public bool IsBuildingWindmill { get => _isBuildingWindmill; }
+    public bool IsUpgradingWindmill { get => _isUpgradingWindmill; }
     #endregion
 
-    /// <summary>
-    /// Registers callbacks when the scene is loaded and displays the
-    /// introduction screen once loading has finished.
-    /// </summary>
     protected override void OnAwake()
     {
         UIManager.Instance.ForceExploColor();
 
         if (LoadingManager.Instance != null)
-            LoadingManager.Instance.OnLoadingDone += ShowIntro;
+            LoadingManager.Instance.OnLoadingDone += ShowStep1;
         else
-            ShowIntro();
+            ShowStep1();
     }
 
     #region INTRODUCTION
-    /// <summary>
-    /// Displays the introduction canvas and sets the tutorial state
-    /// to the first step.
-    /// </summary>
-    private void ShowIntro()
+    private void ShowStep1()
     {
-        _introduction.SetActive(true);
-        _step = TutorialStep.Intro;
+        UIManager.Instance.ButtonEndPhase.interactable = false;
+        GameManager.Instance.TutorialLockingPhase = true;
+
+        _step1.SetTrigger("Show");
+        _step = TutorialStep.S1_Intro;
         if (LoadingManager.Instance != null)
-            LoadingManager.Instance.OnLoadingDone -= ShowIntro;
+            LoadingManager.Instance.OnLoadingDone -= ShowStep1;
     }
 
-    /// <summary>
-    /// Called from the UI to begin the tutorial sequence after the
-    /// introduction is acknowledged by the player.
-    /// </summary>
-    public void StartTutorial()
+    public void Button_ValidateStep1()
     {
-        _introduction.GetComponent<Animator>().SetTrigger("Shrink");
+        _step1.SetTrigger("Shrink");
         OnTutorialStarted?.Invoke();
-        InitializeExplo1();
+        ShowStep2();
     }
     #endregion
 
-    #region EXPLORATION 1
-    /// <summary>
-    /// Prepare the first exploration tutorial step by pausing the game
-    /// and showing the instruction panel.
-    /// </summary>
-    private void InitializeExplo1()
+    #region COMMANDS
+    private void ShowStep2()
     {
-        _explo1.SetActive(true);
+        _step2.SetTrigger("Show");
+        _step = TutorialStep.S2_IntroCommands;
         GameManager.Instance.GamePaused = true;
-        _step = TutorialStep.Explo1_Init;
     }
 
-    /// <summary>
-    /// Starts the first exploration turn of the tutorial. The player
-    /// must select a town to continue.
-    /// </summary>
-    public void StartExplo1()
+    public void Button_ValidateStep2()
     {
-        if (_step != TutorialStep.Explo1_Init) return;
-        UIManager.Instance.ButtonEndPhase.interactable = false;
-        GameManager.Instance.TutorialLockingPhase = true;
-        _explo1.GetComponent<Animator>().SetTrigger("Shrink");
+        _step2.SetTrigger("Shrink");
         GameManager.Instance.GamePaused = false;
-
-        _step = TutorialStep.Explo1_ObjSelectTown;
-        _explo1_ObjSelectTown.SetTrigger("Unfold");
-        ExplorationManager.Instance.OnScoutStartingPointSelected += OnTownSelected;
+        ShowStep3();
     }
 
-    /// <summary>
-    /// Callback when the player selects the starting town. Moves the
-    /// tutorial forward to the scout spawning step.
-    /// </summary>
-    private void OnTownSelected()
+    private void ShowStep3()
     {
-        if (_step != TutorialStep.Explo1_ObjSelectTown) return;
-        ExplorationManager.Instance.OnScoutStartingPointSelected -= OnTownSelected;
-        GameManager.Instance.OnTileUnselected += RollBackToObjSelectTown;
+        if (_step != TutorialStep.S2_IntroCommands)
+            return;
 
-        _step = TutorialStep.Explo1_ObjScoutSpawn;
-        _explo1_ObjSelectTown.SetTrigger("Fold");
-        _explo1_ObjScoutSpawn.SetTrigger("Unfold");
+        _step = TutorialStep.S3_CamMovement;
+        _commandsReminder_1.SetTrigger("Show");
+        _step3.SetTrigger("Show");
 
-        _scoutSpawnedHandler = scout => OnScoutSpawned();
-        ExplorationManager.Instance.OnScoutSpawned += _scoutSpawnedHandler;
+        CameraManager.Instance.OnCameraMoved += ShowStep4;
     }
 
-    /// <summary>
-    /// If the player deselects the town, return to the previous step.
-    /// </summary>
-    private void RollBackToObjSelectTown()
+    private void ShowStep4()
     {
-        StartCoroutine(RollBackToObjSelectTown_Coroutine());
+        if (_step != TutorialStep.S3_CamMovement)
+            return;
+
+        CameraManager.Instance.OnCameraMoved -= ShowStep4;
+
+        _step = TutorialStep.S4_CamZoom;
+        _step3.SetTrigger("Shrink");
+        _step4.SetTrigger("Show");
+
+        CameraManager.Instance.OnCameraZoomed += ShowStep5;
     }
 
-    /// <summary>
-    /// Coroutine used to reset the step when the player changes their
-    /// selection before spawning a scout.
-    /// </summary>
-    private IEnumerator RollBackToObjSelectTown_Coroutine()
+    private void ShowStep5()
     {
-        // Wait one frame to ensure the deselection event is processed
-        yield return null;
-        if (_step != TutorialStep.Explo1_ObjScoutSpawn)
-            yield break;
+        if (_step != TutorialStep.S4_CamZoom)
+            return;
 
-        GameManager.Instance.OnTileUnselected -= RollBackToObjSelectTown;
-        ExplorationManager.Instance.OnScoutSpawned -= _scoutSpawnedHandler;
-        ExplorationManager.Instance.OnScoutStartingPointSelected += OnTownSelected;
+        CameraManager.Instance.OnCameraZoomed -= ShowStep5;
 
-        _explo1_ObjScoutSpawn.SetTrigger("Fold");
-        _explo1_ObjSelectTown.SetTrigger("Unfold");
-        _step = TutorialStep.Explo1_ObjSelectTown;
-    }
+        _step = TutorialStep.S5_CamCenter;
+        _step4.SetTrigger("Shrink");
+        _step5.SetTrigger("Show");
 
-    /// <summary>
-    /// Triggered once the scout is spawned. Guides the player to direct
-    /// the unit toward unexplored tiles.
-    /// </summary>
-    private void OnScoutSpawned()
-    {
-        if (_step != TutorialStep.Explo1_ObjScoutSpawn) return;
-        ExplorationManager.Instance.OnScoutSpawned -= _scoutSpawnedHandler;
-        GameManager.Instance.OnTileUnselected -= RollBackToObjSelectTown;
-
-        _step = TutorialStep.Explo1_ObjDirectScout;
-        _explo1_ObjScoutSpawn.SetTrigger("Fold");
-        _explo1_ObjDirectScout.SetTrigger("Unfold");
-
-        ExplorationManager.Instance.OnScoutDirected += OnScoutDirected;
-    }
-
-    /// <summary>
-    /// Called when the player has given a movement order to the scout.
-    /// Enables ending the exploration phase.
-    /// </summary>
-    private void OnScoutDirected()
-    {
-        if (_step != TutorialStep.Explo1_ObjDirectScout) return;
-        ExplorationManager.Instance.OnScoutDirected -= OnScoutDirected;
-
-        _step = TutorialStep.Explo1_ObjEndPhase;
-        _explo1_ObjDirectScout.SetTrigger("Fold");
-        _explo1_ObjEndPhase.SetTrigger("Unfold");
-
-        UIManager.Instance.ButtonEndPhase.interactable = true;
-        GameManager.Instance.TutorialLockingPhase = false;
-        GameManager.Instance.OnExplorationPhaseEnded += OnExplorationPhaseEnded;
-    }
-
-    /// <summary>
-    /// Transition from exploration to the first expansion tutorial step
-    /// once the player ends the phase.
-    /// </summary>
-    private void OnExplorationPhaseEnded()
-    {
-        if (_step != TutorialStep.Explo1_ObjEndPhase) return;
-        GameManager.Instance.OnExplorationPhaseEnded -= OnExplorationPhaseEnded;
-
-        _step = TutorialStep.Expand1_Init;
-        _explo1_ObjEndPhase.SetTrigger("Fold");
-        GameManager.Instance.OnExpansionPhaseStarted += InitializeExpand1;
+        CameraManager.Instance.OnCameraCentered += ShowStep6;
     }
     #endregion
 
-    #region EXPANSION 1
-    /// <summary>
-    /// Prepare the expansion tutorial by pausing the game and showing
-    /// the instructions for claiming a new tile.
-    /// </summary>
-    private void InitializeExpand1()
+    #region SCOUT TUTORIAL
+    private void ShowStep6()
     {
-        GameManager.Instance.OnExpansionPhaseStarted -= InitializeExpand1;
-        _expand1.SetActive(true);
+        if (_step != TutorialStep.S5_CamCenter)
+            return;
+
         GameManager.Instance.GamePaused = true;
-        _step = TutorialStep.Expand1_Init;
+        CameraManager.Instance.OnCameraCentered -= ShowStep6;
+
+        _step = TutorialStep.S6_IntroScout;
+        _commandsReminder_1.SetTrigger("Shrink");
+        _step5.SetTrigger("Shrink");
+        _step6.SetTrigger("Show");
     }
 
-    /// <summary>
-    /// Begins the first expansion turn where the player chooses a
-    /// neighboring tile to claim.
-    /// </summary>
-    public void StartExpand1()
+    public void Button_ValidateStep6()
     {
-        if (_step != TutorialStep.Expand1_Init) return;
-        UIManager.Instance.ButtonEndPhase.interactable = false;
-        GameManager.Instance.TutorialLockingPhase = true;
-        _expand1.GetComponent<Animator>().SetTrigger("Shrink");
+        if (_step != TutorialStep.S6_IntroScout)
+            return;
+
+        _step6.SetTrigger("Shrink");
+        ShowStep7();
+    }
+
+    private void ShowStep7()
+    {
+        if (_step != TutorialStep.S6_IntroScout)
+            return;
+
         GameManager.Instance.GamePaused = false;
 
-        _step = TutorialStep.Expand1_ObjSelectTile;
-        _expand1_ObjSelectTile.SetTrigger("Unfold");
-        ExpansionManager.Instance.OnClaimableTileSelected += OnClaimableTileSelected;
+        _step = TutorialStep.S7_SelectTile;
+        _commandsReminder_2.SetTrigger("Show");
+        _step7.SetTrigger("Show");
+
+        _isSpawningScout = true;
+        ExplorationManager.Instance.OnScoutStartingPointSelected += ShowStep8;
+
+        foreach (Tile item in ExploitationManager.Instance.Infrastructures)
+        {
+            if (item.TileData is InfrastructureData data && data.ScoutStartingPoint)
+                item.Highlight(true);
+        }
     }
 
-    /// <summary>
-    /// Player selected a valid tile to claim. Switches UI to the claim
-    /// confirmation step.
-    /// </summary>
-    private void OnClaimableTileSelected()
+    private void ShowStep8()
     {
-        if (_step != TutorialStep.Expand1_ObjSelectTile) return;
-        ExpansionManager.Instance.OnClaimableTileSelected -= OnClaimableTileSelected;
-        GameManager.Instance.OnTileUnselected += RollBackToObjSelectTile;
+        if (_step != TutorialStep.S7_SelectTile)
+            return;
 
-        _step = TutorialStep.Expand1_ObjClaimTile;
-        _expand1_ObjSelectTile.SetTrigger("Fold");
-        _expand1_ObjClaimTile.SetTrigger("Unfold");
+        ExplorationManager.Instance.OnScoutStartingPointSelected -= ShowStep8;
 
-        _tileClaimedHandler = tile => OnTileClaimed();
-        ExpansionManager.Instance.OnTileClaimed += _tileClaimedHandler;
+        _step = TutorialStep.S8_SpawnScout;
+        _step7.SetTrigger("Shrink");
+        _step8.SetTrigger("Show");
+
+        ExplorationManager.Instance.OnScoutSpawned += ShowStep9;
+        GameManager.Instance.OnTileUnselected += RollBackToStep7;
+
+        foreach (Tile item in ExploitationManager.Instance.Infrastructures)
+        {
+            if (item.TileData is InfrastructureData data && data.ScoutStartingPoint)
+                item.Highlight(false);
+        }
     }
 
-    /// <summary>
-    /// Return to tile selection if the player cancels before claiming.
-    /// </summary>
-    private void RollBackToObjSelectTile()
+    private void RollBackToStep7()
     {
-        StartCoroutine(RollBackToObjSelectTile_Coroutine());
+        if (_step != TutorialStep.S8_SpawnScout)
+            return;
+        StartCoroutine(Coroutine_RollBackToStep7());
     }
 
-    private IEnumerator RollBackToObjSelectTile_Coroutine()
+    private IEnumerator Coroutine_RollBackToStep7()
     {
-        // Wait one frame to avoid reacting to UI button clicks
+        // Wait one frame to ensure that is a deselection and not the unselect called when doing an action
         yield return null;
-        if (_step != TutorialStep.Expand1_ObjClaimTile)
+        if (_step != TutorialStep.S8_SpawnScout)
             yield break;
 
         if (GameManager.Instance.SelectedTile != null)
         {
-            // Check if the new tile is claimable
+            if (GameManager.Instance.SelectedTile.TileData is InfrastructureData data && data.ScoutStartingPoint)
+                yield break;
+        }
+
+        GameManager.Instance.OnTileUnselected -= RollBackToStep7;
+        ExplorationManager.Instance.OnScoutSpawned -= ShowStep9;
+
+        _step = TutorialStep.S7_SelectTile;
+        _step8.SetTrigger("Shrink");
+        _step7.SetTrigger("Show");
+
+        ExplorationManager.Instance.OnScoutStartingPointSelected += ShowStep8;
+
+        foreach (Tile item in ExploitationManager.Instance.Infrastructures)
+        {
+            if (item.TileData is InfrastructureData data && data.ScoutStartingPoint)
+                item.Highlight(true);
+        }
+    }
+
+    private void ShowStep9(Scout scout)
+    {
+        if (_step != TutorialStep.S8_SpawnScout)
+            return;
+
+        ExplorationManager.Instance.OnScoutSpawned -= ShowStep9;
+        GameManager.Instance.OnTileUnselected -= RollBackToStep7;
+
+        _step = TutorialStep.S9_DirectScout;
+        _step8.SetTrigger("Shrink");
+        _step9.SetTrigger("Show");
+
+        _isSpawningScout = false;
+        ExplorationManager.Instance.OnScoutDirected += ShowStep10;
+    }
+
+    private void ShowStep10()
+    {
+        if (_step != TutorialStep.S9_DirectScout)
+            return;
+
+        UIManager.Instance.ButtonEndPhase.interactable = true;
+        GameManager.Instance.TutorialLockingPhase = false;
+        ExplorationManager.Instance.OnScoutDirected -= ShowStep10;
+
+        _step = TutorialStep.S10_EndPhase;
+        _step9.SetTrigger("Shrink");
+        _step10.SetTrigger("Show");
+
+        GameManager.Instance.OnExplorationPhaseEnded += HideStep10;
+        GameManager.Instance.OnExpansionPhaseStarted += ShowStep11;
+    }
+
+    private void HideStep10()
+    {
+        GameManager.Instance.OnExplorationPhaseEnded -= HideStep10;
+        _step10.SetTrigger("Shrink");
+        _commandsReminder_2.SetTrigger("Shrink");
+    }
+    #endregion
+
+    #region CLAIM TUTORIAL
+    private void ShowStep11()
+    {
+        if (_step != TutorialStep.S10_EndPhase)
+            return;
+
+        UIManager.Instance.ButtonEndPhase.interactable = false;
+        GameManager.Instance.TutorialLockingPhase = true;
+        GameManager.Instance.GamePaused = true;
+
+        GameManager.Instance.OnExpansionPhaseStarted -= ShowStep11;
+
+        _step = TutorialStep.S11_IntroClaim;
+        _step11.SetTrigger("Show");
+    }
+
+    public void Button_ValidateStep11()
+    {
+        _step11.SetTrigger("Shrink");
+        GameManager.Instance.GamePaused = false;
+        ShowStep12();
+    }
+
+    private void ShowStep12()
+    {
+        if (_step != TutorialStep.S11_IntroClaim)
+            return;
+
+        _step = TutorialStep.S12_SelectTile;
+        _commandsReminder_3.SetTrigger("Show");
+        _step12.SetTrigger("Show");
+
+        _isClaimingTile = true;
+        ExpansionManager.Instance.OnClaimableTileSelected += ShowStep13;
+    }
+
+    private void ShowStep13()
+    {
+        if (_step != TutorialStep.S12_SelectTile)
+            return;
+
+        ExpansionManager.Instance.OnClaimableTileSelected -= ShowStep13;
+
+        _step = TutorialStep.S13_ClaimTile;
+        _step12.SetTrigger("Shrink");
+        _step13.SetTrigger("Show");
+
+        GameManager.Instance.OnTileUnselected += RollBackToStep12;
+        ExpansionManager.Instance.OnTileClaimed += ShowStep14;
+    }
+
+    private void RollBackToStep12()
+    {
+        if (_step != TutorialStep.S13_ClaimTile)
+            return;
+        StartCoroutine(Coroutine_RollBackToStep12());
+    }
+
+    private IEnumerator Coroutine_RollBackToStep12()
+    {
+        // Wait one frame to ensure that is a deselection and not the unselect called when doing an action
+        yield return null;
+        if (_step != TutorialStep.S13_ClaimTile)
+            yield break;
+
+        // Check if the new tile is claimable
+        if (GameManager.Instance.SelectedTile != null)
+        {
             if (!GameManager.Instance.SelectedTile.Claimed && GameManager.Instance.SelectedTile.IsOneNeighborClaimed())
                 yield break;
         }
 
-        GameManager.Instance.OnTileUnselected -= RollBackToObjSelectTile;
-        ExpansionManager.Instance.OnTileClaimed -= _tileClaimedHandler;
-        ExpansionManager.Instance.OnClaimableTileSelected += OnClaimableTileSelected;
+        GameManager.Instance.OnTileUnselected -= RollBackToStep12;
+        ExpansionManager.Instance.OnTileClaimed -= ShowStep14;
 
-        _expand1_ObjClaimTile.SetTrigger("Fold");
-        _expand1_ObjSelectTile.SetTrigger("Unfold");
-        _step = TutorialStep.Expand1_ObjSelectTile;
+        _step = TutorialStep.S12_SelectTile;
+        _step13.SetTrigger("Shrink");
+        _step12.SetTrigger("Show");
+
+        ExpansionManager.Instance.OnClaimableTileSelected += ShowStep13;
     }
 
-    /// <summary>
-    /// Finalizes the claim of the selected tile and prepares to end the
-    /// expansion phase.
-    /// </summary>
-    private void OnTileClaimed()
+    private void ShowStep14(Tile tile)
     {
-        if (_step != TutorialStep.Expand1_ObjClaimTile) return;
-        ExpansionManager.Instance.OnTileClaimed -= _tileClaimedHandler;
-        GameManager.Instance.OnTileUnselected -= RollBackToObjSelectTile;
+        if (_step != TutorialStep.S13_ClaimTile)
+            return;
 
-        _step = TutorialStep.Expand1_ObjEndPhase;
-        _expand1_ObjClaimTile.SetTrigger("Fold");
-        _expand1_ObjEndPhase.SetTrigger("Unfold");
+        ExpansionManager.Instance.OnTileClaimed -= ShowStep14;
+        GameManager.Instance.OnTileUnselected -= RollBackToStep12;
 
+        _step = TutorialStep.S14_EndPhase;
+        _step13.SetTrigger("Shrink");
+        _step14.SetTrigger("Show");
+
+        _isClaimingTile = false;
         UIManager.Instance.ButtonEndPhase.interactable = true;
         GameManager.Instance.TutorialLockingPhase = false;
-        GameManager.Instance.OnExpansionPhaseEnded += OnExpansionPhaseEnded;
+
+        GameManager.Instance.OnExpansionPhaseEnded += HideStep14;
+        GameManager.Instance.OnExploitationPhaseStarted += ShowStep15;
     }
 
-    /// <summary>
-    /// Called when the first expansion phase ends and moves the
-    /// tutorial to the exploitation turn.
-    /// </summary>
-    private void OnExpansionPhaseEnded()
+    private void HideStep14()
     {
-        if (_step != TutorialStep.Expand1_ObjEndPhase) return;
-        GameManager.Instance.OnExpansionPhaseEnded -= OnExpansionPhaseEnded;
-
-        _step = TutorialStep.Exploit1_Init;
-        _expand1_ObjEndPhase.SetTrigger("Fold");
-
-        GameManager.Instance.OnExploitationPhaseStarted += InitializeExploit1;
+        GameManager.Instance.OnExpansionPhaseEnded -= HideStep14;
+        _step14.SetTrigger("Shrink");
+        _commandsReminder_3.SetTrigger("Shrink");
     }
     #endregion
 
-    #region EXPLOITATION 1
-    /// <summary>
-    /// Prepare the exploitation tutorial by pausing the game and
-    /// activating the relevant UI instructions.
-    /// </summary>
-    private void InitializeExploit1()
+    #region INFRASTRUCTURE TUTORIAL
+    private void ShowStep15()
     {
-        GameManager.Instance.OnExploitationPhaseStarted -= InitializeExploit1;
-        _exploit1.SetActive(true);
-        GameManager.Instance.GamePaused = true;
-        _step = TutorialStep.Exploit1_Init;
-    }
+        if (_step != TutorialStep.S14_EndPhase)
+            return;
 
-    /// <summary>
-    /// Begins the exploitation tutorial where the player must select
-    /// a specific tile to build a farm.
-    /// </summary>
-    public void StartExploit1()
-    {
-        if (_step != TutorialStep.Exploit1_Init) return;
         UIManager.Instance.ButtonEndPhase.interactable = false;
         GameManager.Instance.TutorialLockingPhase = true;
-        _exploit1.GetComponent<Animator>().SetTrigger("Shrink");
+        GameManager.Instance.GamePaused = true;
+
+        GameManager.Instance.OnExploitationPhaseStarted -= ShowStep15;
+
+        _step = TutorialStep.S15_IntroInfrastructure;
+        _step15.SetTrigger("Show");
+    }
+
+    public void Button_ValidateStep15()
+    {
+        _step15.SetTrigger("Shrink");
         GameManager.Instance.GamePaused = false;
-
-        _step = TutorialStep.Exploit1_ObjSelectTile;
-        _exploit1_ObjSelectTile.SetTrigger("Unfold");
-
-        _targetTile = MapManager.Instance.Tiles[_exploit1_TargetTileCoor];
-        _targetTile.Highlight(true);
-
-        ExploitationManager.Instance.OnRightTileSelected += OnFarmTileSelected;
+        ShowStep16();
     }
 
-    /// <summary>
-    /// The correct tile was selected. Show the build farm prompt and
-    /// wait for the player to confirm.
-    /// </summary>
-    private void OnFarmTileSelected()
+    private void ShowStep16()
     {
-        if (_step != TutorialStep.Exploit1_ObjSelectTile) return;
-        ExploitationManager.Instance.OnRightTileSelected -= OnFarmTileSelected;
-        GameManager.Instance.OnTileUnselected += Exploit1_RollBackToObjSelectTile;
+        if (_step != TutorialStep.S15_IntroInfrastructure)
+            return;
 
-        _step = TutorialStep.Exploit1_ObjBuildFarm;
-        _exploit1_ObjSelectTile.SetTrigger("Fold");
-        _exploit1_ObjBuildFarm.SetTrigger("Unfold");
+        _step = TutorialStep.S16_SelectTile;
+        _commandsReminder_4.SetTrigger("Show");
+        _step16.SetTrigger("Show");
+        _isBuildingFarm = true;
 
-        _infraBuildHandler = tile => OnFarmBuilded();
-        ExploitationManager.Instance.OnInfraBuilded += _infraBuildHandler;
-
-        if (!ResourcesManager.Instance.CanAfford(_farmData.Costs))
-        {
-            ResourcesManager.Instance.UpdateResource(_farmData.Costs, Transaction.Gain);
-        }
+        ExploitationManager.Instance.OnNotUpgradedTileSelected += ShowStep17;
     }
 
-    /// <summary>
-    /// Called when the player deselects the tile before building the
-    /// farm, returning to the selection step.
-    /// </summary>
-    private void Exploit1_RollBackToObjSelectTile()
+    private void ShowStep17()
     {
-        StartCoroutine(Exploit1_RollBackToObjSelectTile_Coroutine());
+        if (_step != TutorialStep.S16_SelectTile)
+            return;
+
+        ExploitationManager.Instance.OnNotUpgradedTileSelected -= ShowStep17;
+
+        _step = TutorialStep.S17_BuildInfrastructure;
+        _step16.SetTrigger("Shrink");
+        _step17.SetTrigger("Show");
+
+        ExploitationManager.Instance.OnInfraBuilded += ShowStep18;
+        GameManager.Instance.OnTileUnselected += RollBackToStep16;
     }
 
-    private IEnumerator Exploit1_RollBackToObjSelectTile_Coroutine()
+    private void RollBackToStep16()
     {
-        // Wait one frame to ensure button events are processed
+        if (_step != TutorialStep.S17_BuildInfrastructure)
+            return;
+        StartCoroutine(Coroutine_RollBackToStep16());
+    }
+
+    private IEnumerator Coroutine_RollBackToStep16()
+    {
+        // Wait one frame to ensure that is a deselection and not the unselect called when doing an action
         yield return null;
-        if (_step != TutorialStep.Exploit1_ObjBuildFarm)
+        if (_step != TutorialStep.S17_BuildInfrastructure)
             yield break;
 
-        GameManager.Instance.OnTileUnselected -= Exploit1_RollBackToObjSelectTile;
-        ExploitationManager.Instance.OnInfraBuilded -= _infraBuildHandler;
-        ExploitationManager.Instance.OnRightTileSelected += OnFarmTileSelected;
-
-        _exploit1_ObjBuildFarm.SetTrigger("Fold");
-        _exploit1_ObjSelectTile.SetTrigger("Unfold");
-        _step = TutorialStep.Exploit1_ObjSelectTile;
-    }
-
-    /// <summary>
-    /// Farm construction completed. Transition to the next exploitation
-    /// tutorial which introduces the windmill.
-    /// </summary>
-    private void OnFarmBuilded()
-    {
-        if (_step != TutorialStep.Exploit1_ObjBuildFarm) return;
-        ExploitationManager.Instance.OnInfraBuilded -= _infraBuildHandler;
-        GameManager.Instance.OnTileUnselected -= Exploit1_RollBackToObjSelectTile;
-        _exploit1_ObjBuildFarm.SetTrigger("Fold");
-        _targetTile.Highlight(false);
-        _targetTile = null;
-
-        _exploit1bis.SetActive(true);
-        GameManager.Instance.GamePaused = true;
-        _step = TutorialStep.Exploit1bis_Init;
-    }
-
-    /// <summary>
-    /// Begins the second exploitation objective where the player places a
-    /// windmill on a highlighted tile.
-    /// </summary>
-    public void StartExploit1Bis()
-    {
-        if (_step != TutorialStep.Exploit1bis_Init) return;
-        UIManager.Instance.ButtonEndPhase.interactable = false;
-        GameManager.Instance.TutorialLockingPhase = true;
-        _exploit1bis.GetComponent<Animator>().SetTrigger("Shrink");
-        GameManager.Instance.GamePaused = false;
-
-        _step = TutorialStep.Exploit1bis_ObjSelectTile;
-        _exploit1bis_ObjSelectTile.SetTrigger("Unfold");
-
-        _targetTile = MapManager.Instance.Tiles[_exploit1bis_TargetTileCoor];
-        _targetTile.Highlight(true);
-
-        ExploitationManager.Instance.OnRightTileSelected += OnWindmillTileSelected;
-    }
-
-    /// <summary>
-    /// Called when the correct windmill tile is chosen. Displays the
-    /// build prompt to construct the windmill.
-    /// </summary>
-    private void OnWindmillTileSelected()
-    {
-        if (_step != TutorialStep.Exploit1bis_ObjSelectTile) return;
-        ExploitationManager.Instance.OnRightTileSelected -= OnWindmillTileSelected;
-        GameManager.Instance.OnTileUnselected += Exploit1bis_RollBackToObjSelectTile;
-
-        _step = TutorialStep.Exploit1_ObjBuildWindmill;
-        _exploit1bis_ObjSelectTile.SetTrigger("Fold");
-        _exploit1_ObjBuildWindmill.SetTrigger("Unfold");
-
-        _infraBuildHandler = tile => OnWindmillBuilded();
-        ExploitationManager.Instance.OnInfraBuilded += _infraBuildHandler;
-
-        if (!ResourcesManager.Instance.CanAfford(_windmillData.Costs))
-        {
-            ResourcesManager.Instance.UpdateResource(_windmillData.Costs, Transaction.Gain);
-        }
-    }
-
-    /// <summary>
-    /// Cancels windmill placement and goes back to tile selection.
-    /// </summary>
-    private void Exploit1bis_RollBackToObjSelectTile()
-    {
-        StartCoroutine(Exploit1bis_RollBackToObjSelectTile_Coroutine());
-    }
-
-    private IEnumerator Exploit1bis_RollBackToObjSelectTile_Coroutine()
-    {
-        // Wait one frame to avoid reacting to UI button clicks
-        yield return null;
-        if (_step != TutorialStep.Exploit1_ObjBuildWindmill)
-            yield break;
-
-        GameManager.Instance.OnTileUnselected -= Exploit1bis_RollBackToObjSelectTile;
-        ExploitationManager.Instance.OnInfraBuilded -= _infraBuildHandler;
-        ExploitationManager.Instance.OnRightTileSelected += OnWindmillTileSelected;
-
-        _exploit1_ObjBuildWindmill.SetTrigger("Fold");
-        _exploit1bis_ObjSelectTile.SetTrigger("Unfold");
-        _step = TutorialStep.Exploit1bis_ObjSelectTile;
-    }
-
-    /// <summary>
-    /// Windmill successfully built. Enables the tutorial message about
-    /// ending the turn.
-    /// </summary>
-    private void OnWindmillBuilded()
-    {
-        if (_step != TutorialStep.Exploit1_ObjBuildWindmill) return;
-        ExploitationManager.Instance.OnInfraBuilded -= _infraBuildHandler;
-        GameManager.Instance.OnTileUnselected -= Exploit1bis_RollBackToObjSelectTile;
-
-        _targetTile.Highlight(false);
-        _targetTile = null;
-
-        _step = TutorialStep.Exploit1_ObjEndTurn;
-        _exploit1_ObjBuildWindmill.SetTrigger("Fold");
-
-        _exploit1ter.SetActive(true);
-        GameManager.Instance.GamePaused = true;
-        _step = TutorialStep.Exploit1ter_Init;
-    }
-
-    /// <summary>
-    /// Final step of the first exploitation phase where the player ends
-    /// their turn.
-    /// </summary>
-    public void StartExploit1Ter()
-    {
-        if (_step != TutorialStep.Exploit1ter_Init) return;
-        _exploit1ter.GetComponent<Animator>().SetTrigger("Shrink");
-        GameManager.Instance.GamePaused = false;
-
-        _step = TutorialStep.Exploit1_ObjEndTurn;
-        _exploit1_ObjEndTurn.SetTrigger("Unfold");
-
-        UIManager.Instance.ButtonEndPhase.interactable = true;
-        GameManager.Instance.TutorialLockingPhase = false;
-        GameManager.Instance.OnExploitationPhaseEnded += OnExploitationPhaseEnded;
-    }
-
-    /// <summary>
-    /// Transition to the next exploration tutorial when the player ends
-    /// the exploitation turn.
-    /// </summary>
-    private void OnExploitationPhaseEnded()
-    {
-        if (_step != TutorialStep.Exploit1_ObjEndTurn) return;
-        GameManager.Instance.OnExploitationPhaseEnded -= OnExploitationPhaseEnded;
-
-        _step = TutorialStep.Explo2_Init;
-        _exploit1_ObjEndTurn.SetTrigger("Fold");
-
-        GameManager.Instance.OnExplorationPhaseStarted += InitializeExplo2;
-    }
-    #endregion
-
-    #region EXPLORATION 2
-    /// <summary>
-    /// Setup for the second exploration tutorial turn.
-    /// </summary>
-    private void InitializeExplo2()
-    {
-        GameManager.Instance.OnExplorationPhaseStarted -= InitializeExplo2;
-        _explo2.SetActive(true);
-        GameManager.Instance.GamePaused = true;
-        _step = TutorialStep.Explo2_Init;
-    }
-
-    /// <summary>
-    /// Starts the second exploration phase. The objective is simply to
-    /// end the phase.
-    /// </summary>
-    public void StartExplo2()
-    {
-        if (_step != TutorialStep.Explo2_Init) return;
-        _explo2.GetComponent<Animator>().SetTrigger("Shrink");
-        GameManager.Instance.GamePaused = false;
-
-        _step = TutorialStep.Explo2_ObjEndPhase;
-        _explo2_ObjEndPhase.SetTrigger("Unfold");
-        GameManager.Instance.OnExplorationPhaseEnded += OnExplorationPhaseEnded2;
-    }
-
-    /// <summary>
-    /// When the exploration phase ends, move to the second expansion
-    /// tutorial.
-    /// </summary>
-    public void OnExplorationPhaseEnded2()
-    {
-        if (_step != TutorialStep.Explo2_ObjEndPhase) return;
-        GameManager.Instance.OnExplorationPhaseEnded -= OnExplorationPhaseEnded2;
-
-        _step = TutorialStep.Expand2_Init;
-        _explo2_ObjEndPhase.SetTrigger("Fold");
-        GameManager.Instance.OnExpansionPhaseStarted += InitializeExpand2;
-    }
-    #endregion
-
-    #region EXPANSION 2
-    /// <summary>
-    /// Setup for the second expansion phase and grant resources if needed
-    /// to build the new town.
-    /// </summary>
-    private void InitializeExpand2()
-    {
-        GameManager.Instance.OnExpansionPhaseStarted -= InitializeExpand2;
-        _expand2.SetActive(true);
-        GameManager.Instance.GamePaused = true;
-        _step = TutorialStep.Expand2_Init;
-
-        if (!ResourcesManager.Instance.CanAfford(_townData.Costs))
-        {
-            ResourcesManager.Instance.UpdateResource(_townData.Costs, Transaction.Gain);
-        }
-    }
-
-    /// <summary>
-    /// Begins the second expansion phase where the player selects a
-    /// location for a new town.
-    /// </summary>
-    public void StartExpand2()
-    {
-        if (_step != TutorialStep.Expand2_Init) return;
-        UIManager.Instance.ButtonEndPhase.interactable = false;
-        GameManager.Instance.TutorialLockingPhase = true;
-        _expand2.GetComponent<Animator>().SetTrigger("Shrink");
-        GameManager.Instance.GamePaused = false;
-
-        _step = TutorialStep.Expand2_ObjSelectTile;
-        _expand2_ObjSelectTile.SetTrigger("Unfold");
-        ExpansionManager.Instance.OnBasicTileSelected += OnBasicTileSelected;
-    }
-
-    /// <summary>
-    /// Called when the player selects a valid basic tile to place the
-    /// new town.
-    /// </summary>
-    private void OnBasicTileSelected()
-    {
-        if (_step != TutorialStep.Expand2_ObjSelectTile) return;
-        ExpansionManager.Instance.OnBasicTileSelected -= OnBasicTileSelected;
-        GameManager.Instance.OnTileUnselected += RollBackToObjSelectBasicTile;
-
-        _step = TutorialStep.Expand2_ObjBuildTown;
-        _expand2_ObjSelectTile.SetTrigger("Fold");
-        _expand2_ObjBuildTown.SetTrigger("Unfold");
-
-        _infraBuildHandler = tile => OnTownBuilded();
-        ExploitationManager.Instance.OnInfraBuilded += _infraBuildHandler;
-    }
-
-    /// <summary>
-    /// Returns to tile selection if the player cancels before building
-    /// the town.
-    /// </summary>
-    private void RollBackToObjSelectBasicTile()
-    {
-        StartCoroutine(RollBackToObjSelectBasicTile_Coroutine());
-    }
-
-    private IEnumerator RollBackToObjSelectBasicTile_Coroutine()
-    {
-        // Wait one frame to avoid reacting to UI button clicks
-        yield return null;
-        if (_step != TutorialStep.Expand2_ObjBuildTown)
-            yield break;
-
+        // Check if the new tile is upgradable
         if (GameManager.Instance.SelectedTile != null)
         {
-            // Check if the new tile is still a basic tile
-            if (GameManager.Instance.SelectedTile.TileData is BasicTileData)
+            if (GameManager.Instance.SelectedTile.TileData is not InfrastructureData && GameManager.Instance.SelectedTile.Claimed)
+                yield break;
+        }
+        GameManager.Instance.OnTileUnselected -= RollBackToStep16;
+        ExploitationManager.Instance.OnInfraBuilded -= ShowStep18;
+
+        _step = TutorialStep.S16_SelectTile;
+        _step17.SetTrigger("Shrink");
+        _step16.SetTrigger("Show");
+
+        ExploitationManager.Instance.OnNotUpgradedTileSelected += ShowStep17;
+    }
+
+    private void ShowStep18(Tile tile)
+    {
+        if (_step != TutorialStep.S17_BuildInfrastructure)
+            return;
+
+        ExploitationManager.Instance.OnInfraBuilded -= ShowStep18;
+
+        _step = TutorialStep.S18_EndTurn;
+        _step17.SetTrigger("Shrink");
+        _step18.SetTrigger("Show");
+        _isBuildingFarm = false;
+
+        UIManager.Instance.ButtonEndPhase.interactable = true;
+        GameManager.Instance.TutorialLockingPhase = false;
+
+        GameManager.Instance.OnExploitationPhaseEnded += HideStep18;
+        GameManager.Instance.OnExplorationPhaseStarted += ShowStep19;
+    }
+
+    private void HideStep18()
+    {
+        GameManager.Instance.OnExploitationPhaseEnded -= HideStep18;
+
+        _step18.SetTrigger("Shrink");
+        _commandsReminder_4.SetTrigger("Shrink");
+    }
+    #endregion
+
+    #region NO MORE SCOUT TUTORIAL
+    private void ShowStep19()
+    {
+        if (_step != TutorialStep.S18_EndTurn)
+            return;
+
+        UIManager.Instance.ButtonEndPhase.interactable = false;
+        GameManager.Instance.TutorialLockingPhase = true;
+        GameManager.Instance.GamePaused = true;
+
+        GameManager.Instance.OnExplorationPhaseStarted -= ShowStep19;
+
+        _step = TutorialStep.S19_IntroNoMoreScout;
+        _step19.SetTrigger("Show");
+    }
+
+    public void Button_ValidateStep19()
+    {
+        _step19.SetTrigger("Shrink");
+        GameManager.Instance.GamePaused = false;
+        ShowStep20();
+    }
+
+    private void ShowStep20()
+    {
+        if (_step != TutorialStep.S19_IntroNoMoreScout)
+            return;
+
+        _step = TutorialStep.S20_EndPhase;
+        _commandsReminder_5.SetTrigger("Show");
+        _step20.SetTrigger("Show");
+
+        UIManager.Instance.ButtonEndPhase.interactable = true;
+        GameManager.Instance.TutorialLockingPhase = false;
+
+        GameManager.Instance.OnExplorationPhaseEnded += HideStep20;
+        GameManager.Instance.OnExpansionPhaseStarted += ShowStep21;
+    }
+
+    private void HideStep20()
+    {
+        GameManager.Instance.OnExplorationPhaseEnded -= HideStep20;
+        _commandsReminder_5.SetTrigger("Shrink");
+        _step20.SetTrigger("Shrink");
+    }
+    #endregion
+
+    #region TOWN TUTORIAL
+    private void ShowStep21()
+    {
+        if (_step != TutorialStep.S20_EndPhase)
+            return;
+
+        UIManager.Instance.ButtonEndPhase.interactable = false;
+        GameManager.Instance.TutorialLockingPhase = true;
+        GameManager.Instance.GamePaused = true;
+
+        GameManager.Instance.OnExpansionPhaseStarted -= ShowStep21;
+
+        _step = TutorialStep.S21_IntroTown;
+        _step21.SetTrigger("Show");
+    }
+
+    public void Button_ValidateStep21()
+    {
+        _step21.SetTrigger("Shrink");
+        GameManager.Instance.GamePaused = false;
+        ResourcesManager.Instance.UpdateClaim(ExpansionManager.Instance.NewTownData.ClaimCost, Transaction.Gain); // Give extra claims to be able to build a town
+        ShowStep22();
+    }
+
+    private void ShowStep22()
+    {
+        if (_step != TutorialStep.S21_IntroTown)
+            return;
+
+        _step = TutorialStep.S22_SelectTile;
+        _commandsReminder_6.SetTrigger("Show");
+        _step22.SetTrigger("Show");
+        _isBuildingTown = true;
+
+        ExpansionManager.Instance.OnTownableTileSelected += ShowStep23;
+    }
+
+    private void ShowStep23()
+    {
+        if (_step != TutorialStep.S22_SelectTile)
+            return;
+
+        ExpansionManager.Instance.OnTownableTileSelected -= ShowStep23;
+
+        _step = TutorialStep.S23_BuildTown;
+        _step22.SetTrigger("Shrink");
+        _step23.SetTrigger("Show");
+
+        ExploitationManager.Instance.OnInfraBuilded += ShowStep24;
+        GameManager.Instance.OnTileUnselected += RollBackToStep22;
+    }
+
+    private void RollBackToStep22()
+    {
+        if (_step != TutorialStep.S23_BuildTown)
+            return;
+        StartCoroutine(Coroutine_RollBackToStep22());
+    }
+
+    private IEnumerator Coroutine_RollBackToStep22()
+    {
+        // Wait one frame to ensure that is a deselection and not the unselect called when doing an action
+        yield return null;
+        if (_step != TutorialStep.S23_BuildTown)
+            yield break;
+
+        // Check if the new tile allows building a town
+        if (GameManager.Instance.SelectedTile != null)
+        {
+            if(GameManager.Instance.SelectedTile.TileData is BasicTileData || GameManager.Instance.SelectedTile.TileData is ResourceTileData)
                 yield break;
         }
 
-        GameManager.Instance.OnTileUnselected -= RollBackToObjSelectBasicTile;
-        ExploitationManager.Instance.OnInfraBuilded -= _infraBuildHandler;
-        ExpansionManager.Instance.OnBasicTileSelected += OnBasicTileSelected;
+        GameManager.Instance.OnTileUnselected -= RollBackToStep22;
+        ExploitationManager.Instance.OnInfraBuilded -= ShowStep24;
 
-        _expand2_ObjSelectTile.SetTrigger("Unfold");
-        _expand2_ObjBuildTown.SetTrigger("Fold");
-        _step = TutorialStep.Expand2_ObjSelectTile;
+        _step = TutorialStep.S22_SelectTile;
+        _step23.SetTrigger("Shrink");
+        _step22.SetTrigger("Show");
+
+        ExpansionManager.Instance.OnTownableTileSelected += ShowStep23;
     }
 
-
-    /// <summary>
-    /// Town construction finished. Allow the player to end the expansion
-    /// phase.
-    /// </summary>
-    private void OnTownBuilded()
+    private void ShowStep24(Tile tile)
     {
-        if (_step != TutorialStep.Expand2_ObjBuildTown) return;
-        GameManager.Instance.OnTileUnselected -= RollBackToObjSelectBasicTile;
-        ExploitationManager.Instance.OnInfraBuilded -= _infraBuildHandler;
+        if (_step != TutorialStep.S23_BuildTown)
+            return;
 
-        _step = TutorialStep.Expand2_ObjEndPhase;
-        _expand2_ObjBuildTown.SetTrigger("Fold");
-        _expand2_ObjEndPhase.SetTrigger("Unfold");
+        ExploitationManager.Instance.OnInfraBuilded -= ShowStep24;
+        GameManager.Instance.OnTileUnselected -= RollBackToStep22;
+
+        _step = TutorialStep.S24_EndPhase;
+        _step23.SetTrigger("Shrink");
+        _step24.SetTrigger("Show");
 
         UIManager.Instance.ButtonEndPhase.interactable = true;
         GameManager.Instance.TutorialLockingPhase = false;
-        GameManager.Instance.OnExpansionPhaseEnded += OnExpansionPhaseEnded2;
+        _isBuildingTown = false;
+
+        GameManager.Instance.OnExpansionPhaseEnded += HideStep24;
+        GameManager.Instance.OnExploitationPhaseStarted += ShowStep25;
     }
 
-    /// <summary>
-    /// Begin the second exploitation phase after ending expansion.
-    /// </summary>
-    private void OnExpansionPhaseEnded2()
+    private void HideStep24()
     {
-        if (_step != TutorialStep.Expand2_ObjEndPhase) return;
-        GameManager.Instance.OnExpansionPhaseEnded -= OnExpansionPhaseEnded2;
-
-        _step = TutorialStep.Exploit2_Init;
-        _expand2_ObjEndPhase.SetTrigger("Fold");
-        GameManager.Instance.OnExploitationPhaseStarted += InitializeExploit2;
+        GameManager.Instance.OnExpansionPhaseEnded -= HideStep24;
+        _step24.SetTrigger("Shrink");
+        _commandsReminder_6.SetTrigger("Shrink");
     }
     #endregion
 
-    #region EXPLOITATION 2
-    /// <summary>
-    /// Prepare the second exploitation phase.
-    /// </summary>
-    private void InitializeExploit2()
+    #region WINDMILL TUTORIAL
+    private void ShowStep25()
     {
-        GameManager.Instance.OnExploitationPhaseStarted -= InitializeExploit2;
-        _exploit2.SetActive(true);
-        GameManager.Instance.GamePaused = true;
-        _step = TutorialStep.Exploit2_Init;
-    }
+        if (_step != TutorialStep.S24_EndPhase)
+            return;
 
-    /// <summary>
-    /// Starts the second exploitation turn where an infrastructure
-    /// enhancement is built.
-    /// </summary>
-    public void StartExploit2()
-    {
-        if (_step != TutorialStep.Exploit2_Init) return;
         UIManager.Instance.ButtonEndPhase.interactable = false;
         GameManager.Instance.TutorialLockingPhase = true;
-        _exploit2.GetComponent<Animator>().SetTrigger("Shrink");
+        GameManager.Instance.GamePaused = true;
+        _isBuildingWindmill = true;
+
+        GameManager.Instance.OnExploitationPhaseStarted -= ShowStep25;
+
+        _step = TutorialStep.S25_WindmillIntro;
+        _step25.SetTrigger("Show");
+    }
+
+    public void Button_ValidateStep25()
+    {
+        _step25.SetTrigger("Shrink");
         GameManager.Instance.GamePaused = false;
 
-        _step = TutorialStep.Exploit2_ObjSelectTile;
-        _exploit2_ObjSelectTile.SetTrigger("Unfold");
+        ResourcesManager.Instance.UpdateResource(
+            new System.Collections.Generic.List<ResourceToIntMap> {
+                new ResourceToIntMap(Resource.Gold, 20),
+                new ResourceToIntMap(Resource.SpecialResources, 5)
+            }, Transaction.Gain);// Give extra resources to be able to build and upgrade a windmill
 
-        _targetTile = MapManager.Instance.Tiles[_exploit2_TargetTileCoor];
-        _targetTile.Highlight(true);
-
-        ExploitationManager.Instance.OnRightTileSelected += OnEnhancementTileSelected;
+        ShowStep26();
     }
 
-    /// <summary>
-    /// Correct enhancement tile selected; display build option.
-    /// </summary>
-    private void OnEnhancementTileSelected()
+    private void ShowStep26()
     {
-        if (_step != TutorialStep.Exploit2_ObjSelectTile) return;
-        ExploitationManager.Instance.OnRightTileSelected -= OnEnhancementTileSelected;
-        GameManager.Instance.OnTileUnselected += RollBackToObjSelectEnhancementTile;
+        if (_step != TutorialStep.S25_WindmillIntro)
+            return;
 
-        _step = TutorialStep.Exploit2_ObjEnchanceInfra;
-        _exploit2_ObjSelectTile.SetTrigger("Fold");
-        _exploit2_ObjEnchanceInfra.SetTrigger("Unfold");
+        _step = TutorialStep.S26_SelectTile;
+        _commandsReminder_7.SetTrigger("Show");
+        _step26.SetTrigger("Show");
+        _isBuildingWindmill = true;
 
-        _infraBuildHandler = tile => OnInfraEnhanced();
-        ExploitationManager.Instance.OnInfraBuilded += _infraBuildHandler;
-
-        if (!ResourcesManager.Instance.CanAfford(_enchancementData.Costs))
-        {
-            ResourcesManager.Instance.UpdateResource(_enchancementData.Costs, Transaction.Gain);
-        }
+        ExploitationManager.Instance.OnFarmNeighborSelected += ShowStep27;
     }
 
-    /// <summary>
-    /// Cancel enhancement building and return to tile selection.
-    /// </summary>
-    private void RollBackToObjSelectEnhancementTile()
+    private void ShowStep27()
     {
-        StartCoroutine(RollBackToObjSelectEnhancementTile_Coroutine());
+        if (_step != TutorialStep.S26_SelectTile)
+            return;
+
+        ExploitationManager.Instance.OnFarmNeighborSelected -= ShowStep27;
+
+        _step = TutorialStep.S27_BuildWindmill;
+        _step26.SetTrigger("Shrink");
+        _step27.SetTrigger("Show");
+
+        ExploitationManager.Instance.OnInfraBuilded += ShowStep28;
+        GameManager.Instance.OnTileUnselected += RollBackToStep26;
     }
 
-    private IEnumerator RollBackToObjSelectEnhancementTile_Coroutine()
+    private void RollBackToStep26()
     {
-        // Wait one frame to avoid reacting to UI button clicks
+        if (_step != TutorialStep.S27_BuildWindmill)
+            return;
+        StartCoroutine(Coroutine_RollBackToStep26());
+    }
+
+    private IEnumerator Coroutine_RollBackToStep26()
+    {
+        // Wait one frame to ensure that is a deselection and not the unselect called when doing an action
         yield return null;
-        if (_step != TutorialStep.Exploit2_ObjEnchanceInfra)
+        if (_step != TutorialStep.S27_BuildWindmill)
             yield break;
 
-        GameManager.Instance.OnTileUnselected -= RollBackToObjSelectEnhancementTile;
-        ExploitationManager.Instance.OnInfraBuilded -= _infraBuildHandler;
-        ExploitationManager.Instance.OnRightTileSelected += OnEnhancementTileSelected;
-
-        _exploit2_ObjSelectTile.SetTrigger("Unfold");
-        _exploit2_ObjEnchanceInfra.SetTrigger("Fold");
-        _step = TutorialStep.Exploit2_ObjSelectTile;
-    }
-
-
-    /// <summary>
-    /// Enhancement built successfully, move on to the end-turn step.
-    /// </summary>
-    private void OnInfraEnhanced()
-    {
-        if (_step != TutorialStep.Exploit2_ObjEnchanceInfra) return;
-        GameManager.Instance.OnTileUnselected -= RollBackToObjSelectEnhancementTile;
-        ExploitationManager.Instance.OnInfraBuilded -= _infraBuildHandler;
-
-        _step = TutorialStep.Exploit2bis_Init;
-        _exploit2_ObjEnchanceInfra.SetTrigger("Fold");
-        _targetTile.Highlight(false);
-        _targetTile = null;
-
-        _exploit2bis.SetActive(true);
-        GameManager.Instance.GamePaused = true;
-    }
-
-    /// <summary>
-    /// Final instruction of the second exploitation phase: end the turn.
-    /// </summary>
-    public void StartExploit2Bis()
-    {
-        if (_step != TutorialStep.Exploit2bis_Init) return;
-        UIManager.Instance.ButtonEndPhase.interactable = true;
-        GameManager.Instance.TutorialLockingPhase = false;
-        _exploit2bis.GetComponent<Animator>().SetTrigger("Shrink");
-        GameManager.Instance.GamePaused = false;
-
-        _step = TutorialStep.Exploit2_ObjEndTurn;
-        _exploit2_ObjEndTurn.SetTrigger("Unfold");
-
-        GameManager.Instance.OnExploitationPhaseEnded += OnExploitationPhaseEnded2;
-    }
-
-    /// <summary>
-    /// After the second exploitation turn ends, begin the entertainment
-    /// phase tutorial.
-    /// </summary>
-    private void OnExploitationPhaseEnded2()
-    {
-        if (_step != TutorialStep.Exploit2_ObjEndTurn) return;
-        GameManager.Instance.OnExploitationPhaseEnded -= OnExploitationPhaseEnded2;
-
-        _step = TutorialStep.Entertain_Init;
-        _exploit2_ObjEndTurn.SetTrigger("Fold");
-        GameManager.Instance.OnEntertainmentPhaseStarted += InitializeEntertainment;
-    }
-    #endregion
-
-    #region ENTERTAINMENT
-    /// <summary>
-    /// Prepare the entertainment phase tutorial.
-    /// </summary>
-    private void InitializeEntertainment()
-    {
-        GameManager.Instance.OnEntertainmentPhaseStarted -= InitializeEntertainment;
-        _entertain.SetActive(true);
-        GameManager.Instance.GamePaused = true;
-        _step = TutorialStep.Entertain_Init;
-    }
-
-    /// <summary>
-    /// Begins the entertainment tutorial where an attraction is placed
-    /// on a claimed tile.
-    /// </summary>
-    public void StartEntertain()
-    {
-        if (_step != TutorialStep.Entertain_Init) return;
-        UIManager.Instance.ButtonEndPhase.interactable = false;
-        GameManager.Instance.TutorialLockingPhase = true;
-        _entertain.GetComponent<Animator>().SetTrigger("Shrink");
-        GameManager.Instance.GamePaused = false;
-
-        _step = TutorialStep.Entertain_ObjSelectTile;
-        _entertain_ObjSelectTile.SetTrigger("Unfold");
-        EntertainmentManager.Instance.OnClaimedTileSelected += OnClaimedTileSelected;
-
-        ResourcesManager.Instance.UpdateResource(_budget, Transaction.Gain);
-    }
-
-    /// <summary>
-    /// The player selected a valid claimed tile to place entertainment.
-    /// </summary>
-    private void OnClaimedTileSelected()
-    {
-        if (_step != TutorialStep.Entertain_ObjSelectTile) return;
-        EntertainmentManager.Instance.OnClaimedTileSelected -= OnClaimedTileSelected;
-        GameManager.Instance.OnTileUnselected += RollBackToObjSelectClaimedTile;
-
-        _step = TutorialStep.Entertain_ObjPlaceEntertainment;
-        _entertain_ObjSelectTile.SetTrigger("Fold");
-        _entertain_ObjPlaceEntertainment.SetTrigger("Unfold");
-
-        _entertainmentSpawnedHandler = ent => OnEntertainmentPlaced();
-        EntertainmentManager.Instance.OnEntertainmentSpawned += _entertainmentSpawnedHandler;
-    }
-
-    /// <summary>
-    /// Returns to tile selection if entertainment placement is canceled.
-    /// </summary>
-    private void RollBackToObjSelectClaimedTile()
-    {
-        StartCoroutine(RollBackToObjSelectClaimedTile_Coroutine());
-    }
-
-    private IEnumerator RollBackToObjSelectClaimedTile_Coroutine()
-    {
-        // Wait one frame to avoid reacting to UI button clicks
-        yield return null;
-        if (_step != TutorialStep.Entertain_ObjPlaceEntertainment)
-            yield break;
-
+        // Check if the new tile is next to a farm
         if (GameManager.Instance.SelectedTile != null)
         {
-            // Check if the new tile is still claimed
-            if (GameManager.Instance.SelectedTile.Claimed)
+            if (GameManager.Instance.SelectedTile.Claimed && GameManager.Instance.SelectedTile.TileData is not InfrastructureData)
+            {
+                foreach (Tile neighbor in GameManager.Instance.SelectedTile.Neighbors)
+                {
+                    if (!neighbor)
+                        continue;
+                    if (neighbor.TileData.Family == Family.Farm)
+                        yield break;
+                }
+            }
+        }
+
+        GameManager.Instance.OnTileUnselected -= RollBackToStep26;
+        ExploitationManager.Instance.OnInfraBuilded -= ShowStep28;
+
+        _step = TutorialStep.S26_SelectTile;
+        _step27.SetTrigger("Shrink");
+        _step26.SetTrigger("Show");
+
+        ExploitationManager.Instance.OnFarmNeighborSelected += ShowStep27;
+    }
+
+    private void ShowStep28(Tile tile)
+    {
+        if (_step != TutorialStep.S27_BuildWindmill)
+            return;
+
+        ExploitationManager.Instance.OnInfraBuilded -= ShowStep28;
+        GameManager.Instance.OnTileUnselected -= RollBackToStep26;
+
+        _step = TutorialStep.S28_SelectWindmill;
+        _step27.SetTrigger("Shrink");
+        _step28.SetTrigger("Show");
+        _isBuildingWindmill = false;
+        _isUpgradingWindmill = true;
+
+        ExploitationManager.Instance.OnWindmillSelected += ShowStep29;
+    }
+
+    private void ShowStep29()
+    {
+        if (_step != TutorialStep.S28_SelectWindmill)
+            return;
+
+        ExploitationManager.Instance.OnWindmillSelected -= ShowStep29;
+
+        _step = TutorialStep.S29_UpgradeWindmill;
+        _step28.SetTrigger("Shrink");
+        _step29.SetTrigger("Show");
+
+        ExploitationManager.Instance.OnInfraBuilded += ShowStep30;
+        GameManager.Instance.OnTileUnselected += RollBackToStep28;
+    }
+
+    private void RollBackToStep28()
+    {
+        if (_step != TutorialStep.S29_UpgradeWindmill)
+            return;
+        StartCoroutine(Coroutine_RollBackToStep28());
+    }
+
+    private IEnumerator Coroutine_RollBackToStep28()
+    {
+        // Wait one frame to ensure that is a deselection and not the unselect called when doing an action
+        yield return null;
+        if (_step != TutorialStep.S29_UpgradeWindmill)
+            yield break;
+
+        // Check if the new tile is a windmill
+        if (GameManager.Instance.SelectedTile != null)
+        {
+            if (GameManager.Instance.SelectedTile.TileData.Family == Family.Mill)
                 yield break;
         }
 
-        GameManager.Instance.OnTileUnselected -= RollBackToObjSelectClaimedTile;
-        EntertainmentManager.Instance.OnEntertainmentSpawned -= _entertainmentSpawnedHandler;
-        EntertainmentManager.Instance.OnClaimedTileSelected += OnClaimedTileSelected;
+        GameManager.Instance.OnTileUnselected -= RollBackToStep28;
+        ExploitationManager.Instance.OnInfraBuilded -= ShowStep30;
 
-        _entertain_ObjPlaceEntertainment.SetTrigger("Fold");
-        _entertain_ObjSelectTile.SetTrigger("Unfold");
-        _step = TutorialStep.Entertain_ObjSelectTile;
+        _step = TutorialStep.S28_SelectWindmill;
+        _step29.SetTrigger("Shrink");
+        _step28.SetTrigger("Show");
+
+        ExploitationManager.Instance.OnWindmillSelected += ShowStep29;
     }
 
-    /// <summary>
-    /// Entertainment successfully placed; allow the player to end the
-    /// game and show the outro.
-    /// </summary>
-    private void OnEntertainmentPlaced()
+    private void ShowStep30(Tile tile)
     {
-        if (_step != TutorialStep.Entertain_ObjPlaceEntertainment) return;
-        GameManager.Instance.OnTileUnselected -= RollBackToObjSelectClaimedTile;
-        EntertainmentManager.Instance.OnEntertainmentSpawned -= _entertainmentSpawnedHandler;
+        if (_step != TutorialStep.S29_UpgradeWindmill)
+            return;
 
-        _step = TutorialStep.Entertain_ObjEndGame;
-        _entertain_ObjPlaceEntertainment.SetTrigger("Fold");
-        _entertain_ObjEndGame.SetTrigger("Unfold");
+        ExploitationManager.Instance.OnInfraBuilded -= ShowStep30;
+        GameManager.Instance.OnTileUnselected -= RollBackToStep28;
+
+        _step = TutorialStep.S30_EndTurn;
+        _step29.SetTrigger("Shrink");
+        _step30.SetTrigger("Show");
+        _isUpgradingWindmill = false;
 
         UIManager.Instance.ButtonEndPhase.interactable = true;
         GameManager.Instance.TutorialLockingPhase = false;
-        GameManager.Instance.OnEntertainmentPhaseEnded += OnEntertainmentPhaseEnded;
+        
+        GameManager.Instance.OnExploitationPhaseEnded += HideStep30;
+        GameManager.Instance.OnEntertainmentPhaseStarted += ShowStep31;
     }
 
-    /// <summary>
-    /// Ends the tutorial and shows the closing screen.
-    /// </summary>
-    private void OnEntertainmentPhaseEnded()
+    private void HideStep30()
     {
-        if (_step != TutorialStep.Entertain_ObjEndGame) return;
-        GameManager.Instance.OnEntertainmentPhaseEnded -= OnEntertainmentPhaseEnded;
-
-        _step = TutorialStep.Outro;
-        _entertain_ObjEndGame.SetTrigger("Fold");
-
-        _outro.SetActive(true);
+        GameManager.Instance.OnExploitationPhaseEnded -= HideStep30;
+        _step30.SetTrigger("Shrink");
+        _commandsReminder_7.SetTrigger("Shrink");
     }
     #endregion
+
+    #region ENTERTAINMENT TUTORIAL
+    private void ShowStep31()
+    {
+        if (_step != TutorialStep.S30_EndTurn)
+            return;
+
+        UIManager.Instance.ButtonEndPhase.interactable = false;
+        GameManager.Instance.TutorialLockingPhase = true;
+        GameManager.Instance.GamePaused = true;
+
+        GameManager.Instance.OnEntertainmentPhaseStarted -= ShowStep31;
+
+        _step = TutorialStep.S31_IntroEntertainment;
+        _step31.SetTrigger("Show");
+    }
+
+    public void Button_ValidateStep31()
+    {
+        _step31.SetTrigger("Shrink");
+        GameManager.Instance.GamePaused = false;
+        ShowStep32();
+    }
+
+    private void ShowStep32()
+    {
+        if (_step != TutorialStep.S31_IntroEntertainment)
+            return;
+
+        _step = TutorialStep.S32_SelectTile;
+        _commandsReminder_8.SetTrigger("Show");
+        _step32.SetTrigger("Show");
+
+        EntertainmentManager.Instance.OnTileAllowingEntSelected += ShowStep33;
+    }
+
+    private void ShowStep33()
+    {
+        if (_step != TutorialStep.S32_SelectTile)
+            return;
+
+        EntertainmentManager.Instance.OnTileAllowingEntSelected -= ShowStep33;
+
+        _step = TutorialStep.S33_PlaceEntertainment;
+        _step32.SetTrigger("Shrink");
+        _step33.SetTrigger("Show");
+
+        EntertainmentManager.Instance.OnEntertainmentSpawned += ShowStep34;
+        GameManager.Instance.OnTileUnselected += RollBackToStep32;
+    }
+
+    private void RollBackToStep32()
+    {
+        if (_step != TutorialStep.S33_PlaceEntertainment)
+            return;
+        StartCoroutine(Coroutine_RollBackToStep32());
+    }
+
+    private IEnumerator Coroutine_RollBackToStep32()
+    {
+        // Wait one frame to ensure that is a deselection and not the unselect called when doing an action
+        yield return null;
+        if (_step != TutorialStep.S33_PlaceEntertainment)
+            yield break;
+
+        // Check if the new tile allows placing entertainment
+        if (GameManager.Instance.SelectedTile != null)
+        {
+            if (GameManager.Instance.SelectedTile.CanReceiveEntertainment())
+                yield break;
+        }
+
+        GameManager.Instance.OnTileUnselected -= RollBackToStep32;
+        EntertainmentManager.Instance.OnEntertainmentSpawned -= ShowStep34;
+
+        _step = TutorialStep.S32_SelectTile;
+        _step33.SetTrigger("Shrink");
+        _step32.SetTrigger("Show");
+
+        EntertainmentManager.Instance.OnTileAllowingEntSelected += ShowStep33;
+    }
+
+    private void ShowStep34(Entertainment ent)
+    {
+        if (_step != TutorialStep.S33_PlaceEntertainment)
+            return;
+
+        EntertainmentManager.Instance.OnEntertainmentSpawned -= ShowStep34;
+
+        _step = TutorialStep.S34_EndGame;
+        _step33.SetTrigger("Shrink");
+        _step34.SetTrigger("Show");
+
+        UIManager.Instance.ButtonEndPhase.interactable = true;
+        GameManager.Instance.TutorialLockingPhase = false;
+
+        GameManager.Instance.OnGameFinished += ShowStep35;
+    }
+    #endregion
+
+    private void ShowStep35()
+    {
+        if (_step != TutorialStep.S34_EndGame)
+            return;
+
+        GameManager.Instance.OnGameFinished -= ShowStep35;
+
+        _step = TutorialStep.S35_Outro;
+        _step34.SetTrigger("Shrink");
+        _step35.SetTrigger("Show");
+    }
+
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
 }
