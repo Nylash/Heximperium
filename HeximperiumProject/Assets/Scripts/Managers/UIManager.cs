@@ -432,7 +432,13 @@ public class UIManager : Singleton<UIManager>
             return;
 
         _endMenu.SetActive(true);
-        _endScore.text = EntertainmentManager.Instance.Score.ToString();
+        _endScore.text = $"You have scored {EntertainmentManager.Instance.Score.ToString()}<sprite name=\"Point_Emoji\">";
+
+        int bestScore = PlayerPrefs.GetInt("BestScore", 0);
+        if (EntertainmentManager.Instance.Score > bestScore)
+        {
+            PlayerPrefs.SetInt("BestScore", EntertainmentManager.Instance.Score);
+        }
     }
 
     public void OpenCloseMenu()

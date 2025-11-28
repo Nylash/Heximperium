@@ -5,14 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class UI_MainMenu : MonoBehaviour
 {
-    [SerializeField] private TMP_Dropdown _gameDurationDropdown;
-
-    public TMP_Dropdown GameDurationDropdown { get => _gameDurationDropdown; }
+    [SerializeField] private TextMeshProUGUI _bestScore;
 
     private void Start()
     {
         Application.targetFrameRate = 60;
         SceneManager.LoadSceneAsync("LoadingScene", LoadSceneMode.Additive);
+
+        int bestScore = PlayerPrefs.GetInt("BestScore", 0);
+        if (bestScore > 0)
+            _bestScore.text = $"Best Score: {bestScore}<sprite name=\"Point_Emoji\">";
     }
 
     public void LaunchGame(string targetScene)
@@ -24,13 +26,5 @@ public class UI_MainMenu : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
-    }
-
-    public void OnDropdownChanged(int index)
-    {
-        string label = _gameDurationDropdown.options[index].text;
-
-        string digits = string.Concat(label.Where(char.IsDigit));
-        int value = int.Parse(digits);
     }
 }
