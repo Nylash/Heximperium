@@ -32,10 +32,10 @@ MonoBehaviour:
   _availableInfrastructures: []
   _specialBehaviours: []
   _costs:
-  - resource: 1
-    value: 3
   - resource: 0
     value: 5
+  - resource: 1
+    value: 3
   _scoutStartingPoint: 0
   isTown: 0
   _infrastructureLevel: 2

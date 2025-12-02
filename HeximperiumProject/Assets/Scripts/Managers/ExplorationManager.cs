@@ -170,8 +170,6 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
 
         GameManager.Instance.UnselectTile();
 
-        ResourcesManager.Instance.CHEAT_RESOURCES();
-
         UpdateInteractableTiles();
     }
 
