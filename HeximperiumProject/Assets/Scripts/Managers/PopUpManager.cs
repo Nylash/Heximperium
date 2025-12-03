@@ -19,7 +19,6 @@ public class PopUpManager : Singleton<PopUpManager>
     [Header("_________________________________________________________")]
     [Header("Spawning Configuration")]
     [SerializeField] private Transform _popUpParent;
-    [SerializeField] private Transform _popUpLockObjectParent;
     [SerializeField] private float _durationHoverForUI = 1f;
     [SerializeField][Range(0f,1f)] private float _percentageOfTimerForVisualHint = 0.75f;
     [SerializeField] private Image _timerOverImage;
@@ -1952,6 +1951,8 @@ public class PopUpManager : Singleton<PopUpManager>
     #region POSITIONING & LAYOUT
     private void PositionPopup(RectTransform popupRect, Transform refTransform, bool nextToCursor)
     {
+        popupRect.SetAsLastSibling();
+
         if (!nextToCursor) // If not next to cursor it indicates that we are visualizing combo with this popup;
             JuiceManager.Instance.PopUpVisualizingCombo = popupRect.gameObject;
 
@@ -2433,7 +2434,8 @@ public class PopUpManager : Singleton<PopUpManager>
         _isLockingPopup = true;
         _lockingTimer = 0f;
 
-        GameObject lockObject = Instantiate(_lockingObject, _popUpLockObjectParent);
+        GameObject lockObject = Instantiate(_lockingObject, _popUpParent);
+        lockObject.transform.SetAsLastSibling();
         foreach (var item in lockObject.GetComponentsInChildren<Image>())
         {
             if (item.type == Image.Type.Filled)
@@ -2457,7 +2459,8 @@ public class PopUpManager : Singleton<PopUpManager>
     private void LockPopup(GameObject popUp)
     {
         _popUps.Remove(popUp);
-        Button lockedButton = Instantiate(_lockedObject, _popUpLockObjectParent).GetComponent<Button>();
+        Button lockedButton = Instantiate(_lockedObject, _popUpParent).GetComponent<Button>();
+        lockedButton.transform.SetAsLastSibling();
         _lockedPopUps.Add(popUp, lockedButton);
         Utilities.PlacePrefabAroundTargetTopRight(lockedButton.GetComponent<RectTransform>(), popUp.GetComponent<RectTransform>(), _lockImagePopupOffset);
         StopLockingPopup();
