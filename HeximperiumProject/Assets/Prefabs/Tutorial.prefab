@@ -10175,8 +10175,8 @@ RectTransform:
   - {fileID: 4203137381819611206}
   m_Father: {fileID: 4103015973518760101}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.24, y: 0.4}
-  m_AnchorMax: {x: 0.76, y: 0.6}
+  m_AnchorMin: {x: 0.24, y: 0.38}
+  m_AnchorMax: {x: 0.76, y: 0.62}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -18525,10 +18525,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: You have reached the end of the game. Your final task is to organize the
-    Grand Jubilee by placing Entertainments<sprite name="Ent_Emoji">. They require
-    Carnivalists<sprite name="Carnivalist_Emoji"> to be placed, recruited through
-    certain enhanced infrastructures.
+  m_text: You have reached the end of the game. To prepare the Grand Jubilee, place
+    Entertainments<sprite name="Ent_Emoji">, which require Carnivalists<sprite name="Carnivalist_Emoji">.
+    Both Carnivalist recruitment and tile eligibility for Entertainments<sprite name="Ent_Emoji">
+    depend on specific infrastructures, so these must be set up before reaching the
+    Jubilee.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c287605c607b79439e091fd99a36044, type: 2}
   m_sharedMaterial: {fileID: -8182012711308223563, guid: 5c287605c607b79439e091fd99a36044, type: 2}
