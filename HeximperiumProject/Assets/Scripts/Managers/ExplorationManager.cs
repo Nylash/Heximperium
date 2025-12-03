@@ -171,6 +171,10 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         GameManager.Instance.UnselectTile();
 
         UpdateInteractableTiles();
+
+#if UNITY_EDITOR
+        ResourcesManager.Instance.CHEAT_RESOURCES();
+#endif
     }
 
     protected override void ConfirmPhase()

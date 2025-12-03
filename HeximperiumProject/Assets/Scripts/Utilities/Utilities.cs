@@ -166,7 +166,6 @@ public static class Utilities
             .Select(item => new ResourceToIntMap(item.resource, item.value))
             .ToList();
     }
-
     #endregion
 
     public static List<T> CloneScriptableObjects<T>(IEnumerable<T> source) where T : ScriptableObject
