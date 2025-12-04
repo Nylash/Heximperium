@@ -2049,7 +2049,7 @@ public class PopUpManager : Singleton<PopUpManager>
         if (button.InfrastructureData.Incomes.Count > 0)
         {
             TextMeshProUGUI income = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            income.text = "<sprite name=\"Puce_Emoji\"> Improve base income by " + button.InfrastructureData.Incomes.IncomeToString() + " per turn";
+            income.text = "<sprite name=\"Plus_Emoji\"> Improve base income by " + button.InfrastructureData.Incomes.IncomeToString() + " per turn";
             textObjects.Add(income.GetComponent<RectTransform>());
             ClampTextWidth(income);
             income.color = UIManager.Instance.ColorEnhancementNewEffect;
@@ -2063,11 +2063,15 @@ public class PopUpManager : Singleton<PopUpManager>
             foreach (SpecialBehaviour behaviour in button.InfrastructureData.SpecialBehaviours)
             {
                 TextMeshProUGUI behaviourText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-                behaviourText.text = "<sprite name=\"Puce_Emoji\"> " + behaviour.GetBehaviourDescription();
+                if (!previousBehaviours.ContainsOriginal(behaviour))
+                {
+                    behaviourText.text = "<sprite name=\"Plus_Emoji\"> " + behaviour.GetBehaviourDescription();
+                    behaviourText.color = UIManager.Instance.ColorEnhancementNewEffect;
+                }
+                else
+                    behaviourText.text = "<sprite name=\"Puce_Emoji\"> " + behaviour.GetBehaviourDescription();
                 textObjects.Add(behaviourText.GetComponent<RectTransform>());
                 ClampTextWidth(behaviourText);
-                if (!previousBehaviours.ContainsOriginal(behaviour))
-                    behaviourText.color = UIManager.Instance.ColorEnhancementNewEffect;
                 /*
                 behaviour.HighlightImpactedTile(button.AssociatedTile, true);
                 _highlightingBehaviours.Add(behaviour, button.AssociatedTile);
@@ -2080,18 +2084,25 @@ public class PopUpManager : Singleton<PopUpManager>
         if (button.InfrastructureData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
         {
             TextMeshProUGUI scoutText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            scoutText.text = "<sprite name=\"Puce_Emoji\"> Scout<sprite name=\"Scout_Emoji\"> starting point";
-            textObjects.Add(scoutText.GetComponent<RectTransform>());
-            ClampTextWidth(scoutText);
             if (button.AssociatedTile.TileData is InfrastructureData infraData)
             {
                 if (!infraData.ScoutStartingPoint)
+                {
+                    scoutText.text = "<sprite name=\"Plus_Emoji\"> Scout<sprite name=\"Scout_Emoji\"> starting point";
                     scoutText.color = UIManager.Instance.ColorEnhancementNewEffect;
+                }
+                    
+                else
+                    scoutText.text = "<sprite name=\"Puce_Emoji\"> Scout<sprite name=\"Scout_Emoji\"> starting point";
             }
             else
             {
                 scoutText.color = UIManager.Instance.ColorEnhancementNewEffect;
-            }  
+                scoutText.text = "<sprite name=\"Plus_Emoji\"> Scout<sprite name=\"Scout_Emoji\"> starting point";
+            }
+            textObjects.Add(scoutText.GetComponent<RectTransform>());
+            ClampTextWidth(scoutText);
+ 
         }
         #endregion
 
