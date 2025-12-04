@@ -6496,9 +6496,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "<u>Select a tile or an action</u>\n\t<sprite name=Puce_Emoji> Mouse left
-    click\n<u>Allowing tile</u>\n\t<sprite name=Puce_Emoji> Every tile with the Entertainment<sprite
-    name=\"Ent_Emoji\"> icon on it\n<u>Finish the game</u>\n\t<sprite name=Puce_Emoji>
-    Enter"
+    click\n<u>Allowing tile</u>\n\t<sprite name=Puce_Emoji> Every claimed tile within
+    the pink area\n<u>Finish the game</u>\n\t<sprite name=Puce_Emoji> Enter"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c287605c607b79439e091fd99a36044, type: 2}
   m_sharedMaterial: {fileID: -8182012711308223563, guid: 5c287605c607b79439e091fd99a36044, type: 2}
