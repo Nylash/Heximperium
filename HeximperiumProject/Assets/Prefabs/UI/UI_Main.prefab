@@ -27441,6 +27441,7 @@ MonoBehaviour:
   _carnivalistText: {fileID: 5267885453117420470}
   _colorCantAfford: {r: 0.9056604, g: 0.32039872, b: 0.32039872, a: 1}
   _colorIvory: {r: 1, g: 1, b: 0.9411765, a: 1}
+  _colorEnhancementNewEffect: {r: 0.4862745, g: 0.67058825, b: 0.44705883, a: 1}
   _confirmPhaseButtonText: {fileID: 4335767624074561558}
   _turnCounterText: {fileID: 4180945939024946559}
   _colorExplo: {r: 0.1686274, g: 0.552941, b: 0.7647059, a: 1}

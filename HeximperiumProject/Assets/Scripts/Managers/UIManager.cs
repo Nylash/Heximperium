@@ -16,6 +16,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TextMeshProUGUI _carnivalistText;
     [SerializeField] private Color _colorCantAfford;
     [SerializeField] private Color _colorIvory;
+    [SerializeField] private Color _colorEnhancementNewEffect;
     [Header("_________________________________________________________")]
     [Header("Phase UI")]
     [SerializeField] private TextMeshProUGUI _confirmPhaseButtonText;
@@ -157,6 +158,7 @@ public class UIManager : Singleton<UIManager>
     public Color ColorIvory { get => _colorIvory; }
     public Animator BuildTownHint { get => _buildTownHint; }
     public bool AreUnitsVisible { get => _areUnitsVisible; set => _areUnitsVisible = value; }
+    public Color ColorEnhancementNewEffect { get => _colorEnhancementNewEffect; }
     #endregion
 
     protected override void OnAwake()

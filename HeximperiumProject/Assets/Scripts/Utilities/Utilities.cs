@@ -168,14 +168,32 @@ public static class Utilities
     }
     #endregion
 
-    public static List<T> CloneScriptableObjects<T>(IEnumerable<T> source) where T : ScriptableObject
+    public static List<T> CloneScriptableObjects<T>(IEnumerable<T> source)
+        where T : ScriptableObject
     {
-        if (source == null)
-            return new List<T>();
+        if (source == null) return new List<T>();
 
-        return source
-            .Select(item => item ? ScriptableObject.Instantiate(item) : null)
-            .ToList();
+        return source.Select(item =>
+        {
+            if (!item) return null;
+
+            var clone = ScriptableObject.Instantiate(item);
+
+            if (clone is CloneableScriptableObject c)
+            {
+                var original = (item as CloneableScriptableObject)?.OriginalAsset ?? (ScriptableObject)item;
+                c.SetOriginalAsset(original);
+            }
+
+            return clone;
+        }).ToList();
+    }
+
+    public static bool ContainsOriginal<T>(this IEnumerable<T> list, T value)
+    where T : CloneableScriptableObject
+    {
+        if (value == null) return false;
+        return list.Any(x => x != null && x.IsSameOriginalAs(value));
     }
 
     #region CUSTOM STRINGS

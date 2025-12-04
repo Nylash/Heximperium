@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class SpecialBehaviour : ScriptableObject
+public abstract class SpecialBehaviour : CloneableScriptableObject
 {
     //Realize special behaviour
     public abstract void InitializeSpecialBehaviour(Tile behaviourTile);

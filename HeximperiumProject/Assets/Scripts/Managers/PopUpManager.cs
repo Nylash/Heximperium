@@ -2052,18 +2052,22 @@ public class PopUpManager : Singleton<PopUpManager>
             income.text = "<sprite name=\"Puce_Emoji\"> Improve base income by " + button.InfrastructureData.Incomes.IncomeToString() + " per turn";
             textObjects.Add(income.GetComponent<RectTransform>());
             ClampTextWidth(income);
+            income.color = UIManager.Instance.ColorEnhancementNewEffect;
         }
         #endregion
 
         #region BEHAVIOURS
         if (button.InfrastructureData.SpecialBehaviours.Count > 0)
         {
+            List<SpecialBehaviour> previousBehaviours = new List<SpecialBehaviour>(button.AssociatedTile.TileData.SpecialBehaviours);
             foreach (SpecialBehaviour behaviour in button.InfrastructureData.SpecialBehaviours)
             {
                 TextMeshProUGUI behaviourText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
                 behaviourText.text = "<sprite name=\"Puce_Emoji\"> " + behaviour.GetBehaviourDescription();
                 textObjects.Add(behaviourText.GetComponent<RectTransform>());
                 ClampTextWidth(behaviourText);
+                if (!previousBehaviours.ContainsOriginal(behaviour))
+                    behaviourText.color = UIManager.Instance.ColorEnhancementNewEffect;
                 /*
                 behaviour.HighlightImpactedTile(button.AssociatedTile, true);
                 _highlightingBehaviours.Add(behaviour, button.AssociatedTile);
@@ -2079,6 +2083,15 @@ public class PopUpManager : Singleton<PopUpManager>
             scoutText.text = "<sprite name=\"Puce_Emoji\"> Scout<sprite name=\"Scout_Emoji\"> starting point";
             textObjects.Add(scoutText.GetComponent<RectTransform>());
             ClampTextWidth(scoutText);
+            if (button.AssociatedTile.TileData is InfrastructureData infraData)
+            {
+                if (!infraData.ScoutStartingPoint)
+                    scoutText.color = UIManager.Instance.ColorEnhancementNewEffect;
+            }
+            else
+            {
+                scoutText.color = UIManager.Instance.ColorEnhancementNewEffect;
+            }  
         }
         #endregion
 
