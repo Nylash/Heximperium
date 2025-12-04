@@ -11,6 +11,7 @@ public class Tile : MonoBehaviour
     [Header("Configuration")]
     [SerializeField] private GameObject _borderPrefab;
     [SerializeField] private GameObject _previewBorderPrefab;
+    [SerializeField] private GameObject _allowingEntPrefab;
     [SerializeField] private GameObject _highlightPrefab;
     [SerializeField] private Transform _visual;
     [SerializeField] private SpriteRenderer _infraLvlRenderer;
@@ -18,7 +19,6 @@ public class Tile : MonoBehaviour
     [SerializeField] private Sprite[] _spriteInfraLvl = new Sprite[3];
     [SerializeField] private Animator _claimTintAnimator;
     [SerializeField] private TextMeshPro[] _incomesUI = new TextMeshPro[6];
-    [SerializeField] private GameObject _allowEntHint;
     #endregion
 
     #region VARIABLES
@@ -36,6 +36,7 @@ public class Tile : MonoBehaviour
     private Animator _animator;
     private GameObject _highlightObject;
     private GameObject _visualAssets;
+    private Border _allowEntHint;
     //Runtime variables
     private TileData _initialData;
     private TileData _previousData;
@@ -78,6 +79,7 @@ public class Tile : MonoBehaviour
     public event Action<Tile> OnEntertainmentModified;
     public Action OnClaimBorderAnimationDone;//No event keyword because it is Invoked in the Border script
     public Action OnPreviewBorderAnimationDone;//No event keyword because it is Invoked in the Border script
+    public Action OnAllowingEntAnimationDone;//No event keyword because it is Invoked in the Border script
     #endregion
 
     #region ACCESSORS
@@ -104,8 +106,7 @@ public class Tile : MonoBehaviour
             _entertainment = value;
             OnEntertainmentModified?.Invoke(this);
 
-            if (UIManager.Instance.AreIncomesShown)
-                ShowIncomeUI(true);
+            UpdateShowAllowEntHint();
         }  
     }
     public TileData PreviousData { get => _previousData; set => _previousData = value; }
@@ -137,8 +138,7 @@ public class Tile : MonoBehaviour
                 if (EntertainmentManager.Instance.UpgradeAllowEntOnSpecificInfra != null)
                     EntertainmentManager.Instance.UpgradeAllowEntOnSpecificInfra.CheckData(this);
             }
-            if (UIManager.Instance.AreEntPlacementShown)
-                ShowEntPlacementUI(true);
+            UpdateShowAllowEntHint();
         }
     }
     public int CarnivalistCostReduction { get => _carnivalistCostReduction; set => _carnivalistCostReduction = value; }
@@ -168,6 +168,8 @@ public class Tile : MonoBehaviour
                     continue;
                 neighbor.OnClaimBorderAnimationDone += CheckBorder;
                 neighbor.OnPreviewBorderAnimationDone += CheckPreviewBorder;
+                neighbor.OnAllowingEntAnimationDone += CheckAllowingEnt;
+                neighbor.OnEntertainmentModified += (tile) => UpdateShowAllowEntHint();
             }
         };
     }
@@ -362,6 +364,12 @@ public class Tile : MonoBehaviour
             _previewBorder.CheckPreviewBorderVisibility();
     }
 
+    private void CheckAllowingEnt()
+    {
+        if (_allowEntHint)
+            _allowEntHint.CheckAllowingEntVisibility();
+    }
+
     //Change tile's visual based on the tile data
     public void UpdateVisual()
     {
@@ -438,11 +446,45 @@ public class Tile : MonoBehaviour
         return false;
     }
 
+    private void UpdateShowAllowEntHint()
+    {
+        if (UIManager.Instance.AreEntPlacementShown)
+            ShowEntPlacementUI(true);
+    }
+
+    private void RemoveAllowEntHint()
+    {
+        _allowEntHint.GetComponent<Animator>().SetTrigger("Despawn");
+        _allowEntHint = null;
+        if (UIManager.Instance.AreEntPlacementShown)
+            OnAllowingEntAnimationDone?.Invoke();
+    }
+
     public void ShowEntPlacementUI(bool show)
     {
         if (_tileData is HazardousTileData)
             return;
-        _allowEntHint.SetActive(show && _allowEntertainment);
+        if (!CanReceiveEntertainment(true))
+        {
+            if (_allowEntHint != null)
+                RemoveAllowEntHint();
+            return;
+        }
+        if (show)
+        {
+            if (_allowEntHint)
+            {
+                _allowEntHint.CheckAllowingEntVisibility();
+                return;
+            }
+            _allowEntHint = Instantiate(_allowingEntPrefab, _visual).GetComponent<Border>();
+            _allowEntHint.transform.localPosition += new Vector3(0, 0.01f, 0);
+            _allowEntHint.associatedTile = this;
+        }
+        else if (_allowEntHint)
+        {
+            RemoveAllowEntHint();
+        }
     }
 
     public void ShowIncomeUI(bool show)
@@ -514,10 +556,20 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public bool CanReceiveEntertainment()
+    public bool CanReceiveEntertainment(bool ignoreClaimStatus = false)
     {
-        if (!_claimed)
+        if (TileData is HazardousTileData)
             return false;
+        if (ignoreClaimStatus)
+        {
+            if (!_revealed)
+                return false;
+        }
+        else
+        {
+            if (!_claimed)
+                return false;
+        }
         if (_allowEntertainment)
             return true;
         if (EntertainmentManager.Instance.UpgradeMinstrelStageOnNeighbor)
