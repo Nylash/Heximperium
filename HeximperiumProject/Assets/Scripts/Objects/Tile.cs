@@ -448,6 +448,8 @@ public class Tile : MonoBehaviour
 
     private void UpdateShowAllowEntHint()
     {
+        if (ExploitationManager.Instance.IsPredictingIncome || EntertainmentManager.Instance.IsPredictingPoints)
+            return;
         if (UIManager.Instance.AreEntPlacementShown)
             ShowEntPlacementUI(true);
     }
