@@ -13,6 +13,7 @@ public class PopUpManager : Singleton<PopUpManager>
     const string LOCK_POPUP_TUTO_KEY = "LockPopupTutoShown";
     const string UPGRADE_TUTO_KEY = "UpgradeTutoShown";
     const string SAVINGS_TUTO_KEY = "SavingsTutoShown";
+    const string FILTERS_TUTO_KEY = "FiltersTutoShown";
     #endregion
 
     #region CONFIGURATION
@@ -45,6 +46,7 @@ public class PopUpManager : Singleton<PopUpManager>
     [SerializeField] private Animator _lockPopupTutoPopup;
     [SerializeField] private Animator _upgradeTutoPopup;
     [SerializeField] private Animator _savingsTutoPopup;
+    [SerializeField] private Animator _filtersTutoPopup;
     #endregion
 
     #region VARIABLES
@@ -2740,6 +2742,27 @@ public class PopUpManager : Singleton<PopUpManager>
     #endregion
 
     #region TUTORIAL POPUP
+    public void ShowFiltersTutoPopUp()
+    {
+        if (TutorialManager.Instance != null) // Prevent pop-up if tutorial is running
+            return;
+
+        if (PlayerPrefs.GetInt(FILTERS_TUTO_KEY, 0) == 1)
+            return;
+
+        GameManager.Instance.GamePaused = true;
+        _filtersTutoPopup.SetTrigger("Show");
+
+        PlayerPrefs.SetInt(FILTERS_TUTO_KEY, 1);
+        PlayerPrefs.Save();
+    }
+
+    public void HideFiltersTutoPopUp()
+    {
+        GameManager.Instance.GamePaused = false;
+        _filtersTutoPopup.SetTrigger("Shrink");
+    }
+
     public void ShowInfraLevelTutoPopUp()
     {
         if (TutorialManager.Instance != null) // Prevent pop-up if tutorial is running
