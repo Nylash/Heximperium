@@ -8,9 +8,9 @@ public class SettingsManager : Singleton<SettingsManager>
 
     protected override void OnAwake()
     {
-        if (PlayerPrefs.HasKey("MasterVolume"))
+        if (PlayerPrefs.HasKey(SoundsManager.MASTER_VOLUME_KEY))
         {
-            _masterVolume.value = PlayerPrefs.GetFloat("MasterVolume");
+            _masterVolume.value = PlayerPrefs.GetFloat(SoundsManager.MASTER_VOLUME_KEY);
         }
     }
 

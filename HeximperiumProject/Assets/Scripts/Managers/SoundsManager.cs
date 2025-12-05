@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class SoundsManager : Singleton<SoundsManager>
 {
+    public const string MASTER_VOLUME_KEY = "MasterVolume";
+
     [SerializeField] private AudioSource _musicSource;
 
     private float _masterVolume = 1.0f;
@@ -16,7 +18,7 @@ public class SoundsManager : Singleton<SoundsManager>
         {
             _masterVolume = value;
             OnMasterVolumeChanged?.Invoke();
-            PlayerPrefs.SetFloat("MasterVolume", _masterVolume);
+            PlayerPrefs.SetFloat(MASTER_VOLUME_KEY, _masterVolume);
         }
     }
 
@@ -26,9 +28,9 @@ public class SoundsManager : Singleton<SoundsManager>
 
         OnMasterVolumeChanged += () => _musicSource.volume = _baseMusicVolume * _masterVolume;
 
-        if (PlayerPrefs.HasKey("MasterVolume"))
+        if (PlayerPrefs.HasKey(MASTER_VOLUME_KEY))
         {
-            MasterVolume = PlayerPrefs.GetFloat("MasterVolume");
+            MasterVolume = PlayerPrefs.GetFloat(MASTER_VOLUME_KEY);
         }
     }
 }

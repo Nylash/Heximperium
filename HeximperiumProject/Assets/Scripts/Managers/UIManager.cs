@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class UIManager : Singleton<UIManager>
 {
+    public const string BEST_SCORE_KEY = "BestScore";
+
     #region CONFIGURATION
     [Header("_________________________________________________________")]
     [Header("Resources Bar")]
@@ -436,10 +438,10 @@ public class UIManager : Singleton<UIManager>
         _endMenu.SetActive(true);
         _endScore.text = $"You have scored {EntertainmentManager.Instance.Score.ToString()}<sprite name=\"Point_Emoji\">";
 
-        int bestScore = PlayerPrefs.GetInt("BestScore", 0);
+        int bestScore = PlayerPrefs.GetInt(BEST_SCORE_KEY, 0);
         if (EntertainmentManager.Instance.Score > bestScore)
         {
-            PlayerPrefs.SetInt("BestScore", EntertainmentManager.Instance.Score);
+            PlayerPrefs.SetInt(BEST_SCORE_KEY, EntertainmentManager.Instance.Score);
         }
     }
 
