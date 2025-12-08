@@ -7205,7 +7205,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Filter Options
+  m_text: advanced information
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c287605c607b79439e091fd99a36044, type: 2}
   m_sharedMaterial: {fileID: -8182012711308223563, guid: 5c287605c607b79439e091fd99a36044, type: 2}
@@ -9126,7 +9126,7 @@ GameObject:
   - component: {fileID: 5421335157714243780}
   - component: {fileID: 2301195226960734612}
   m_Layer: 0
-  m_Name: Filters
+  m_Name: AdvancedInfo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25798,7 +25798,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: The bottom-left corner includes filters that reveal different kinds of
+  m_text: The bottom-left corner includes buttons that reveal different kinds of
     information, which can be useful when managing your domain.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5c287605c607b79439e091fd99a36044, type: 2}
