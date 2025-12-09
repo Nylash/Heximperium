@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class SpecialEffect : ScriptableObject
+public abstract class SpecialEffect : CloneableScriptableObject
 {
     public abstract void InitializeSpecialEffect(Entertainment associatedEntertainment);
 

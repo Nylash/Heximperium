@@ -274,7 +274,7 @@ public class TutorialManager : Singleton<TutorialManager>
         _step7.SetTrigger("Shrink");
         _step8.SetTrigger("Show");
 
-        ExplorationManager.Instance.OnScoutSpawned += ShowStep9;
+        ExplorationManager.Instance.OnScoutSpawned += (tile) => ShowStep9();
         GameManager.Instance.OnTileUnselected += RollBackToStep7;
 
         foreach (Tile item in ExploitationManager.Instance.Infrastructures)
@@ -305,7 +305,7 @@ public class TutorialManager : Singleton<TutorialManager>
         }
 
         GameManager.Instance.OnTileUnselected -= RollBackToStep7;
-        ExplorationManager.Instance.OnScoutSpawned -= ShowStep9;
+        ExplorationManager.Instance.OnScoutSpawned -= (tile) => ShowStep9();
 
         _step = TutorialStep.S7_SelectTile;
         _step8.SetTrigger("Shrink");
@@ -320,12 +320,12 @@ public class TutorialManager : Singleton<TutorialManager>
         }
     }
 
-    private void ShowStep9(Scout scout)
+    private void ShowStep9()
     {
         if (_step != TutorialStep.S8_SpawnScout)
             return;
 
-        ExplorationManager.Instance.OnScoutSpawned -= ShowStep9;
+        ExplorationManager.Instance.OnScoutSpawned -= (tile) => ShowStep9();
         GameManager.Instance.OnTileUnselected -= RollBackToStep7;
 
         _step = TutorialStep.S9_DirectScout;
@@ -409,7 +409,7 @@ public class TutorialManager : Singleton<TutorialManager>
         _step13.SetTrigger("Show");
 
         GameManager.Instance.OnTileUnselected += RollBackToStep12;
-        ExpansionManager.Instance.OnTileClaimed += ShowStep14;
+        ExpansionManager.Instance.OnTileClaimed += (tile) => ShowStep14();
     }
 
     private void RollBackToStep12()
@@ -434,7 +434,7 @@ public class TutorialManager : Singleton<TutorialManager>
         }
 
         GameManager.Instance.OnTileUnselected -= RollBackToStep12;
-        ExpansionManager.Instance.OnTileClaimed -= ShowStep14;
+        ExpansionManager.Instance.OnTileClaimed -= (tile) => ShowStep14();
 
         _step = TutorialStep.S12_SelectTile;
         _step13.SetTrigger("Shrink");
@@ -443,12 +443,12 @@ public class TutorialManager : Singleton<TutorialManager>
         ExpansionManager.Instance.OnClaimableTileSelected += ShowStep13;
     }
 
-    private void ShowStep14(Tile tile)
+    private void ShowStep14()
     {
         if (_step != TutorialStep.S13_ClaimTile)
             return;
 
-        ExpansionManager.Instance.OnTileClaimed -= ShowStep14;
+        ExpansionManager.Instance.OnTileClaimed -= (tile) => ShowStep14();
         GameManager.Instance.OnTileUnselected -= RollBackToStep12;
 
         _step = TutorialStep.S14_EndPhase;
@@ -518,7 +518,7 @@ public class TutorialManager : Singleton<TutorialManager>
         _step16.SetTrigger("Shrink");
         _step17.SetTrigger("Show");
 
-        ExploitationManager.Instance.OnInfraBuilded += ShowStep18;
+        ExploitationManager.Instance.OnInfraBuilded += (tile) => ShowStep18();
         GameManager.Instance.OnTileUnselected += RollBackToStep16;
     }
 
@@ -543,7 +543,7 @@ public class TutorialManager : Singleton<TutorialManager>
                 yield break;
         }
         GameManager.Instance.OnTileUnselected -= RollBackToStep16;
-        ExploitationManager.Instance.OnInfraBuilded -= ShowStep18;
+        ExploitationManager.Instance.OnInfraBuilded -= (tile) => ShowStep18();
 
         _step = TutorialStep.S16_SelectTile;
         _step17.SetTrigger("Shrink");
@@ -552,12 +552,12 @@ public class TutorialManager : Singleton<TutorialManager>
         ExploitationManager.Instance.OnNotUpgradedTileSelected += ShowStep17;
     }
 
-    private void ShowStep18(Tile tile)
+    private void ShowStep18()
     {
         if (_step != TutorialStep.S17_BuildInfrastructure)
             return;
 
-        ExploitationManager.Instance.OnInfraBuilded -= ShowStep18;
+        ExploitationManager.Instance.OnInfraBuilded -= (tile) => ShowStep18();
 
         _step = TutorialStep.S18_EndTurn;
         _step17.SetTrigger("Shrink");
@@ -675,7 +675,7 @@ public class TutorialManager : Singleton<TutorialManager>
         _step22.SetTrigger("Shrink");
         _step23.SetTrigger("Show");
 
-        ExploitationManager.Instance.OnInfraBuilded += ShowStep24;
+        ExploitationManager.Instance.OnInfraBuilded += (tile) => ShowStep24();
         GameManager.Instance.OnTileUnselected += RollBackToStep22;
     }
 
@@ -701,7 +701,7 @@ public class TutorialManager : Singleton<TutorialManager>
         }
 
         GameManager.Instance.OnTileUnselected -= RollBackToStep22;
-        ExploitationManager.Instance.OnInfraBuilded -= ShowStep24;
+        ExploitationManager.Instance.OnInfraBuilded -= (tile) => ShowStep24();
 
         _step = TutorialStep.S22_SelectTile;
         _step23.SetTrigger("Shrink");
@@ -710,12 +710,12 @@ public class TutorialManager : Singleton<TutorialManager>
         ExpansionManager.Instance.OnTownableTileSelected += ShowStep23;
     }
 
-    private void ShowStep24(Tile tile)
+    private void ShowStep24()
     {
         if (_step != TutorialStep.S23_BuildTown)
             return;
 
-        ExploitationManager.Instance.OnInfraBuilded -= ShowStep24;
+        ExploitationManager.Instance.OnInfraBuilded -= (tile) => ShowStep24();
         GameManager.Instance.OnTileUnselected -= RollBackToStep22;
 
         _step = TutorialStep.S24_EndPhase;
@@ -793,7 +793,7 @@ public class TutorialManager : Singleton<TutorialManager>
         _step26.SetTrigger("Shrink");
         _step27.SetTrigger("Show");
 
-        ExploitationManager.Instance.OnInfraBuilded += ShowStep28;
+        ExploitationManager.Instance.OnInfraBuilded += (tile) => ShowStep28();
         GameManager.Instance.OnTileUnselected += RollBackToStep26;
     }
 
@@ -827,7 +827,7 @@ public class TutorialManager : Singleton<TutorialManager>
         }
 
         GameManager.Instance.OnTileUnselected -= RollBackToStep26;
-        ExploitationManager.Instance.OnInfraBuilded -= ShowStep28;
+        ExploitationManager.Instance.OnInfraBuilded -= (tile) => ShowStep28();
 
         _step = TutorialStep.S26_SelectTile;
         _step27.SetTrigger("Shrink");
@@ -836,12 +836,12 @@ public class TutorialManager : Singleton<TutorialManager>
         ExploitationManager.Instance.OnFarmNeighborSelected += ShowStep27;
     }
 
-    private void ShowStep28(Tile tile)
+    private void ShowStep28()
     {
         if (_step != TutorialStep.S27_BuildWindmill)
             return;
 
-        ExploitationManager.Instance.OnInfraBuilded -= ShowStep28;
+        ExploitationManager.Instance.OnInfraBuilded -= (tile) => ShowStep28();
         GameManager.Instance.OnTileUnselected -= RollBackToStep26;
 
         _step = TutorialStep.S28_SelectWindmill;
@@ -864,7 +864,7 @@ public class TutorialManager : Singleton<TutorialManager>
         _step28.SetTrigger("Shrink");
         _step29.SetTrigger("Show");
 
-        ExploitationManager.Instance.OnInfraBuilded += ShowStep30;
+        ExploitationManager.Instance.OnInfraBuilded += (tile) => ShowStep30();
         GameManager.Instance.OnTileUnselected += RollBackToStep28;
     }
 
@@ -890,7 +890,7 @@ public class TutorialManager : Singleton<TutorialManager>
         }
 
         GameManager.Instance.OnTileUnselected -= RollBackToStep28;
-        ExploitationManager.Instance.OnInfraBuilded -= ShowStep30;
+        ExploitationManager.Instance.OnInfraBuilded -= (tile) => ShowStep30();
 
         _step = TutorialStep.S28_SelectWindmill;
         _step29.SetTrigger("Shrink");
@@ -899,12 +899,12 @@ public class TutorialManager : Singleton<TutorialManager>
         ExploitationManager.Instance.OnWindmillSelected += ShowStep29;
     }
 
-    private void ShowStep30(Tile tile)
+    private void ShowStep30()
     {
         if (_step != TutorialStep.S29_UpgradeWindmill)
             return;
 
-        ExploitationManager.Instance.OnInfraBuilded -= ShowStep30;
+        ExploitationManager.Instance.OnInfraBuilded -= (tile) => ShowStep30();
         GameManager.Instance.OnTileUnselected -= RollBackToStep28;
 
         _step = TutorialStep.S30_EndTurn;
@@ -973,7 +973,7 @@ public class TutorialManager : Singleton<TutorialManager>
         _step32.SetTrigger("Shrink");
         _step33.SetTrigger("Show");
 
-        EntertainmentManager.Instance.OnEntertainmentSpawned += ShowStep34;
+        EntertainmentManager.Instance.OnEntertainmentSpawned += (ent) => ShowStep34();
         GameManager.Instance.OnTileUnselected += RollBackToStep32;
     }
 
@@ -999,7 +999,7 @@ public class TutorialManager : Singleton<TutorialManager>
         }
 
         GameManager.Instance.OnTileUnselected -= RollBackToStep32;
-        EntertainmentManager.Instance.OnEntertainmentSpawned -= ShowStep34;
+        EntertainmentManager.Instance.OnEntertainmentSpawned -= (ent) => ShowStep34();
 
         _step = TutorialStep.S32_SelectTile;
         _step33.SetTrigger("Shrink");
@@ -1008,12 +1008,12 @@ public class TutorialManager : Singleton<TutorialManager>
         EntertainmentManager.Instance.OnTileAllowingEntSelected += ShowStep33;
     }
 
-    private void ShowStep34(Entertainment ent)
+    private void ShowStep34()
     {
         if (_step != TutorialStep.S33_PlaceEntertainment)
             return;
 
-        EntertainmentManager.Instance.OnEntertainmentSpawned -= ShowStep34;
+        EntertainmentManager.Instance.OnEntertainmentSpawned -= (ent) => ShowStep34();
 
         _step = TutorialStep.S34_EndGame;
         _step33.SetTrigger("Shrink");

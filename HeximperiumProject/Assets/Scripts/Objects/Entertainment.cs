@@ -49,6 +49,10 @@ public class Entertainment : MonoBehaviour
         {
             EntertainmentManager.Instance.OnScoreLost?.Invoke(_tile, _pointsBuffer - _points); 
         }
+        else if (_pointsBuffer < _points)
+        {
+            EntertainmentManager.Instance.OnScoreGained?.Invoke(_tile, _points - _pointsBuffer);
+        }
         _pointsBuffer = _points;
     }
 
@@ -75,7 +79,7 @@ public class Entertainment : MonoBehaviour
             return;
         }
 
-        EntertainmentManager.Instance.UpdateScore(value, transaction, _tile, skipVFX);
+        EntertainmentManager.Instance.UpdateScore(value, transaction);
 
         if (transaction == Transaction.Spent)
             value = -value;

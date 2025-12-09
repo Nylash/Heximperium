@@ -3644,6 +3644,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 178832022293738749}
   _infraLvlRenderer: {fileID: 1373881394017579456}
@@ -3662,7 +3663,6 @@ MonoBehaviour:
   - {fileID: 4840293955278471848}
   - {fileID: 3918225264043268138}
   - {fileID: 3812679207431332115}
-  _allowEntHint: {fileID: 2090547253205789233}
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: 3, y: 3}
   _incomes: []
@@ -5189,6 +5189,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 1393575192555690654}
   _infraLvlRenderer: {fileID: 5242417984231126933}
@@ -5207,7 +5208,6 @@ MonoBehaviour:
   - {fileID: 935725518824116859}
   - {fileID: 3607166012101366924}
   - {fileID: 2779199368496035758}
-  _allowEntHint: {fileID: 8226452969395945022}
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 0, y: -2}
   _incomes:
@@ -17117,6 +17117,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 2319915483147953938}
   _infraLvlRenderer: {fileID: 8694186725376910268}
@@ -17135,7 +17136,6 @@ MonoBehaviour:
   - {fileID: 6451765055086074840}
   - {fileID: 4523139616023552653}
   - {fileID: 6022633349542233605}
-  _allowEntHint: {fileID: 8805334918242117002}
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -1, y: 0}
   _incomes:
@@ -18504,6 +18504,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 498058966774610870}
   _infraLvlRenderer: {fileID: 5543790574620279278}
@@ -18522,7 +18523,6 @@ MonoBehaviour:
   - {fileID: 8159088482920957493}
   - {fileID: 1203882973481079251}
   - {fileID: 8144015297291754463}
-  _allowEntHint: {fileID: 7810726247825610019}
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -2, y: 1}
   _incomes:
@@ -19073,6 +19073,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7362670026333747051}
   _infraLvlRenderer: {fileID: 7078397155664537475}
@@ -19091,7 +19092,6 @@ MonoBehaviour:
   - {fileID: 2306017487541843855}
   - {fileID: 7738349998152870702}
   - {fileID: 8329713531848089379}
-  _allowEntHint: {fileID: 5481107899885376572}
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: 4, y: 1}
   _incomes: []
@@ -23380,6 +23380,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 328195834422141865}
   _infraLvlRenderer: {fileID: 871998388638700513}
@@ -23398,7 +23399,6 @@ MonoBehaviour:
   - {fileID: 2915648582379284278}
   - {fileID: 2213933431260040294}
   - {fileID: 253575447285219826}
-  _allowEntHint: {fileID: 765762264493588002}
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -2, y: 4}
   _incomes: []
@@ -25860,6 +25860,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 4792643368668678986}
   _infraLvlRenderer: {fileID: 4527901077468103838}
@@ -25878,7 +25879,6 @@ MonoBehaviour:
   - {fileID: 3590723643150779172}
   - {fileID: 5230127428460759158}
   - {fileID: 8627867531894642963}
-  _allowEntHint: {fileID: 4300697607712716764}
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: -4, y: 2}
   _incomes: []
@@ -29367,6 +29367,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5951119363844717767}
   _infraLvlRenderer: {fileID: 3876132108689535367}
@@ -29385,7 +29386,6 @@ MonoBehaviour:
   - {fileID: 7307151480730591373}
   - {fileID: 3496973618936440033}
   - {fileID: 5711808259003526806}
-  _allowEntHint: {fileID: 8574291485629661646}
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -4, y: -2}
   _incomes:
@@ -30766,6 +30766,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6002089625096694748}
   _infraLvlRenderer: {fileID: 3217943855706401241}
@@ -30784,7 +30785,6 @@ MonoBehaviour:
   - {fileID: 8220230799425859033}
   - {fileID: 7671190206919176830}
   - {fileID: 4911813899693782856}
-  _allowEntHint: {fileID: 4494828829313302826}
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: 4, y: -1}
   _incomes: []
@@ -31188,6 +31188,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5053698810089019908}
   _infraLvlRenderer: {fileID: 7716682285809786421}
@@ -31206,7 +31207,6 @@ MonoBehaviour:
   - {fileID: 5349071525224429704}
   - {fileID: 7936295384136572795}
   - {fileID: 2330079064913860363}
-  _allowEntHint: {fileID: 1572567605942245828}
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: -1, y: 5}
   _incomes: []
@@ -32206,6 +32206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7818672687588426779}
   _infraLvlRenderer: {fileID: 1051032042566011892}
@@ -32224,7 +32225,6 @@ MonoBehaviour:
   - {fileID: 6356896666298326884}
   - {fileID: 133295694482479285}
   - {fileID: 1447421453335033187}
-  _allowEntHint: {fileID: 3463655738348752025}
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: 2, y: 1}
   _incomes: []
@@ -32927,6 +32927,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7415320623207707654}
   _infraLvlRenderer: {fileID: 301244899751244849}
@@ -32945,7 +32946,6 @@ MonoBehaviour:
   - {fileID: 2423791347150453261}
   - {fileID: 5307733364885600213}
   - {fileID: 4384603354044793308}
-  _allowEntHint: {fileID: 6548841106995025746}
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -4, y: -1}
   _incomes: []
@@ -33579,6 +33579,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 1077788882880596375}
   _infraLvlRenderer: {fileID: 8894408002350285564}
@@ -33597,7 +33598,6 @@ MonoBehaviour:
   - {fileID: 3518950074235046377}
   - {fileID: 6645025581642939762}
   - {fileID: 8849360059263351727}
-  _allowEntHint: {fileID: 1737958855579626595}
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: 4, y: -2}
   _incomes: []
@@ -33694,6 +33694,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 4307363827916936780}
   _infraLvlRenderer: {fileID: 4401748704362459545}
@@ -33712,7 +33713,6 @@ MonoBehaviour:
   - {fileID: 5109066555292732761}
   - {fileID: 1581228437003232860}
   - {fileID: 531749919212436838}
-  _allowEntHint: {fileID: 4058189290129592318}
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -1, y: 2}
   _incomes:
@@ -35161,6 +35161,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6105878635932582269}
   _infraLvlRenderer: {fileID: 336654781235122828}
@@ -35179,7 +35180,6 @@ MonoBehaviour:
   - {fileID: 2631483375009811208}
   - {fileID: 1787383839384735593}
   - {fileID: 3571916864754522943}
-  _allowEntHint: {fileID: 8398823019573138219}
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: -4, y: -3}
   _incomes: []
@@ -36116,6 +36116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7822409966736531624}
   _infraLvlRenderer: {fileID: 4717096853939422173}
@@ -36134,7 +36135,6 @@ MonoBehaviour:
   - {fileID: 1800015483111617392}
   - {fileID: 7606288413683793444}
   - {fileID: 3443722533402096464}
-  _allowEntHint: {fileID: 1124822713309463029}
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 1, y: 0}
   _incomes:
@@ -36929,6 +36929,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7442060901681552866}
   _infraLvlRenderer: {fileID: 2567660986560348225}
@@ -36947,7 +36948,6 @@ MonoBehaviour:
   - {fileID: 8397303191103314029}
   - {fileID: 3503777249614450795}
   - {fileID: 1013438766892172464}
-  _allowEntHint: {fileID: 4004180084831559100}
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: -4, y: 0}
   _incomes: []
@@ -37314,6 +37314,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 2950115328944021206}
   _infraLvlRenderer: {fileID: 2504466088266282469}
@@ -37332,7 +37333,6 @@ MonoBehaviour:
   - {fileID: 2792680637536613517}
   - {fileID: 852039155458529329}
   - {fileID: 5942011730932751636}
-  _allowEntHint: {fileID: 5271517524420257918}
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: 3, y: -2}
   _incomes: []
@@ -37611,6 +37611,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7997031264877187381}
   _infraLvlRenderer: {fileID: 4481760431491968110}
@@ -37629,7 +37630,6 @@ MonoBehaviour:
   - {fileID: 8724786620607351263}
   - {fileID: 6947290948753687255}
   - {fileID: 4252253072654401482}
-  _allowEntHint: {fileID: 4792315711858003558}
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 1, y: -4}
   _incomes: []
@@ -42875,6 +42875,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6351036722033983947}
   _infraLvlRenderer: {fileID: 638109960870950937}
@@ -42893,7 +42894,6 @@ MonoBehaviour:
   - {fileID: 4265185451807056275}
   - {fileID: 3344247381674643985}
   - {fileID: 6918094038275527924}
-  _allowEntHint: {fileID: 5563677569739876988}
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: -1, y: -4}
   _incomes: []
@@ -52347,6 +52347,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5150827722122620936}
   _infraLvlRenderer: {fileID: 6691669325182658225}
@@ -52365,7 +52366,6 @@ MonoBehaviour:
   - {fileID: 6387294659224162102}
   - {fileID: 733244053870894487}
   - {fileID: 836020648284190704}
-  _allowEntHint: {fileID: 7974835306543299121}
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 3, y: 1}
   _incomes:
@@ -54106,6 +54106,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 3631861763946116591}
   _infraLvlRenderer: {fileID: 2989160308170142478}
@@ -54124,7 +54125,6 @@ MonoBehaviour:
   - {fileID: 2740663978872040465}
   - {fileID: 7240101182400503141}
   - {fileID: 1835011571421940951}
-  _allowEntHint: {fileID: 4266459853539403245}
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -1, y: -2}
   _incomes:
@@ -55005,6 +55005,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 3723391526434562624}
   _infraLvlRenderer: {fileID: 6672248707281523218}
@@ -55023,7 +55024,6 @@ MonoBehaviour:
   - {fileID: 8195337696142286235}
   - {fileID: 7383047707529132068}
   - {fileID: 6078693702706631938}
-  _allowEntHint: {fileID: 8640720914124347861}
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: -3, y: -1}
   _incomes: []
@@ -58229,6 +58229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5569008226392231846}
   _infraLvlRenderer: {fileID: 5541928908733079423}
@@ -58247,7 +58248,6 @@ MonoBehaviour:
   - {fileID: 369891708893191869}
   - {fileID: 6026606097545566912}
   - {fileID: 6910812130653035117}
-  _allowEntHint: {fileID: 1634698391228561964}
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 2, y: 4}
   _incomes:
@@ -59060,6 +59060,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5546424480929298779}
   _infraLvlRenderer: {fileID: 1024945377262532979}
@@ -59078,7 +59079,6 @@ MonoBehaviour:
   - {fileID: 1531460323310995452}
   - {fileID: 116389094280582143}
   - {fileID: 7976154582909933184}
-  _allowEntHint: {fileID: 4233517306740706379}
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 0, y: -3}
   _incomes: []
@@ -63154,6 +63154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 847065009087044043}
   _infraLvlRenderer: {fileID: 59208782869875912}
@@ -63172,7 +63173,6 @@ MonoBehaviour:
   - {fileID: 4091244762218612293}
   - {fileID: 5867260566939429473}
   - {fileID: 5969962185979811498}
-  _allowEntHint: {fileID: 916197639094483242}
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: 5, y: 0}
   _incomes: []
@@ -64502,6 +64502,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 1511806060374743926}
   _infraLvlRenderer: {fileID: 1376454410545097935}
@@ -64520,7 +64521,6 @@ MonoBehaviour:
   - {fileID: 8529300629696327261}
   - {fileID: 1739045163602852924}
   - {fileID: 311386289685541505}
-  _allowEntHint: {fileID: 7171484697455152435}
   _tileData: {fileID: 11400000, guid: 8ad645230d2b29c4d9831f5c9bad8099, type: 2}
   _coordinate: {x: -5, y: 0}
   _incomes: []
@@ -64799,6 +64799,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6726149724224435670}
   _infraLvlRenderer: {fileID: 4199843210303765013}
@@ -64817,7 +64818,6 @@ MonoBehaviour:
   - {fileID: 2478394372021163007}
   - {fileID: 6650299425760295608}
   - {fileID: 6391809250325160568}
-  _allowEntHint: {fileID: 7214988028745447072}
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 1, y: 5}
   _incomes:
@@ -64916,6 +64916,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 8389294294980886542}
   _infraLvlRenderer: {fileID: 6364222042747331433}
@@ -64934,7 +64935,6 @@ MonoBehaviour:
   - {fileID: 165280076355775029}
   - {fileID: 7529981572107728402}
   - {fileID: 7814801435849860548}
-  _allowEntHint: {fileID: 2159607090195395962}
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 3, y: -4}
   _incomes:
@@ -65303,6 +65303,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 2689827665629382589}
   _infraLvlRenderer: {fileID: 7891937575651992750}
@@ -65321,7 +65322,6 @@ MonoBehaviour:
   - {fileID: 7809591326135072748}
   - {fileID: 9161006392536275239}
   - {fileID: 2248812905105158081}
-  _allowEntHint: {fileID: 9139883071710306028}
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 1, y: 4}
   _incomes: []
@@ -65904,6 +65904,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7318706517999079325}
   _infraLvlRenderer: {fileID: 2742394147347999707}
@@ -65922,7 +65923,6 @@ MonoBehaviour:
   - {fileID: 4687391532413188555}
   - {fileID: 5144128469710627}
   - {fileID: 7716344343256414496}
-  _allowEntHint: {fileID: 7832200881624558787}
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 1, y: 1}
   _incomes:
@@ -70004,6 +70004,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6772186944301214331}
   _infraLvlRenderer: {fileID: 2727967052454688553}
@@ -70022,7 +70023,6 @@ MonoBehaviour:
   - {fileID: 8054486247724214528}
   - {fileID: 7254265618925902340}
   - {fileID: 1922844707331300255}
-  _allowEntHint: {fileID: 2326780509223529010}
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -2, y: -4}
   _incomes: []
@@ -70749,6 +70749,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 3066366726393014850}
   _infraLvlRenderer: {fileID: 4558352912036820433}
@@ -70767,7 +70768,6 @@ MonoBehaviour:
   - {fileID: 5978657083792853941}
   - {fileID: 8636570954308934608}
   - {fileID: 4932163458928943570}
-  _allowEntHint: {fileID: 2158477158251237398}
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -3, y: -4}
   _incomes: []
@@ -71351,6 +71351,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6565998586886084537}
   _infraLvlRenderer: {fileID: 3204828103358948134}
@@ -71369,7 +71370,6 @@ MonoBehaviour:
   - {fileID: 6154646711697931043}
   - {fileID: 608407823665725544}
   - {fileID: 3740975857733041868}
-  _allowEntHint: {fileID: 5055484102185366900}
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 2, y: 5}
   _incomes:
@@ -72930,6 +72930,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 2972789753147842292}
   _infraLvlRenderer: {fileID: 2915591199167886441}
@@ -72948,7 +72949,6 @@ MonoBehaviour:
   - {fileID: 7096012341073281060}
   - {fileID: 1534197810450684257}
   - {fileID: 873845622578594792}
-  _allowEntHint: {fileID: 5475652335937844954}
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 0, y: 2}
   _incomes:
@@ -73498,6 +73498,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 1930422499137821346}
   _infraLvlRenderer: {fileID: 7494236902170497608}
@@ -73516,7 +73517,6 @@ MonoBehaviour:
   - {fileID: 3278736230018593205}
   - {fileID: 1125863280572503382}
   - {fileID: 5794687306590921427}
-  _allowEntHint: {fileID: 8316108643628913790}
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 0, y: 1}
   _incomes:
@@ -76295,6 +76295,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7544718048136427223}
   _infraLvlRenderer: {fileID: 1249172442507794094}
@@ -76313,7 +76314,6 @@ MonoBehaviour:
   - {fileID: 1261051134687488734}
   - {fileID: 8628578060074780590}
   - {fileID: 1339488209286369105}
-  _allowEntHint: {fileID: 8433326988994454875}
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 1, y: -5}
   _incomes: []
@@ -80454,6 +80454,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 2421570923674064780}
   _infraLvlRenderer: {fileID: 3070955019572401100}
@@ -80472,7 +80473,6 @@ MonoBehaviour:
   - {fileID: 6058754204544931676}
   - {fileID: 1102359627367803958}
   - {fileID: 8151461859745232851}
-  _allowEntHint: {fileID: 889018724199299086}
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -3, y: 4}
   _incomes:
@@ -85566,6 +85566,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5740014029421583418}
   _infraLvlRenderer: {fileID: 8647475521402304803}
@@ -85584,7 +85585,6 @@ MonoBehaviour:
   - {fileID: 3787026990390751446}
   - {fileID: 1268246394149455102}
   - {fileID: 2391393667665992301}
-  _allowEntHint: {fileID: 1580304823967401875}
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 2, y: -4}
   _incomes:
@@ -87059,6 +87059,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 8553706860975327766}
   _infraLvlRenderer: {fileID: 8104644830637303934}
@@ -87077,7 +87078,6 @@ MonoBehaviour:
   - {fileID: 7999865799877213279}
   - {fileID: 5373109466403121044}
   - {fileID: 752555057907503083}
-  _allowEntHint: {fileID: 1259425779585366016}
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 2, y: -1}
   _incomes:
@@ -88863,6 +88863,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7109121141531513629}
   _infraLvlRenderer: {fileID: 6492500166034425083}
@@ -88881,7 +88882,6 @@ MonoBehaviour:
   - {fileID: 1145241513564190369}
   - {fileID: 4242185322813546579}
   - {fileID: 4756676199586861763}
-  _allowEntHint: {fileID: 2969723140571649524}
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 0, y: 3}
   _incomes:
@@ -91852,6 +91852,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 2682643342676887050}
   _infraLvlRenderer: {fileID: 6831707429158651907}
@@ -91870,7 +91871,6 @@ MonoBehaviour:
   - {fileID: 313709455873150323}
   - {fileID: 4212968761286215102}
   - {fileID: 52879866847376569}
-  _allowEntHint: {fileID: 8637264673090207236}
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 2, y: 2}
   _incomes:
@@ -100231,6 +100231,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 8067394683935596953}
   _infraLvlRenderer: {fileID: 4212799472898221759}
@@ -100249,7 +100250,6 @@ MonoBehaviour:
   - {fileID: 8338026276662121284}
   - {fileID: 3888171766900208322}
   - {fileID: 686233498054451881}
-  _allowEntHint: {fileID: 9030823959701006012}
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 0, y: -5}
   _incomes: []
@@ -100704,6 +100704,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 1309614933769085210}
   _infraLvlRenderer: {fileID: 6585530486800456611}
@@ -100722,7 +100723,6 @@ MonoBehaviour:
   - {fileID: 3409089722090974480}
   - {fileID: 7051638088288356744}
   - {fileID: 4364712149193079956}
-  _allowEntHint: {fileID: 8189972873401667551}
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -3, y: 5}
   _incomes: []
@@ -101272,6 +101272,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 1100452132734808896}
   _infraLvlRenderer: {fileID: 5222506148911958920}
@@ -101290,7 +101291,6 @@ MonoBehaviour:
   - {fileID: 2785068836729076988}
   - {fileID: 1923598485060041039}
   - {fileID: 6282187653155654451}
-  _allowEntHint: {fileID: 6393213544405084975}
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 0, y: -4}
   _incomes: []
@@ -102110,6 +102110,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 2366866144248907867}
   _infraLvlRenderer: {fileID: 3758062411509640101}
@@ -102128,7 +102129,6 @@ MonoBehaviour:
   - {fileID: 5985180104187181375}
   - {fileID: 2649738796632853051}
   - {fileID: 7901580054024854214}
-  _allowEntHint: {fileID: 6565811348139625832}
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -3, y: -2}
   _incomes:
@@ -103336,6 +103336,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 4860420992427855961}
   _infraLvlRenderer: {fileID: 6603624521100666618}
@@ -103354,7 +103355,6 @@ MonoBehaviour:
   - {fileID: 6210622722601612814}
   - {fileID: 2432856740606020442}
   - {fileID: 6414865735713822899}
-  _allowEntHint: {fileID: 4485111366586348323}
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -4, y: 3}
   _incomes:
@@ -103544,6 +103544,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 68493203300190686}
   _infraLvlRenderer: {fileID: 3144246146272884611}
@@ -103562,7 +103563,6 @@ MonoBehaviour:
   - {fileID: 4781910801902216157}
   - {fileID: 8640967966126192954}
   - {fileID: 126211307014814249}
-  _allowEntHint: {fileID: 7744552368827152428}
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: -5, y: 1}
   _incomes: []
@@ -103954,6 +103954,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 2776254459378202593}
   _infraLvlRenderer: {fileID: 1332108032897017280}
@@ -103972,7 +103973,6 @@ MonoBehaviour:
   - {fileID: 8699216170188713902}
   - {fileID: 8278645369539078135}
   - {fileID: 7445759089587978575}
-  _allowEntHint: {fileID: 3188685657853005091}
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 2, y: -2}
   _incomes:
@@ -104914,6 +104914,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 3650942203201850565}
   _infraLvlRenderer: {fileID: 6220527072476821444}
@@ -104932,7 +104933,6 @@ MonoBehaviour:
   - {fileID: 1662292985469474685}
   - {fileID: 841796396782866793}
   - {fileID: 7225716379122812839}
-  _allowEntHint: {fileID: 4564512013214074032}
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -3, y: -5}
   _incomes: []
@@ -107726,6 +107726,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5617617982385293660}
   _infraLvlRenderer: {fileID: 9066209281256359258}
@@ -107744,7 +107745,6 @@ MonoBehaviour:
   - {fileID: 2875461644289377366}
   - {fileID: 6313857785139662732}
   - {fileID: 5429178685083522964}
-  _allowEntHint: {fileID: 816318817808692262}
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: 3, y: -1}
   _incomes: []
@@ -108610,6 +108610,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6902954944993411797}
   _infraLvlRenderer: {fileID: 8938285638382266968}
@@ -108628,7 +108629,6 @@ MonoBehaviour:
   - {fileID: 5647598664465635663}
   - {fileID: 5442082452135782744}
   - {fileID: 4292720596473022088}
-  _allowEntHint: {fileID: 9121473329724405669}
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -2, y: -1}
   _incomes:
@@ -111254,6 +111254,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 621699460701975103}
   _infraLvlRenderer: {fileID: 4871064328995350167}
@@ -111272,7 +111273,6 @@ MonoBehaviour:
   - {fileID: 5485711599722981212}
   - {fileID: 9054824137892360553}
   - {fileID: 5876694980161178073}
-  _allowEntHint: {fileID: 1437798257938966186}
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: 0, y: 4}
   _incomes: []
@@ -111460,6 +111460,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6640631346416340046}
   _infraLvlRenderer: {fileID: 7166726411765046724}
@@ -111478,7 +111479,6 @@ MonoBehaviour:
   - {fileID: 2860418356453521442}
   - {fileID: 8164559318711876583}
   - {fileID: 1864770475725726601}
-  _allowEntHint: {fileID: 2400142274783656014}
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 3, y: 2}
   _incomes:
@@ -115341,6 +115341,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6547070548880147882}
   _infraLvlRenderer: {fileID: 3948561670104130181}
@@ -115359,7 +115360,6 @@ MonoBehaviour:
   - {fileID: 953518375335516072}
   - {fileID: 1849660053797235094}
   - {fileID: 3957598459939111022}
-  _allowEntHint: {fileID: 6313793403344576027}
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 0, y: -1}
   _incomes:
@@ -120241,6 +120241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7079872725185182863}
   _infraLvlRenderer: {fileID: 8305329634501178063}
@@ -120259,7 +120260,6 @@ MonoBehaviour:
   - {fileID: 7391479253633472314}
   - {fileID: 8259316622976416125}
   - {fileID: 3573279402278991738}
-  _allowEntHint: {fileID: 879254744288203155}
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: 3, y: -3}
   _incomes: []
@@ -121679,6 +121679,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5663468896923976017}
   _infraLvlRenderer: {fileID: 8223882505369645360}
@@ -121697,7 +121698,6 @@ MonoBehaviour:
   - {fileID: 4577043994133470679}
   - {fileID: 2537051234163433088}
   - {fileID: 2067295473762086775}
-  _allowEntHint: {fileID: 3151339870927316645}
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: -3, y: 3}
   _incomes: []
@@ -126084,6 +126084,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7313484971653842768}
   _infraLvlRenderer: {fileID: 1542127759245613355}
@@ -126102,7 +126103,6 @@ MonoBehaviour:
   - {fileID: 7409586217208536001}
   - {fileID: 5434565854132068571}
   - {fileID: 1058164454255138773}
-  _allowEntHint: {fileID: 1961919677361721180}
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: -5, y: -1}
   _incomes: []
@@ -127105,6 +127105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 210111827254930927}
   _infraLvlRenderer: {fileID: 3446150856505221276}
@@ -127123,7 +127124,6 @@ MonoBehaviour:
   - {fileID: 6452394120084414451}
   - {fileID: 4050924236222916069}
   - {fileID: 9220625556920674867}
-  _allowEntHint: {fileID: 6173101731274347429}
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 1, y: -2}
   _incomes:
@@ -131271,6 +131271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6715682853100783071}
   _infraLvlRenderer: {fileID: 4048997139878609881}
@@ -131289,7 +131290,6 @@ MonoBehaviour:
   - {fileID: 7483492812585868615}
   - {fileID: 2979101406698502245}
   - {fileID: 7719337339733504010}
-  _allowEntHint: {fileID: 5451725937866012324}
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -3, y: 1}
   _incomes:
@@ -134010,6 +134010,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5514488469848962003}
   _infraLvlRenderer: {fileID: 6149597614402297397}
@@ -134028,7 +134029,6 @@ MonoBehaviour:
   - {fileID: 5242573450004327228}
   - {fileID: 1406296823345122137}
   - {fileID: 132147921090534045}
-  _allowEntHint: {fileID: 668826152162967733}
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: 4, y: 2}
   _incomes: []
@@ -134486,6 +134486,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 3023396367136490990}
   _infraLvlRenderer: {fileID: 4582176495983525817}
@@ -134504,7 +134505,6 @@ MonoBehaviour:
   - {fileID: 2026268343151601243}
   - {fileID: 2523304136091252826}
   - {fileID: 3667564284842189952}
-  _allowEntHint: {fileID: 8669532363143120477}
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -2, y: 3}
   _incomes:
@@ -137191,6 +137191,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 810212892710864757}
   _infraLvlRenderer: {fileID: 107422850504822548}
@@ -137209,7 +137210,6 @@ MonoBehaviour:
   - {fileID: 4153798372863280627}
   - {fileID: 6666041427786937684}
   - {fileID: 2880423614344085377}
-  _allowEntHint: {fileID: 957901258545398815}
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -2, y: 5}
   _incomes:
@@ -138518,6 +138518,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 4851507949884498619}
   _infraLvlRenderer: {fileID: 1980742831823814099}
@@ -138536,7 +138537,6 @@ MonoBehaviour:
   - {fileID: 5825748141627258778}
   - {fileID: 6117693436617400665}
   - {fileID: 2159203490829405492}
-  _allowEntHint: {fileID: 2625381937188834507}
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 2, y: -3}
   _incomes:
@@ -141655,6 +141655,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 2847193348226550753}
   _infraLvlRenderer: {fileID: 5492065389726471546}
@@ -141673,7 +141674,6 @@ MonoBehaviour:
   - {fileID: 8274641788176662200}
   - {fileID: 3757140511530791118}
   - {fileID: 2825135562895922753}
-  _allowEntHint: {fileID: 5251964560056174916}
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -2, y: -2}
   _incomes:
@@ -141951,6 +141951,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5633175843028501923}
   _infraLvlRenderer: {fileID: 7437200109014926974}
@@ -141969,7 +141970,6 @@ MonoBehaviour:
   - {fileID: 9109931598528648238}
   - {fileID: 3274144861462158154}
   - {fileID: 4183546855140595721}
-  _allowEntHint: {fileID: 8171507151080542705}
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 1, y: -1}
   _incomes:
@@ -142159,6 +142159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 8402648805006493697}
   _infraLvlRenderer: {fileID: 9029681850332843830}
@@ -142177,7 +142178,6 @@ MonoBehaviour:
   - {fileID: 3597561264178054096}
   - {fileID: 7084825371603319830}
   - {fileID: 4639039123296368855}
-  _allowEntHint: {fileID: 1979523990600744670}
   _tileData: {fileID: 11400000, guid: 2fba8d1112a3b5948b49f83a1c0274ea, type: 2}
   _coordinate: {x: 4, y: 0}
   _incomes: []
@@ -143089,6 +143089,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7028498040450551414}
   _infraLvlRenderer: {fileID: 1349423024724743319}
@@ -143107,7 +143108,6 @@ MonoBehaviour:
   - {fileID: 4742744533470338415}
   - {fileID: 1914838410627805644}
   - {fileID: 756762191729364321}
-  _allowEntHint: {fileID: 2052803143001939199}
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 0, y: 0}
   _incomes:
@@ -147880,6 +147880,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6738576008519025150}
   _infraLvlRenderer: {fileID: 5230087923452269368}
@@ -147898,7 +147899,6 @@ MonoBehaviour:
   - {fileID: 9181725648428622694}
   - {fileID: 6787953227599047894}
   - {fileID: 9093333254869596774}
-  _allowEntHint: {fileID: 9203405228289571073}
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -1, y: 4}
   _incomes:
@@ -148766,6 +148766,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 455344403186794454}
   _infraLvlRenderer: {fileID: 8649418341462998917}
@@ -148784,7 +148785,6 @@ MonoBehaviour:
   - {fileID: 5625108389648199126}
   - {fileID: 7212941293056905678}
   - {fileID: 2024249717725861630}
-  _allowEntHint: {fileID: 5962952456641128990}
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 1, y: 2}
   _incomes:
@@ -153938,6 +153938,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 3484565329316133210}
   _infraLvlRenderer: {fileID: 3215890471482195841}
@@ -153956,7 +153957,6 @@ MonoBehaviour:
   - {fileID: 5571838705424257836}
   - {fileID: 1488873128956288441}
   - {fileID: 278328709718034900}
-  _allowEntHint: {fileID: 2490954353349837900}
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 2, y: 0}
   _incomes:
@@ -156331,6 +156331,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 4246501007221880156}
   _infraLvlRenderer: {fileID: 7244948162070327455}
@@ -156349,7 +156350,6 @@ MonoBehaviour:
   - {fileID: 1697594387540886811}
   - {fileID: 9073543795618443927}
   - {fileID: 1536372971780058735}
-  _allowEntHint: {fileID: 378994783794430342}
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: -1, y: -3}
   _incomes: []
@@ -156537,6 +156537,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 3705405810419857543}
   _infraLvlRenderer: {fileID: 4890746688166722522}
@@ -156555,7 +156556,6 @@ MonoBehaviour:
   - {fileID: 2601310967054689852}
   - {fileID: 423352173020980613}
   - {fileID: 2024529207005198974}
-  _allowEntHint: {fileID: 3776079752676627258}
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: 1, y: 3}
   _incomes:
@@ -161331,6 +161331,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 8605462630096407846}
   _infraLvlRenderer: {fileID: 5289992993265070136}
@@ -161349,7 +161350,6 @@ MonoBehaviour:
   - {fileID: 6431584855306100469}
   - {fileID: 1837946283921845837}
   - {fileID: 7464710939394910817}
-  _allowEntHint: {fileID: 8247361618126069932}
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 0, y: 5}
   _incomes:
@@ -166055,6 +166055,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5333064596517566995}
   _infraLvlRenderer: {fileID: 222734560662236705}
@@ -166073,7 +166074,6 @@ MonoBehaviour:
   - {fileID: 7714651719792786074}
   - {fileID: 3474934941955231334}
   - {fileID: 8888368323511897896}
-  _allowEntHint: {fileID: 1201827019492266210}
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 3, y: 4}
   _incomes:
@@ -171903,6 +171903,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7350497246726594003}
   _infraLvlRenderer: {fileID: 8628728131183417687}
@@ -171921,7 +171922,6 @@ MonoBehaviour:
   - {fileID: 2572783141228896159}
   - {fileID: 6920826719257821429}
   - {fileID: 460608809758178648}
-  _allowEntHint: {fileID: 774932022881809793}
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -2, y: 2}
   _incomes:
@@ -173835,6 +173835,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7515197882939310351}
   _infraLvlRenderer: {fileID: 5809678523779773812}
@@ -173853,7 +173854,6 @@ MonoBehaviour:
   - {fileID: 2989255018511316489}
   - {fileID: 8027966800660821039}
   - {fileID: 8691811215197759184}
-  _allowEntHint: {fileID: 2018155741742857197}
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: -2, y: -5}
   _incomes:
@@ -181785,6 +181785,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7929945511975121764}
   _infraLvlRenderer: {fileID: 656846133167000142}
@@ -181803,7 +181804,6 @@ MonoBehaviour:
   - {fileID: 5792093536882834217}
   - {fileID: 8497861575603133233}
   - {fileID: 7721671792671446611}
-  _allowEntHint: {fileID: 4088975254593872111}
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 3, y: 0}
   _incomes:
@@ -182356,6 +182356,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 3111432087506798378}
   _infraLvlRenderer: {fileID: 808487283819332902}
@@ -182374,7 +182375,6 @@ MonoBehaviour:
   - {fileID: 6681767073319827093}
   - {fileID: 6906253253210025135}
   - {fileID: 3364012608441666368}
-  _allowEntHint: {fileID: 8188687540496831911}
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -2, y: 0}
   _incomes:
@@ -185543,6 +185543,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7519263822947891814}
   _infraLvlRenderer: {fileID: 879335912185672753}
@@ -185561,7 +185562,6 @@ MonoBehaviour:
   - {fileID: 7821332725765847892}
   - {fileID: 6485650319695978649}
   - {fileID: 8433753085677347700}
-  _allowEntHint: {fileID: 6432178809898110292}
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -1, y: 1}
   _incomes:
@@ -185660,6 +185660,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 4446706030350321058}
   _infraLvlRenderer: {fileID: 8542437819668623572}
@@ -185678,7 +185679,6 @@ MonoBehaviour:
   - {fileID: 1929458807447925908}
   - {fileID: 4811875673185565257}
   - {fileID: 5904810663018420319}
-  _allowEntHint: {fileID: 5804082921546595201}
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -1, y: -1}
   _incomes:
@@ -186588,6 +186588,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6581709035164436678}
   _infraLvlRenderer: {fileID: 6423046651720552388}
@@ -186606,7 +186607,6 @@ MonoBehaviour:
   - {fileID: 4462571113415845441}
   - {fileID: 5701958209411438462}
   - {fileID: 8563043566683504146}
-  _allowEntHint: {fileID: 8352660710547178196}
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -3, y: -3}
   _incomes: []
@@ -187693,6 +187693,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 1019935592692931368}
   _infraLvlRenderer: {fileID: 984227055128185247}
@@ -187711,7 +187712,6 @@ MonoBehaviour:
   - {fileID: 7509206728126040781}
   - {fileID: 8717103908592667911}
   - {fileID: 3441750286638509522}
-  _allowEntHint: {fileID: 8152811665611803361}
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: 1, y: -3}
   _incomes:
@@ -188620,6 +188620,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 8609361578432203514}
   _infraLvlRenderer: {fileID: 373167531147426051}
@@ -188638,7 +188639,6 @@ MonoBehaviour:
   - {fileID: 1722854853172622595}
   - {fileID: 8670875287387829138}
   - {fileID: 2544057407884690337}
-  _allowEntHint: {fileID: 2565165789458178782}
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -2, y: -3}
   _incomes:
@@ -190391,6 +190391,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 4067745918858368547}
   _infraLvlRenderer: {fileID: 8942035914225573140}
@@ -190409,7 +190410,6 @@ MonoBehaviour:
   - {fileID: 7732748964414538963}
   - {fileID: 2073729275932258343}
   - {fileID: 6211997075842989287}
-  _allowEntHint: {fileID: 8370712929761833404}
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: -4, y: 1}
   _incomes: []
@@ -195820,6 +195820,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 275323448629404514}
   _infraLvlRenderer: {fileID: 1451198797386013636}
@@ -195838,7 +195839,6 @@ MonoBehaviour:
   - {fileID: 2708167334289577998}
   - {fileID: 4603595368650576371}
   - {fileID: 2961501961124680419}
-  _allowEntHint: {fileID: 7325942748940661738}
   _tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
   _coordinate: {x: 2, y: 3}
   _incomes: []
@@ -201936,6 +201936,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 8464313989291765412}
   _infraLvlRenderer: {fileID: 3471467884492935585}
@@ -201954,7 +201955,6 @@ MonoBehaviour:
   - {fileID: 5157131232242443412}
   - {fileID: 4260448710975997414}
   - {fileID: 75910361911202899}
-  _allowEntHint: {fileID: 6398326370909325973}
   _tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
   _coordinate: {x: -3, y: 0}
   _incomes:
@@ -202868,6 +202868,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5634886688826345465}
   _infraLvlRenderer: {fileID: 3019911902898549094}
@@ -202886,7 +202887,6 @@ MonoBehaviour:
   - {fileID: 6759938277205555211}
   - {fileID: 1255993274221656729}
   - {fileID: 3913067679401926882}
-  _allowEntHint: {fileID: 2256080340412887321}
   _tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
   _coordinate: {x: 2, y: -5}
   _incomes:
@@ -204440,6 +204440,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 1576201756339836620}
   _infraLvlRenderer: {fileID: 5466016443957970327}
@@ -204458,7 +204459,6 @@ MonoBehaviour:
   - {fileID: 1100310812972730029}
   - {fileID: 5326207773714491394}
   - {fileID: 3549649691455579584}
-  _allowEntHint: {fileID: 9124221916815302819}
   _tileData: {fileID: 11400000, guid: 36897818b9ff93040b6d053de7c55782, type: 2}
   _coordinate: {x: -1, y: 3}
   _incomes: []
@@ -205635,6 +205635,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 3333802457173205472}
   _infraLvlRenderer: {fileID: 5006165877493006602}
@@ -205653,7 +205654,6 @@ MonoBehaviour:
   - {fileID: 381178646337431556}
   - {fileID: 3308139016841630718}
   - {fileID: 168759272232863681}
-  _allowEntHint: {fileID: 538129190187335916}
   _tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
   _coordinate: {x: -3, y: 2}
   _incomes:
@@ -209808,6 +209808,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
+  _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 4313773550581445033}
   _infraLvlRenderer: {fileID: 6153123842581742613}
@@ -209826,7 +209827,6 @@ MonoBehaviour:
   - {fileID: 7260564834556674680}
   - {fileID: 8848114990273835314}
   - {fileID: 1848651615320188704}
-  _allowEntHint: {fileID: 7135003507123096079}
   _tileData: {fileID: 11400000, guid: 520b9ec8c112c9541a014d54dd528aec, type: 2}
   _coordinate: {x: -1, y: -5}
   _incomes: []

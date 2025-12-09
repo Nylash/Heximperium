@@ -389,6 +389,8 @@ public class GameManager : Singleton<GameManager>
                     OnLastTurnStarted?.Invoke();
                 }
                 OnNewTurn?.Invoke(_turnCounter);
+                if (_turnCounter == 2)
+                    PopUpManager.Instance.ShowFiltersTutoPopUp();
             }
         }
         InvokePhaseStartEvent(_currentPhase);

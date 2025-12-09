@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5208cd361e4d37b4e8cbf1c3d07f7748, type: 3}
   m_Name: MysticGardenEffect
   m_EditorClassIdentifier: 
-  _boost: 10
+  _originalAsset: {fileID: 0}
+  _boost: 15

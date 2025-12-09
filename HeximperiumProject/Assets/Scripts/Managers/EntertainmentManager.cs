@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 using System.Collections;
 
 public class EntertainmentManager : PhaseManager<EntertainmentManager>
@@ -96,8 +95,8 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     public event Action<Entertainment> OnEntertainmentSpawned;
     public event Action<EntertainmentData, Tile> OnEntertainmentRemoved;
     public event Action OnScoreUpdated;
-    public event Action<Tile, int> OnScoreGained;
-    public Action<Tile, int> OnScoreLost;//Directly called by Entertainment when it lose points (or by the manager on destroy)
+    public Action<Tile, int> OnScoreGained;//Directly called by Entertainment when it gains points
+    public Action<Tile, int> OnScoreLost;//Directly called by Entertainment when it loses points (or by the manager on destroy)
     //Tutorial event
     public event Action OnTileAllowingEntSelected;
     #endregion
@@ -311,7 +310,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     }
     #endregion
 
-    public void UpdateScore(int value, Transaction transaction, Tile tile = null, bool skipVFX = false)
+    public void UpdateScore(int value, Transaction transaction)
     {
         if (transaction == Transaction.Spent)
             value = -value;
@@ -320,13 +319,6 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
 
         if (_isPredictingPoints)
             return;
-
-        if (!skipVFX)
-        {
-            //Play VFX if we gain score
-            if (tile != null && transaction == Transaction.Gain)
-                OnScoreGained?.Invoke(tile, value);
-        }
 
         OnScoreUpdated?.Invoke();
     }

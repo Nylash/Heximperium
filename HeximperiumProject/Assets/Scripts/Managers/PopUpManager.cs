@@ -13,13 +13,13 @@ public class PopUpManager : Singleton<PopUpManager>
     const string LOCK_POPUP_TUTO_KEY = "LockPopupTutoShown";
     const string UPGRADE_TUTO_KEY = "UpgradeTutoShown";
     const string SAVINGS_TUTO_KEY = "SavingsTutoShown";
+    const string FILTERS_TUTO_KEY = "FiltersTutoShown";
     #endregion
 
     #region CONFIGURATION
     [Header("_________________________________________________________")]
     [Header("Spawning Configuration")]
     [SerializeField] private Transform _popUpParent;
-    [SerializeField] private Transform _popUpLockObjectParent;
     [SerializeField] private float _durationHoverForUI = 1f;
     [SerializeField][Range(0f,1f)] private float _percentageOfTimerForVisualHint = 0.75f;
     [SerializeField] private Image _timerOverImage;
@@ -46,6 +46,7 @@ public class PopUpManager : Singleton<PopUpManager>
     [SerializeField] private Animator _lockPopupTutoPopup;
     [SerializeField] private Animator _upgradeTutoPopup;
     [SerializeField] private Animator _savingsTutoPopup;
+    [SerializeField] private Animator _filtersTutoPopup;
     #endregion
 
     #region VARIABLES
@@ -962,11 +963,35 @@ public class PopUpManager : Singleton<PopUpManager>
             {
                 totalGiven = Utilities.MergeResourceToIntMaps(totalGiven, kvp.Value);
             }
-            incomeGiven.text = $"({totalGiven.IncomeToString()} given over " +
-                $"{tile.ImpactedTilesIncomes.Count} other {(tile.ImpactedTilesIncomes.Count > 1 ? "tiles" : "tile")}" +
-                ", through effects or sheer presence)";
+            incomeGiven.text = $"Provides {totalGiven.IncomeToString()} over " +
+                $"{tile.ImpactedTilesIncomes.Count} other {(tile.ImpactedTilesIncomes.Count > 1 ? "tiles" : "tile")}";
             incomeGiven.alignment = TextAlignmentOptions.Center;
             textObjects.Add(incomeGiven.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region INCOMES GIVEN DESTINATION
+        if (_showSourcesOnPopUp)
+        {
+            if (tile.ImpactedTilesIncomes.Count > 0)
+            {
+                TextMeshProUGUI incomeGivenDest = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                Dictionary<TileData, List<ResourceToIntMap>> datas = new Dictionary<TileData, List<ResourceToIntMap>>();
+                foreach (var kvp in tile.ImpactedTilesIncomes)
+                {
+                    if (datas.ContainsKey(kvp.Key.TileData))
+                        datas[kvp.Key.TileData] = Utilities.MergeResourceToIntMaps(datas[kvp.Key.TileData], kvp.Value);
+                    else
+                        datas.Add(kvp.Key.TileData, Utilities.CloneResourceToIntMaps(kvp.Value));
+                }
+                foreach (var kvpBis in datas)
+                {
+                    incomeGivenDest.text += "(" + kvpBis.Value.IncomeToString() + " to " + kvpBis.Key.TileName + ")" + "\n";
+                }
+                incomeGivenDest.alignment = TextAlignmentOptions.Center;
+                incomeGivenDest.fontStyle = FontStyles.Italic;
+                textObjects.Add(incomeGivenDest.GetComponent<RectTransform>());
+            }
         }
         #endregion
 
@@ -981,6 +1006,20 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
+        #region CARNIVALIST SOURCES
+        if (_showSourcesOnPopUp)
+        {
+            if (tile.RecruitedCarnivalists > 0)
+            {
+                TextMeshProUGUI sourceCarn = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                sourceCarn.text = "(" + tile.RecruitedCarnivalists + "<sprite name=\"Carnivalist_Emoji\"> based on the tile effects)";
+                sourceCarn.alignment = TextAlignmentOptions.Center;
+                sourceCarn.fontStyle = FontStyles.Italic;
+                textObjects.Add(sourceCarn.GetComponent<RectTransform>());
+            }
+        }
+        #endregion
+
         #region CARNIVALISTS GIVEN
         if (tile.ImpactedTilesCarnivalists.Count > 0)
         {
@@ -990,11 +1029,35 @@ public class PopUpManager : Singleton<PopUpManager>
             {
                 totalCarnivalists += kvp.Value;
             }
-            carnivalistsGiven.text = $"({totalCarnivalists}<sprite name=\"Carnivalist_Emoji\"> given over " +
-                $"{tile.ImpactedTilesCarnivalists.Count} other {(tile.ImpactedTilesCarnivalists.Count > 1 ? "tiles" : "tile")}" +
-                ", through effects or sheer presence)";
+            carnivalistsGiven.text = $"Provides {totalCarnivalists}<sprite name=\"Carnivalist_Emoji\"> over " +
+                $"{tile.ImpactedTilesCarnivalists.Count} other {(tile.ImpactedTilesCarnivalists.Count > 1 ? "tiles" : "tile")}";
             carnivalistsGiven.alignment = TextAlignmentOptions.Center;
             textObjects.Add(carnivalistsGiven.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region CARNIVALISTS GIVEN DESTINATION
+        if (_showSourcesOnPopUp)
+        {
+            if (tile.ImpactedTilesCarnivalists.Count > 0)
+            {
+                TextMeshProUGUI carnivalistsGivenDest = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                Dictionary<TileData, int> datas = new Dictionary<TileData, int>();
+                foreach (var kvp in tile.ImpactedTilesCarnivalists)
+                {
+                    if (datas.ContainsKey(kvp.Key.TileData))
+                        datas[kvp.Key.TileData] += kvp.Value;
+                    else
+                        datas.Add(kvp.Key.TileData, kvp.Value);
+                }
+                foreach (var kvpBis in datas)
+                {
+                    carnivalistsGivenDest.text += "(" + kvpBis.Value + "<sprite name=\"Carnivalist_Emoji\"> to " + kvpBis.Key.TileName + ")" + "\n";
+                }
+                carnivalistsGivenDest.alignment = TextAlignmentOptions.Center;
+                carnivalistsGivenDest.fontStyle = FontStyles.Italic;
+                textObjects.Add(carnivalistsGivenDest.GetComponent<RectTransform>());
+            }
         }
         #endregion
 
@@ -1007,11 +1070,35 @@ public class PopUpManager : Singleton<PopUpManager>
                 totalPoints += kvp.Value;
             }
             TextMeshProUGUI boostedEnt = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            boostedEnt.text += "(+" + totalPoints + "<sprite name=\"Point_Emoji\"> given over "
-                + tile.EntImpactedByTile.Count + " " + Family.Entertainment.ToCustomString(tile.EntImpactedByTile.Count > 1)
-                + ", through effects or sheer presence)";
+            boostedEnt.text += "Provides +" + totalPoints + "<sprite name=\"Point_Emoji\"> over "
+                + tile.EntImpactedByTile.Count + " " + Family.Entertainment.ToCustomString(tile.EntImpactedByTile.Count > 1);
             boostedEnt.alignment = TextAlignmentOptions.Center;
             textObjects.Add(boostedEnt.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region BOOSTED ENT DESTINATION
+        if (_showSourcesOnPopUp)
+        {
+            if (tile.EntImpactedByTile.Count > 0)
+            {
+                TextMeshProUGUI boostedEntDest = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                Dictionary<EntertainmentData, int> datas = new Dictionary<EntertainmentData, int>();
+                foreach (var kvp in tile.EntImpactedByTile)
+                {
+                    if (datas.ContainsKey(kvp.Key.Entertainment.Data))
+                        datas[kvp.Key.Entertainment.Data] += kvp.Value;
+                    else
+                        datas.Add(kvp.Key.Entertainment.Data, kvp.Value);
+                }
+                foreach (var kvpBis in datas)
+                {
+                    boostedEntDest.text += "(" + kvpBis.Value + "<sprite name=\"Point_Emoji\"> to " + kvpBis.Key.Type.ToCustomString(false) + ")" + "\n";
+                }
+                boostedEntDest.alignment = TextAlignmentOptions.Center;
+                boostedEntDest.fontStyle = FontStyles.Italic;
+                textObjects.Add(boostedEntDest.GetComponent<RectTransform>());
+            }
         }
         #endregion
 
@@ -1316,11 +1403,35 @@ public class PopUpManager : Singleton<PopUpManager>
             {
                 pointsGivenValue += kvp.Value;
             }
-            pointsGiven.text = "(+" + pointsGivenValue + "<sprite name=\"Point_Emoji\"> given over "
-                + ent.Tile.EntImpactedByEntertainment.Count + " other " + Family.Entertainment.ToCustomString(ent.Tile.EntImpactedByEntertainment.Count > 1) 
-                + ", through effects or sheer presence)";
+            pointsGiven.text = "Provides +" + pointsGivenValue + "<sprite name=\"Point_Emoji\"> over "
+                + ent.Tile.EntImpactedByEntertainment.Count + " other " + Family.Entertainment.ToCustomString(ent.Tile.EntImpactedByEntertainment.Count > 1); 
             pointsGiven.alignment = TextAlignmentOptions.Center;
             textObjects.Add(pointsGiven.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region POINTS GIVEN DESTINATION
+        if (_showSourcesOnPopUp)
+        {
+            if (ent.Tile.EntImpactedByEntertainment.Count > 0)
+            {
+                TextMeshProUGUI pointsGivenDest = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                Dictionary<EntertainmentData, int> datas = new Dictionary<EntertainmentData, int>();
+                foreach (var kvp in ent.Tile.EntImpactedByEntertainment)
+                {
+                    if (datas.ContainsKey(kvp.Key.Entertainment.Data))
+                        datas[kvp.Key.Entertainment.Data] += kvp.Value;
+                    else
+                        datas.Add(kvp.Key.Entertainment.Data, kvp.Value);
+                }
+                foreach (var kvpBis in datas)
+                {
+                    pointsGivenDest.text += "(+" + kvpBis.Value + "<sprite name=\"Point_Emoji\"> to " + kvpBis.Key.Type.ToCustomString(false) + ")" + "\n";
+                }
+                pointsGivenDest.alignment = TextAlignmentOptions.Center;
+                pointsGivenDest.fontStyle = FontStyles.Italic;
+                textObjects.Add(pointsGivenDest.GetComponent<RectTransform>());
+            }
         }
         #endregion
 
@@ -1594,11 +1705,35 @@ public class PopUpManager : Singleton<PopUpManager>
                 totalPointsGiven += kvp.Value;
             }
             TextMeshProUGUI pointsGiven = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            pointsGiven.text = "(Would give +" + totalPointsGiven + "<sprite name=\"Point_Emoji\"> over " 
-                + predictedEntImpactedByEnt.Count + " other " + Family.Entertainment.ToCustomString(predictedEntImpactedByEnt.Count > 1) 
-                + ", through effects or sheer presence)";
+            pointsGiven.text = "Would provide +" + totalPointsGiven + "<sprite name=\"Point_Emoji\"> over "
+                + predictedEntImpactedByEnt.Count + " other " + Family.Entertainment.ToCustomString(predictedEntImpactedByEnt.Count > 1);
             pointsGiven.alignment = TextAlignmentOptions.Center;
             textObjects.Add(pointsGiven.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region POINTS GIVEN DESTINATION
+        if (_showSourcesOnPopUp)
+        {
+            if (predictedEntImpactedByEnt.Count > 0)
+            {
+                TextMeshProUGUI pointsGivenDest = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                Dictionary<EntertainmentData, int> datas = new Dictionary<EntertainmentData, int>();
+                foreach (var kvp in predictedEntImpactedByEnt)
+                {
+                    if (datas.ContainsKey(kvp.Key.Entertainment.Data))
+                        datas[kvp.Key.Entertainment.Data] += kvp.Value;
+                    else
+                        datas.Add(kvp.Key.Entertainment.Data, kvp.Value);
+                }
+                foreach (var kvpBis in datas)
+                {
+                    pointsGivenDest.text += "(+" + kvpBis.Value + "<sprite name=\"Point_Emoji\"> to " + kvpBis.Key.Type.ToCustomString(false) + ")" + "\n";
+                }
+                pointsGivenDest.alignment = TextAlignmentOptions.Center;
+                pointsGivenDest.fontStyle = FontStyles.Italic;
+                textObjects.Add(pointsGivenDest.GetComponent<RectTransform>());
+            }
         }
         #endregion
 
@@ -1772,11 +1907,41 @@ public class PopUpManager : Singleton<PopUpManager>
             {
                 totalGiven = Utilities.MergeResourceToIntMaps(totalGiven, kvp.Value);
             }
-            incomeGiven.text = $"(Would give {totalGiven.IncomeToString()} over " +
-                $"{predictedImpactedTilesIncomes.Count} other {(predictedImpactedTilesIncomes.Count > 1 ? "tiles" : "tile")}" +
-                ", through effects or sheer presence)";
+            List<ResourceToIntMap> previousTotalGiven = new List<ResourceToIntMap>();
+            foreach (var kvp in button.AssociatedTile.ImpactedTilesIncomes)
+            {
+                previousTotalGiven = Utilities.MergeResourceToIntMaps(previousTotalGiven, kvp.Value);
+            }
+            
+            incomeGiven.text = $"{(Utilities.AreIncomesEqual(totalGiven, previousTotalGiven) ? "Provides" : "Would provide")} {totalGiven.IncomeToString()} over " +
+                $"{predictedImpactedTilesIncomes.Count} other {(predictedImpactedTilesIncomes.Count > 1 ? "tiles" : "tile")}";
             incomeGiven.alignment = TextAlignmentOptions.Center;
             textObjects.Add(incomeGiven.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region INCOME GIVEN DESTINATION
+        if (_showSourcesOnPopUp)
+        {
+            if (predictedImpactedTilesIncomes.Count > 0)
+            {
+                TextMeshProUGUI incomeGivenDest = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                Dictionary<TileData, List<ResourceToIntMap>> datas = new Dictionary<TileData, List<ResourceToIntMap>>();
+                foreach (var kvp in predictedImpactedTilesIncomes)
+                {
+                    if (datas.ContainsKey(kvp.Key.TileData))
+                        datas[kvp.Key.TileData] = Utilities.MergeResourceToIntMaps(datas[kvp.Key.TileData], kvp.Value);
+                    else
+                        datas.Add(kvp.Key.TileData, Utilities.CloneResourceToIntMaps(kvp.Value));
+                }
+                foreach (var kvpBis in datas)
+                {
+                    incomeGivenDest.text += "(" + kvpBis.Value.IncomeToString() + " to " + kvpBis.Key.TileName + ")" + "\n";
+                }
+                incomeGivenDest.alignment = TextAlignmentOptions.Center;
+                incomeGivenDest.fontStyle = FontStyles.Italic;
+                textObjects.Add(incomeGivenDest.GetComponent<RectTransform>());
+            }
         }
         #endregion
 
@@ -1804,6 +1969,20 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
+        #region CARNIVALISTS SOURCES
+        if (_showSourcesOnPopUp)
+        {
+            if (predictectedCarnivalists > 0)
+            {
+                TextMeshProUGUI sourceCarn = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                sourceCarn.text = "(" + predictectedCarnivalists + "<sprite name=\"Carnivalist_Emoji\"> based on the tile effects)";
+                sourceCarn.alignment = TextAlignmentOptions.Center;
+                sourceCarn.fontStyle = FontStyles.Italic;
+                textObjects.Add(sourceCarn.GetComponent<RectTransform>());
+            }
+        }
+        #endregion
+
         #region CARNIVALISTS GIVEN
         if (predictedImpactedTilesCarnivalists.Count > 0)
         {
@@ -1813,11 +1992,40 @@ public class PopUpManager : Singleton<PopUpManager>
             {
                 totalCarnivalists += kvp.Value;
             }
-            carnivalistsGiven.text = $"(Would give {totalCarnivalists}<sprite name=\"Carnivalist_Emoji\"> over " +
-                $"{predictedImpactedTilesCarnivalists.Count} other {(predictedImpactedTilesCarnivalists.Count > 1 ? "tiles" : "tile")}" +
-                ", through effects or sheer presence)";
+            int previousTotalCarnivalists = 0;
+            foreach (var item in button.AssociatedTile.ImpactedTilesCarnivalists)
+            {
+                previousTotalCarnivalists += item.Value;
+            }
+            carnivalistsGiven.text = $"{(totalCarnivalists == previousTotalCarnivalists ? "Provides" : "Would provide")} {totalCarnivalists}<sprite name=\"Carnivalist_Emoji\"> over " +
+                $"{predictedImpactedTilesCarnivalists.Count} other {(predictedImpactedTilesCarnivalists.Count > 1 ? "tiles" : "tile")}";
             carnivalistsGiven.alignment = TextAlignmentOptions.Center;
             textObjects.Add(carnivalistsGiven.GetComponent<RectTransform>());
+        }
+        #endregion
+
+        #region CARNIVALISTS GIVEN DESTINATION
+        if (_showSourcesOnPopUp)
+        {
+            if (predictedImpactedTilesCarnivalists.Count > 0)
+            {
+                TextMeshProUGUI carnivalistsGivenDest = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                Dictionary<TileData, int> datas = new Dictionary<TileData, int>();
+                foreach (var kvp in predictedImpactedTilesCarnivalists)
+                {
+                    if (datas.ContainsKey(kvp.Key.TileData))
+                        datas[kvp.Key.TileData] += kvp.Value;
+                    else
+                        datas.Add(kvp.Key.TileData, kvp.Value);
+                }
+                foreach (var kvpBis in datas)
+                {
+                    carnivalistsGivenDest.text += "(" + kvpBis.Value + "<sprite name=\"Carnivalist_Emoji\"> to " + kvpBis.Key.TileName + ")" + "\n";
+                }
+                carnivalistsGivenDest.alignment = TextAlignmentOptions.Center;
+                carnivalistsGivenDest.fontStyle = FontStyles.Italic;
+                textObjects.Add(carnivalistsGivenDest.GetComponent<RectTransform>());
+            }
         }
         #endregion
 
@@ -1843,19 +2051,27 @@ public class PopUpManager : Singleton<PopUpManager>
         if (button.InfrastructureData.Incomes.Count > 0)
         {
             TextMeshProUGUI income = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            income.text = "<sprite name=\"Puce_Emoji\"> Improve base income by " + button.InfrastructureData.Incomes.IncomeToString() + " per turn";
+            income.text = "<sprite name=\"Plus_Emoji\"> Improve base income by " + button.InfrastructureData.Incomes.IncomeToString() + " per turn";
             textObjects.Add(income.GetComponent<RectTransform>());
             ClampTextWidth(income);
+            income.color = UIManager.Instance.ColorEnhancementNewEffect;
         }
         #endregion
 
         #region BEHAVIOURS
         if (button.InfrastructureData.SpecialBehaviours.Count > 0)
         {
+            List<SpecialBehaviour> previousBehaviours = new List<SpecialBehaviour>(button.AssociatedTile.TileData.SpecialBehaviours);
             foreach (SpecialBehaviour behaviour in button.InfrastructureData.SpecialBehaviours)
             {
                 TextMeshProUGUI behaviourText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-                behaviourText.text = "<sprite name=\"Puce_Emoji\"> " + behaviour.GetBehaviourDescription();
+                if (!previousBehaviours.ContainsOriginal(behaviour))
+                {
+                    behaviourText.text = "<sprite name=\"Plus_Emoji\"> " + behaviour.GetBehaviourDescription();
+                    behaviourText.color = UIManager.Instance.ColorEnhancementNewEffect;
+                }
+                else
+                    behaviourText.text = "<sprite name=\"Puce_Emoji\"> " + behaviour.GetBehaviourDescription();
                 textObjects.Add(behaviourText.GetComponent<RectTransform>());
                 ClampTextWidth(behaviourText);
                 /*
@@ -1870,9 +2086,25 @@ public class PopUpManager : Singleton<PopUpManager>
         if (button.InfrastructureData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
         {
             TextMeshProUGUI scoutText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            scoutText.text = "<sprite name=\"Puce_Emoji\"> Scout<sprite name=\"Scout_Emoji\"> starting point";
+            if (button.AssociatedTile.TileData is InfrastructureData infraData)
+            {
+                if (!infraData.ScoutStartingPoint)
+                {
+                    scoutText.text = "<sprite name=\"Plus_Emoji\"> Scout<sprite name=\"Scout_Emoji\"> starting point";
+                    scoutText.color = UIManager.Instance.ColorEnhancementNewEffect;
+                }
+                    
+                else
+                    scoutText.text = "<sprite name=\"Puce_Emoji\"> Scout<sprite name=\"Scout_Emoji\"> starting point";
+            }
+            else
+            {
+                scoutText.color = UIManager.Instance.ColorEnhancementNewEffect;
+                scoutText.text = "<sprite name=\"Plus_Emoji\"> Scout<sprite name=\"Scout_Emoji\"> starting point";
+            }
             textObjects.Add(scoutText.GetComponent<RectTransform>());
             ClampTextWidth(scoutText);
+ 
         }
         #endregion
 
@@ -1952,6 +2184,8 @@ public class PopUpManager : Singleton<PopUpManager>
     #region POSITIONING & LAYOUT
     private void PositionPopup(RectTransform popupRect, Transform refTransform, bool nextToCursor)
     {
+        popupRect.SetAsLastSibling();
+
         if (!nextToCursor) // If not next to cursor it indicates that we are visualizing combo with this popup;
             JuiceManager.Instance.PopUpVisualizingCombo = popupRect.gameObject;
 
@@ -2433,7 +2667,8 @@ public class PopUpManager : Singleton<PopUpManager>
         _isLockingPopup = true;
         _lockingTimer = 0f;
 
-        GameObject lockObject = Instantiate(_lockingObject, _popUpLockObjectParent);
+        GameObject lockObject = Instantiate(_lockingObject, _popUpParent);
+        lockObject.transform.SetAsLastSibling();
         foreach (var item in lockObject.GetComponentsInChildren<Image>())
         {
             if (item.type == Image.Type.Filled)
@@ -2457,7 +2692,8 @@ public class PopUpManager : Singleton<PopUpManager>
     private void LockPopup(GameObject popUp)
     {
         _popUps.Remove(popUp);
-        Button lockedButton = Instantiate(_lockedObject, _popUpLockObjectParent).GetComponent<Button>();
+        Button lockedButton = Instantiate(_lockedObject, _popUpParent).GetComponent<Button>();
+        lockedButton.transform.SetAsLastSibling();
         _lockedPopUps.Add(popUp, lockedButton);
         Utilities.PlacePrefabAroundTargetTopRight(lockedButton.GetComponent<RectTransform>(), popUp.GetComponent<RectTransform>(), _lockImagePopupOffset);
         StopLockingPopup();
@@ -2506,6 +2742,27 @@ public class PopUpManager : Singleton<PopUpManager>
     #endregion
 
     #region TUTORIAL POPUP
+    public void ShowFiltersTutoPopUp()
+    {
+        if (TutorialManager.Instance != null) // Prevent pop-up if tutorial is running
+            return;
+
+        if (PlayerPrefs.GetInt(FILTERS_TUTO_KEY, 0) == 1)
+            return;
+
+        GameManager.Instance.GamePaused = true;
+        _filtersTutoPopup.SetTrigger("Show");
+
+        PlayerPrefs.SetInt(FILTERS_TUTO_KEY, 1);
+        PlayerPrefs.Save();
+    }
+
+    public void HideFiltersTutoPopUp()
+    {
+        GameManager.Instance.GamePaused = false;
+        _filtersTutoPopup.SetTrigger("Shrink");
+    }
+
     public void ShowInfraLevelTutoPopUp()
     {
         if (TutorialManager.Instance != null) // Prevent pop-up if tutorial is running

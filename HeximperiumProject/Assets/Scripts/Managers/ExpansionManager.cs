@@ -201,7 +201,10 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
                     {
                         if (!neighbor)
                             continue;
-                        ClaimTile(neighbor, true);
+                        if (neighbor.TileData is not HazardousTileData)
+                            ClaimTile(neighbor, true);
+                        else
+                            neighbor.RevealTile(false);
                     }
                 }
 

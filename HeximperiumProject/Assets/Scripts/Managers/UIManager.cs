@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class UIManager : Singleton<UIManager>
 {
+    public const string BEST_SCORE_KEY = "BestScore";
+
     #region CONFIGURATION
     [Header("_________________________________________________________")]
     [Header("Resources Bar")]
@@ -16,6 +18,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TextMeshProUGUI _carnivalistText;
     [SerializeField] private Color _colorCantAfford;
     [SerializeField] private Color _colorIvory;
+    [SerializeField] private Color _colorEnhancementNewEffect;
     [Header("_________________________________________________________")]
     [Header("Phase UI")]
     [SerializeField] private TextMeshProUGUI _confirmPhaseButtonText;
@@ -157,6 +160,7 @@ public class UIManager : Singleton<UIManager>
     public Color ColorIvory { get => _colorIvory; }
     public Animator BuildTownHint { get => _buildTownHint; }
     public bool AreUnitsVisible { get => _areUnitsVisible; set => _areUnitsVisible = value; }
+    public Color ColorEnhancementNewEffect { get => _colorEnhancementNewEffect; }
     #endregion
 
     protected override void OnAwake()
@@ -434,10 +438,10 @@ public class UIManager : Singleton<UIManager>
         _endMenu.SetActive(true);
         _endScore.text = $"You have scored {EntertainmentManager.Instance.Score.ToString()}<sprite name=\"Point_Emoji\">";
 
-        int bestScore = PlayerPrefs.GetInt("BestScore", 0);
+        int bestScore = PlayerPrefs.GetInt(BEST_SCORE_KEY, 0);
         if (EntertainmentManager.Instance.Score > bestScore)
         {
-            PlayerPrefs.SetInt("BestScore", EntertainmentManager.Instance.Score);
+            PlayerPrefs.SetInt(BEST_SCORE_KEY, EntertainmentManager.Instance.Score);
         }
     }
 

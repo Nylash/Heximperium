@@ -206,6 +206,12 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
 
         List<Interaction> interactions = new List<Interaction>();
 
+        if (tile.TileData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
+        {
+            interactions.Add(Interaction.Scout);
+            OnScoutStartingPointSelected?.Invoke();
+        }
+
         if (_upgradeScoutRedirectable)
         {
             if(tile.Scouts.Count > 0)
@@ -219,12 +225,6 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         {
             if (!_hasUsedRevealAnywhereThisPhase)
                 interactions.Add(Interaction.RevealAnywhere);
-        }
-
-        if (tile.TileData is InfrastructureData infrastructureData && infrastructureData.ScoutStartingPoint)
-        {
-            interactions.Add(Interaction.Scout);
-            OnScoutStartingPointSelected?.Invoke();
         }
 
         if (interactions.Count == 0)

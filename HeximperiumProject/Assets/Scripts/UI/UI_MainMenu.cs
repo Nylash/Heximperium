@@ -13,7 +13,7 @@ public class UI_MainMenu : MonoBehaviour
         Application.targetFrameRate = 60;
         SceneManager.LoadSceneAsync("LoadingScene", LoadSceneMode.Additive);
 
-        int bestScore = PlayerPrefs.GetInt("BestScore", 0);
+        int bestScore = PlayerPrefs.GetInt(UIManager.BEST_SCORE_KEY, 0);
         if (bestScore > 0)
             _bestScore.text = $"Best Score: {bestScore}<sprite name=\"Point_Emoji\">";
     }
