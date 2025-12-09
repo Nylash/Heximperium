@@ -14,19 +14,10 @@ public class LoadingManager : Singleton<LoadingManager>
 
     private string _targetSceneName;
     private bool _isLoaded;
-    private int _gameDuration;
-
-    public int GameDuration { get => _gameDuration; set => _gameDuration = value; }
 
     protected override void OnAwake()
     {
         Utilities.OnGameInitialized += LoadOver;
-
-        UI_MainMenu mainMenu = FindAnyObjectByType<UI_MainMenu>();
-        if (mainMenu != null)
-            mainMenu.OnDropdownChanged(mainMenu.GameDurationDropdown.value);
-        else
-            _gameDuration = 10; // Default game duration if not set in main menu
     } 
 
     private void LoadOver()
@@ -36,6 +27,7 @@ public class LoadingManager : Singleton<LoadingManager>
 
     public void StartLoading(string targetScene)
     {
+        GetComponent<AudioListener>().enabled = true;
         _targetSceneName = targetScene;
         _loadingUI.alpha = 1;
         _progress.fillAmount = 0f;
@@ -81,9 +73,7 @@ public class LoadingManager : Singleton<LoadingManager>
         StartCoroutine(DoCleanup());
         Utilities.OnGameInitialized -= LoadOver;
 
-        if (TutorialManager.Instance == null)
-            GameManager.Instance.TurnLimit = _gameDuration;
-
+        GetComponent<AudioListener>().enabled = false;
         OnLoadingDone?.Invoke();
     }
 

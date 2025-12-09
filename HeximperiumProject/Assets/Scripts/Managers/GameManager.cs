@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -28,6 +29,7 @@ public class GameManager : Singleton<GameManager>
     private bool _waitingPhaseFinalization;
     private Phase _currentPhase;
     private int _turnCounter = 1;
+    private bool _lastTurn = false;
     //Game state
     private bool _gamePaused = true;
     private bool _tutorialLockingPhase = false;
@@ -45,6 +47,7 @@ public class GameManager : Singleton<GameManager>
     public event Action OnEntertainmentPhaseEnded;
     public event Action<Tile> OnNewTileSelected;
     public event Action OnTileUnselected;
+    public event Action OnLastTurnStarted;
     public event Action OnGameFinished;
     #endregion
 
@@ -62,7 +65,15 @@ public class GameManager : Singleton<GameManager>
     }
     public bool TutorialLockingPhase { get => _tutorialLockingPhase; set => _tutorialLockingPhase = value; }
     public Tile SelectedTile { get => _selectedTile; }
-    public int TurnLimit { get => _turnLimit; set => _turnLimit = value; }
+    public int TurnLimit { get => _turnLimit; 
+        set 
+        {
+            _turnLimit = value;
+            UIManager.Instance.UpdateTurnCounterText(1);
+        }
+    }
+    public bool LastTurn { get => _lastTurn; }
+    public int BaseClaimPerTurn { get => _baseClaimPerTurn; }
     #endregion
 
     private void OnEnable() => _inputActions.Player.Enable();
@@ -73,7 +84,8 @@ public class GameManager : Singleton<GameManager>
     {
         _inputActions = new InputSystem_Actions();
 
-        _inputActions.Player.LeftClick.performed += ctx => LeftClickAction();
+        _inputActions.Player.LeftClick.performed += ctx => StartCoroutine(LeftClickAction());
+        _inputActions.Player.RightClick.performed += ctx => RightClickAction();
         _inputActions.Player.ConfirmPhase.performed += ctx => ConfirmPhase();
         _inputActions.Player.Menu.performed += ctx => UIManager.Instance.OpenCloseMenu();
 
@@ -105,21 +117,21 @@ public class GameManager : Singleton<GameManager>
         _isPointerOverUI = EventSystem.current.IsPointerOverGameObject();
     }
 
-    public void  InteractionButtonsFade(bool fade)
+    public void InteractionButtonsFade(bool fade, GameObject focusedButton)
     {
         switch (_currentPhase)
         {
             case Phase.Explore:
-                ExplorationManager.Instance.ButtonsFade(fade);
+                ExplorationManager.Instance.ButtonsFade(fade, focusedButton);
                 break;
             case Phase.Expand:
-                ExpansionManager.Instance.ButtonsFade(fade);
+                ExpansionManager.Instance.ButtonsFade(fade, focusedButton);
                 break;
             case Phase.Exploit:
-                ExploitationManager.Instance.ButtonsFade(fade);
+                ExploitationManager.Instance.ButtonsFade(fade, focusedButton);
                 break;
             case Phase.Entertain:
-                EntertainmentManager.Instance.ButtonsFade(fade);
+                EntertainmentManager.Instance.ButtonsFade(fade, focusedButton);
                 break;
         }
     }
@@ -128,6 +140,8 @@ public class GameManager : Singleton<GameManager>
     //Tmp until save and game setting logic
     private void InitializeGame()
     {
+        CameraManager.Instance.GetComponent<AudioListener>().enabled = true;
+
         _gamePaused = false;
 
         if (_currentPhase != Phase.Explore)
@@ -160,9 +174,9 @@ public class GameManager : Singleton<GameManager>
         }
 
         //Give the player resources for the initial town 
-        InfrastructureData townData = ExpansionManager.Instance.TownData;
+        InfrastructureData townData = ExpansionManager.Instance.NewTownData;
         ExploitationManager.Instance.InfraAvailableModify(townData, Transaction.Gain);
-        ResourcesManager.Instance.UpdateResource(townData.Costs, Transaction.Gain);
+        ResourcesManager.Instance.UpdateClaim(townData.ClaimCost, Transaction.Gain);
         ExpansionManager.Instance.BuildTown(centralTile);
 
         //Claim the tiles
@@ -180,17 +194,20 @@ public class GameManager : Singleton<GameManager>
     #endregion
 
     #region ACTIONS
-    private void LeftClickAction()
+    private IEnumerator LeftClickAction()
     {
         if(_gamePaused)
-            return;
+            yield break;
 
         //Specific behaviour with scouts instancing
         if (ExplorationManager.Instance.ChoosingScoutDirection)
         {
             ExplorationManager.Instance.ConfirmDirection();
-            return;
+            yield break;
         }
+
+        if (ExploitationManager.Instance.IsPredictingIncome || EntertainmentManager.Instance.IsPredictingPoints)
+            yield return null;
 
         //If a tile was selected we unselect it
         if (_selectedTile)
@@ -203,7 +220,7 @@ public class GameManager : Singleton<GameManager>
 
         //The action is performed only if the cursor is not on UI
         if (_isPointerOverUI)
-            return;
+            yield break;
 
         _mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(_mouseRay, out _mouseRayHit))
@@ -220,11 +237,28 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    private void RightClickAction()
+    {
+        if (_gamePaused)
+            return;
+
+        //Specific behaviour with scouts instancing
+        if (ExplorationManager.Instance.ChoosingScoutDirection)
+        {
+            ExplorationManager.Instance.CancelScout();
+            return;
+        }
+    }
+
     private void SelectTile(Tile tile)
     {
-        //We can only select revealed tiles
-        if (!tile.Revealed)
+        //We can only select revealed tiles except if we are in exploration phase and have the right upgrade
+        if (!tile.Revealed &&
+            !(ExplorationManager.Instance.UpgradeRevealAnywhere != null
+              && _currentPhase == Phase.Explore))
+        {
             return;
+        }
 
         _selectedTile = tile;
 
@@ -237,7 +271,11 @@ public class GameManager : Singleton<GameManager>
         }
 
         //Spawn highlight and call event
-        _selectionObject = Instantiate(_selectionPrefab, _selectedTile.transform.position + new Vector3(0, 0.01f, 0), Quaternion.identity);
+        _selectionObject = Instantiate(_selectionPrefab, _selectedTile.Visual);
+        if (tile.Revealed)
+            _selectionObject.transform.localPosition += new Vector3(0, 0.03f, 0);
+        else
+            _selectionObject.transform.localPosition += new Vector3(0, -0.03f, 0);
         OnNewTileSelected?.Invoke(_selectedTile);
     }
 
@@ -256,14 +294,14 @@ public class GameManager : Singleton<GameManager>
         switch (button.Interaction)
         {
             case Interaction.Claim:
-                ExpansionManager.Instance.ClaimTile(button.AssociatedTile, false);
+                ExpansionManager.Instance.ClaimTile(button.AssociatedTile, false, true);
                 break;
             case Interaction.Scout:
-                ExplorationManager.Instance.SpawnScout(button.AssociatedTile);
+                ExplorationManager.Instance.SpawnScout(button.AssociatedTile, false, true);
                 break;
             case Interaction.Infrastructure:
                 if(_currentPhase == Phase.Expand)
-                    ExpansionManager.Instance.BuildTown(button.AssociatedTile);
+                    ExpansionManager.Instance.BuildTown(button.AssociatedTile, true);
                 else
                     ExploitationManager.Instance.BuildInfrastructure(button.AssociatedTile, button.InfrastructureData);
                 break;
@@ -278,6 +316,9 @@ public class GameManager : Singleton<GameManager>
                 break;
             case Interaction.RedirectScout:
                 ExplorationManager.Instance.RedirectScout(button.AssociatedTile, button.AssociatedScout);
+                break;
+            case Interaction.RevealAnywhere:
+                ExplorationManager.Instance.RevealAnywhere(button.AssociatedTile);
                 break;
             default: 
                 Debug.LogError("This interaction is not handle : " +  button.Interaction);
@@ -310,6 +351,17 @@ public class GameManager : Singleton<GameManager>
 
     private void PhaseFinalized()
     {
+        StartCoroutine(PhaseFinalizedCo());
+    }
+
+    private IEnumerator PhaseFinalizedCo()
+    {
+        // Ensure at least one frame passes
+        yield return null;
+
+        // Wait until the UI animation flag clears
+        yield return new WaitUntil(() => !UIManager.Instance.UiPhaseInAnimation);
+
         _waitingPhaseFinalization = false;
 
         _currentPhase = GetNextPhase(_currentPhase);
@@ -318,7 +370,7 @@ public class GameManager : Singleton<GameManager>
         {
             OnGameFinished?.Invoke();
             GameManager.Instance.GamePaused = true;
-            return;
+            yield break;
         }
 
         //New turn logic
@@ -331,7 +383,14 @@ public class GameManager : Singleton<GameManager>
             else
             {
                 _turnCounter++;
+                if (_turnCounter == _turnLimit)
+                {
+                    _lastTurn = true;
+                    OnLastTurnStarted?.Invoke();
+                }
                 OnNewTurn?.Invoke(_turnCounter);
+                if (_turnCounter == 2)
+                    PopUpManager.Instance.ShowFiltersTutoPopUp();
             }
         }
         InvokePhaseStartEvent(_currentPhase);

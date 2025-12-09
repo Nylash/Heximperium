@@ -7,39 +7,40 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     #region CONFIGURATION
     [Header("_________________________________________________________")]
     [SerializeField] private InfrastructureData _townData;
-    [SerializeField] private Transform _borderParent;
     [SerializeField] private Transform _claimedTilesParent;
     #endregion
 
     #region VARIABLES
     private List<Tile> _claimedTiles = new List<Tile>();
     private int _claimPerTurn;
-    private int _savedClaimPerTurn;
     //Upgrades variables
     private bool _upgradeTownAutoClaim;
-    private bool _upgradeTownsGenerateClaim;
-    private bool _upgradeHazardClaimReduction;
     private bool _upgradeClaimRange;
+    private bool _upgradeConserveClaims;
     #endregion
 
     #region ACCESSORS
-    public Transform BorderParent { get => _borderParent; }
     public int ClaimPerTurn { get => _claimPerTurn; set => _claimPerTurn = value; }
     public List<Tile> ClaimedTiles { get => _claimedTiles; }
-    public InfrastructureData TownData { get => _townData;}
-    public int SavedClaimPerTurn { get => _savedClaimPerTurn; set => _savedClaimPerTurn = value; }
+    public InfrastructureData NewTownData { get => _townData;}
     public bool UpgradeTownAutoClaim { get => _upgradeTownAutoClaim; set => _upgradeTownAutoClaim = value; }
-    public bool UpgradeTownsGenerateClaim { get => _upgradeTownsGenerateClaim; set => _upgradeTownsGenerateClaim = value; }
-    public bool UpgradeHazardClaimReduction { get => _upgradeHazardClaimReduction; set => _upgradeHazardClaimReduction = value; }
-    public bool UpgradeClaimRange { get => _upgradeClaimRange; set => _upgradeClaimRange = value; }
+    public bool UpgradeClaimRange { get => _upgradeClaimRange;
+        set
+        {
+            _upgradeClaimRange = value;
+            if (GameManager.Instance.CurrentPhase == Phase.Expand)
+                UpdateInteractableTiles();
+        } 
+    }
+
+    public bool UpgradeConserveClaims { get => _upgradeConserveClaims; set => _upgradeConserveClaims = value; }
     #endregion
 
     #region EVENTS
     public event Action<Tile> OnTileClaimed;
-    public event Action<int> OnClaimSaved;
     //Tutorial events
     public event Action OnClaimableTileSelected;
-    public event Action OnBasicTileSelected;
+    public event Action OnTownableTileSelected;
     #endregion
 
     protected override void OnAwake()
@@ -53,37 +54,27 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
     #region PHASE LOGIC
     protected override void StartPhase()
     {
+        GameManager.Instance.UnselectTile();
+
         ResourcesManager.Instance.UpdateClaim(_claimPerTurn, Transaction.Gain);
 
-        if (_upgradeTownsGenerateClaim)
+        foreach (Tile tile in _claimedTiles)
         {
-            foreach (Tile tile in ExploitationManager.Instance.Infrastructures)
-            {
-                if (tile.TileData is InfrastructureData infra)
-                {
-                    if (infra.IsTown)
-                        ResourcesManager.Instance.UpdateClaim(1, Transaction.Gain, tile);
-                }
-                else
-                {
-                    Debug.LogError("TileData is not an InfrastructureData on tile: " + tile.name + " and yet it is in the Infrastructures list.");
-                }
-            }
+            if (tile.ClaimIncome > 0)
+                ResourcesManager.Instance.UpdateClaim(tile.ClaimIncome, Transaction.Gain);
         }
+
+        UpdateInteractableTiles();
     }
 
     protected override void ConfirmPhase()
     {
-        if (_savedClaimPerTurn > 0)
-        {
-            if(ResourcesManager.Instance.Claim > _savedClaimPerTurn)
-                ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim - _savedClaimPerTurn, Transaction.Spent);
-            OnClaimSaved?.Invoke(ResourcesManager.Instance.Claim);
-        }
-        else
+        if (!_upgradeConserveClaims && ResourcesManager.Instance.Claim > 0)
             ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.Claim, Transaction.Spent);
 
         GameManager.Instance.UnselectTile();
+
+        ClearInteractableTiles();
 
         StartCoroutine(PhaseFinalized());
     }
@@ -96,50 +87,84 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
 
         _interactionPositions.Clear();
 
-        //Claimed tiles can only be used for town
-        if (tile.Claimed)
+        if (TutorialManager.Instance == null)
         {
-            //We can only build town on basic tile
-            if (tile.TileData is BasicTileData)
+            //Claimed tiles can only be used for town
+            if (tile.Claimed)
             {
-                _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
-                TownInteraction(tile, 0);
+                //We can only build town on basic and resource tile
+                if (tile.TileData is BasicTileData || tile.TileData is ResourceTileData)
+                {
+                    _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
+                    TownInteraction(tile, 0);
+                }
+                return;
             }
-            return;
-        }
 
-        _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 2);
-        //We can only build town on basic tile
-        if (tile.TileData is BasicTileData)
-            TownInteraction(tile, 0);
-        //We can only claimed tiles adjacent to already claimed tiles (except if we got the upgrade)
-        if (tile.IsOneNeighborClaimed())
-        {
-            ClaimInteraction(tile, 1);
-            OnClaimableTileSelected?.Invoke();
+            _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 2);
+            //We can only build town on basic and resource tile
+            if (tile.TileData is BasicTileData || tile.TileData is ResourceTileData)
+                TownInteraction(tile, 0);
+            //We can only claimed tiles adjacent to already claimed tiles (except if we got the upgrade)
+            if (tile.IsOneNeighborClaimed())
+            {
+                if (tile.TileData is not HazardousTileData)
+                {
+                    ClaimInteraction(tile, 1);
+                }
+            }
+            else if (_upgradeClaimRange)
+            {
+                if (tile.TileData is not HazardousTileData)
+                {
+                    if (tile.IsOneNeighborOfNeighborClaimed())
+                        ClaimInteraction(tile, 1);
+                }
+            }
         }
-        else if (_upgradeClaimRange)
+        else
         {
-            if (tile.IsOneNeighborOfNeighborClaimed())
-                ClaimInteraction(tile, 1);
+            if (TutorialManager.Instance.IsClaimingTile)
+            {
+                if (tile.IsOneNeighborClaimed() && !tile.Claimed)
+                {
+                    if (tile.TileData is not HazardousTileData)
+                    {
+                        _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
+                        ClaimInteraction(tile, 0);
+                    }
+                }
+            }
+            else if (TutorialManager.Instance.IsBuildingTown)
+            {
+                //We can only build town on basic and resource tile
+                if (tile.TileData is BasicTileData || tile.TileData is ResourceTileData)
+                {
+                    _interactionPositions = Utilities.GetInteractionButtonsPosition(tile.transform.position, 1);
+                    TownInteraction(tile, 0);
+                }
+            }
         }
     }
 
     #region INTERACTION
     private void ClaimInteraction(Tile tile, int positionIndex)
     {
+        OnClaimableTileSelected?.Invoke();
         _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Claim));
     }
 
     private void TownInteraction(Tile tile, int positionIndex)
     {
-        OnBasicTileSelected?.Invoke();
+        OnTownableTileSelected?.Invoke();
         _buttons.Add(Utilities.CreateInteractionButton(tile, _interactionPositions[positionIndex], Interaction.Infrastructure, _townData));
     }
 
-    public void ClaimTile(Tile tile, bool freeClaim)
+    public void ClaimTile(Tile tile, bool freeClaim, bool fromInteraction = false)
     {
         if (tile.Claimed)
+            return;
+        if (tile.TileData is HazardousTileData)
             return;
 
         if (ResourcesManager.Instance.CanAffordClaim(tile.TileData.ClaimCost) || freeClaim)
@@ -150,20 +175,24 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
             _claimedTiles.Add(tile);
             tile.transform.parent = _claimedTilesParent;
             OnTileClaimed?.Invoke(tile);
+
+            if (fromInteraction)
+                UpdateInteractableTiles();
         }
     }
 
-    public void BuildTown(Tile tile)
+    public void BuildTown(Tile tile, bool fromInteraction = false)
     {
         if (ExploitationManager.Instance.IsInfraAvailable(_townData))
         {
-            if (ResourcesManager.Instance.CanAfford(_townData.Costs))
+            if (ResourcesManager.Instance.CanAffordClaim(_townData.ClaimCost))
             {
                 // Start by claiming the tile if needed
                 if (!tile.Claimed)
                     ClaimTile(tile, true);
 
                 ExploitationManager.Instance.BuildInfrastructure(tile, _townData);
+                ResourcesManager.Instance.UpdateClaim(_townData.ClaimCost, Transaction.Spent);
                 UIManager.Instance.UpdateTownLimit();
 
                 if (_upgradeTownAutoClaim)
@@ -172,11 +201,94 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
                     {
                         if (!neighbor)
                             continue;
-                        ClaimTile(neighbor, true);
+                        if (neighbor.TileData is not HazardousTileData)
+                            ClaimTile(neighbor, true);
+                        else
+                            neighbor.RevealTile(false);
                     }
                 }
+
+                if (fromInteraction)
+                    UpdateInteractableTiles();
             }
         }
     }
     #endregion
+
+    public override void UpdateInteractableTiles()
+    {
+        bool townBuildable = false;
+        HashSet<Tile> validTiles = new HashSet<Tile>();
+
+        foreach (Tile tile in ExplorationManager.Instance.RevealedTiles)
+        {
+            if (tile.Claimed)
+            {
+                if (tile.TileData is not InfrastructureData)
+                {
+                    if (ResourcesManager.Instance.CanAffordClaim(_townData.ClaimCost) && ExploitationManager.Instance.IsInfraAvailable(_townData))
+                        townBuildable = true;
+                }
+            }
+            else
+            {
+                if (tile.IsOneNeighborClaimed() || (_upgradeClaimRange && tile.IsOneNeighborOfNeighborClaimed()))
+                {
+                    if (tile.TileData is not HazardousTileData)
+                    {
+                        if (ResourcesManager.Instance.CanAffordClaim(tile.TileData.ClaimCost))
+                        {
+                            validTiles.Add(tile);
+                        }
+                    }
+                }
+                if (tile.TileData is not HazardousTileData)
+                {
+                    if (ResourcesManager.Instance.CanAffordClaim(_townData.ClaimCost) && ExploitationManager.Instance.IsInfraAvailable(_townData))
+                        townBuildable = true;
+                }
+            }
+        }
+
+        LaunchInteractableTiles(validTiles);
+        if (townBuildable)
+            UIManager.Instance.BuildTownHint.gameObject.SetActive(true);
+        else
+        {
+            if (UIManager.Instance.BuildTownHint.gameObject.activeSelf)
+                UIManager.Instance.BuildTownHint.SetTrigger("Hide");
+        }
+    }
+
+    protected override void LaunchInteractableTiles(HashSet<Tile> validTiles)
+    {
+        bool alreadyAffected = false;
+        if (_interactibleTiles.Count == 0)
+        {
+            alreadyAffected = true;
+            _interactibleTiles = new HashSet<Tile>(validTiles);
+        }
+
+        foreach (Tile tile in validTiles)
+            tile.PreviewBorder(true);
+        foreach (Tile tile in _interactibleTiles)
+        {
+            if (!validTiles.Contains(tile))
+                tile.PreviewBorder(false);
+        }
+
+        if (!alreadyAffected)
+            _interactibleTiles = new HashSet<Tile>(validTiles);
+    }
+
+    protected override void ClearInteractableTiles()
+    {
+        foreach (Tile tile in _interactibleTiles)
+        {
+            tile.PreviewBorder(false);
+        }
+        _interactibleTiles.Clear();
+        if (UIManager.Instance.BuildTownHint.gameObject.activeSelf)
+            UIManager.Instance.BuildTownHint.SetTrigger("Hide");
+    }
 }

@@ -14,10 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Swamp
   _visuals:
-  - {fileID: 2100000, guid: 7c0788e88d1a3194f8ae596dcb77ec93, type: 2}
-  - {fileID: 2100000, guid: 488279b5020d5854daf2e61b9b050126, type: 2}
-  _claimCost: 2
+  - {fileID: 2100000, guid: 22a123ab97f14bc40a28bd9f60cb68d7, type: 2}
+  _visualsProps:
+  - tileData: {fileID: 11400000}
+    gameObjects:
+    - {fileID: 8600583711594694674, guid: e77da28c5a8b3bc44824bda08bb44e03, type: 3}
+    - {fileID: 8600583711594694674, guid: c2d8114c59ea85344a4384cfcc11da7c, type: 3}
+    - {fileID: 8600583711594694674, guid: f85e3345ac08f544a817c3f39f282b0a, type: 3}
+    - {fileID: 8600583711594694674, guid: a0a40a5d1256fbf41800d4359966a709, type: 3}
+  _claimCost: 999
   _incomes: []
-  _availableInfrastructures:
-  - {fileID: 11400000, guid: 10ace27f9c8e2ed4e9f3b16ba4aafc02, type: 2}
+  _availableInfrastructures: []
   _specialBehaviours: []

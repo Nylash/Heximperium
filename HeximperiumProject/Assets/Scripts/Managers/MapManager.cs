@@ -13,6 +13,7 @@ public class MapManager : Singleton<MapManager>
     //Tmp until game configuration menu
     [SerializeField] private int _mapRadius;
     [SerializeField] private GameObject _predefinedMap;
+    [SerializeField] private MapDictionnary _mapDictionnary;//Proto map dictionnary to set tile types
     #endregion
 
     #region VARIABLES
@@ -34,7 +35,10 @@ public class MapManager : Singleton<MapManager>
 
     void Start()
     {
-        if(_predefinedMap != null)
+        // Reset all runtime special behaviour in case of a new game after one modifying them
+        RuntimeManager.ResetAllDataInstances();
+
+        if (_predefinedMap != null)
         {
             _grid = Instantiate(_predefinedMap).transform;
 
@@ -84,10 +88,8 @@ public class MapManager : Singleton<MapManager>
                 Tile tile = Instantiate(_tilePrefab, position, Quaternion.identity, _grid).GetComponent<Tile>();
                 tile.Coordinate = new Vector2(col, row);
 
-                //LOGIC to do place tile types (Basic, Hazard...) by setting TileData (name & income) are set in the setter
-                //Think to set tile.InitialData and remove it from Tile.Awake()
-                tile.name = tile.TileData.TileName + " " + col + ";" + row;
-                tile.Incomes = tile.TileData.Incomes;
+                //LOGIC to do place tile types (Basic, Hazard...)
+                tile.InitializeTile(_mapDictionnary.data[_mapDictionnary.tiles.IndexOf(new Vector2(col, row))]);
 
                 //Add tile to dictionnary
                 _tiles[new Vector2(col, row)] = tile;

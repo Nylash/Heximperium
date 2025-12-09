@@ -98,6 +98,10 @@ public class BoostByZoneSize : SpecialEffect
                 {
                     if (!neighbor)
                         continue;
+                    if (!neighbor.Entertainment)
+                        continue;
+                    if (neighbor.Entertainment.Data != _dataBoosting)
+                        continue;
                     if (neighbor.GroupID > 0)
                         neighborGroups.Add(neighbor.GroupID);
                 }
@@ -118,7 +122,6 @@ public class BoostByZoneSize : SpecialEffect
         }
     }
 
-
     private int CreateNewGroup(Entertainment initialEntertainment)
     {
         int newGroupId = 1;
@@ -129,10 +132,6 @@ public class BoostByZoneSize : SpecialEffect
         entertainments.Add(initialEntertainment);
 
         EntertainmentManager.Instance.GroupBoost[newGroupId] = entertainments;
-        if(initialEntertainment.Data == _dataBoosting)
-            EntertainmentManager.Instance.GroupBoostCount[newGroupId] = 1;
-        else
-            EntertainmentManager.Instance.GroupBoostCount[newGroupId] = 0;
 
         initialEntertainment.Tile.GroupID = newGroupId;
         return newGroupId;
@@ -146,7 +145,9 @@ public class BoostByZoneSize : SpecialEffect
             {
                 if (item.Data != _dataBoosting)
                     continue;
-                item.UpdatePoints(_boost, Transaction.Gain, skipVFX);
+                item.UpdatePoints(_boost, Transaction.Gain, skipVFX, newEntertainment.Tile);
+                item.Tile.UpdateImpactedEntertainmentByEntertainment(newEntertainment.Tile, _boost);
+                newEntertainment.Tile.UpdateImpactedEntertainmentByEntertainment(item.Tile, _boost);//Update the impacted tiles for both entertainments here (to use only one loop)
             }
         }
             
@@ -154,8 +155,14 @@ public class BoostByZoneSize : SpecialEffect
         if (newEntertainment.Data == _dataBoosting)
         {
             //Apply the boost before increasing the count because the effect shouldn't count itself
-            newEntertainment.UpdatePoints(_boost * EntertainmentManager.Instance.GroupBoostCount[groupID], Transaction.Gain, skipVFX);
-            EntertainmentManager.Instance.GroupBoostCount[groupID]++;
+            foreach (Entertainment ent in EntertainmentManager.Instance.GroupBoost[groupID])
+            {
+                if (ent == newEntertainment)
+                    continue;
+                if (ent.Data != _dataBoosting)
+                    continue;
+                newEntertainment.UpdatePoints(_boost, Transaction.Gain, skipVFX, ent.Tile);
+            }
         }
 
         newEntertainment.Tile.GroupID = groupID;
@@ -163,11 +170,6 @@ public class BoostByZoneSize : SpecialEffect
 
     private void RemoveEntertainmentFromItsGroup(Tile tile, EntertainmentData removedData, bool checkForSplit = true)
     {
-        if (removedData == _dataBoosting)
-        {
-            EntertainmentManager.Instance.GroupBoostCount[tile.GroupID]--;
-        }
-
         if(tile.Entertainment != null)
             EntertainmentManager.Instance.GroupBoost[tile.GroupID].Remove(tile.Entertainment);//When called by Rollback
         else
@@ -179,7 +181,9 @@ public class BoostByZoneSize : SpecialEffect
             {
                 if (item.Data != _dataBoosting)
                     continue;
-                item.UpdatePoints(_boost, Transaction.Spent);
+                item.UpdatePoints(_boost, Transaction.Spent, false, tile);
+                item.Tile.UpdateImpactedEntertainmentByEntertainment(tile, -_boost);
+                tile.UpdateImpactedEntertainmentByEntertainment(item.Tile, -_boost);
             }
         }
 
@@ -187,7 +191,6 @@ public class BoostByZoneSize : SpecialEffect
         if (EntertainmentManager.Instance.GroupBoost[tile.GroupID].Count == 0)
         {
             EntertainmentManager.Instance.GroupBoost.Remove(tile.GroupID);
-            EntertainmentManager.Instance.GroupBoostCount.Remove(tile.GroupID);
         }
         else if(checkForSplit)
         {
@@ -266,7 +269,6 @@ public class BoostByZoneSize : SpecialEffect
                 AddEntertainmentToGroup(targetGroupId, ent);
             }
             EntertainmentManager.Instance.GroupBoost.Remove(sourceGroupId);
-            EntertainmentManager.Instance.GroupBoostCount.Remove(sourceGroupId);
         }
 
         AddEntertainmentToGroup(targetGroupId, newEntertainment);
@@ -276,111 +278,182 @@ public class BoostByZoneSize : SpecialEffect
     {
         if (entertainment.Data != _dataBoosting)
             return;
-        entertainment.UpdatePoints(
-            _boost * 
-            (EntertainmentManager.Instance.GroupBoostCount[entertainment.Tile.GroupID] -1),//subtract 1 from group count since the boost logic does not count itself
-            Transaction.Spent);
+
+        foreach (Entertainment ent in EntertainmentManager.Instance.GroupBoost[entertainment.Tile.GroupID])
+        {
+            if (ent == entertainment)
+                continue;
+            if (ent.Data != _dataBoosting)
+                continue;
+            entertainment.UpdatePoints(_boost, Transaction.Spent, false, ent.Tile);
+        }
     }
 
     private bool CheckIfGroupStillWhole(int groupID)
     {
-        //Breadth-first search logic
-        HashSet<Entertainment> visited = new HashSet<Entertainment>();
-        Queue<Entertainment> queue = new Queue<Entertainment>();
-        Entertainment start = EntertainmentManager.Instance.GroupBoost[groupID].First();
+        var group = EntertainmentManager.Instance.GroupBoost[groupID];
 
-        queue.Enqueue(start);
-        visited.Add(start);
+        if (group.Count <= 1)
+            return true;
+
+        // BFS state: (current entertainment, lastWasBridge?)
+        Queue<(Entertainment ent, bool lastWasBridge)> queue = new Queue<(Entertainment, bool)>();
+
+        // visited separated by "previous was bridge" or "previous was not bridge"
+        HashSet<Entertainment> visitedAfterBoost = new HashSet<Entertainment>();
+        HashSet<Entertainment> visitedAfterBridge = new HashSet<Entertainment>();
+
+        HashSet<Entertainment> reachable = new HashSet<Entertainment>();
+
+        Entertainment start = group.First();
+        bool startIsBridge = start.Data == _dataBridge;
+
+        queue.Enqueue((start, startIsBridge));
+        if (startIsBridge)
+            visitedAfterBridge.Add(start);
+        else
+            visitedAfterBoost.Add(start);
+        reachable.Add(start);
 
         while (queue.Count > 0)
         {
-            Entertainment current = queue.Dequeue();
+            var (current, lastWasBridge) = queue.Dequeue();
+
             foreach (Tile neighbor in current.Tile.Neighbors)
             {
-                if(!neighbor)
+                if (!neighbor)
                     continue;
-                if(!neighbor.Entertainment)
+                if (!neighbor.Entertainment)
                     continue;
-                if (neighbor.Entertainment.Data != _dataBoosting && neighbor.Entertainment.Data != _dataBridge)
+
+                Entertainment nEnt = neighbor.Entertainment;
+                if (!group.Contains(nEnt))
                     continue;
-                if (EntertainmentManager.Instance.GroupBoost[groupID].Contains(neighbor.Entertainment) && !visited.Contains(neighbor.Entertainment))
-                {
-                    visited.Add(neighbor.Entertainment);
-                    queue.Enqueue(neighbor.Entertainment);
-                }
+
+                bool isBridge = nEnt.Data == _dataBridge;
+                bool isBoost = nEnt.Data == _dataBoosting;
+                if (!isBridge && !isBoost)
+                    continue;
+
+                // Rule enforcement: forbid two bridges in a row
+                if (isBridge && lastWasBridge)
+                    continue;
+
+                bool nextLastWasBridge = isBridge;
+                HashSet<Entertainment> targetVisited = nextLastWasBridge ? visitedAfterBridge : visitedAfterBoost;
+
+                if (!targetVisited.Add(nEnt))
+                    continue; // already visited with this "previous" type
+
+                queue.Enqueue((nEnt, nextLastWasBridge));
+                reachable.Add(nEnt);
             }
         }
 
-        return visited.Count == EntertainmentManager.Instance.GroupBoost[groupID].Count;
+        return reachable.Count == group.Count;
     }
 
     private void SplitGroup(int groupID)
     {
-        // Fast lookup for remaining tiles
-        HashSet<Entertainment> remaining = new HashSet<Entertainment>(EntertainmentManager.Instance.GroupBoost[groupID]);
+        var group = EntertainmentManager.Instance.GroupBoost[groupID];
+
+        // Tiles not yet assigned to a new component
+        HashSet<Entertainment> remaining = new HashSet<Entertainment>(group);
         List<List<Entertainment>> splittedGroups = new List<List<Entertainment>>();
 
-        // Until we have partitioned every tile
         while (remaining.Count > 0)
         {
-            // Start a new component from an arbitrary tile
             List<Entertainment> component = new List<Entertainment>();
-            Queue<Entertainment> queue = new Queue<Entertainment>();
+            Queue<(Entertainment ent, bool lastWasBridge)> queue = new Queue<(Entertainment, bool)>();
+
+            HashSet<Entertainment> visitedAfterBoost = new HashSet<Entertainment>();
+            HashSet<Entertainment> visitedAfterBridge = new HashSet<Entertainment>();
+
             Entertainment start = remaining.First();
+            bool startIsBridge = start.Data == _dataBridge;
 
-            queue.Enqueue(start);
-            remaining.Remove(start);
+            queue.Enqueue((start, startIsBridge));
+            if (startIsBridge)
+                visitedAfterBridge.Add(start);
+            else
+                visitedAfterBoost.Add(start);
+
+            // We consider it part of this component
             component.Add(start);
+            remaining.Remove(start);
 
-            // BFS to collect all connected tiles in this component
             while (queue.Count > 0)
             {
-                Entertainment current = queue.Dequeue();
+                var (current, lastWasBridge) = queue.Dequeue();
+
                 foreach (Tile neighbor in current.Tile.Neighbors)
                 {
                     if (!neighbor)
                         continue;
                     if (!neighbor.Entertainment)
                         continue;
-                    if (neighbor.Entertainment.Data != _dataBoosting && neighbor.Entertainment.Data != _dataBridge)
+
+                    Entertainment nEnt = neighbor.Entertainment;
+
+                    // Only pick tiles still unassigned to any other component
+                    if (!remaining.Contains(nEnt))
                         continue;
-                    // Only consider tiles still in remaining
-                    if (remaining.Remove(neighbor.Entertainment))
-                    {
-                        queue.Enqueue(neighbor.Entertainment);
-                        component.Add(neighbor.Entertainment);
-                    }
+
+                    bool isBridge = nEnt.Data == _dataBridge;
+                    bool isBoost = nEnt.Data == _dataBoosting;
+                    if (!isBridge && !isBoost)
+                        continue;
+
+                    // Rule enforcement: forbid two bridges in a row
+                    if (isBridge && lastWasBridge)
+                        continue;
+
+                    bool nextLastWasBridge = isBridge;
+                    HashSet<Entertainment> targetVisited = nextLastWasBridge ? visitedAfterBridge : visitedAfterBoost;
+
+                    if (!targetVisited.Add(nEnt))
+                        continue;
+
+                    queue.Enqueue((nEnt, nextLastWasBridge));
+                    component.Add(nEnt);
+                    remaining.Remove(nEnt);
                 }
             }
+
             splittedGroups.Add(component);
         }
 
         if (splittedGroups.Count > 1)
         {
-            bool isFirst;
-            int newGroupID = 0;
-            foreach (List<Entertainment> group in splittedGroups)
+            foreach (List<Entertainment> newGroup in splittedGroups)
             {
-                isFirst = true;
-                foreach (Entertainment ent in group)
+                bool isFirst = true;
+                int newGroupID = 0;
+
+                foreach (Entertainment ent in newGroup)
                 {
                     ResetEntertainmentPoints(ent);
                     RemoveEntertainmentFromItsGroup(ent.Tile, ent.Data, false);
+
                     if (isFirst)
                     {
                         newGroupID = CreateNewGroup(ent);
                         isFirst = false;
                     }
                     else
-                        AddEntertainmentToGroup(newGroupID, ent, true);//Skip VFX too avoid confusing the player
+                    {
+                        // Skip VFX to avoid confusing the player
+                        AddEntertainmentToGroup(newGroupID, ent, true);
+                    }
                 }
             }
         }
         else
         {
-            Debug.LogError("CheckIfGroupStillWhole shouldn't have return false, groupID : " + groupID);
+            Debug.LogError("CheckIfGroupStillWhole shouldn't have returned false, groupID : " + groupID);
         }
     }
+
 
     public override string GetBehaviourDescription()
     {

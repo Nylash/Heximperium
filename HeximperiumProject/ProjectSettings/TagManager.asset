@@ -11,8 +11,12 @@ TagManager:
   - GoldUI
   - SRUI
   - VisibilityUI
-  - UpgradeNodeUI
+  - UpgradeUI
   - ScoreUI
+  - CarnivalistUI
+  - ShowIncomeUI
+  - ShowEntPlacementUI
+  - ShowDetailsPopupUI
   layers:
   - Default
   - TransparentFX

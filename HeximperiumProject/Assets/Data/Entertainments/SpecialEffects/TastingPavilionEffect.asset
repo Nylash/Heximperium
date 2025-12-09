@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a521d2d5932d8647b1f71e0ec6f70dc, type: 3}
   m_Name: TastingPavilionEffect
   m_EditorClassIdentifier: 
-  _boost: 4
+  _originalAsset: {fileID: 0}
+  _boost: 5
   _boostingNeighbors:
   - {fileID: 11400000, guid: c7c0d52522766474a97afa468b4b42c9, type: 2}
   - {fileID: 11400000, guid: 3394aecefc4c86f4181481cb52b87e79, type: 2}

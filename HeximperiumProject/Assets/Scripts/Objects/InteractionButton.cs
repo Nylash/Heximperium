@@ -25,7 +25,6 @@ public class InteractionButton : MonoBehaviour
     private ScoutData _scoutData;
     private EntertainmentData _entertainData;
     private Animator _animator;
-    private GameObject _highlightedClone;
     private Scout _associatedScout;
     #endregion
 
@@ -84,6 +83,9 @@ public class InteractionButton : MonoBehaviour
             case Interaction.RedirectScout:
                 InitializeRedirectScout(scout);
                 break;
+            case Interaction.RevealAnywhere:
+                InitializeRevealAnywhere();
+                break;
         }
 
         _animator = GetComponentInChildren<Animator>();
@@ -93,6 +95,8 @@ public class InteractionButton : MonoBehaviour
     {
         if (!ResourcesManager.Instance.CanAffordClaim(_associatedTile.TileData.ClaimCost))
             _renderer.color = UIManager.Instance.ColorCantAfford;
+        else
+            _renderer.color = UIManager.Instance.ColorExpand;
         LoadSprite(Interaction.Claim.ToString());
     }
 
@@ -101,34 +105,68 @@ public class InteractionButton : MonoBehaviour
         _scoutData = ExplorationManager.Instance.ScoutData;
         if (ExplorationManager.Instance.CurrentScoutsCount >= ExplorationManager.Instance.ScoutsLimit)
             _renderer.color = UIManager.Instance.ColorCantAfford;
+        else
+            _renderer.color = UIManager.Instance.ColorExplo;
         LoadSprite(Interaction.Scout.ToString());
     }
 
     private void InitializeInfrastructure(InfrastructureData infraData)
     {
         _infraData = infraData;
-        if (!ResourcesManager.Instance.CanAfford(_infraData.Costs) || !ExploitationManager.Instance.IsInfraAvailable(infraData))
+        if (!ResourcesManager.Instance.CanAfford(_infraData.Costs) 
+            || !ResourcesManager.Instance.CanAffordClaim(_infraData.ClaimCost)
+            || !ExploitationManager.Instance.IsInfraAvailable(infraData))
             _renderer.color = UIManager.Instance.ColorCantAfford;
-        LoadSprite(infraData.name);
+        else
+        {
+            switch (infraData.AssociatedPhase)
+            {
+                case Phase.Explore:
+                    _renderer.color = UIManager.Instance.ColorExplo;
+                    break;
+                case Phase.Expand:
+                    _renderer.color = UIManager.Instance.ColorExpand;
+                    break;
+                case Phase.Exploit:
+                    _renderer.color = UIManager.Instance.ColorExploit;
+                    break;
+                case Phase.Entertain:
+                    _renderer.color = UIManager.Instance.ColorEntertain;
+                    break;
+                default:
+                    break;
+            }
+        }
+            LoadSprite(infraData.name);
     }
 
     private void InitializeDestroy()
     {
+        _renderer.color = UIManager.Instance.ColorIvory;
         LoadSprite(Interaction.Destroy.ToString());
     }
 
     private void InitializeEntertainment(EntertainmentData data)
     {
         _entertainData = data;
-        if (!ResourcesManager.Instance.CanAfford(_entertainData.Costs))
+        if (!ResourcesManager.Instance.CanAffordCarnivalist(_entertainData.GetActualCarnivalistCost(_associatedTile)))
             _renderer.color = UIManager.Instance.ColorCantAfford;
+        else
+            _renderer.color = UIManager.Instance.ColorEntertain;
         LoadSprite(_entertainData.name);
     }
 
     private void InitializeRedirectScout(Scout scout)
     {
+        _renderer.color = UIManager.Instance.ColorExplo;
         _associatedScout = scout;
         LoadSprite(Interaction.RedirectScout.ToString());
+    }
+
+    private void InitializeRevealAnywhere()
+    {
+        _renderer.color = UIManager.Instance.ColorExplo;
+        LoadSprite(Interaction.RevealAnywhere.ToString());
     }
 
     private void LoadSprite(string spriteName)
@@ -151,21 +189,6 @@ public class InteractionButton : MonoBehaviour
     public void FadeAnimation(bool fade)
     {
         _animator.SetBool("Fade", fade);
-    }
-
-    public void CreateHighlightedClone()
-    {
-        _highlightedClone = Instantiate(_highlightedInteractionPrefab, _associatedTile.transform.position + new Vector3(0, 0.2f, 0), Quaternion.identity);
-        _highlightedClone.GetComponent<MeshRenderer>().material.mainTexture = GetComponent<MeshRenderer>().material.mainTexture;
-        _highlightedClone.GetComponentInChildren<SpriteRenderer>().color = _renderer.color;
-        _highlightedClone.GetComponentInChildren<SpriteRenderer>().sprite = _renderer.sprite;
-    }
-
-    public void DestroyHighlightedClone()
-    {
-        if (_highlightedClone == null)
-            return;
-        _highlightedClone.GetComponent<Animator>().SetTrigger("Destroy");
     }
 
     public void DestroyInteractionButton()

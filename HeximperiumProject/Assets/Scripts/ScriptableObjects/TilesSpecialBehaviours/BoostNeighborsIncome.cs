@@ -5,7 +5,7 @@ using UnityEngine;
 public class BoostNeighborsIncome : SpecialBehaviour
 {
     [SerializeField] private List<ResourceToIntMap> _incomeBoost = new List<ResourceToIntMap>();
-    [SerializeField] private List<TileData> _infrastructuresBoosted = new List<TileData>();
+    [SerializeField] private List<InfrastructureData> _infrastructuresBoosted = new List<InfrastructureData>();
 
     //Boost the neighbors if it's the right one
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
@@ -14,9 +14,9 @@ public class BoostNeighborsIncome : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
-            if (_infrastructuresBoosted.Contains(neighbor.TileData))
+            if (neighbor.TileData is InfrastructureData data && _infrastructuresBoosted.Contains(data))
             {
-                neighbor.Incomes = Utilities.MergeResourceToIntMaps(neighbor.Incomes, _incomeBoost);
+                neighbor.UpdateIncomes(_incomeBoost, true, behaviourTile);
             }
             //BehaviourTile is needed even if the reference isn't in the method to create a unique pair of behaviourTile and neighbor, avoiding conflict between events
             neighbor.OnTileDataModified -= behaviourTile.ListenerOnTileDataModified_BoostNeighborsIncome;
@@ -31,9 +31,9 @@ public class BoostNeighborsIncome : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
-            if (_infrastructuresBoosted.Contains(neighbor.TileData))
+            if (neighbor.TileData is InfrastructureData data && _infrastructuresBoosted.Contains(data))
             {
-                neighbor.Incomes = Utilities.SubtractResourceToIntMaps(neighbor.Incomes, _incomeBoost);
+                neighbor.UpdateIncomes(_incomeBoost, false, behaviourTile);
             }
             neighbor.OnTileDataModified -= behaviourTile.ListenerOnTileDataModified_BoostNeighborsIncome;
         }
@@ -45,32 +45,32 @@ public class BoostNeighborsIncome : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
-            if (_infrastructuresBoosted.Contains(neighbor.TileData))
+            if (neighbor.TileData is InfrastructureData data && _infrastructuresBoosted.Contains(data))
             {
                 neighbor.Highlight(show);
             }
         }
     }
 
-    public void CheckNewData(Tile tile)
+    public void CheckNewData(Tile tile, Tile behaviourTile)
     {
-        if (_infrastructuresBoosted.Contains(tile.TileData))
+        if (tile.TileData is InfrastructureData data && _infrastructuresBoosted.Contains(data))
         {
             //Check if the previous data didn't already get the boost
-            if (_infrastructuresBoosted.Contains(tile.PreviousData))
+            if (tile.PreviousData is InfrastructureData d && _infrastructuresBoosted.Contains(d))
                 return;
-            tile.Incomes = Utilities.MergeResourceToIntMaps(tile.Incomes, _incomeBoost);
+            tile.UpdateIncomes(_incomeBoost, true, behaviourTile);
         }
         else
         {
             //Check if the previous data did get a boost, then remove it if yes
-            if (_infrastructuresBoosted.Contains(tile.PreviousData))
-                tile.Incomes = Utilities.SubtractResourceToIntMaps(tile.Incomes, _incomeBoost);
+            if (tile.PreviousData is InfrastructureData d && _infrastructuresBoosted.Contains(d))
+                tile.UpdateIncomes(_incomeBoost, false, behaviourTile);
         }
     }
 
     public override string GetBehaviourDescription()
     {
-        return $"Boosts the income of neighboring {_infrastructuresBoosted.ToCustomString()} by {_incomeBoost.IncomeToString()}";
+        return $"Boosts the income of neighboring {_infrastructuresBoosted.ToCustomString(true)} by {_incomeBoost.IncomeToString()}";
     }
 }

@@ -20,21 +20,19 @@ public class ResourcesManager : Singleton<ResourcesManager>
     private int _claim;
     private int _gold;
     private int _specialResources;
-    //Reduction variables
-    private int _srReductionForExploration;
-    private int _srReductionForExpansion;
-    private int _srReductionForExploitation;
-    private int _srReductionForEntertainment;
-    private int _entertainmentGoldReduction;
+    private int _carnivalist;
+    //Tracking dictionaries
+    private Dictionary<TileData, int> _carnivalistSources = new Dictionary<TileData, int>();
     #endregion
 
     #region ACCESSORS
     public int Claim { get => _claim; }
-    public int EntertainmentGoldReduction { get => _entertainmentGoldReduction; set => _entertainmentGoldReduction = value; }
     public List<ResourceToIntMap> TradeBuyCost { get => _tradeBuyCost; }
     public List<ResourceToIntMap> TradeBuyGain { get => _tradeBuyGain; }
     public List<ResourceToIntMap> TradeSellCost { get => _tradeSellCost; }
     public List<ResourceToIntMap> TradeSellGain { get => _tradeSellGain; }
+    public int Carnivalist { get => _carnivalist; }
+    public Dictionary<TileData, int> CarnivalistSources { get => _carnivalistSources; }
 
     public int GetResourceStock(Resource resource)
     {
@@ -48,53 +46,17 @@ public class ResourcesManager : Singleton<ResourcesManager>
                 return 0;
         }
     }
-
-    public int GetSRReduction(Phase system)
-    {
-        switch (system)
-        {
-            case Phase.Explore:
-                return _srReductionForExploration;
-            case Phase.Expand:
-                return _srReductionForExpansion;
-            case Phase.Exploit:
-                return _srReductionForExploitation;
-            case Phase.Entertain:
-                return _srReductionForEntertainment;
-            default:
-                return 0;
-        }
-    }
-
-    public void SetSSRReduction(Phase system, int value)
-    {
-        switch (system)
-        {
-            case Phase.Explore:
-                _srReductionForExploration += value;
-                break;
-            case Phase.Expand:
-                _srReductionForExpansion += value;
-                break;
-            case Phase.Exploit:
-                _srReductionForExploitation += value;
-                break;
-            case Phase.Entertain:
-                _srReductionForEntertainment += value;
-                break;
-            default:
-                break;
-        }
-    }
     #endregion
 
     #region EVENTS
     public event Action<Tile, int> OnGoldGained;
     public event Action<Tile, int> OnSpecialResourcesGained;
     public event Action<Tile, int> OnClaimGained;
+    public event Action<Tile, int> OnCarnivalistGained;
     public event Action<int> OnGoldSpent;
     public event Action<int> OnSpecialResourcesSpent;
     public event Action<int> OnClaimSpent;
+    public event Action<Tile, int> OnCarnivalistSpent;
     #endregion
 
     public void CHEAT_RESOURCES()
@@ -181,10 +143,68 @@ public class ResourcesManager : Singleton<ResourcesManager>
         }
     }
 
-    public void SpendAllResources()
+    public void UpdateCarnivalist(int value, Transaction transaction, Tile tile = null)
     {
-        UpdateResource(Resource.Gold, GetResourceStock(Resource.Gold), Transaction.Spent);
-        UpdateResource(Resource.SpecialResources, GetResourceStock(Resource.SpecialResources), Transaction.Spent);
+        if (transaction == Transaction.Spent)
+            value = -value;
+        _carnivalist += value;
+        if (_carnivalist < 0)
+            _carnivalist = 0;
+        UIManager.Instance.UpdateCarnivalistUI(_carnivalist);
+
+        if (!tile)
+        {
+            switch (transaction)
+            {
+                case Transaction.Gain:
+                    HelperOnCarnivalistGained(null, value);
+                    break;
+                case Transaction.Spent:
+                    HelperOnCarnivalistSpent(null, value);
+                    break;
+            }
+        }
+    }
+
+    public void HelperOnCarnivalistGained(Tile tile, int value)
+    {
+        if (value == 0)
+            return;
+        OnCarnivalistGained?.Invoke(tile, value);
+    }
+
+    public void HelperOnCarnivalistSpent(Tile tile, int value)
+    {
+        if (value == 0)
+            return;
+        OnCarnivalistSpent?.Invoke(tile, Mathf.Abs(value));
+    }
+
+    public void UpdateCarnivalistSource(TileData source, int value, Transaction transaction)
+    {
+        switch (transaction)
+        {
+            case Transaction.Gain:
+                if (!_carnivalistSources.ContainsKey(source))
+                    _carnivalistSources.Add(source, 0);
+                _carnivalistSources[source] += value;
+                break;
+            case Transaction.Spent:
+                if (!_carnivalistSources.ContainsKey(source))
+                    Debug.LogError("Trying to spend carnivalist from a source that doesn't exist in the dictionary");
+                _carnivalistSources[source] -= value;
+                if (_carnivalistSources[source] <= 0)
+                    _carnivalistSources.Remove(source);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void SpendConvertedResources(int goldConverted, int srConverted)
+    {
+        UpdateResource(Resource.Gold, goldConverted, Transaction.Spent);
+        UpdateResource(Resource.SpecialResources, srConverted, Transaction.Spent);
     }
     #endregion
 
@@ -192,6 +212,14 @@ public class ResourcesManager : Singleton<ResourcesManager>
     public bool CanAffordClaim(int claim)
     {
         if (_claim - claim >= 0)
+            return true;
+        else
+            return false;
+    }
+
+    public bool CanAffordCarnivalist(int carnivalist)
+    {
+        if (_carnivalist - carnivalist >= 0)
             return true;
         else
             return false;

@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e0e460f401a6ce44ad84d3534c37a05, type: 3}
+  m_Name: FairgroundFarm
+  m_EditorClassIdentifier: 
+  _name: Fairground Farm
+  _family: 2
+  _visualsProps:
+  - tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
+    gameObjects:
+    - {fileID: 872582116211086779, guid: a6ffbcf359081c14db0bfdb402fc3790, type: 3}
+    - {fileID: 7924492901767921207, guid: 4ad814a563246e74e8e1924402010441, type: 3}
+    - {fileID: 617286352476988055, guid: 188ecc25b4ecd6a41b5c433db513c47c, type: 3}
+  - tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
+    gameObjects:
+    - {fileID: 872582116211086779, guid: f4edf81696d1e004691381726dadd050, type: 3}
+    - {fileID: 7924492901767921207, guid: ad182731c15d76c468fa79809a8bb4ab, type: 3}
+    - {fileID: 617286352476988055, guid: dd29c188c645fcf4c829ccd6bcbb220f, type: 3}
+  _claimCost: 0
+  _incomes: []
+  _availableInfrastructures: []
+  _specialBehaviours:
+  - {fileID: 11400000, guid: 4514e2c40dc07f94a9949c29e6d24726, type: 2}
+  _costs:
+  - resource: 0
+    value: 5
+  - resource: 1
+    value: 3
+  _scoutStartingPoint: 0
+  isTown: 0
+  _infrastructureLevel: 2
+  _associatedPhase: 3

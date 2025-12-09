@@ -3,14 +3,18 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Scriptable Objects/Special Behaviour/BoostScoutsLimit")]
 public class BoostScoutsLimit : SpecialBehaviour
 {
+    [SerializeField] private int _scoutsIncrease = 1;
+
+    public int ScoutsIncrease { get => _scoutsIncrease; }
+
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
     {
-        ExplorationManager.Instance.ScoutsLimit++;
+        ExplorationManager.Instance.ScoutsLimit += _scoutsIncrease;
     }
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
-        ExplorationManager.Instance.ScoutsLimit--;
+        ExplorationManager.Instance.ScoutsLimit -= _scoutsIncrease;
     }
 
     public override void HighlightImpactedTile(Tile behaviourTile, bool show)
@@ -20,6 +24,6 @@ public class BoostScoutsLimit : SpecialBehaviour
 
     public override string GetBehaviourDescription()
     {
-        return "Increases the limit of scouts by 1";
+        return "Increases the limit of scouts<sprite name=\"Scout_Emoji\"> by " + _scoutsIncrease;
     }
 }

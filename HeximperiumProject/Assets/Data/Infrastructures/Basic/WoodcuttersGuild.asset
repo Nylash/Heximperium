@@ -12,9 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e0e460f401a6ce44ad84d3534c37a05, type: 3}
   m_Name: WoodcuttersGuild
   m_EditorClassIdentifier: 
-  _name: Woodcutter's Guild
-  _visuals:
-  - {fileID: 2100000, guid: efaa11eb061fa744fa7114434ac0f02e, type: 2}
+  _name: Woodcutters' Guild
+  _family: 8
+  _visualsProps:
+  - tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
+    gameObjects:
+    - {fileID: 8158725270209530402, guid: 89fc4f1ddbb754d4494090ee9cea8950, type: 3}
   _claimCost: 0
   _incomes: []
   _availableInfrastructures:
@@ -25,6 +28,7 @@ MonoBehaviour:
   _costs:
   - resource: 0
     value: 50
-  _associatedSystem: 4
   _scoutStartingPoint: 0
   isTown: 0
+  _infrastructureLevel: 1
+  _associatedPhase: 2

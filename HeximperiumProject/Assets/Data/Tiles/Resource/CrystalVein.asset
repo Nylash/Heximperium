@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Crystal vein
   _visuals:
-  - {fileID: 2100000, guid: d86f58de5cb2caa49b77da0b1d341087, type: 2}
+  - {fileID: 2100000, guid: 22a123ab97f14bc40a28bd9f60cb68d7, type: 2}
+  _visualsProps:
+  - tileData: {fileID: 11400000}
+    gameObjects:
+    - {fileID: 8158725270209530402, guid: 58de6de1d738d354b8c217ca8dfe948a, type: 3}
   _claimCost: 1
   _incomes: []
   _availableInfrastructures:

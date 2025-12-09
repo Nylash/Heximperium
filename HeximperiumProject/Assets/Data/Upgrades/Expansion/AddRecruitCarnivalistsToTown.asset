@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75ba2ce10a08bae449a388a39c83fccd, type: 3}
+  m_Name: AddRecruitCarnivalistsToTown
+  m_EditorClassIdentifier: 
+  EffectName: Festival Colony
+  AssociatedSystem: 1
+  _boostedInfra:
+  - {fileID: 11400000, guid: c09b5b1323b68174bad1aea52735ddcc, type: 2}
+  - {fileID: 11400000, guid: 87cb7c2741b68e84e873d33599275430, type: 2}
+  - {fileID: 11400000, guid: 7414533d68b41ca49983a5cad94887d9, type: 2}
+  - {fileID: 11400000, guid: 0547f9795abdb334f82a3c683af0b233, type: 2}
+  - {fileID: 11400000, guid: 4362278d09244264fae927f4b224e4cd, type: 2}
+  - {fileID: 11400000, guid: d89c51aba8c62b7449cfa6d4fc5f28bd, type: 2}
+  - {fileID: 11400000, guid: f8897bb6a83c2584487f7b70a77de3d8, type: 2}
+  - {fileID: 11400000, guid: 11450b5fa5faf3a41bc3f9f6a8addb1f, type: 2}
+  - {fileID: 11400000, guid: 7baa32c771e220345b42a7a1aef5406a, type: 2}
+  - {fileID: 11400000, guid: 00bddc500cc066544bb32c0aba73d3fd, type: 2}
+  - {fileID: 11400000, guid: 3c623367cc1eff848b26c8220c26550c, type: 2}
+  - {fileID: 11400000, guid: 1efb98835b4c40b479f8ea22e1c5923d, type: 2}
+  - {fileID: 11400000, guid: 7779112bfa5302a45a2ff81eaa8b58bb, type: 2}
+  _specialBehaviour: {fileID: 11400000, guid: abd9436816fb47d40b46a2bf959ee7b5, type: 2}

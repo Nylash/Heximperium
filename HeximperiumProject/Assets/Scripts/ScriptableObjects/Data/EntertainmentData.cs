@@ -8,29 +8,39 @@ public class EntertainmentData : ScriptableObject
     [Header("Mandatory Settings")]
     [SerializeField] private EntertainmentType _type;
     [SerializeField] private int _basePoints;
-    [SerializeField] private List<ResourceToIntMap> _costs = new List<ResourceToIntMap>();
+    [SerializeField] private int _carnivalistCost;
     [Header("_________________________________________________________")]
     [Header("Optionnal Settings")]
-    [SerializeField] private SpecialEffect _specialEffect;
+    [SerializeField] private List<SpecialEffect> _specialEffects;
 
     public EntertainmentType Type { get => _type; }
     public int BasePoints { get => _basePoints; }
-    public List<ResourceToIntMap> Costs
+    public List<SpecialEffect> SpecialEffects { get => _runtimeSpecialEffects; }
+
+    private List<SpecialEffect> _runtimeSpecialEffects = new List<SpecialEffect>();
+
+    public int GetActualCarnivalistCost(Tile tile = null)
     {
-        get
-        {
-            if (ResourcesManager.Instance.EntertainmentGoldReduction == 0)
-                return _costs;
-            List<ResourceToIntMap> reductedCost = Utilities.CloneResourceToIntMap(_costs);
-            foreach (ResourceToIntMap item in reductedCost)
-            {
-                if (item.resource == Resource.Gold)
-                    item.value -= ResourcesManager.Instance.EntertainmentGoldReduction;
-                if(item.value < 0)
-                    item.value = 0;
-            }
-            return reductedCost;
-        }
+        int cost = _carnivalistCost;
+        if (tile)
+            cost -= tile.CarnivalistCostReduction;
+        return Mathf.Max(cost, 0);
     }
-    public SpecialEffect SpecialEffect { get => _specialEffect; }
+
+    // Manage runtime list of special effects
+    private void OnEnable()
+    {
+        RuntimeManager.RegisterDataInstance(this);
+        ResetRuntimeSpecialEffects();
+    }
+
+    private void OnDisable()
+    {
+        RuntimeManager.UnregisterDataInstance(this);
+    }
+
+    public void ResetRuntimeSpecialEffects()
+    {
+        _runtimeSpecialEffects = Utilities.CloneScriptableObjects(_specialEffects);
+    }
 }

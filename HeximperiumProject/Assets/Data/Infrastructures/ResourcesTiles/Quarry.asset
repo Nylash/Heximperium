@@ -13,18 +13,23 @@ MonoBehaviour:
   m_Name: Quarry
   m_EditorClassIdentifier: 
   _name: Quarry
-  _visuals:
-  - {fileID: 2100000, guid: 71955a2af21c2a342aabb132cc61e99d, type: 2}
+  _family: 9
+  _visualsProps:
+  - tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
+    gameObjects:
+    - {fileID: 8158725270209530402, guid: 1f4d1e5c1035e434a9917f5d443df1fe, type: 3}
+    - {fileID: 8158725270209530402, guid: bc53991decf6ad44098fe40ac1eefc07, type: 3}
   _claimCost: 0
   _incomes:
   - resource: 1
-    value: 5
-  _availableInfrastructures: []
-  _specialBehaviours:
-  - {fileID: 11400000, guid: b8e368d6e4ac6784792087f9deeac7d6, type: 2}
+    value: 4
+  _availableInfrastructures:
+  - {fileID: 11400000, guid: fad078b89b1b57642a35a66200c5269a, type: 2}
+  _specialBehaviours: []
   _costs:
   - resource: 0
     value: 10
-  _associatedSystem: 4
   _scoutStartingPoint: 0
   isTown: 0
+  _infrastructureLevel: 1
+  _associatedPhase: 2

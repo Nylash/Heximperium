@@ -5,14 +5,16 @@ public class BoostClaimIncome : SpecialBehaviour
 {
     [SerializeField] private int _claimQuantity;
 
+    public int ClaimQuantity { get => _claimQuantity; }
+
     public override void InitializeSpecialBehaviour(Tile behaviourTile)
     {
-        ExpansionManager.Instance.ClaimPerTurn += _claimQuantity;
+        behaviourTile.ClaimIncome += _claimQuantity;
     }
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
-        ExpansionManager.Instance.ClaimPerTurn -= _claimQuantity;
+        behaviourTile.ClaimIncome -= _claimQuantity;
     }
 
     public override void HighlightImpactedTile(Tile behaviourTile, bool show)

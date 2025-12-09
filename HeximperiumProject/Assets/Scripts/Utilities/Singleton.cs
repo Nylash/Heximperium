@@ -54,8 +54,18 @@ public abstract class Singleton<T> : Singleton where T : MonoBehaviour
     #region  Methods
     private void Awake()
     {
+        // Duplicate check
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        _instance = (T)(object)this;
+
         if (_persistentSingleton)
             DontDestroyOnLoad(gameObject);
+
         OnAwake();
     }
 

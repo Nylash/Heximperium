@@ -36,6 +36,8 @@ public class BoostScoutOnSpawn : SpecialBehaviour
             scout.Speed += _boostSpeed;
             scout.Lifespan += _boostLifespan;
             scout.RevealRadius += _boostRevealRadius;
+
+            scout.UpdateLifeHints();
         }
     }
 
@@ -60,6 +62,6 @@ public class BoostScoutOnSpawn : SpecialBehaviour
             _ => $"{string.Join(", ", parts.Take(parts.Count - 1))} and {parts.Last()}"
         };
 
-        return $"Boosts the scout's {joined} when spawned on this tile";
+        return $"Boosts the scout's<sprite name=\"Scout_Emoji\"> {joined} when spawned on this tile";
     }
 }

@@ -5,28 +5,22 @@ using UnityEngine;
 public class InfrastructureData : TileData
 {
     [SerializeField] private List<ResourceToIntMap> _costs = new List<ResourceToIntMap>();
-    [SerializeField] private Phase _associatedSystem = Phase.None;
     [SerializeField] private bool _scoutStartingPoint;
     [SerializeField] private bool isTown;
+    [SerializeField][Range(1, 5)] private int _infrastructureLevel;
+    [SerializeField] private Phase _associatedPhase = Phase.None;
 
-    public bool ScoutStartingPoint { get => _scoutStartingPoint; }
-    public List<ResourceToIntMap> Costs 
-    { 
-        get
-        {
-            if(_associatedSystem == Phase.None)
-                return _costs;
-            List<ResourceToIntMap> reductedCost = Utilities.CloneResourceToIntMap(_costs);
-            foreach (ResourceToIntMap item in reductedCost)
-            {
-                if (item.resource == Resource.SpecialResources)
-                    item.value -= ResourcesManager.Instance.GetSRReduction(_associatedSystem);
-                if (item.value < 0)
-                    item.value = 0;
-            }
-            return reductedCost;
-        }   
-    }
+    private bool _runtimeScoutStartingPoint;
+
+    public bool ScoutStartingPoint { get => _runtimeScoutStartingPoint; set => _runtimeScoutStartingPoint = value; }
+    public List<ResourceToIntMap> Costs { get => _costs; }
     public bool IsTown { get => isTown; }
-    public Phase AssociatedSystem { get => _associatedSystem; }
+    public int InfrastructureLevel { get => _infrastructureLevel; }
+    public Phase AssociatedPhase { get => _associatedPhase; }
+
+    public override void ResetRuntimeValues()
+    {
+        base.ResetRuntimeValues();
+        _runtimeScoutStartingPoint = _scoutStartingPoint;
+    }
 }

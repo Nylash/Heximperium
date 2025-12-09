@@ -13,10 +13,7 @@ MonoBehaviour:
   m_Name: TastingPavilion
   m_EditorClassIdentifier: 
   _type: 1
-  _basePoints: 3
-  _costs:
-  - resource: 0
-    value: 10
-  - resource: 1
-    value: 5
-  _specialEffect: {fileID: 11400000, guid: 2acff5f82c07f28428264bfb9b2d7237, type: 2}
+  _basePoints: 10
+  _carnivalistCost: 2
+  _specialEffects:
+  - {fileID: 11400000, guid: 2acff5f82c07f28428264bfb9b2d7237, type: 2}

@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Wild pasture
   _visuals:
-  - {fileID: 2100000, guid: df7c14609d10a3a478725ba1b0ebc00e, type: 2}
+  - {fileID: 2100000, guid: 22a123ab97f14bc40a28bd9f60cb68d7, type: 2}
+  _visualsProps:
+  - tileData: {fileID: 11400000}
+    gameObjects:
+    - {fileID: 8158725270209530402, guid: df53973c1a8babe479e6ffc8b6f611e7, type: 3}
   _claimCost: 1
   _incomes: []
   _availableInfrastructures:

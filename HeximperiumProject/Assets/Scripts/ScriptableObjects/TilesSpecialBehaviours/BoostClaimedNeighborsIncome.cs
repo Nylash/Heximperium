@@ -34,7 +34,7 @@ public class BoostClaimedNeighborsIncome : SpecialBehaviour
                 continue;
             if (neighbor.Claimed)
             {
-                neighbor.Incomes = Utilities.SubtractResourceToIntMaps(neighbor.Incomes, _incomeBoost);
+                neighbor.UpdateIncomes(_incomeBoost, false, behaviourTile);
             }
             else
             {
@@ -58,7 +58,7 @@ public class BoostClaimedNeighborsIncome : SpecialBehaviour
 
     public void ApplyBoostToClaimedTile(Tile behaviourTile, Tile boostedTile)
     {
-        boostedTile.Incomes = Utilities.MergeResourceToIntMaps(boostedTile.Incomes, _incomeBoost);
+        boostedTile.UpdateIncomes(_incomeBoost, true, behaviourTile);
         boostedTile.OnTileClaimed -= behaviourTile.ListenerOnTileClaimed_BoostClaimedNeighborsIncome;
     }
 

@@ -14,7 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Meadow
   _visuals:
-  - {fileID: 2100000, guid: 3cfe066665d98054f99e6fe27dc97d2e, type: 2}
+  - {fileID: 2100000, guid: 22a123ab97f14bc40a28bd9f60cb68d7, type: 2}
+  _visualsProps:
+  - tileData: {fileID: 11400000}
+    gameObjects:
+    - {fileID: 8158725270209530402, guid: 67dcd65843752a04b9b9ea7a819d0f8b, type: 3}
+    - {fileID: 8158725270209530402, guid: 9f16a5b5cfba5334c9bb8761ed1e995b, type: 3}
+    - {fileID: 8158725270209530402, guid: e14048bfa04140d478c76e17b3a670e3, type: 3}
+    - {fileID: 8158725270209530402, guid: c2a06d849e24de14dab89a64cc415c9e, type: 3}
   _claimCost: 1
   _incomes:
   - resource: 0

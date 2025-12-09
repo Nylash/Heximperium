@@ -7,21 +7,25 @@ public class Scout : MonoBehaviour
 {
     #region CONFIGURATION
     [SerializeField] private ScoutData _data;
+    [SerializeField] private GameObject _lifeHintPrefab;
     #endregion
 
     #region VARIABLES
     private Direction _direction;
     private Animator _animator;
     private Tile _currentTile;
+    private Tile _lastValidTile;
     private bool _hasDoneMoving;
     private float _yOffset;
     private bool _hasRedirected;
+    private bool _isFreeScout;
     //Gameplay variables
     private int _speed;
     private int _lifespan;
     private int _revealRadius;
 
-    private List<Renderer> _renderers = new List<Renderer>();
+    private HashSet<Renderer> _renderers = new HashSet<Renderer>();
+    private List<GameObject> _lifeHints = new List<GameObject>();
     #endregion
 
     #region ACCESSORS
@@ -60,30 +64,41 @@ public class Scout : MonoBehaviour
         GameManager.Instance.OnEntertainmentPhaseStarted += KillScout;
     }
 
+    private void OnDestroy()
+    {
+        if (ExplorationManager.Instance != null)
+            ExplorationManager.Instance.OnPhaseFinalized -= CheckLifeSpan;
+        if (GameManager.Instance != null)
+            GameManager.Instance.OnEntertainmentPhaseStarted -= KillScout;
+    }
+
     private void Start()
     {
         _animator = GetComponent<Animator>();
     }
 
-    public void InitializeScout()
+    public void InitializeScout(bool freeScout)
     {
         _speed = _data.Speed + ExplorationManager.Instance.BoostScoutSpeed;
         _lifespan = _data.Lifespan + ExplorationManager.Instance.BoostScoutLifespan;
         _revealRadius = _data.RevealRadius + ExplorationManager.Instance.BoostScoutRevealRadius;
+        _isFreeScout = freeScout;
 
         _yOffset = transform.position.y;
+
+        UpdateLifeHints();
     }
 
     //Coroutine to move the scout at the end of exploration phase
     public IEnumerator Move()
     {
+        _lastValidTile = _currentTile;
         for (int i = 0; i < _speed; i++)
         {
             Vector3 pos = transform.localPosition;
 
             //Move from ancient tile to new
             _currentTile.Scouts.Remove(this);
-            _currentTile.UpdateScoutCounter();
             //New tile
             _currentTile = _currentTile.Neighbors[(int)_direction];
             if (_currentTile == null)
@@ -92,6 +107,7 @@ public class Scout : MonoBehaviour
                 _hasDoneMoving = true;
                 yield break;
             }
+            _lastValidTile = _currentTile;
             _currentTile.Scouts.Add(this);
             transform.position = _currentTile.transform.position + new Vector3(0,_yOffset,0);
 
@@ -108,8 +124,8 @@ public class Scout : MonoBehaviour
 
             yield return new WaitForSeconds(ExplorationManager.Instance.AwaitTimeScoutMovement);
         }
-        _currentTile.UpdateScoutCounter();
 
+        transform.parent = _currentTile.Visual;
         _hasDoneMoving = true;
         _hasRedirected = false;
     }
@@ -124,24 +140,29 @@ public class Scout : MonoBehaviour
         if (_lifespan <= 0)
         {
             ExplorationManager.Instance.Scouts.Remove(this);
-            ExplorationManager.Instance.CurrentScoutsCount--;
+            if (!_isFreeScout)
+                ExplorationManager.Instance.CurrentScoutsCount--;
             if(_currentTile != null)
             {
                 _currentTile.Scouts.Remove(this);
-                _currentTile.UpdateScoutCounter();
             }
             ExplorationManager.Instance.OnPhaseFinalized -= CheckLifeSpan;
             GameManager.Instance.OnEntertainmentPhaseStarted -= KillScout;
 
-            if(ExplorationManager.Instance.UpgradeScoutRevealOnDeathRadius != 0 && GameManager.Instance.CurrentPhase != Phase.Entertain)//Don't do the reveal if we are in Entertainment phase
-                RevealTilesRecursively(_currentTile, ExplorationManager.Instance.UpgradeScoutRevealOnDeathRadius);
+            Tile tileToReveal = _currentTile ?? _lastValidTile;
+            if (ExplorationManager.Instance.UpgradeScoutRevealOnDeathRadius != 0 &&
+                GameManager.Instance.CurrentPhase != Phase.Entertain &&
+                tileToReveal != null) //Don't do the reveal if we are in Entertainment phase
+                RevealTilesRecursively(tileToReveal, ExplorationManager.Instance.UpgradeScoutRevealOnDeathRadius);
 
             if (OnScoutRevealingTile != null)
                 foreach (var d in OnScoutRevealingTile.GetInvocationList())
                     OnScoutRevealingTile -= (Action<Tile>)d;
 
             Destroy(gameObject);
+            return;
         }
+        UpdateLifeHints();
     }
 
     private void KillScout()
@@ -204,6 +225,70 @@ public class Scout : MonoBehaviour
         foreach (Renderer item in _renderers)
         {
             item.enabled = visible;
+        }
+    }
+
+    public void UpdateLifeHints()
+    {
+        if (_lifespan != _lifeHints.Count)
+        {
+            foreach (GameObject lifeHint in _lifeHints)
+            {
+                _renderers.Remove(lifeHint.GetComponent<Renderer>());
+                Destroy(lifeHint);
+            }
+            _lifeHints.Clear();
+            for (int i = 0; i < _lifespan; i++)
+            {
+                GameObject lifeHint = Instantiate(_lifeHintPrefab, transform);
+                _lifeHints.Add(lifeHint);
+                _renderers.Add(lifeHint.GetComponent<Renderer>());
+            }
+        }
+
+        if (!GetComponent<Renderer>().enabled)
+        {
+            foreach (GameObject lifeHint in _lifeHints)
+            {
+                lifeHint.GetComponent<Renderer>().enabled = false;
+            }
+        }
+
+        PositionLifeHints();
+    }
+
+    private void PositionLifeHints()
+    {
+        switch (_lifeHints.Count)
+        {
+            case 1:
+                _lifeHints[0].transform.localPosition = new Vector3(0, -3.5f, -0.01f);
+                break;
+            case 2:
+                _lifeHints[0].transform.localPosition = new Vector3(0.75f, -3.1f, -0.01f);
+                _lifeHints[1].transform.localPosition = new Vector3(-0.75f, -3.1f, -0.01f);
+                break;
+            case 3:
+                _lifeHints[0].transform.localPosition = new Vector3(0, -3.5f, -0.01f);
+                _lifeHints[1].transform.localPosition = new Vector3(1.5f, -2.75f, -0.01f);
+                _lifeHints[2].transform.localPosition = new Vector3(-1.5f, -2.75f, -0.01f);
+                break;
+            case 4:
+                _lifeHints[0].transform.localPosition = new Vector3(0.75f, -3.1f, -0.01f);
+                _lifeHints[1].transform.localPosition = new Vector3(-0.75f, -3.1f, -0.01f);
+                _lifeHints[2].transform.localPosition = new Vector3(2.25f, -2.35f, -0.01f);
+                _lifeHints[3].transform.localPosition = new Vector3(-2.25f, -2.35f, -0.01f);
+                break;
+            case 5:
+                _lifeHints[0].transform.localPosition = new Vector3(0, -3.5f, -0.01f);
+                _lifeHints[1].transform.localPosition = new Vector3(1.5f, -2.75f, -0.01f);
+                _lifeHints[2].transform.localPosition = new Vector3(-1.5f, -2.75f, -0.01f);
+                _lifeHints[3].transform.localPosition = new Vector3(3, -2, -0.01f);
+                _lifeHints[4].transform.localPosition = new Vector3(-3, -2, -0.01f);
+                break;
+            default:
+                Debug.LogError("Too many life hints");
+                break;
         }
     }
 }

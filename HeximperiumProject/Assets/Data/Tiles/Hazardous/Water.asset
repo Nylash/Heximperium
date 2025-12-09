@@ -14,9 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Water
   _visuals:
-  - {fileID: 2100000, guid: 0ca2f32323c98a949aa45fbf6b47d03e, type: 2}
-  _claimCost: 2
+  - {fileID: 2100000, guid: 22a123ab97f14bc40a28bd9f60cb68d7, type: 2}
+  _visualsProps:
+  - tileData: {fileID: 11400000}
+    gameObjects:
+    - {fileID: 8600583711594694674, guid: 42e15038d6e554342ac531b86dcd5891, type: 3}
+    - {fileID: 8600583711594694674, guid: 87b5b1dc50f133f4b89df3b0cb91edff, type: 3}
+    - {fileID: 8600583711594694674, guid: 400741153e69913478d6c6077a55ecfb, type: 3}
+    - {fileID: 8600583711594694674, guid: b1c26b9274e00b14f9ea75d52fe7e718, type: 3}
+  _claimCost: 999
   _incomes: []
-  _availableInfrastructures:
-  - {fileID: 11400000, guid: fb5a95d0d24473e428959d7d1ca2f553, type: 2}
+  _availableInfrastructures: []
   _specialBehaviours: []

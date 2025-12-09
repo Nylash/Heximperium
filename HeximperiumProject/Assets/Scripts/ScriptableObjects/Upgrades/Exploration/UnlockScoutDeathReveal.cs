@@ -1,0 +1,17 @@
+using UnityEngine;
+
+[CreateAssetMenu(menuName = "Scriptable Objects/Upgrades/Exploration/UnlockScoutDeathReveal")]
+public class UnlockScoutDeathReveal : UpgradeEffect
+{
+    [SerializeField] private int _deathRevealRadius;
+
+    public override void ApplyEffect()
+    {
+        ExplorationManager.Instance.UpgradeScoutRevealOnDeathRadius = _deathRevealRadius;
+    }
+
+    public override string GetEffectDescription()
+    {
+        return $"When a Scout<sprite name=\"Scout_Emoji\"> expires, he reveals all tiles in a {_deathRevealRadius}-tiles radius around him";
+    }
+}

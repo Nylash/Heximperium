@@ -12,9 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e0e460f401a6ce44ad84d3534c37a05, type: 3}
   m_Name: ExplorersLodge
   m_EditorClassIdentifier: 
-  _name: Explorer's Lodge
-  _visuals:
-  - {fileID: 2100000, guid: 4d61b2e3a8f20e14da6f3daa37a5460d, type: 2}
+  _name: Explorers' Lodge
+  _family: 5
+  _visualsProps:
+  - tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
+    gameObjects:
+    - {fileID: 6297332795903044326, guid: bbc7a23cedb17fe4a982c84ac68658f2, type: 3}
+    - {fileID: 3212823506713203852, guid: 1563d03d54f256547835ea64955df82f, type: 3}
+    - {fileID: 5637727674917832642, guid: bf942f4e282bafb4ea0ad939621011b1, type: 3}
+  - tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
+    gameObjects:
+    - {fileID: 6297332795903044326, guid: da70af92e5947774d88dde04b9ad6956, type: 3}
+    - {fileID: 3212823506713203852, guid: 296c8baf890897545b6fafb8ee0dd03c, type: 3}
+    - {fileID: 5637727674917832642, guid: 71f814e88783b0e41883fef442785433, type: 3}
   _claimCost: 0
   _incomes:
   - resource: 0
@@ -27,6 +37,7 @@ MonoBehaviour:
     value: 15
   - resource: 1
     value: 5
-  _associatedSystem: 0
   _scoutStartingPoint: 1
   isTown: 0
+  _infrastructureLevel: 2
+  _associatedPhase: 0
