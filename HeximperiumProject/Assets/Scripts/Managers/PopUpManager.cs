@@ -1170,7 +1170,9 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         #region ENTERTAINMENT PLACEMENT
-        if (tile.CanReceiveEntertainment())
+        if (tile.CanReceiveEntertainment() && 
+            !tile.TileData.SpecialBehaviours
+            .Any(b => b is AllowEntertainmentOnTileAndNeighbors))
         {
             TextMeshProUGUI entPlacement = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
             entPlacement.text = "<sprite name=\"Puce_Emoji\"> Can receive an " + Family.Entertainment.ToCustomString();
@@ -2045,14 +2047,18 @@ public class PopUpManager : Singleton<PopUpManager>
         separationEffects.fontStyle = FontStyles.Bold;
         separationEffects.alignment = TextAlignmentOptions.Center;
         textObjects.Add(separationEffects.GetComponent<RectTransform>());
+
+        List<RectTransform> newEffects = new List<RectTransform>();
+        List<RectTransform> oldEffects = new List<RectTransform>();
         #endregion
 
         #region AUTO CLAIM TOWN UPGRADE
         if (GameManager.Instance.CurrentPhase == Phase.Expand && ExpansionManager.Instance.UpgradeTownAutoClaim)
         {
             TextMeshProUGUI autoClaimText = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            autoClaimText.text = "<sprite name=\"Puce_Emoji\"> Automatically claims<sprite name=\"Claim_Emoji\"> the 6 surrounding tiles";
-            textObjects.Add(autoClaimText.GetComponent<RectTransform>());
+            autoClaimText.text = "<sprite name=\"Plus_Emoji\"> Automatically claims<sprite name=\"Claim_Emoji\"> the 6 surrounding tiles";
+            autoClaimText.color = UIManager.Instance.ColorEnhancementNewEffect;
+            newEffects.Add(autoClaimText.GetComponent<RectTransform>());
             ClampTextWidth(autoClaimText);
         }
         #endregion
@@ -2062,9 +2068,9 @@ public class PopUpManager : Singleton<PopUpManager>
         {
             TextMeshProUGUI income = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
             income.text = "<sprite name=\"Plus_Emoji\"> Improve base income by " + button.InfrastructureData.Incomes.IncomeToString() + " per turn";
-            textObjects.Add(income.GetComponent<RectTransform>());
-            ClampTextWidth(income);
             income.color = UIManager.Instance.ColorEnhancementNewEffect;
+            newEffects.Add(income.GetComponent<RectTransform>());
+            ClampTextWidth(income);
         }
         #endregion
 
@@ -2079,10 +2085,13 @@ public class PopUpManager : Singleton<PopUpManager>
                 {
                     behaviourText.text = "<sprite name=\"Plus_Emoji\"> " + behaviour.GetBehaviourDescription();
                     behaviourText.color = UIManager.Instance.ColorEnhancementNewEffect;
+                    newEffects.Add(behaviourText.GetComponent<RectTransform>());
                 }
                 else
+                {
                     behaviourText.text = "<sprite name=\"Puce_Emoji\"> " + behaviour.GetBehaviourDescription();
-                textObjects.Add(behaviourText.GetComponent<RectTransform>());
+                    oldEffects.Add(behaviourText.GetComponent<RectTransform>());
+                }
                 ClampTextWidth(behaviourText);
                 /*
                 behaviour.HighlightImpactedTile(button.AssociatedTile, true);
@@ -2102,19 +2111,33 @@ public class PopUpManager : Singleton<PopUpManager>
                 {
                     scoutText.text = "<sprite name=\"Plus_Emoji\"> Scout<sprite name=\"Scout_Emoji\"> starting point";
                     scoutText.color = UIManager.Instance.ColorEnhancementNewEffect;
+                    newEffects.Add(scoutText.GetComponent<RectTransform>());
                 }
-                    
+
                 else
+                {
                     scoutText.text = "<sprite name=\"Puce_Emoji\"> Scout<sprite name=\"Scout_Emoji\"> starting point";
+                    oldEffects.Add(scoutText.GetComponent<RectTransform>());
+                }
             }
             else
             {
-                scoutText.color = UIManager.Instance.ColorEnhancementNewEffect;
                 scoutText.text = "<sprite name=\"Plus_Emoji\"> Scout<sprite name=\"Scout_Emoji\"> starting point";
+                scoutText.color = UIManager.Instance.ColorEnhancementNewEffect;
+                newEffects.Add(scoutText.GetComponent<RectTransform>());
             }
-            textObjects.Add(scoutText.GetComponent<RectTransform>());
             ClampTextWidth(scoutText);
- 
+        }
+        #endregion
+
+        #region EFFECTS ORDER
+        foreach (RectTransform rect in newEffects)
+        {
+            rect.SetAsLastSibling();
+        }
+        foreach (RectTransform rect in oldEffects)
+        {
+            rect.SetAsLastSibling();
         }
         #endregion
 
@@ -2438,6 +2461,7 @@ public class PopUpManager : Singleton<PopUpManager>
     //Distribute the Y space of the popup content evenly
     private void SetPopUpContentAnchors(List<RectTransform> textObjects)
     {
+        return;
         int count = textObjects.Count;
         for (int i = 0; i < count; i++)
         {
