@@ -1169,6 +1169,16 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
+        #region ENTERTAINMENT PLACEMENT
+        if (tile.CanReceiveEntertainment())
+        {
+            TextMeshProUGUI entPlacement = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            entPlacement.text = "<sprite name=\"Puce_Emoji\"> Can receive an " + Family.Entertainment.ToCustomString();
+            textObjects.Add(entPlacement.GetComponent<RectTransform>());
+            ClampTextWidth(entPlacement);
+        }
+        #endregion
+
         #region DETAILS SEPARATION
         if ((tile.TileData.AvailableInfrastructures.Count > 0 && GameManager.Instance.CurrentPhase != Phase.Entertain) 
             || (!tile.Claimed && tile.TileData is not HazardousTileData))
