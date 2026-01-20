@@ -1495,7 +1495,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region PREDICTED POINTS
         TextMeshProUGUI predictedIncome = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        predictedIncome.text = "Predicted points: +" + predictedPoints + "<sprite name=\"Point_Emoji\">";
+        predictedIncome.text = "+" + predictedPoints + "<sprite name=\"Point_Emoji\">";
         predictedIncome.fontStyle = FontStyles.Bold;
         predictedIncome.alignment = TextAlignmentOptions.Center;
         #endregion
@@ -1533,7 +1533,7 @@ public class PopUpManager : Singleton<PopUpManager>
                 totalPointsGiven += kvp.Value;
             }
             TextMeshProUGUI pointsGiven = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            pointsGiven.text = "Would provide +" + totalPointsGiven + "<sprite name=\"Point_Emoji\"> over "
+            pointsGiven.text = "Provides +" + totalPointsGiven + "<sprite name=\"Point_Emoji\"> over "
                 + predictedEntImpactedByEnt.Count + " other " + Family.Entertainment.ToCustomString(predictedEntImpactedByEnt.Count > 1);
             pointsGiven.alignment = TextAlignmentOptions.Center;
         }
@@ -1617,7 +1617,7 @@ public class PopUpManager : Singleton<PopUpManager>
         // Get predicted income
         List<ResourceToIntMap> predictedInc;
         List<ResourceToIntMap> predictedSelfInc;
-        int predictectedCarnivalists;
+        int predictedCarnivalists;
         Dictionary<Tile, List<ResourceToIntMap>> predictedExtSources;
         Dictionary<Tile, List<ResourceToIntMap>> predictedIntSources;
         Dictionary<Tile, int> predictedInternalCarnivalistsSources;
@@ -1625,7 +1625,7 @@ public class PopUpManager : Singleton<PopUpManager>
         Dictionary<Tile, int> predictedImpactedTilesCarnivalists;
         ExploitationManager.Instance.GetPredictedIncomes(button.AssociatedTile, button.InfrastructureData,
             out predictedInc, out predictedExtSources, out predictedIntSources,
-            out predictedSelfInc, out predictectedCarnivalists, out predictedInternalCarnivalistsSources,
+            out predictedSelfInc, out predictedCarnivalists, out predictedInternalCarnivalistsSources,
             out predictedImpactedTilesIncomes, out predictedImpactedTilesCarnivalists);
 
         bool isVisualizingCombo = JuiceManager.Instance.VisualizeExploitationCombo(
@@ -1642,40 +1642,23 @@ public class PopUpManager : Singleton<PopUpManager>
         title.text = "Build " + button.InfrastructureData.TileName;
         #endregion
 
+        #region INCOME
+        TextMeshProUGUI income = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+
         if (!Utilities.AreIncomesEqual(button.AssociatedTile.Incomes, predictedInc))
         {
-            #region CURRENT INCOME
-            if (button.AssociatedTile.Incomes.Count > 0)
-            {
-                TextMeshProUGUI currentIncome = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-                currentIncome.text = "Current income: " + button.AssociatedTile.Incomes.IncomeToString() + " per turn";
-                currentIncome.fontStyle = FontStyles.Bold;
-                currentIncome.alignment = TextAlignmentOptions.Center;
-            }
-            #endregion
-
-            #region PREDICTED INCOME
-            if (predictedInc.Count > 0)
-            {
-                TextMeshProUGUI predictedIncome = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-                predictedIncome.text = "Predicted income: " + predictedInc.IncomeToString() + " per turn";
-                predictedIncome.fontStyle = FontStyles.Bold;
-                predictedIncome.alignment = TextAlignmentOptions.Center;
-            }
-            #endregion
+            income.text = predictedInc.IncomeToString() + " per turn";
+            string hex = ColorUtility.ToHtmlStringRGBA(UIManager.Instance.ColorEnhancementNewEffect);
+            income.text += $" <color=#{hex}>(gain " + Utilities.SubtractResourceToIntMaps(predictedInc, button.AssociatedTile.Incomes).IncomeToString() + ")</color>";
         }
         else
         {
-            #region INCOME
-            if (button.AssociatedTile.Incomes.Count > 0)
-            {
-                TextMeshProUGUI income = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-                income.text = button.AssociatedTile.Incomes.IncomeToString() + " per turn";
-                income.fontStyle = FontStyles.Bold;
-                income.alignment = TextAlignmentOptions.Center;
-            }
-            #endregion
+            income.text = button.AssociatedTile.Incomes.IncomeToString() + " per turn";
         }
+
+        income.fontStyle = FontStyles.Bold;
+        income.alignment = TextAlignmentOptions.Center;
+        #endregion
 
         #region INCOME SOURCES
         if (_showSourcesOnPopUp)
@@ -1721,8 +1704,18 @@ public class PopUpManager : Singleton<PopUpManager>
                 previousTotalGiven = Utilities.MergeResourceToIntMaps(previousTotalGiven, kvp.Value);
             }
             
-            incomeGiven.text = $"{(Utilities.AreIncomesEqual(totalGiven, previousTotalGiven) ? "Provides" : "Would provide")} {totalGiven.IncomeToString()} over " +
-                $"{predictedImpactedTilesIncomes.Count} other {(predictedImpactedTilesIncomes.Count > 1 ? "tiles" : "tile")}";
+            if (!Utilities.AreIncomesEqual(totalGiven, previousTotalGiven))
+            {
+                incomeGiven.text = $"Provides {totalGiven.IncomeToString()} over " + 
+                    $"{predictedImpactedTilesIncomes.Count} other {(predictedImpactedTilesIncomes.Count > 1 ? "tiles" : "tile")}";
+                string hex = ColorUtility.ToHtmlStringRGBA(UIManager.Instance.ColorEnhancementNewEffect);
+                incomeGiven.text += $" <color=#{hex}>(gain " + Utilities.SubtractResourceToIntMaps(totalGiven, previousTotalGiven).IncomeToString() + ")</color>";
+            }
+            else
+            {
+                incomeGiven.text = $"Provides {previousTotalGiven.IncomeToString()} over " +
+                $"{button.AssociatedTile.ImpactedTilesIncomes.Count} other {(button.AssociatedTile.ImpactedTilesIncomes.Count > 1 ? "tiles" : "tile")}";
+            }
             incomeGiven.alignment = TextAlignmentOptions.Center;
         }
         #endregion
@@ -1751,35 +1744,31 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
-        #region CURRENT CARNIVALISTS
-        if (button.AssociatedTile.RecruitedCarnivalists > 0)
+        #region CARNIVALISTS
+        if (button.AssociatedTile.RecruitedCarnivalists > 0 || predictedCarnivalists > 0)
         {
-            TextMeshProUGUI currentCarni = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            currentCarni.text = "Current recruited "+ (button.AssociatedTile.RecruitedCarnivalists > 1 ? "carnivalists" : "carnivalist") 
-                + ": " + button.AssociatedTile.RecruitedCarnivalists + "<sprite name=\"Carnivalist_Emoji\">";
-            currentCarni.fontStyle = FontStyles.Bold;
-            currentCarni.alignment = TextAlignmentOptions.Center;
-        }
-        #endregion
+            TextMeshProUGUI carnivalists = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            int countCarnivalists = Mathf.Max(button.AssociatedTile.RecruitedCarnivalists, predictedCarnivalists);
+            carnivalists.text = $"{countCarnivalists}<sprite name=\"Carnivalist_Emoji\"></color>";
 
-        #region PREDICTED CARNIVALISTS
-        if (predictectedCarnivalists > 0)
-        {
-            TextMeshProUGUI predictedCarni = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            predictedCarni.text = "Predicted recruited " + (predictectedCarnivalists > 1 ? "carnivalists" : "carnivalist")
-                + ": " + predictectedCarnivalists + "<sprite name=\"Carnivalist_Emoji\">";
-            predictedCarni.fontStyle = FontStyles.Bold;
-            predictedCarni.alignment = TextAlignmentOptions.Center;
+            if (button.AssociatedTile.RecruitedCarnivalists != predictedCarnivalists)
+            {
+                string hex = ColorUtility.ToHtmlStringRGBA(UIManager.Instance.ColorEnhancementNewEffect);
+                carnivalists.text += $" <color=#{hex}>(gain {predictedCarnivalists - button.AssociatedTile.RecruitedCarnivalists}<sprite name=\"Carnivalist_Emoji\">)</color>";
+            }
+
+            carnivalists.fontStyle = FontStyles.Bold;
+            carnivalists.alignment = TextAlignmentOptions.Center;
         }
         #endregion
 
         #region CARNIVALISTS SOURCES
         if (_showSourcesOnPopUp)
         {
-            if (predictectedCarnivalists > 0)
+            if (predictedCarnivalists > 0)
             {
                 TextMeshProUGUI sourceCarn = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-                sourceCarn.text = "(" + predictectedCarnivalists + "<sprite name=\"Carnivalist_Emoji\"> based on the tile effects)";
+                sourceCarn.text = "(" + predictedCarnivalists + "<sprite name=\"Carnivalist_Emoji\"> based on the tile effects)";
                 sourceCarn.alignment = TextAlignmentOptions.Center;
                 sourceCarn.fontStyle = FontStyles.Italic;
             }
@@ -1800,8 +1789,17 @@ public class PopUpManager : Singleton<PopUpManager>
             {
                 previousTotalCarnivalists += item.Value;
             }
-            carnivalistsGiven.text = $"{(totalCarnivalists == previousTotalCarnivalists ? "Provides" : "Would provide")} {totalCarnivalists}<sprite name=\"Carnivalist_Emoji\"> over " +
-                $"{predictedImpactedTilesCarnivalists.Count} other {(predictedImpactedTilesCarnivalists.Count > 1 ? "tiles" : "tile")}";
+
+            if (totalCarnivalists != previousTotalCarnivalists)
+            {
+                string hex = ColorUtility.ToHtmlStringRGBA(UIManager.Instance.ColorEnhancementNewEffect);
+                carnivalistsGiven.text = $"Provides {totalCarnivalists}<sprite name=\"Carnivalist_Emoji\"> over " +
+                $"{predictedImpactedTilesCarnivalists.Count} other {(predictedImpactedTilesCarnivalists.Count > 1 ? "tiles" : "tile")}" +
+                $" <color=#{hex}>(gain {totalCarnivalists - previousTotalCarnivalists}<sprite name=\"Carnivalist_Emoji\">)</color>";
+            }
+            else
+                carnivalistsGiven.text = $"Provides {totalCarnivalists}<sprite name=\"Carnivalist_Emoji\"> over " +
+                $"{button.AssociatedTile.ImpactedTilesCarnivalists.Count} other {(button.AssociatedTile.ImpactedTilesCarnivalists.Count > 1 ? "tiles" : "tile")}";
             carnivalistsGiven.alignment = TextAlignmentOptions.Center;
         }
         #endregion
@@ -1854,11 +1852,11 @@ public class PopUpManager : Singleton<PopUpManager>
         #region INCOME BONUS
         if (button.InfrastructureData.Incomes.Count > 0)
         {
-            TextMeshProUGUI income = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            income.text = "<sprite name=\"Plus_Emoji\"> Improve base income by " + button.InfrastructureData.Incomes.IncomeToString() + " per turn";
-            income.color = UIManager.Instance.ColorEnhancementNewEffect;
-            newEffects.Add(income.GetComponent<RectTransform>());
-            ClampTextWidth(income);
+            TextMeshProUGUI incomeBonus = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            incomeBonus.text = "<sprite name=\"Plus_Emoji\"> Improve base income by " + button.InfrastructureData.Incomes.IncomeToString() + " per turn";
+            incomeBonus.color = UIManager.Instance.ColorEnhancementNewEffect;
+            newEffects.Add(incomeBonus.GetComponent<RectTransform>());
+            ClampTextWidth(incomeBonus);
         }
         #endregion
 
