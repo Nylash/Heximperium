@@ -65,6 +65,9 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TextMeshProUGUI _upgrade4;
     [SerializeField] private TextMeshProUGUI _upgrade5;
     [SerializeField] private TextMeshProUGUI _upgrade6;
+    [SerializeField] private TextMeshProUGUI _upgrade7;
+    [SerializeField] private TextMeshProUGUI _upgrade8;
+    [SerializeField] private TextMeshProUGUI _upgrade9;
     [Header("_________________________________________________________")]
     [Header("Upgrades Choice Menu")]
     [SerializeField] private GameObject _upgradesChoiceMenuObject;
@@ -633,8 +636,26 @@ public class UIManager : Singleton<UIManager>
                 _upgrade6.GetComponent<UpgradeHolder>().UpgradeEffect = upgrade;
                 _upgrade6.gameObject.SetActive(true);
                 break;
+            case 7:
+                _upgrade7.text = upgrade.EffectName;
+                _upgrade7.color = GetColorOfPhase(upgrade.AssociatedSystem);
+                _upgrade7.GetComponent<UpgradeHolder>().UpgradeEffect = upgrade;
+                _upgrade7.gameObject.SetActive(true);
+                break;
+            case 8:
+                _upgrade8.text = upgrade.EffectName;
+                _upgrade8.color = GetColorOfPhase(upgrade.AssociatedSystem);
+                _upgrade8.GetComponent<UpgradeHolder>().UpgradeEffect = upgrade;
+                _upgrade8.gameObject.SetActive(true);
+                break;
+            case 9:
+                _upgrade9.text = upgrade.EffectName;
+                _upgrade9.color = GetColorOfPhase(upgrade.AssociatedSystem);
+                _upgrade9.GetComponent<UpgradeHolder>().UpgradeEffect = upgrade;
+                _upgrade9.gameObject.SetActive(true);
+                break;
             default:
-                Debug.LogError("Shouldn't reach 7 upgrades.");
+                Debug.LogError("Shouldn't reach 10 upgrades.");
                 break;
         }
         UpdateTurnCounterBeforeNextUpgrade(GameManager.Instance.TurnCounter);
