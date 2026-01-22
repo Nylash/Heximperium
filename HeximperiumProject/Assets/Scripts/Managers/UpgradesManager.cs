@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class UpgradesManager : Singleton<UpgradesManager>
 {
+    private const string ALL_UPGRADES_CHOOSEN = "All upgrades for this system are already unlocked";
+
     [SerializeField] private List<int> _turnsForUpgradesChoice = new List<int>();
     [SerializeField] private List<UpgradeEffect> _exploUpgrades = new List<UpgradeEffect>();
     [SerializeField] private List<UpgradeEffect> _expandUpgrades = new List<UpgradeEffect>();
@@ -54,7 +56,7 @@ public class UpgradesManager : Singleton<UpgradesManager>
         upgrade.ApplyEffect();
 
         PopUpManager.Instance.ResetPopUp(null);
-        UIManager.Instance.UpgradesChoiceMenu();
+        UIManager.Instance.UpgradesChoiceMenu(true, true, true, true);// Close the upgrades choice menu, the parameters don't matter here
 
         UIManager.Instance.FillUpgradesList(_appliedUpgrades.Count, _appliedUpgrades[_appliedUpgrades.Count - 1]);
     }
@@ -63,20 +65,56 @@ public class UpgradesManager : Singleton<UpgradesManager>
     {
         PopUpManager.Instance.ShowUpgradeTutoPopUp();
 
-        _currentExploUpgrade = _remainingExploUpgrades[Random.Range(0, _remainingExploUpgrades.Count)];
-        UIManager.Instance.ExploChoiceTitle.text = _currentExploUpgrade.EffectName;
-        UIManager.Instance.ExploChoiceDetail.text = _currentExploUpgrade.GetEffectDescription();
-        _currentExpandUpgrade = _remainingExpandUpgrades[Random.Range(0, _remainingExpandUpgrades.Count)];
-        UIManager.Instance.ExpandChoiceTitle.text = _currentExpandUpgrade.EffectName;
-        UIManager.Instance.ExpandChoiceDetail.text = _currentExpandUpgrade.GetEffectDescription();
-        _currentExploitUpgrade = _remainingExploitpgrades[Random.Range(0, _remainingExploitpgrades.Count)];
-        UIManager.Instance.ExploitChoiceTitle.text = _currentExploitUpgrade.EffectName;
-        UIManager.Instance.ExploitChoiceDetail.text = _currentExploitUpgrade.GetEffectDescription();
-        _currentEntertainUpgrade = _remainingEntertainUpgrades[Random.Range(0, _remainingEntertainUpgrades.Count)];
-        UIManager.Instance.EntertainChoiceTitle.text = _currentEntertainUpgrade.EffectName;
-        UIManager.Instance.EntertainChoiceDetail.text = _currentEntertainUpgrade.GetEffectDescription();
+        if (_remainingExploUpgrades.Count != 0)
+        {
+            _currentExploUpgrade = _remainingExploUpgrades[Random.Range(0, _remainingExploUpgrades.Count)];
+            UIManager.Instance.ExploChoiceTitle.text = _currentExploUpgrade.EffectName;
+            UIManager.Instance.ExploChoiceDetail.text = _currentExploUpgrade.GetEffectDescription();
+        }
+        else
+        {
+            UIManager.Instance.ExploChoiceTitle.text = "Exploration";
+            UIManager.Instance.ExploChoiceDetail.text = ALL_UPGRADES_CHOOSEN;
+            UIManager.Instance.ConfirmExplo.gameObject.SetActive(false);
+        }
+        if (_remainingExpandUpgrades.Count != 0)
+        {
+            _currentExpandUpgrade = _remainingExpandUpgrades[Random.Range(0, _remainingExpandUpgrades.Count)];
+            UIManager.Instance.ExpandChoiceTitle.text = _currentExpandUpgrade.EffectName;
+            UIManager.Instance.ExpandChoiceDetail.text = _currentExpandUpgrade.GetEffectDescription();
+        }
+        else
+        {
+            UIManager.Instance.ExpandChoiceTitle.text = "Expansion";
+            UIManager.Instance.ExpandChoiceDetail.text = ALL_UPGRADES_CHOOSEN;
+            UIManager.Instance.ConfirmExpand.gameObject.SetActive(false);
+        }
+        if (_remainingExploitpgrades.Count != 0)
+        {
+            _currentExploitUpgrade = _remainingExploitpgrades[Random.Range(0, _remainingExploitpgrades.Count)];
+            UIManager.Instance.ExploitChoiceTitle.text = _currentExploitUpgrade.EffectName;
+            UIManager.Instance.ExploitChoiceDetail.text = _currentExploitUpgrade.GetEffectDescription();
+        }
+        else
+        {
+            UIManager.Instance.ExploitChoiceTitle.text = "Development";
+            UIManager.Instance.ExploitChoiceDetail.text = ALL_UPGRADES_CHOOSEN;
+            UIManager.Instance.ConfirmExploit.gameObject.SetActive(false);
+        }
+        if (_remainingEntertainUpgrades.Count != 0)
+        {
+            _currentEntertainUpgrade = _remainingEntertainUpgrades[Random.Range(0, _remainingEntertainUpgrades.Count)];
+            UIManager.Instance.EntertainChoiceTitle.text = _currentEntertainUpgrade.EffectName;
+            UIManager.Instance.EntertainChoiceDetail.text = _currentEntertainUpgrade.GetEffectDescription();
+        }
+        else
+        {
+            UIManager.Instance.EntertainChoiceTitle.text = "Celebration";
+            UIManager.Instance.EntertainChoiceDetail.text = ALL_UPGRADES_CHOOSEN;
+            UIManager.Instance.ConfirmEntertain.gameObject.SetActive(false);
+        }
 
-        UIManager.Instance.UpgradesChoiceMenu();
+        UIManager.Instance.UpgradesChoiceMenu(_remainingExploUpgrades.Count > 1, _remainingExpandUpgrades.Count > 1, _remainingExploitpgrades.Count > 1, _remainingEntertainUpgrades.Count > 1);
     }
 
     public void RerollUpgradesChoice(Phase phase)

@@ -80,6 +80,10 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Button _rerollExpand;
     [SerializeField] private Button _rerollExploit;
     [SerializeField] private Button _rerollEntertain;
+    [SerializeField] private Button _confirmExplo;
+    [SerializeField] private Button _confirmExpand;
+    [SerializeField] private Button _confirmExploit;
+    [SerializeField] private Button _confirmEntertain;
     [SerializeField] private Animator _animatorExplo;
     [SerializeField] private Animator _animatorExpand;
     [SerializeField] private Animator _animatorExploit;
@@ -161,6 +165,10 @@ public class UIManager : Singleton<UIManager>
     public Animator BuildTownHint { get => _buildTownHint; }
     public bool AreUnitsVisible { get => _areUnitsVisible; set => _areUnitsVisible = value; }
     public Color ColorEnhancementNewEffect { get => _colorEnhancementNewEffect; }
+    public Button ConfirmExplo { get => _confirmExplo; }
+    public Button ConfirmExpand { get => _confirmExpand; }
+    public Button ConfirmExploit { get => _confirmExploit; }
+    public Button ConfirmEntertain { get => _confirmEntertain; }
     #endregion
 
     protected override void OnAwake()
@@ -520,7 +528,7 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    public void UpgradesChoiceMenu()
+    public void UpgradesChoiceMenu(bool activateRerollExplo, bool activateRerollExpand, bool activateRerollExploit, bool activateRerollEnt)
     {
         if (_upgradesChoiceMenuObject.activeSelf)
         {
@@ -533,10 +541,22 @@ public class UIManager : Singleton<UIManager>
                 TradeMenu();
             if (_upgradesMenu.activeSelf)
                 UpgradesMenu();
-            _rerollExplo.interactable = true;
-            _rerollExpand.interactable = true;
-            _rerollExploit.interactable = true;
-            _rerollEntertain.interactable = true;
+            if (activateRerollExplo)
+                _rerollExplo.interactable = true;
+            else
+                _rerollExplo.gameObject.SetActive(false);
+            if (activateRerollExpand)
+                _rerollExpand.interactable = true;
+            else
+                _rerollExpand.gameObject.SetActive(false);
+            if (activateRerollExploit)
+                _rerollExploit.interactable = true;
+            else
+                _rerollExploit.gameObject.SetActive(false);
+            if (activateRerollEnt)
+                _rerollEntertain.interactable = true;
+            else
+                _rerollEntertain.gameObject.SetActive(false);
             _upgradesChoiceMenuObject.SetActive(true);
             GameManager.Instance.GamePaused = true;
         }

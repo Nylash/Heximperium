@@ -28997,6 +28997,10 @@ MonoBehaviour:
   _rerollExpand: {fileID: 7157833846590085113}
   _rerollExploit: {fileID: 3623483186876238050}
   _rerollEntertain: {fileID: 7415587023562389424}
+  _confirmExplo: {fileID: 2459624590641858750}
+  _confirmExpand: {fileID: 6840260591387827537}
+  _confirmExploit: {fileID: 2152674411338507097}
+  _confirmEntertain: {fileID: 8657199993737848335}
   _animatorExplo: {fileID: 8998177926384175000}
   _animatorExpand: {fileID: 1673917608318274243}
   _animatorExploit: {fileID: 7093965340573126536}

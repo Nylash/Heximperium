@@ -1361,7 +1361,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
-  _turnsForUpgradesChoice: 03000000070000000b0000000f00000013000000
+  _turnsForUpgradesChoice: 030000000500000007000000090000000b0000000d0000000f0000001100000013000000
   _exploUpgrades:
   - {fileID: 11400000, guid: 9a49a49ae690a184a9610a41818d887e, type: 2}
   - {fileID: 11400000, guid: f544113399635e742b38b7a11a858d67, type: 2}
