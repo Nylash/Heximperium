@@ -478,16 +478,6 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
-        #region INCOME
-        TextMeshProUGUI income = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        income.text = "Total <sprite name=\"Claim_Emoji\"> per turn +" + ExpansionManager.Instance.ClaimPerTurn + "<sprite name=\"Claim_Emoji\">";
-        ClampTextWidth(income);
-        #endregion
-
-        #region SOURCES
-        TextMeshProUGUI baseSource = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        baseSource.text = $"Base value: +{GameManager.Instance.BaseClaimPerTurn}<sprite name=\"Claim_Emoji\">";
-        ClampTextWidth(baseSource);
         Dictionary<Family, int> claimSources = new Dictionary<Family, int>();
         foreach (var item in ExploitationManager.Instance.Infrastructures)
         {
@@ -506,6 +496,25 @@ public class PopUpManager : Singleton<PopUpManager>
                 }
             }
         }
+
+        #region INCOME
+        int totalClaimsPerTurn = ExpansionManager.Instance.ClaimPerTurn;
+        if (claimSources.Count > 0)
+        {
+            foreach (var kvp in claimSources)
+            {
+                totalClaimsPerTurn += kvp.Value;
+            }
+        }
+        TextMeshProUGUI income = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        income.text = "Total <sprite name=\"Claim_Emoji\"> per turn +" + totalClaimsPerTurn + "<sprite name=\"Claim_Emoji\">";
+        ClampTextWidth(income);
+        #endregion
+
+        #region SOURCES
+        TextMeshProUGUI baseSource = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        baseSource.text = $"Base value: +{GameManager.Instance.BaseClaimPerTurn}<sprite name=\"Claim_Emoji\">";
+        ClampTextWidth(baseSource);
         if (claimSources.Count > 0)
         {
             foreach (var kvp in claimSources)
