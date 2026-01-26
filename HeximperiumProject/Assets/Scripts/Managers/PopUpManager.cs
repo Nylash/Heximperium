@@ -92,6 +92,50 @@ public class PopUpManager : Singleton<PopUpManager>
             if (_popUpShown)
                 return;
 
+            // Some popup (those on resource UI) are shown instantly
+            bool instantPopUp = true;
+
+            switch (obj.tag)
+            {
+                case "ScoutLimitUI":
+                    ScoutLimitPopUp();
+                    break;
+                case "ClaimUI":
+                    ClaimPopUp();
+                    break;
+                case "TownLimitUI":
+                    TownLimitPopUp();
+                    break;
+                case "GoldUI":
+                    GoldPopUp();
+                    break;
+                case "SRUI":
+                    SRPopUp();
+                    break;
+                case "ScoreUI":
+                    ScorePopUp();
+                    break;
+                case "CarnivalistUI":
+                    CarnivalistPopUp();
+                    break;
+                case "UpgradeUI":
+                    UpgradePopUp(obj.GetComponent<UpgradeHolder>().UpgradeEffect);
+                    break;
+                default:
+                    instantPopUp = false;
+                    break;
+            }
+
+            if (instantPopUp)
+            {
+                _popUpShown = true;
+                _hoverTimer = 0.0f;
+                _timerOverImage.fillAmount = 0.0f;
+                _timerOverImage.enabled = false;
+                JuiceManager.Instance.KillAllComboVFX();
+                return;
+            }
+
             //Timer before spawning popup
             _hoverTimer += Time.deltaTime;
             // Fill is 0 until t >= t0, then rises linearly to 1 at t == d.
@@ -108,32 +152,8 @@ public class PopUpManager : Singleton<PopUpManager>
 
                 switch (obj.tag)
                 {
-                    case "ScoutLimitUI":
-                        ScoutLimitPopUp();
-                        break;
-                    case "ClaimUI":
-                        ClaimPopUp();
-                        break;
-                    case "TownLimitUI":
-                        TownLimitPopUp();
-                        break;
-                    case "GoldUI":
-                        GoldPopUp();
-                        break;
-                    case "SRUI":
-                        SRPopUp();
-                        break;
                     case "VisibilityUI":
                         VisibilityPopUp();
-                        break;
-                    case "UpgradeUI":
-                        UpgradePopUp(obj.GetComponent<UpgradeHolder>().UpgradeEffect);
-                        break;
-                    case "ScoreUI":
-                        ScorePopUp();
-                        break;
-                    case "CarnivalistUI":
-                        CarnivalistPopUp();
                         break;
                     case "ShowIncomeUI":
                         ShowIncomePopUp();
