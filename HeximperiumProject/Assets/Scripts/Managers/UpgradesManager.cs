@@ -63,6 +63,8 @@ public class UpgradesManager : Singleton<UpgradesManager>
 
     private void StartUpgradesChoice()
     {
+        PopUpManager.Instance.CloseAllLockedPopup();
+
         PopUpManager.Instance.ShowUpgradeTutoPopUp();
 
         if (_remainingExploUpgrades.Count != 0)
