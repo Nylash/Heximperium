@@ -182,6 +182,7 @@ public class UIManager : Singleton<UIManager>
     protected override void OnAwake()
     {
         GameManager.Instance.OnNewTurn += UpdateTurnCounterText;
+        GameManager.Instance.OnLastTurnStarted += () => _annunciatorNewTurn.GetComponentInChildren<TextMeshProUGUI>().text = "Last Turn!";
 
         GameManager.Instance.OnExplorationPhaseStarted += NewPhaseStarted;
         ExplorationManager.Instance.OnPhaseFinalized += () => PhaseEnded(Phase.Explore);
