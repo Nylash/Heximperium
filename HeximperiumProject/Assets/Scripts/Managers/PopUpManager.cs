@@ -651,7 +651,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region DETAIL
         TextMeshProUGUI detail = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        detail.text = "Carnivalists<sprite name=\"Carnivalist_Emoji\"> are used during the Grand Jubilee to place " + Family.Entertainment.ToCustomString(true);
+        detail.text = "Carnivalists<sprite name=\"Carnivalist_Emoji\"> are used during the Celebration phases to place " + Family.Entertainment.ToCustomString(true);
         ClampTextWidth(detail);
         detail.alignment = TextAlignmentOptions.Center;
         detail.fontStyle = FontStyles.Italic;

@@ -35,6 +35,11 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Animator _popUpExpandPhase;
     [SerializeField] private Animator _popUpExploitPhase;
     [SerializeField] private Animator _popUpEntertainPhase;
+    [SerializeField] private Animator _annunciatorNewTurn;
+    [SerializeField] private Animator _annunciatorExploration;
+    [SerializeField] private Animator _annunciatorExpansion;
+    [SerializeField] private Animator _annunciatorExploitation;
+    [SerializeField] private Animator _annunciatorEntertainment;
     [SerializeField] private Button _buttonEndPhase;
     [SerializeField] private Material _phaseMaterial;
     [Header("_________________________________________________________")]
@@ -177,6 +182,7 @@ public class UIManager : Singleton<UIManager>
     protected override void OnAwake()
     {
         GameManager.Instance.OnNewTurn += UpdateTurnCounterText;
+        GameManager.Instance.OnLastTurnStarted += () => _annunciatorNewTurn.GetComponentInChildren<TextMeshProUGUI>().text = "Last Turn!";
 
         GameManager.Instance.OnExplorationPhaseStarted += NewPhaseStarted;
         ExplorationManager.Instance.OnPhaseFinalized += () => PhaseEnded(Phase.Explore);
@@ -413,21 +419,26 @@ public class UIManager : Singleton<UIManager>
             case Phase.Explore:
                 _confirmPhaseButtonText.text = "End Phase";
                 _phaseMaterial.color = _colorExplo;
+                _annunciatorNewTurn.SetTrigger("Show");
+                _annunciatorExploration.SetTrigger("Show");
                 _popUpExploPhase.SetTrigger("Show");
                 break;
             case Phase.Expand:
                 _confirmPhaseButtonText.text = "End Phase";
                 _phaseMaterial.color = _colorExpand;
+                _annunciatorExpansion.SetTrigger("Show");
                 _popUpExpandPhase.SetTrigger("Show");
                 break;
             case Phase.Exploit:
                 _confirmPhaseButtonText.text = "End Turn";
                 _phaseMaterial.color = _colorExploit;
+                _annunciatorExploitation.SetTrigger("Show");
                 _popUpExploitPhase.SetTrigger("Show");
                 break;
             case Phase.Entertain:
                 _confirmPhaseButtonText.text = "End Game";
                 _phaseMaterial.color = _colorEntertain;
+                _annunciatorEntertainment.SetTrigger("Show");
                 _popUpEntertainPhase.SetTrigger("Show");
                 break;
         }
