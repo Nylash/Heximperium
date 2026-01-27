@@ -31134,6 +31134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
   _popUpParent: {fileID: 32523236647451451}
+  _survivablePopupDuration: 0.6
   _durationHoverForUI: 0.5
   _percentageOfTimerForVisualHint: 0.4
   _timerOverImage: {fileID: 896984897485514827}
@@ -31147,7 +31148,7 @@ MonoBehaviour:
   _text: {fileID: 5711950651282281864, guid: 7e62b65f6bfb42b4bacaf35545e1c85b, type: 3}
   _lockingObject: {fileID: 7037854885280977937, guid: 68460ce107a3fa949a67d23049f98846, type: 3}
   _lockedObject: {fileID: 7037854885280977937, guid: 3e6326d1c2245ea4fac29cd815f0fe9a, type: 3}
-  _durationForLockingPopup: 4
+  _durationForLockingPopup: 1.5
   _lockImagePopupOffset: {x: -0.005, y: -0.005}
   _infraLevelTutoPopup: {fileID: 1821175972059011431}
   _removeInfraTutoPopup: {fileID: 5003471891390219717}

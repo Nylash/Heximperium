@@ -154,14 +154,24 @@ public class CameraManager : Singleton<CameraManager>
             if (results.Count > 0)
             {
                 TextMeshProUGUI text = results[0].gameObject.GetComponent<TextMeshProUGUI>();
-                if (text != null && results[0].gameObject.CompareTag("Untagged"))
+                // Check if the UI element is part of a surviving popup
+                UI_SurvivingPopup survivingPopup = results[0].gameObject.GetComponentInParent<UI_SurvivingPopup>();
+                GameObject popupRoot = null;
+                // If there is a surviving popup, use it as the root for pop-up detection
+                if (survivingPopup)
+                    popupRoot = survivingPopup.gameObject;
+                // Only surviving popups contain TextMeshProUGUI elements with underlined words
+                if (text != null && popupRoot != null)
                 {
-                    DetectWordUnderCursor(pointerEventData, text);
+                    DetectWordUnderCursor(pointerEventData, text, popupRoot);
                 }
                 else
                 {
-                    // Pass the topmost UI object under the cursor
-                    PopUpManager.Instance.UIPopUp(results[0].gameObject);
+                    if (popupRoot)
+                        PopUpManager.Instance.UIPopUp(popupRoot);
+                    else
+                        // Pass the topmost UI object under the cursor
+                        PopUpManager.Instance.UIPopUp(results[0].gameObject);
                 }
             }
 
@@ -207,18 +217,25 @@ public class CameraManager : Singleton<CameraManager>
         }
     }
 
-    private void DetectWordUnderCursor(PointerEventData eventData, TextMeshProUGUI text)
+    private void DetectWordUnderCursor(PointerEventData eventData, TextMeshProUGUI text, GameObject popUpObject)
     {
         text.ForceMeshUpdate();
 
         int w = TMP_TextUtilities.FindIntersectingWord(text, eventData.position, eventData.enterEventCamera);
-        if (w == -1) return;
+        if (w == -1)
+        {
+            PopUpManager.Instance.UIPopUp(popUpObject); // Default pop up handling
+            return;
+        }
 
         var wi = text.textInfo.wordInfo[w];
         string s = wi.GetWord();                 // raw word (no tags)
 
         if (!Utilities.IsUnderlined(text, wi.firstCharacterIndex, wi.lastCharacterIndex))
+        {
+            PopUpManager.Instance.UIPopUp(popUpObject); // No underlined word detected, default pop up handling
             return;
+        }
 
         string underlinedWord = Utilities.ExtractWholeUnderlinedWord(text.textInfo, wi.firstCharacterIndex);
 
@@ -247,6 +264,7 @@ public class CameraManager : Singleton<CameraManager>
                 return;
             }
         }
+        PopUpManager.Instance.UIPopUp(popUpObject); // No matching underlined word found, default pop up handling
     }
     #endregion
 
