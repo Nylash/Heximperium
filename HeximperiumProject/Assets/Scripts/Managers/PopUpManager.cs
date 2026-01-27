@@ -807,19 +807,6 @@ public class PopUpManager : Singleton<PopUpManager>
     #region ON TILE POP UP
     private void TilePopUp(Tile tile)
     {
-        bool isVisualizingCombo = false;
-        if (GameManager.Instance.CurrentPhase == Phase.Entertain)
-        {
-            if (!tile.Entertainment && tile.EntImpactedByTile.Count > 0) // If tile an entertainment, its popup handle the combo visualization
-                isVisualizingCombo = JuiceManager.Instance.VisualizeEntertainmentComboFromTileOnly(tile);
-        }
-        else
-        {
-            isVisualizingCombo = JuiceManager.Instance.VisualizeExploitationCombo(
-                tile.InternalIncomesSources, tile.ExternalIncomesSources, tile.InternalCarnivalistsSources,
-                tile.ImpactedTilesIncomes, tile.ImpactedTilesCarnivalists, tile);
-        }
-
         GameObject popUp;
         popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
@@ -1131,7 +1118,7 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
-        PositionPopup(popUp.GetComponent<RectTransform>(), tile.transform, !isVisualizingCombo);
+        PositionPopup(popUp.GetComponent<RectTransform>(), tile.transform, false);
         if (tile.Entertainment == null) // If tile has an entertainment, its popup will be the one lockable
             StartLockingPopup(popUp);
     }
@@ -1246,11 +1233,6 @@ public class PopUpManager : Singleton<PopUpManager>
 
     private void EntertainmentPopUp(Entertainment ent)
     {
-        bool isVisualizingCombo = JuiceManager.Instance.VisualizeEntertainmentCombo(
-            ent.InternalPointsSources, ent.ExternalPointsSources, 
-            ent.Tile.EntImpactedByEntertainment, ent.Tile.EntImpactedByTile,
-            ent.Tile);
-
         GameObject popUp;
         popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
@@ -1362,7 +1344,7 @@ public class PopUpManager : Singleton<PopUpManager>
         family.alignment = TextAlignmentOptions.Right;
         #endregion
 
-        PositionPopup(popUp.GetComponent<RectTransform>(), ent.Tile.transform, !isVisualizingCombo);
+        PositionPopup(popUp.GetComponent<RectTransform>(), ent.Tile.transform, false);
         StartLockingPopup(popUp);
     }
     #endregion
@@ -1428,7 +1410,6 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, true);
-        StartLockingPopup(popUp);
     }
 
     private void ButtonRedirectScoutPopUp(InteractionButton button)
@@ -1476,7 +1457,6 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, true);
-        StartLockingPopup(popUp);
     }
 
     private void ButtonDestroyPopUp(string text, InteractionButton button)
@@ -1507,11 +1487,6 @@ public class PopUpManager : Singleton<PopUpManager>
         EntertainmentManager.Instance.PredictEntertainmentSpawn(button.AssociatedTile, button.EntertainData,
             out predictedPoints, out predictedExtSources, out predictedIntSources, out predictedSelfPoints,
             out predictedEntImpactedByEnt, out predictedEntImpactedByTile);
-
-        bool isVisualizionCombo = JuiceManager.Instance.VisualizeEntertainmentCombo(
-            predictedIntSources, predictedExtSources,
-            predictedEntImpactedByEnt, predictedEntImpactedByTile,
-            button.AssociatedTile);
 
         GameObject popUp;
         popUp = Instantiate(_basePopUp, _popUpParent);
@@ -1637,7 +1612,7 @@ public class PopUpManager : Singleton<PopUpManager>
         family.alignment = TextAlignmentOptions.Right;
         #endregion
 
-        PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, !isVisualizionCombo);
+        PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, false);
         StartLockingPopup(popUp);
     }
 
@@ -1656,11 +1631,6 @@ public class PopUpManager : Singleton<PopUpManager>
             out predictedInc, out predictedExtSources, out predictedIntSources,
             out predictedSelfInc, out predictedCarnivalists, out predictedInternalCarnivalistsSources,
             out predictedImpactedTilesIncomes, out predictedImpactedTilesCarnivalists);
-
-        bool isVisualizingCombo = JuiceManager.Instance.VisualizeExploitationCombo(
-            predictedIntSources, predictedExtSources, predictedInternalCarnivalistsSources,
-            predictedImpactedTilesIncomes, predictedImpactedTilesCarnivalists,
-            button.AssociatedTile);
 
         GameObject popUp;
         popUp = Instantiate(_basePopUp, _popUpParent);
@@ -2014,7 +1984,7 @@ public class PopUpManager : Singleton<PopUpManager>
         family.alignment = TextAlignmentOptions.Right;
         #endregion
 
-        PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, !isVisualizingCombo);
+        PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, false);
         StartLockingPopup(popUp);
     }
     #endregion
