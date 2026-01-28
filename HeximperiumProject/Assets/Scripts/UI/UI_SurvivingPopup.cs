@@ -13,14 +13,19 @@ public class UI_SurvivingPopup : MonoBehaviour
             survivingTime += Time.deltaTime;
             if (survivingTime > survivingDuration)
             {
-                isSurviving = false;
-                GetComponent<Animator>().SetTrigger("Close");
-                if (gameObject == JuiceManager.Instance.PopUpVisualizingCombo)
-                {
-                    JuiceManager.Instance.KillAllComboVFX();
-                }
-                this.enabled = false;
+                ClosePopup();
             }
         }
+    }
+
+    public void ClosePopup()
+    {
+        isSurviving = false;
+        GetComponent<Animator>().SetTrigger("Close");
+        if (gameObject == JuiceManager.Instance.PopUpVisualizingCombo)
+        {
+            JuiceManager.Instance.KillAllComboVFX();
+        }
+        this.enabled = false;
     }
 }

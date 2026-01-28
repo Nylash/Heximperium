@@ -59,6 +59,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private float _minAllowed;
     private bool _popUpShown;
     private bool _showSourcesOnPopUp;
+    private UI_SurvivingPopup _currentSurvivingPopup;
     //POPUP ON POPUP Variables
     private GameObject _lockingPopup;
     private bool _isLockingPopup;
@@ -100,11 +101,14 @@ public class PopUpManager : Singleton<PopUpManager>
             {
                 case "Popup":
                     UI_SurvivingPopup survivingPopup = obj.GetComponent<UI_SurvivingPopup>();
-                    if (survivingPopup != null && survivingPopup.enabled == true)
+                    if (survivingPopup != null)
                     {
-                        survivingPopup.isSurviving = false;
-                        survivingPopup.survivingTime = 0.0f;
-                        StartLockingPopup(survivingPopup.gameObject);
+                        if (survivingPopup.enabled == true && !_isLockingPopup)
+                        {
+                            survivingPopup.isSurviving = false;
+                            survivingPopup.survivingTime = 0.0f;
+                            StartLockingPopup(survivingPopup.gameObject);
+                        }
                     }
                     break;
                 case "ScoutLimitUI":
@@ -143,6 +147,14 @@ public class PopUpManager : Singleton<PopUpManager>
                 _timerOverImage.fillAmount = 0.0f;
                 _timerOverImage.enabled = false;
                 JuiceManager.Instance.KillAllComboVFX();
+
+                // Close any surviving popup if needed
+                if (_currentSurvivingPopup != null && !obj.CompareTag("Popup"))
+                {
+                    _currentSurvivingPopup.ClosePopup();
+                    _currentSurvivingPopup = null;
+                }
+
                 return;
             }
 
@@ -159,6 +171,13 @@ public class PopUpManager : Singleton<PopUpManager>
                 _timerOverImage.enabled = false;
 
                 JuiceManager.Instance.KillAllComboVFX();
+
+                // Close any surviving popup if needed
+                if (_currentSurvivingPopup != null)
+                {
+                    _currentSurvivingPopup.ClosePopup();
+                    _currentSurvivingPopup = null;
+                }
 
                 switch (obj.tag)
                 {
@@ -210,6 +229,13 @@ public class PopUpManager : Singleton<PopUpManager>
                 _timerOverImage.enabled = false;
 
                 JuiceManager.Instance.KillAllComboVFX();
+
+                // Close any surviving popup if needed
+                if (_currentSurvivingPopup != null)
+                {
+                    _currentSurvivingPopup.ClosePopup();
+                    _currentSurvivingPopup = null;
+                }
 
                 if (obj.GetComponent<Tile>() is Tile tile)
                 {
@@ -276,6 +302,16 @@ public class PopUpManager : Singleton<PopUpManager>
             if (_popUpShown)
                 return;
 
+            if (_currentSurvivingPopup != null)
+            {
+                if (_currentSurvivingPopup.enabled == true && !_isLockingPopup)
+                {
+                    _currentSurvivingPopup.isSurviving = false;
+                    _currentSurvivingPopup.survivingTime = 0.0f;
+                    StartLockingPopup(_currentSurvivingPopup.gameObject);
+                }
+            }
+
             //Timer before spawning popup
             _hoverTimer += Time.deltaTime;
             // Fill is 0 until t >= t0, then rises linearly to 1 at t == d.
@@ -332,6 +368,15 @@ public class PopUpManager : Singleton<PopUpManager>
                         continue;
                     }
                 }
+                else
+                {
+                    UI_SurvivingPopup survivingPopup = item.GetComponent<UI_SurvivingPopup>();
+                    if (survivingPopup != null)
+                    {
+                        survivingPopup.ClosePopup();
+                        continue;
+                    }
+                }
 
                 item.GetComponent<Animator>().SetTrigger("Close");
                 if (item == JuiceManager.Instance.PopUpVisualizingCombo)
@@ -344,11 +389,22 @@ public class PopUpManager : Singleton<PopUpManager>
         if (_lockingImage != null)
         {
             UI_SurvivingPopup survivingPopup = _lockingPopup.GetComponent<UI_SurvivingPopup>();
-            if (survivingPopup != null)
+
+            if (obj == null) // Meaning we are forcing the closing of pop ups
             {
-                survivingPopup.isSurviving = true;
+                survivingPopup?.ClosePopup();
+                StopLockingPopup();
+                return;
             }
-            StopLockingPopup();
+
+            if (!obj.CompareTag("Popup")) // Meaning we are changing the object under mouse to a non-popup object
+            {
+                if (survivingPopup != null)
+                {
+                    survivingPopup.isSurviving = true;
+                }
+                StopLockingPopup();
+            }
         }
     }
     #endregion
@@ -1136,7 +1192,8 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         PositionPopup(popUp.GetComponent<RectTransform>(), tile.transform, false);
-        popUp.AddComponent<UI_SurvivingPopup>().survivingDuration = _survivablePopupDuration;
+        _currentSurvivingPopup = popUp.AddComponent<UI_SurvivingPopup>();
+        _currentSurvivingPopup.survivingDuration = _survivablePopupDuration;
     }
 
     private void ScoutPopUp(Scout scout)
@@ -2476,6 +2533,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private void LockPopup(GameObject popUp)
     {
         popUp.GetComponent<UI_SurvivingPopup>().enabled = false;
+        _currentSurvivingPopup = null;
 
         _popUps.Remove(popUp);
         Button lockedButton = Instantiate(_lockedObject, _popUpParent).GetComponent<Button>();
