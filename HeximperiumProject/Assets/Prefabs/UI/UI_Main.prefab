@@ -31134,7 +31134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
   _popUpParent: {fileID: 32523236647451451}
-  _survivablePopupDuration: 0.6
+  _survivablePopupDuration: 0.75
   _durationHoverForUI: 0.5
   _percentageOfTimerForVisualHint: 0.4
   _timerOverImage: {fileID: 896984897485514827}
