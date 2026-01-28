@@ -160,8 +160,8 @@ public class CameraManager : Singleton<CameraManager>
                 // If there is a surviving popup, use it as the root for pop-up detection
                 if (survivingPopup)
                     popupRoot = survivingPopup.gameObject;
-                // Only surviving popups contain TextMeshProUGUI elements with underlined words
-                if (text != null && popupRoot != null)
+                // Only surviving popups contain TextMeshProUGUI elements with underlined words or we are in Upgrades Choice Menu
+                if (text != null && (popupRoot != null || UIManager.Instance.UpgradesChoiceMenuObject.activeSelf))
                 {
                     DetectWordUnderCursor(pointerEventData, text, popupRoot);
                 }

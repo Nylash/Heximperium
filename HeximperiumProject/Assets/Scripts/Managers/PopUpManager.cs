@@ -87,6 +87,9 @@ public class PopUpManager : Singleton<PopUpManager>
     #region BASE LOGIC
     public void UIPopUp(GameObject obj)
     {
+        if (obj == null)
+            return;
+
         if (obj == _objectUnderMouse)
         {
             if (obj.CompareTag("Untagged"))
@@ -297,12 +300,15 @@ public class PopUpManager : Singleton<PopUpManager>
 
             if (_survivingPopups.Count != 0)
             {
-                UI_SurvivingPopup currentSurvivingPopup = popupRoot.GetComponent<UI_SurvivingPopup>();
-                if (currentSurvivingPopup.enabled == true && !_isLockingPopup)
+                if (popupRoot != null)
                 {
-                    currentSurvivingPopup.isSurviving = false;
-                    currentSurvivingPopup.survivingTime = 0.0f;
-                    StartLockingPopup(currentSurvivingPopup.gameObject);
+                    UI_SurvivingPopup currentSurvivingPopup = popupRoot.GetComponent<UI_SurvivingPopup>();
+                    if (currentSurvivingPopup.enabled == true && !_isLockingPopup)
+                    {
+                        currentSurvivingPopup.isSurviving = false;
+                        currentSurvivingPopup.survivingTime = 0.0f;
+                        StartLockingPopup(currentSurvivingPopup.gameObject);
+                    }
                 }
                 CloseSurvivingPopups();
             }
