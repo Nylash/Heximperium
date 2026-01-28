@@ -2589,7 +2589,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         _popUps.Remove(popUp);
         Button lockedButton = Instantiate(_lockedObject, _popUpParent).GetComponent<Button>();
-        lockedButton.transform.SetAsLastSibling();
+        lockedButton.transform.SetSiblingIndex(popUp.transform.GetSiblingIndex() + 1);
         _lockedPopUps.Add(popUp, lockedButton);
         Utilities.PlacePrefabAroundTargetTopRight(lockedButton.GetComponent<RectTransform>(), popUp.GetComponent<RectTransform>(), _lockImagePopupOffset);
         StopLockingPopup();
