@@ -2306,23 +2306,7 @@ public class PopUpManager : Singleton<PopUpManager>
     #endregion
 
     #region POPUP ON POPUP
-    //Used to lock a popup on screen until user closes it
-    private void Update()
-    {
-        if (_isLockingPopup && _lockingImage != null)
-        {
-            _lockingTimer += Time.deltaTime;
-            float t = (_durationForLockingPopup <= 0f) ? 1f : Mathf.Clamp01(_lockingTimer / _durationForLockingPopup);
-            _lockingImage.fillAmount = t;
-            if (_lockingTimer >= _durationForLockingPopup)
-            {
-                _isLockingPopup = false;
-                _lockingTimer = 0f;
-                LockPopup(_lockingPopup);
-            }
-        }
-    }
-
+    #region POPUP
     public void FamilyPopup(Family family, RectTransform refObject)
     {
         GameObject popUp;
@@ -2498,6 +2482,25 @@ public class PopUpManager : Singleton<PopUpManager>
 
         PositionPopup(popUp.GetComponent<RectTransform>(), refObject, true);
     }
+    #endregion
+
+    #region LOGIC
+    //Used to lock a popup on screen until user closes it
+    private void Update()
+    {
+        if (_isLockingPopup && _lockingImage != null)
+        {
+            _lockingTimer += Time.deltaTime;
+            float t = (_durationForLockingPopup <= 0f) ? 1f : Mathf.Clamp01(_lockingTimer / _durationForLockingPopup);
+            _lockingImage.fillAmount = t;
+            if (_lockingTimer >= _durationForLockingPopup)
+            {
+                _isLockingPopup = false;
+                _lockingTimer = 0f;
+                LockPopup(_lockingPopup);
+            }
+        }
+    }
 
     private void StartLockingPopup(GameObject popUp)
     {
@@ -2583,6 +2586,7 @@ public class PopUpManager : Singleton<PopUpManager>
         _lockedPopUps.Clear();
         ResetPopUp(null);
     }
+    #endregion
     #endregion
 
     #region TUTORIAL POPUP
