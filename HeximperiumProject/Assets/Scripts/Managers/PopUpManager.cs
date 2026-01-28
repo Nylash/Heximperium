@@ -59,7 +59,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private float _minAllowed;
     private bool _popUpShown;
     private bool _showSourcesOnPopUp;
-    private UI_SurvivingPopup _currentSurvivingPopup;
+    private List<UI_SurvivingPopup> _survivingPopups = new List<UI_SurvivingPopup>();
     //POPUP ON POPUP Variables
     private GameObject _lockingPopup;
     private bool _isLockingPopup;
@@ -149,10 +149,13 @@ public class PopUpManager : Singleton<PopUpManager>
                 JuiceManager.Instance.KillAllComboVFX();
 
                 // Close any surviving popup if needed
-                if (_currentSurvivingPopup != null && !obj.CompareTag("Popup"))
+                if (_survivingPopups.Count != 0 && !obj.CompareTag("Popup"))
                 {
-                    _currentSurvivingPopup.ClosePopup();
-                    _currentSurvivingPopup = null;
+                    foreach (UI_SurvivingPopup item in _survivingPopups)
+                    {
+                        item.ClosePopup();
+                    }
+                    _survivingPopups.Clear();
                 }
 
                 return;
@@ -173,10 +176,13 @@ public class PopUpManager : Singleton<PopUpManager>
                 JuiceManager.Instance.KillAllComboVFX();
 
                 // Close any surviving popup if needed
-                if (_currentSurvivingPopup != null)
+                if (_survivingPopups.Count != 0)
                 {
-                    _currentSurvivingPopup.ClosePopup();
-                    _currentSurvivingPopup = null;
+                    foreach (UI_SurvivingPopup item in _survivingPopups)
+                    {
+                        item.ClosePopup();
+                    }
+                    _survivingPopups.Clear();
                 }
 
                 switch (obj.tag)
@@ -231,10 +237,13 @@ public class PopUpManager : Singleton<PopUpManager>
                 JuiceManager.Instance.KillAllComboVFX();
 
                 // Close any surviving popup if needed
-                if (_currentSurvivingPopup != null)
+                if (_survivingPopups.Count != 0)
                 {
-                    _currentSurvivingPopup.ClosePopup();
-                    _currentSurvivingPopup = null;
+                    foreach (UI_SurvivingPopup item in _survivingPopups)
+                    {
+                        item.ClosePopup();
+                    }
+                    _survivingPopups.Clear();
                 }
 
                 if (obj.GetComponent<Tile>() is Tile tile)
@@ -295,20 +304,21 @@ public class PopUpManager : Singleton<PopUpManager>
         }
     }
 
-    public void PopUpOnPopUp(RectTransform refObject, Family family = Family.None, InfrastructureData infra = null, EntertainmentData ent = null)
+    public void PopUpOnPopUp(GameObject popupRoot, RectTransform refObject, Family family = Family.None, InfrastructureData infra = null, EntertainmentData ent = null)
     {
         if (refObject.gameObject == _objectUnderMouse)
         {
             if (_popUpShown)
                 return;
 
-            if (_currentSurvivingPopup != null)
+            if (_survivingPopups.Count != 0)
             {
-                if (_currentSurvivingPopup.enabled == true && !_isLockingPopup)
+                UI_SurvivingPopup currentSurvivingPopup = popupRoot.GetComponent<UI_SurvivingPopup>();
+                if (currentSurvivingPopup.enabled == true && !_isLockingPopup)
                 {
-                    _currentSurvivingPopup.isSurviving = false;
-                    _currentSurvivingPopup.survivingTime = 0.0f;
-                    StartLockingPopup(_currentSurvivingPopup.gameObject);
+                    currentSurvivingPopup.isSurviving = false;
+                    currentSurvivingPopup.survivingTime = 0.0f;
+                    StartLockingPopup(currentSurvivingPopup.gameObject);
                 }
             }
 
@@ -404,6 +414,22 @@ public class PopUpManager : Singleton<PopUpManager>
                     survivingPopup.isSurviving = true;
                 }
                 StopLockingPopup();
+            }
+            else // We are changing the object under mouse to a popup object we need to check if it's the same popup or not
+            {
+                if (obj.GetComponentInParent<UI_SurvivingPopup>() == survivingPopup)
+                {
+                    // Same popup so we do nothing
+                    return;
+                }
+                else
+                {
+                    if (survivingPopup != null)
+                    {
+                        survivingPopup.isSurviving = true;
+                    }
+                    StopLockingPopup();
+                }
             }
         }
     }
@@ -1192,8 +1218,7 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         PositionPopup(popUp.GetComponent<RectTransform>(), tile.transform, false);
-        _currentSurvivingPopup = popUp.AddComponent<UI_SurvivingPopup>();
-        _currentSurvivingPopup.survivingDuration = _survivablePopupDuration;
+        SurvivingPopup(popUp);
     }
 
     private void ScoutPopUp(Scout scout)
@@ -1418,6 +1443,7 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         PositionPopup(popUp.GetComponent<RectTransform>(), ent.Tile.transform, false);
+        SurvivingPopup(popUp);
     }
     #endregion
 
@@ -2485,6 +2511,13 @@ public class PopUpManager : Singleton<PopUpManager>
     #endregion
 
     #region LOGIC
+    private void SurvivingPopup(GameObject popUp)
+    {
+        UI_SurvivingPopup survivingPopup = popUp.AddComponent<UI_SurvivingPopup>();
+        _survivingPopups.Add(survivingPopup);
+        survivingPopup.survivingDuration = _survivablePopupDuration;
+    }
+
     //Used to lock a popup on screen until user closes it
     private void Update()
     {
@@ -2535,8 +2568,9 @@ public class PopUpManager : Singleton<PopUpManager>
 
     private void LockPopup(GameObject popUp)
     {
-        popUp.GetComponent<UI_SurvivingPopup>().enabled = false;
-        _currentSurvivingPopup = null;
+        UI_SurvivingPopup survivingPopup = popUp.GetComponent<UI_SurvivingPopup>();
+        survivingPopup.enabled = false;
+        _survivingPopups.Remove(survivingPopup);
 
         _popUps.Remove(popUp);
         Button lockedButton = Instantiate(_lockedObject, _popUpParent).GetComponent<Button>();

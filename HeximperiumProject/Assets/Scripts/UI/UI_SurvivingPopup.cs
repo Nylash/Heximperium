@@ -20,6 +20,9 @@ public class UI_SurvivingPopup : MonoBehaviour
 
     public void ClosePopup()
     {
+        if (this == null) // Safety check
+            return;
+
         isSurviving = false;
         GetComponent<Animator>().SetTrigger("Close");
         if (gameObject == JuiceManager.Instance.PopUpVisualizingCombo)

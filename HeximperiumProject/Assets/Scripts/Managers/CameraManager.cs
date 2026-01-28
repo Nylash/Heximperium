@@ -217,14 +217,14 @@ public class CameraManager : Singleton<CameraManager>
         }
     }
 
-    private void DetectWordUnderCursor(PointerEventData eventData, TextMeshProUGUI text, GameObject popUpObject)
+    private void DetectWordUnderCursor(PointerEventData eventData, TextMeshProUGUI text, GameObject popupRoot)
     {
         text.ForceMeshUpdate();
 
         int w = TMP_TextUtilities.FindIntersectingWord(text, eventData.position, eventData.enterEventCamera);
         if (w == -1)
         {
-            PopUpManager.Instance.UIPopUp(popUpObject); // Default pop up handling
+            PopUpManager.Instance.UIPopUp(popupRoot); // Default pop up handling
             return;
         }
 
@@ -233,7 +233,7 @@ public class CameraManager : Singleton<CameraManager>
 
         if (!Utilities.IsUnderlined(text, wi.firstCharacterIndex, wi.lastCharacterIndex))
         {
-            PopUpManager.Instance.UIPopUp(popUpObject); // No underlined word detected, default pop up handling
+            PopUpManager.Instance.UIPopUp(popupRoot); // No underlined word detected, default pop up handling
             return;
         }
 
@@ -243,7 +243,7 @@ public class CameraManager : Singleton<CameraManager>
         {
             if (Utilities.Matches(underlinedWord, family.ToString(), true))
             {
-                PopUpManager.Instance.PopUpOnPopUp(text.rectTransform, family);
+                PopUpManager.Instance.PopUpOnPopUp(popupRoot, text.rectTransform, family);
                 return;
             }
         }
@@ -251,7 +251,7 @@ public class CameraManager : Singleton<CameraManager>
         {
             if (underlinedWord.Equals(infra.TileName))
             {
-                PopUpManager.Instance.PopUpOnPopUp(text.rectTransform, Family.None, infra);
+                PopUpManager.Instance.PopUpOnPopUp(popupRoot, text.rectTransform, Family.None, infra);
                 return;
             }
         }
@@ -260,11 +260,11 @@ public class CameraManager : Singleton<CameraManager>
             string entName = ent.Type.ToCustomString(false);
             if (Utilities.Matches(underlinedWord, entName, false))
             {
-                PopUpManager.Instance.PopUpOnPopUp(text.rectTransform, Family.None, null, ent);
+                PopUpManager.Instance.PopUpOnPopUp(popupRoot,text.rectTransform, Family.None, null, ent);
                 return;
             }
         }
-        PopUpManager.Instance.UIPopUp(popUpObject); // No matching underlined word found, default pop up handling
+        PopUpManager.Instance.UIPopUp(popupRoot); // No matching underlined word found, default pop up handling
     }
     #endregion
 
