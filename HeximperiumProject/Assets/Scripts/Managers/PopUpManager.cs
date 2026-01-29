@@ -102,7 +102,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
             switch (obj.tag)
             {
-                case "Popup":
+                case "Popup": // Meaning we are hovering over an existing popup so we start locking it
                     UI_SurvivingPopup survivingPopup = obj.GetComponent<UI_SurvivingPopup>();
                     if (survivingPopup != null)
                     {
@@ -158,7 +158,8 @@ public class PopUpManager : Singleton<PopUpManager>
                 _hoverTimer = 0.0f;
                 _timerOverImage.fillAmount = 0.0f;
                 _timerOverImage.enabled = false;
-                JuiceManager.Instance.KillAllComboVFX();
+                if (!obj.CompareTag("Popup"))
+                    JuiceManager.Instance.KillAllComboVFX();
                 return;
             }
 
@@ -905,6 +906,18 @@ public class PopUpManager : Singleton<PopUpManager>
     #region ON TILE POP UP
     private void TilePopUp(Tile tile)
     {
+        if (GameManager.Instance.CurrentPhase == Phase.Entertain)
+        {
+            if (!tile.Entertainment && tile.EntImpactedByTile.Count > 0) // If tile an entertainment, its popup handle the combo visualization
+                JuiceManager.Instance.VisualizeEntertainmentComboFromTileOnly(tile);
+        }
+        else
+        {
+            JuiceManager.Instance.VisualizeExploitationCombo(
+                tile.InternalIncomesSources, tile.ExternalIncomesSources, tile.InternalCarnivalistsSources,
+                tile.ImpactedTilesIncomes, tile.ImpactedTilesCarnivalists, tile);
+        }
+
         GameObject popUp;
         popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
@@ -1228,7 +1241,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        title.text = "Scout";
+        title.text = "Scout<sprite name=\"Scout_Emoji\">";
         #endregion
 
         #region SPEED
@@ -1281,7 +1294,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        title.text = $"{tile.Scouts.Count} Scouts";
+        title.text = $"{tile.Scouts.Count} Scouts<sprite name=\"Scout_Emoji\">";
         #endregion
 
         #region DIRECTION
@@ -1330,6 +1343,11 @@ public class PopUpManager : Singleton<PopUpManager>
 
     private void EntertainmentPopUp(Entertainment ent)
     {
+        JuiceManager.Instance.VisualizeEntertainmentCombo(
+            ent.InternalPointsSources, ent.ExternalPointsSources,
+            ent.Tile.EntImpactedByEntertainment, ent.Tile.EntImpactedByTile,
+            ent.Tile);
+
         GameObject popUp;
         popUp = Instantiate(_basePopUp, _popUpParent);
         _popUps.Add(popUp);
@@ -1459,7 +1477,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        title.text = "Spawn a Scout";
+        title.text = "Spawn a Scout<sprite name=\"Scout_Emoji\">";
         #endregion
 
         #region SPEED
@@ -1516,7 +1534,7 @@ public class PopUpManager : Singleton<PopUpManager>
         _popUps.Add(popUp);
 
         TextMeshProUGUI text = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        text.text = "Redirect a Scout";
+        text.text = "Redirect a Scout<sprite name=\"Scout_Emoji\">";
 
         PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, true);
     }
@@ -1542,7 +1560,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        title.text = "Claim " + button.AssociatedTile.TileData.TileName;
+        title.text = "Claim<sprite name=\"Claim_Emoji\"> " + button.AssociatedTile.TileData.TileName;
         #endregion
 
         #region CLAIM COST
@@ -1584,6 +1602,11 @@ public class PopUpManager : Singleton<PopUpManager>
         EntertainmentManager.Instance.PredictEntertainmentSpawn(button.AssociatedTile, button.EntertainData,
             out predictedPoints, out predictedExtSources, out predictedIntSources, out predictedSelfPoints,
             out predictedEntImpactedByEnt, out predictedEntImpactedByTile);
+
+        JuiceManager.Instance.VisualizeEntertainmentCombo(
+            predictedIntSources, predictedExtSources,
+            predictedEntImpactedByEnt, predictedEntImpactedByTile,
+            button.AssociatedTile);
 
         GameObject popUp;
         popUp = Instantiate(_basePopUp, _popUpParent);
@@ -1728,6 +1751,11 @@ public class PopUpManager : Singleton<PopUpManager>
             out predictedInc, out predictedExtSources, out predictedIntSources,
             out predictedSelfInc, out predictedCarnivalists, out predictedInternalCarnivalistsSources,
             out predictedImpactedTilesIncomes, out predictedImpactedTilesCarnivalists);
+
+        JuiceManager.Instance.VisualizeExploitationCombo(
+            predictedIntSources, predictedExtSources, predictedInternalCarnivalistsSources,
+            predictedImpactedTilesIncomes, predictedImpactedTilesCarnivalists,
+            button.AssociatedTile);
 
         GameObject popUp;
         popUp = Instantiate(_basePopUp, _popUpParent);
