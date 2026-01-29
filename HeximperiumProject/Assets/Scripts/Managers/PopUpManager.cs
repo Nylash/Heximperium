@@ -34,6 +34,7 @@ public class PopUpManager : Singleton<PopUpManager>
     [SerializeField] private GameObject _basePopUp;
     [SerializeField] private GameObject _title;
     [SerializeField] private GameObject _text;
+    [SerializeField] private GameObject _survivingTimer;
     [Header("_________________________________________________________")]
     [Header("Locking Popup")]
     [SerializeField] private GameObject _lockingObject;
@@ -108,8 +109,7 @@ public class PopUpManager : Singleton<PopUpManager>
                     {
                         if (survivingPopup.enabled == true && !_isLockingPopup)
                         {
-                            survivingPopup.isSurviving = false;
-                            survivingPopup.survivingTime = 0.0f;
+                            survivingPopup.IsSurviving = false;
                             StartLockingPopup(survivingPopup.gameObject);
                         }
                     }
@@ -306,8 +306,7 @@ public class PopUpManager : Singleton<PopUpManager>
                     UI_SurvivingPopup currentSurvivingPopup = popupRoot.GetComponent<UI_SurvivingPopup>();
                     if (currentSurvivingPopup.enabled == true && !_isLockingPopup)
                     {
-                        currentSurvivingPopup.isSurviving = false;
-                        currentSurvivingPopup.survivingTime = 0.0f;
+                        currentSurvivingPopup.IsSurviving = false;
                         StartLockingPopup(currentSurvivingPopup.gameObject);
                     }
                 }
@@ -366,7 +365,7 @@ public class PopUpManager : Singleton<PopUpManager>
                     UI_SurvivingPopup survivingPopup = item.GetComponent<UI_SurvivingPopup>();
                     if (survivingPopup != null)
                     {
-                        survivingPopup.isSurviving = true;
+                        survivingPopup.IsSurviving = true;
                         continue;
                     }
                 }
@@ -403,7 +402,7 @@ public class PopUpManager : Singleton<PopUpManager>
             {
                 if (survivingPopup != null)
                 {
-                    survivingPopup.isSurviving = true;
+                    survivingPopup.IsSurviving = true;
                 }
                 StopLockingPopup();
             }
@@ -418,7 +417,7 @@ public class PopUpManager : Singleton<PopUpManager>
                 {
                     if (survivingPopup != null)
                     {
-                        survivingPopup.isSurviving = true;
+                        survivingPopup.IsSurviving = true;
                     }
                     StopLockingPopup();
                 }
@@ -441,7 +440,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region DETAIL
         TextMeshProUGUI detail = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        detail.text = "Can be upgrades with specifics infrastructures";
+        detail.text = "Can be upgrades with\nspecifics infrastructures";
         detail.alignment = TextAlignmentOptions.Center;
         detail.fontStyle = FontStyles.Italic;
         #endregion
@@ -485,8 +484,8 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
-        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
         SurvivingPopup(popUp);
+        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
     }
 
     private void TownLimitPopUp()
@@ -502,7 +501,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region DETAIL
         TextMeshProUGUI detail = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        detail.text = "Can be upgrades with specifics infrastructures and upgrade";
+        detail.text = "Can be upgrades with specifics\ninfrastructures and upgrade";
         detail.alignment = TextAlignmentOptions.Center;
         detail.fontStyle = FontStyles.Italic;
         #endregion
@@ -551,8 +550,8 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
-        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
         SurvivingPopup(popUp);
+        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
     }
 
     private void ClaimPopUp()
@@ -570,7 +569,7 @@ public class PopUpManager : Singleton<PopUpManager>
         if (ExpansionManager.Instance.UpgradeConserveClaims == false)
         {
             TextMeshProUGUI loosingClaims = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            loosingClaims.text = "Not used Claims<sprite name=\"Claim_Emoji\"> are lost at the end of the phase";
+            loosingClaims.text = "Not used Claims<sprite name=\"Claim_Emoji\"> are lost\nat the end of the phase";
             ClampTextWidth(loosingClaims);
             loosingClaims.fontStyle = FontStyles.Italic;
             loosingClaims.alignment = TextAlignmentOptions.Center;
@@ -625,8 +624,8 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
-        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
         SurvivingPopup(popUp);
+        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
     }
 
     private void GoldPopUp()
@@ -669,8 +668,8 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
-        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
         SurvivingPopup(popUp);
+        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
     }
 
     private void SRPopUp()
@@ -703,8 +702,8 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
-        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
         SurvivingPopup(popUp);
+        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
     }
 
     private void ScorePopUp()
@@ -742,8 +741,8 @@ public class PopUpManager : Singleton<PopUpManager>
         ClampTextWidth(garden);
         #endregion
 
-        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
         SurvivingPopup(popUp);
+        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
     }
 
     private void CarnivalistPopUp()
@@ -759,7 +758,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region DETAIL
         TextMeshProUGUI detail = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        detail.text = "Carnivalists<sprite name=\"Carnivalist_Emoji\"> are used during the Celebration phases to place " + Family.Entertainment.ToCustomString(true);
+        detail.text = "Carnivalists<sprite name=\"Carnivalist_Emoji\"> are used during the Celebration\nphases to place " + Family.Entertainment.ToCustomString(true);
         ClampTextWidth(detail);
         detail.alignment = TextAlignmentOptions.Center;
         detail.fontStyle = FontStyles.Italic;
@@ -794,8 +793,8 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
-        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
         SurvivingPopup(popUp);
+        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
     }
 
     private void VisibilityPopUp()
@@ -898,8 +897,8 @@ public class PopUpManager : Singleton<PopUpManager>
         ClampTextWidth(detail);
         #endregion
 
-        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
         SurvivingPopup(popUp);
+        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
     }
     #endregion
 
@@ -1229,8 +1228,8 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
-        PositionPopup(popUp.GetComponent<RectTransform>(), tile.transform, false);
         SurvivingPopup(popUp);
+        PositionPopup(popUp.GetComponent<RectTransform>(), tile.transform, false);
     }
 
     private void ScoutPopUp(Scout scout)
@@ -1459,8 +1458,8 @@ public class PopUpManager : Singleton<PopUpManager>
         family.alignment = TextAlignmentOptions.Right;
         #endregion
 
-        PositionPopup(popUp.GetComponent<RectTransform>(), ent.Tile.transform, false);
         SurvivingPopup(popUp);
+        PositionPopup(popUp.GetComponent<RectTransform>(), ent.Tile.transform, false);
     }
     #endregion
 
@@ -1732,8 +1731,8 @@ public class PopUpManager : Singleton<PopUpManager>
         family.alignment = TextAlignmentOptions.Right;
         #endregion
 
-        PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, false);
         SurvivingPopup(popUp);
+        PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, false);
     }
 
     private void ButtonInfraPopUp(InteractionButton button)
@@ -2109,8 +2108,8 @@ public class PopUpManager : Singleton<PopUpManager>
         family.alignment = TextAlignmentOptions.Right;
         #endregion
 
-        PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, false);
         SurvivingPopup(popUp);
+        PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, false);
     }
     #endregion
 
@@ -2399,8 +2398,8 @@ public class PopUpManager : Singleton<PopUpManager>
         ClampTextWidth(familyList);
         #endregion
 
-        PositionPopup(popUp.GetComponent<RectTransform>(), refObject, true);
         SurvivingPopup(popUp);
+        PositionPopup(popUp.GetComponent<RectTransform>(), refObject, true);
     }
 
     public void InfrastructurePopup(InfrastructureData infra, RectTransform refObject)
@@ -2498,8 +2497,8 @@ public class PopUpManager : Singleton<PopUpManager>
         family.alignment = TextAlignmentOptions.Right;
         #endregion
 
-        PositionPopup(popUp.GetComponent<RectTransform>(), refObject, true);
         SurvivingPopup(popUp);
+        PositionPopup(popUp.GetComponent<RectTransform>(), refObject, true);
     }
 
     public void EntertainmentPopup(EntertainmentData ent, RectTransform refObject)
@@ -2537,17 +2536,20 @@ public class PopUpManager : Singleton<PopUpManager>
         family.alignment = TextAlignmentOptions.Right;
         #endregion
 
-        PositionPopup(popUp.GetComponent<RectTransform>(), refObject, true);
         SurvivingPopup(popUp);
+        PositionPopup(popUp.GetComponent<RectTransform>(), refObject, true);
     }
     #endregion
 
     #region LOGIC
     private void SurvivingPopup(GameObject popUp)
     {
+        GameObject survivingTimer = Instantiate(_survivingTimer, popUp.transform.GetChild(1).transform);
+        survivingTimer.transform.SetAsLastSibling();
         UI_SurvivingPopup survivingPopup = popUp.AddComponent<UI_SurvivingPopup>();
+        survivingPopup.TimerRoot = survivingTimer.GetComponent<RectTransform>();
         _survivingPopups.Add(survivingPopup);
-        survivingPopup.survivingDuration = _survivablePopupDuration;
+        survivingPopup.SurvivingDuration = _survivablePopupDuration;
     }
 
     private void CloseSurvivingPopups()
