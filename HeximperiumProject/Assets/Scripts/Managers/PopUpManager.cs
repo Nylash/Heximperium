@@ -20,6 +20,7 @@ public class PopUpManager : Singleton<PopUpManager>
     [Header("_________________________________________________________")]
     [Header("Spawning Configuration")]
     [SerializeField] private Transform _popUpParent;
+    [SerializeField] private float _survivablePopupDuration;
     [SerializeField] private float _durationHoverForUI = 1f;
     [SerializeField][Range(0f,1f)] private float _percentageOfTimerForVisualHint = 0.75f;
     [SerializeField] private Image _timerOverImage;
@@ -33,6 +34,7 @@ public class PopUpManager : Singleton<PopUpManager>
     [SerializeField] private GameObject _basePopUp;
     [SerializeField] private GameObject _title;
     [SerializeField] private GameObject _text;
+    [SerializeField] private GameObject _survivingTimer;
     [Header("_________________________________________________________")]
     [Header("Locking Popup")]
     [SerializeField] private GameObject _lockingObject;
@@ -58,6 +60,7 @@ public class PopUpManager : Singleton<PopUpManager>
     private float _minAllowed;
     private bool _popUpShown;
     private bool _showSourcesOnPopUp;
+    private List<UI_SurvivingPopup> _survivingPopups = new List<UI_SurvivingPopup>();
     //POPUP ON POPUP Variables
     private GameObject _lockingPopup;
     private bool _isLockingPopup;
@@ -85,6 +88,9 @@ public class PopUpManager : Singleton<PopUpManager>
     #region BASE LOGIC
     public void UIPopUp(GameObject obj)
     {
+        if (obj == null)
+            return;
+
         if (obj == _objectUnderMouse)
         {
             if (obj.CompareTag("Untagged"))
@@ -97,28 +103,48 @@ public class PopUpManager : Singleton<PopUpManager>
 
             switch (obj.tag)
             {
+                case "Popup": // Meaning we are hovering over an existing popup so we start locking it
+                    UI_SurvivingPopup survivingPopup = obj.GetComponent<UI_SurvivingPopup>();
+                    if (survivingPopup != null)
+                    {
+                        if (survivingPopup.enabled == true && !_isLockingPopup)
+                        {
+                            survivingPopup.IsSurviving = false;
+                            StartLockingPopup(survivingPopup.gameObject);
+                        }
+                    }
+                    break;
                 case "ScoutLimitUI":
+                    // Close any surviving popup if needed
+                    CloseSurvivingPopups();
                     ScoutLimitPopUp();
                     break;
                 case "ClaimUI":
+                    CloseSurvivingPopups();
                     ClaimPopUp();
                     break;
                 case "TownLimitUI":
+                    CloseSurvivingPopups();
                     TownLimitPopUp();
                     break;
                 case "GoldUI":
+                    CloseSurvivingPopups();
                     GoldPopUp();
                     break;
                 case "SRUI":
+                    CloseSurvivingPopups();
                     SRPopUp();
                     break;
                 case "ScoreUI":
+                    CloseSurvivingPopups();
                     ScorePopUp();
                     break;
                 case "CarnivalistUI":
+                    CloseSurvivingPopups();
                     CarnivalistPopUp();
                     break;
                 case "UpgradeUI":
+                    CloseSurvivingPopups();
                     UpgradePopUp(obj.GetComponent<UpgradeHolder>().UpgradeEffect);
                     break;
                 default:
@@ -132,7 +158,8 @@ public class PopUpManager : Singleton<PopUpManager>
                 _hoverTimer = 0.0f;
                 _timerOverImage.fillAmount = 0.0f;
                 _timerOverImage.enabled = false;
-                JuiceManager.Instance.KillAllComboVFX();
+                if (!obj.CompareTag("Popup"))
+                    JuiceManager.Instance.KillAllComboVFX();
                 return;
             }
 
@@ -149,6 +176,9 @@ public class PopUpManager : Singleton<PopUpManager>
                 _timerOverImage.enabled = false;
 
                 JuiceManager.Instance.KillAllComboVFX();
+
+                // Close any surviving popup if needed
+                CloseSurvivingPopups();
 
                 switch (obj.tag)
                 {
@@ -200,6 +230,9 @@ public class PopUpManager : Singleton<PopUpManager>
                 _timerOverImage.enabled = false;
 
                 JuiceManager.Instance.KillAllComboVFX();
+
+                // Close any surviving popup if needed
+                CloseSurvivingPopups();
 
                 if (obj.GetComponent<Tile>() is Tile tile)
                 {
@@ -259,12 +292,26 @@ public class PopUpManager : Singleton<PopUpManager>
         }
     }
 
-    public void PopUpOnPopUp(RectTransform refObject, Family family = Family.None, InfrastructureData infra = null, EntertainmentData ent = null)
+    public void PopUpOnPopUp(GameObject popupRoot, RectTransform refObject, Family family = Family.None, InfrastructureData infra = null, EntertainmentData ent = null)
     {
         if (refObject.gameObject == _objectUnderMouse)
         {
             if (_popUpShown)
                 return;
+
+            if (_survivingPopups.Count != 0)
+            {
+                if (popupRoot != null)
+                {
+                    UI_SurvivingPopup currentSurvivingPopup = popupRoot.GetComponent<UI_SurvivingPopup>();
+                    if (currentSurvivingPopup.enabled == true && !_isLockingPopup)
+                    {
+                        currentSurvivingPopup.IsSurviving = false;
+                        StartLockingPopup(currentSurvivingPopup.gameObject);
+                    }
+                }
+                CloseSurvivingPopups();
+            }
 
             //Timer before spawning popup
             _hoverTimer += Time.deltaTime;
@@ -313,6 +360,25 @@ public class PopUpManager : Singleton<PopUpManager>
         {
             foreach (GameObject item in _popUps)
             {
+                if (obj != null) //Meaning we are not forcing the closing of pop ups but just changing the object under mouse
+                {
+                    UI_SurvivingPopup survivingPopup = item.GetComponent<UI_SurvivingPopup>();
+                    if (survivingPopup != null)
+                    {
+                        survivingPopup.IsSurviving = true;
+                        continue;
+                    }
+                }
+                else
+                {
+                    UI_SurvivingPopup survivingPopup = item.GetComponent<UI_SurvivingPopup>();
+                    if (survivingPopup != null)
+                    {
+                        survivingPopup.ClosePopup();
+                        continue;
+                    }
+                }
+
                 item.GetComponent<Animator>().SetTrigger("Close");
                 if (item == JuiceManager.Instance.PopUpVisualizingCombo)
                 {
@@ -323,7 +389,39 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         if (_lockingImage != null)
         {
-            StopLockingPopup();
+            UI_SurvivingPopup survivingPopup = _lockingPopup.GetComponent<UI_SurvivingPopup>();
+
+            if (obj == null) // Meaning we are forcing the closing of pop ups
+            {
+                survivingPopup?.ClosePopup();
+                StopLockingPopup();
+                return;
+            }
+
+            if (!obj.CompareTag("Popup")) // Meaning we are changing the object under mouse to a non-popup object
+            {
+                if (survivingPopup != null)
+                {
+                    survivingPopup.IsSurviving = true;
+                }
+                StopLockingPopup();
+            }
+            else // We are changing the object under mouse to a popup object we need to check if it's the same popup or not
+            {
+                if (obj.GetComponentInParent<UI_SurvivingPopup>() == survivingPopup)
+                {
+                    // Same popup so we do nothing
+                    return;
+                }
+                else
+                {
+                    if (survivingPopup != null)
+                    {
+                        survivingPopup.IsSurviving = true;
+                    }
+                    StopLockingPopup();
+                }
+            }
         }
     }
     #endregion
@@ -342,7 +440,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region DETAIL
         TextMeshProUGUI detail = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        detail.text = "Can be upgrades with specifics infrastructures";
+        detail.text = "Can be upgrades with\nspecifics infrastructures";
         detail.alignment = TextAlignmentOptions.Center;
         detail.fontStyle = FontStyles.Italic;
         #endregion
@@ -386,8 +484,8 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
+        SurvivingPopup(popUp);
         PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
-        StartLockingPopup(popUp);
     }
 
     private void TownLimitPopUp()
@@ -403,7 +501,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region DETAIL
         TextMeshProUGUI detail = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        detail.text = "Can be upgrades with specifics infrastructures and upgrade";
+        detail.text = "Can be upgrades with specifics\ninfrastructures and upgrade";
         detail.alignment = TextAlignmentOptions.Center;
         detail.fontStyle = FontStyles.Italic;
         #endregion
@@ -452,8 +550,8 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
+        SurvivingPopup(popUp);
         PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
-        StartLockingPopup(popUp);
     }
 
     private void ClaimPopUp()
@@ -471,7 +569,7 @@ public class PopUpManager : Singleton<PopUpManager>
         if (ExpansionManager.Instance.UpgradeConserveClaims == false)
         {
             TextMeshProUGUI loosingClaims = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-            loosingClaims.text = "Not used Claims<sprite name=\"Claim_Emoji\"> are lost at the end of the phase";
+            loosingClaims.text = "Not used Claims<sprite name=\"Claim_Emoji\"> are lost\nat the end of the phase";
             ClampTextWidth(loosingClaims);
             loosingClaims.fontStyle = FontStyles.Italic;
             loosingClaims.alignment = TextAlignmentOptions.Center;
@@ -526,8 +624,8 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
+        SurvivingPopup(popUp);
         PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
-        StartLockingPopup(popUp);
     }
 
     private void GoldPopUp()
@@ -570,8 +668,8 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
+        SurvivingPopup(popUp);
         PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
-        StartLockingPopup(popUp);
     }
 
     private void SRPopUp()
@@ -604,8 +702,8 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
+        SurvivingPopup(popUp);
         PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
-        StartLockingPopup(popUp);
     }
 
     private void ScorePopUp()
@@ -643,8 +741,8 @@ public class PopUpManager : Singleton<PopUpManager>
         ClampTextWidth(garden);
         #endregion
 
+        SurvivingPopup(popUp);
         PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
-        StartLockingPopup(popUp);
     }
 
     private void CarnivalistPopUp()
@@ -660,7 +758,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region DETAIL
         TextMeshProUGUI detail = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        detail.text = "Carnivalists<sprite name=\"Carnivalist_Emoji\"> are used during the Celebration phases to place " + Family.Entertainment.ToCustomString(true);
+        detail.text = "Carnivalists<sprite name=\"Carnivalist_Emoji\"> are used during the Celebration\nphases to place " + Family.Entertainment.ToCustomString(true);
         ClampTextWidth(detail);
         detail.alignment = TextAlignmentOptions.Center;
         detail.fontStyle = FontStyles.Italic;
@@ -695,8 +793,8 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
+        SurvivingPopup(popUp);
         PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
-        StartLockingPopup(popUp);
     }
 
     private void VisibilityPopUp()
@@ -799,23 +897,22 @@ public class PopUpManager : Singleton<PopUpManager>
         ClampTextWidth(detail);
         #endregion
 
+        SurvivingPopup(popUp);
         PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
-        StartLockingPopup(popUp);
     }
     #endregion
 
     #region ON TILE POP UP
     private void TilePopUp(Tile tile)
     {
-        bool isVisualizingCombo = false;
         if (GameManager.Instance.CurrentPhase == Phase.Entertain)
         {
             if (!tile.Entertainment && tile.EntImpactedByTile.Count > 0) // If tile an entertainment, its popup handle the combo visualization
-                isVisualizingCombo = JuiceManager.Instance.VisualizeEntertainmentComboFromTileOnly(tile);
+                JuiceManager.Instance.VisualizeEntertainmentComboFromTileOnly(tile);
         }
         else
         {
-            isVisualizingCombo = JuiceManager.Instance.VisualizeExploitationCombo(
+            JuiceManager.Instance.VisualizeExploitationCombo(
                 tile.InternalIncomesSources, tile.ExternalIncomesSources, tile.InternalCarnivalistsSources,
                 tile.ImpactedTilesIncomes, tile.ImpactedTilesCarnivalists, tile);
         }
@@ -1131,9 +1228,8 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         #endregion
 
-        PositionPopup(popUp.GetComponent<RectTransform>(), tile.transform, !isVisualizingCombo);
-        if (tile.Entertainment == null) // If tile has an entertainment, its popup will be the one lockable
-            StartLockingPopup(popUp);
+        SurvivingPopup(popUp);
+        PositionPopup(popUp.GetComponent<RectTransform>(), tile.transform, false);
     }
 
     private void ScoutPopUp(Scout scout)
@@ -1144,7 +1240,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        title.text = "Scout";
+        title.text = "Scout<sprite name=\"Scout_Emoji\">";
         #endregion
 
         #region SPEED
@@ -1197,7 +1293,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        title.text = $"{tile.Scouts.Count} Scouts";
+        title.text = $"{tile.Scouts.Count} Scouts<sprite name=\"Scout_Emoji\">";
         #endregion
 
         #region DIRECTION
@@ -1246,8 +1342,8 @@ public class PopUpManager : Singleton<PopUpManager>
 
     private void EntertainmentPopUp(Entertainment ent)
     {
-        bool isVisualizingCombo = JuiceManager.Instance.VisualizeEntertainmentCombo(
-            ent.InternalPointsSources, ent.ExternalPointsSources, 
+        JuiceManager.Instance.VisualizeEntertainmentCombo(
+            ent.InternalPointsSources, ent.ExternalPointsSources,
             ent.Tile.EntImpactedByEntertainment, ent.Tile.EntImpactedByTile,
             ent.Tile);
 
@@ -1362,8 +1458,8 @@ public class PopUpManager : Singleton<PopUpManager>
         family.alignment = TextAlignmentOptions.Right;
         #endregion
 
-        PositionPopup(popUp.GetComponent<RectTransform>(), ent.Tile.transform, !isVisualizingCombo);
-        StartLockingPopup(popUp);
+        SurvivingPopup(popUp);
+        PositionPopup(popUp.GetComponent<RectTransform>(), ent.Tile.transform, false);
     }
     #endregion
 
@@ -1380,7 +1476,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        title.text = "Spawn a Scout";
+        title.text = "Spawn a Scout<sprite name=\"Scout_Emoji\">";
         #endregion
 
         #region SPEED
@@ -1428,7 +1524,6 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, true);
-        StartLockingPopup(popUp);
     }
 
     private void ButtonRedirectScoutPopUp(InteractionButton button)
@@ -1438,7 +1533,7 @@ public class PopUpManager : Singleton<PopUpManager>
         _popUps.Add(popUp);
 
         TextMeshProUGUI text = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        text.text = "Redirect a Scout";
+        text.text = "Redirect a Scout<sprite name=\"Scout_Emoji\">";
 
         PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, true);
     }
@@ -1464,7 +1559,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        title.text = "Claim " + button.AssociatedTile.TileData.TileName;
+        title.text = "Claim<sprite name=\"Claim_Emoji\"> " + button.AssociatedTile.TileData.TileName;
         #endregion
 
         #region CLAIM COST
@@ -1476,7 +1571,6 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, true);
-        StartLockingPopup(popUp);
     }
 
     private void ButtonDestroyPopUp(string text, InteractionButton button)
@@ -1508,7 +1602,7 @@ public class PopUpManager : Singleton<PopUpManager>
             out predictedPoints, out predictedExtSources, out predictedIntSources, out predictedSelfPoints,
             out predictedEntImpactedByEnt, out predictedEntImpactedByTile);
 
-        bool isVisualizionCombo = JuiceManager.Instance.VisualizeEntertainmentCombo(
+        JuiceManager.Instance.VisualizeEntertainmentCombo(
             predictedIntSources, predictedExtSources,
             predictedEntImpactedByEnt, predictedEntImpactedByTile,
             button.AssociatedTile);
@@ -1637,8 +1731,8 @@ public class PopUpManager : Singleton<PopUpManager>
         family.alignment = TextAlignmentOptions.Right;
         #endregion
 
-        PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, !isVisualizionCombo);
-        StartLockingPopup(popUp);
+        SurvivingPopup(popUp);
+        PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, false);
     }
 
     private void ButtonInfraPopUp(InteractionButton button)
@@ -1657,7 +1751,7 @@ public class PopUpManager : Singleton<PopUpManager>
             out predictedSelfInc, out predictedCarnivalists, out predictedInternalCarnivalistsSources,
             out predictedImpactedTilesIncomes, out predictedImpactedTilesCarnivalists);
 
-        bool isVisualizingCombo = JuiceManager.Instance.VisualizeExploitationCombo(
+        JuiceManager.Instance.VisualizeExploitationCombo(
             predictedIntSources, predictedExtSources, predictedInternalCarnivalistsSources,
             predictedImpactedTilesIncomes, predictedImpactedTilesCarnivalists,
             button.AssociatedTile);
@@ -2014,8 +2108,8 @@ public class PopUpManager : Singleton<PopUpManager>
         family.alignment = TextAlignmentOptions.Right;
         #endregion
 
-        PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, !isVisualizingCombo);
-        StartLockingPopup(popUp);
+        SurvivingPopup(popUp);
+        PositionPopup(popUp.GetComponent<RectTransform>(), button.transform, false);
     }
     #endregion
 
@@ -2266,23 +2360,7 @@ public class PopUpManager : Singleton<PopUpManager>
     #endregion
 
     #region POPUP ON POPUP
-    //Used to lock a popup on screen until user closes it
-    private void Update()
-    {
-        if (_isLockingPopup && _lockingImage != null)
-        {
-            _lockingTimer += Time.deltaTime;
-            float t = (_durationForLockingPopup <= 0f) ? 1f : Mathf.Clamp01(_lockingTimer / _durationForLockingPopup);
-            _lockingImage.fillAmount = t;
-            if (_lockingTimer >= _durationForLockingPopup)
-            {
-                _isLockingPopup = false;
-                _lockingTimer = 0f;
-                LockPopup(_lockingPopup);
-            }
-        }
-    }
-
+    #region POPUP
     public void FamilyPopup(Family family, RectTransform refObject)
     {
         GameObject popUp;
@@ -2320,8 +2398,8 @@ public class PopUpManager : Singleton<PopUpManager>
         ClampTextWidth(familyList);
         #endregion
 
+        SurvivingPopup(popUp);
         PositionPopup(popUp.GetComponent<RectTransform>(), refObject, true);
-        StartLockingPopup(popUp);
     }
 
     public void InfrastructurePopup(InfrastructureData infra, RectTransform refObject)
@@ -2419,8 +2497,8 @@ public class PopUpManager : Singleton<PopUpManager>
         family.alignment = TextAlignmentOptions.Right;
         #endregion
 
+        SurvivingPopup(popUp);
         PositionPopup(popUp.GetComponent<RectTransform>(), refObject, true);
-        StartLockingPopup(popUp);
     }
 
     public void EntertainmentPopup(EntertainmentData ent, RectTransform refObject)
@@ -2458,8 +2536,54 @@ public class PopUpManager : Singleton<PopUpManager>
         family.alignment = TextAlignmentOptions.Right;
         #endregion
 
+        SurvivingPopup(popUp);
         PositionPopup(popUp.GetComponent<RectTransform>(), refObject, true);
-        StartLockingPopup(popUp);
+    }
+    #endregion
+
+    #region LOGIC
+    private void SurvivingPopup(GameObject popUp)
+    {
+        GameObject survivingTimer = Instantiate(_survivingTimer, popUp.transform.GetChild(1).transform);
+        survivingTimer.transform.SetAsLastSibling();
+        UI_SurvivingPopup survivingPopup = popUp.AddComponent<UI_SurvivingPopup>();
+        survivingPopup.TimerRoot = survivingTimer.GetComponent<RectTransform>();
+        _survivingPopups.Add(survivingPopup);
+        survivingPopup.SurvivingDuration = _survivablePopupDuration;
+    }
+
+    private void CloseSurvivingPopups()
+    {
+        if (_survivingPopups.Count != 0)
+        {
+            foreach (UI_SurvivingPopup item in _survivingPopups)
+            {
+                if (_isLockingPopup)
+                {
+                    if (item.gameObject == _lockingPopup)
+                        continue;
+                }
+                item.ClosePopup();
+            }
+            _survivingPopups.Clear();
+        }
+    }
+
+    //Used to lock a popup on screen until user closes it
+    private void Update()
+    {
+        if (_isLockingPopup && _lockingImage != null)
+        {
+            _lockingTimer += Time.deltaTime;
+            float t = (_durationForLockingPopup <= 0f) ? 1f : Mathf.Clamp01(_lockingTimer / _durationForLockingPopup);
+            _lockingImage.fillAmount = t;
+            if (_lockingTimer >= _durationForLockingPopup)
+            {
+                _isLockingPopup = false;
+                _lockingTimer = 0f;
+                LockPopup(_lockingPopup);
+            }
+        }
     }
 
     private void StartLockingPopup(GameObject popUp)
@@ -2495,9 +2619,13 @@ public class PopUpManager : Singleton<PopUpManager>
 
     private void LockPopup(GameObject popUp)
     {
+        UI_SurvivingPopup survivingPopup = popUp.GetComponent<UI_SurvivingPopup>();
+        survivingPopup.enabled = false;
+        _survivingPopups.Remove(survivingPopup);
+
         _popUps.Remove(popUp);
         Button lockedButton = Instantiate(_lockedObject, _popUpParent).GetComponent<Button>();
-        lockedButton.transform.SetAsLastSibling();
+        lockedButton.transform.SetSiblingIndex(popUp.transform.GetSiblingIndex() + 1);
         _lockedPopUps.Add(popUp, lockedButton);
         Utilities.PlacePrefabAroundTargetTopRight(lockedButton.GetComponent<RectTransform>(), popUp.GetComponent<RectTransform>(), _lockImagePopupOffset);
         StopLockingPopup();
@@ -2543,6 +2671,7 @@ public class PopUpManager : Singleton<PopUpManager>
         _lockedPopUps.Clear();
         ResetPopUp(null);
     }
+    #endregion
     #endregion
 
     #region TUTORIAL POPUP
