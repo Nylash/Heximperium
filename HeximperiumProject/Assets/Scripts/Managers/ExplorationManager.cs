@@ -173,6 +173,21 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         UpdateInteractableTiles();
 
         ResourcesManager.Instance.CHEAT_RESOURCES();
+
+        if (UIManager.Instance.AreEntPlacementShown)
+        {
+            foreach (Tile tile in ExplorationManager.Instance.RevealedTiles)
+            {
+                tile.ShowEntPlacementUI(true);
+            }
+        }
+        if (UIManager.Instance.AreIncomesShown)
+        {
+            foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
+            {
+                tile.ShowIncomeUI(true);//Refresh the income UI if needed to update back to normal income values
+            }
+        }
     }
 
     protected override void ConfirmPhase()

@@ -474,14 +474,23 @@ public class Tile : MonoBehaviour
         }
         if (show)
         {
-            if (_allowEntHint)
+            if (GameManager.Instance.CurrentPhase == Phase.Entertain && !_claimed)
             {
-                _allowEntHint.CheckAllowingEntVisibility();
+                if (_allowEntHint)
+                    RemoveAllowEntHint();
                 return;
             }
-            _allowEntHint = Instantiate(_allowingEntPrefab, _visual).GetComponent<Border>();
-            _allowEntHint.transform.localPosition += new Vector3(0, 0.01f, 0);
-            _allowEntHint.associatedTile = this;
+            else
+            {
+                if (_allowEntHint)
+                {
+                    _allowEntHint.CheckAllowingEntVisibility();
+                    return;
+                }
+                _allowEntHint = Instantiate(_allowingEntPrefab, _visual).GetComponent<Border>();
+                _allowEntHint.transform.localPosition += new Vector3(0, 0.01f, 0);
+                _allowEntHint.associatedTile = this;
+            }
         }
         else if (_allowEntHint)
         {

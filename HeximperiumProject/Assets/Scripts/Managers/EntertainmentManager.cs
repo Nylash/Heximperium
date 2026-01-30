@@ -140,6 +140,13 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
 
         if (!UIManager.Instance.AreEntPlacementShown)
             UIManager.Instance.SwitchEntPlacementVisibility();
+        else
+        {
+            foreach (Tile tile in ExplorationManager.Instance.RevealedTiles)
+            {
+                tile.ShowEntPlacementUI(true);// Update it to hide it on not claimed tiles
+            }
+        }
 
         if (UIManager.Instance.AreIncomesShown)
         {

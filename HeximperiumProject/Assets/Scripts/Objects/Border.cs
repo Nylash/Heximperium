@@ -46,9 +46,16 @@ public class Border : MonoBehaviour
         {
             if (!associatedTile.Neighbors[i])
                 continue;
-            //Neighbor can receive an entertainment, so no border, fade out
-            if (associatedTile.Neighbors[i].CanReceiveEntertainment(true))
+
+            bool canFade =
+                associatedTile.Neighbors[i].CanReceiveEntertainment(true) &&
+                (GameManager.Instance.CurrentPhase != Phase.Entertain ||
+                associatedTile.Neighbors[i].Claimed);
+
+            if (canFade)
+            {
                 _animators[i].SetTrigger("Fade");
+            }
             else if (!_animators[i].gameObject.activeSelf)
             {
                 _animators[i].gameObject.SetActive(true);
