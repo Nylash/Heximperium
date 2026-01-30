@@ -194,6 +194,9 @@ public class PopUpManager : Singleton<PopUpManager>
                     case "ShowDetailsPopupUI":
                         ShowDetailsPopupPopUp();
                         break;
+                    case "ShowEnhanceableUI":
+                        ShowEnhanceablePopUp();
+                        break;
                     case "Untagged":
                         break;
                     default:
@@ -877,6 +880,24 @@ public class PopUpManager : Singleton<PopUpManager>
         PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
     }
 
+    private void ShowEnhanceablePopUp()
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, _popUpParent);
+        _popUps.Add(popUp);
+
+        #region DETAIL
+        TextMeshProUGUI detail = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        if (UIManager.Instance.AreEnhanceableStatusShown)
+            detail.text = "Hide which tiles can be enhanced";
+        else
+            detail.text = "Show which tiles can be enhanced";
+        ClampTextWidth(detail);
+        detail.alignment = TextAlignmentOptions.Center;
+        #endregion
+
+        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
+    }
     private void UpgradePopUp(UpgradeEffect effect)
     {
         if (effect == null)

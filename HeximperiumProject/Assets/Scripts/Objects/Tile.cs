@@ -12,6 +12,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private GameObject _borderPrefab;
     [SerializeField] private GameObject _previewBorderPrefab;
     [SerializeField] private GameObject _allowingEntPrefab;
+    [SerializeField] private GameObject _enhanceableTilePrefab;
     [SerializeField] private GameObject _highlightPrefab;
     [SerializeField] private Transform _visual;
     [SerializeField] private SpriteRenderer _infraLvlRenderer;
@@ -37,6 +38,7 @@ public class Tile : MonoBehaviour
     private GameObject _highlightObject;
     private GameObject _visualAssets;
     private Border _allowEntHint;
+    private Border _enhanceableHint;
     //Runtime variables
     private TileData _initialData;
     private TileData _previousData;
@@ -80,6 +82,7 @@ public class Tile : MonoBehaviour
     public Action OnClaimBorderAnimationDone;//No event keyword because it is Invoked in the Border script
     public Action OnPreviewBorderAnimationDone;//No event keyword because it is Invoked in the Border script
     public Action OnAllowingEntAnimationDone;//No event keyword because it is Invoked in the Border script
+    public Action OnEnhanceableTileAnimationDone;//No event keyword because it is Invoked in the Border script
     #endregion
 
     #region ACCESSORS
@@ -169,6 +172,7 @@ public class Tile : MonoBehaviour
                 neighbor.OnClaimBorderAnimationDone += CheckBorder;
                 neighbor.OnPreviewBorderAnimationDone += CheckPreviewBorder;
                 neighbor.OnAllowingEntAnimationDone += CheckAllowingEnt;
+                neighbor.OnEnhanceableTileAnimationDone += CheckEnhanceableStatus;
                 neighbor.OnEntertainmentModified += (tile) => UpdateShowAllowEntHint();
             }
         };
@@ -284,7 +288,11 @@ public class Tile : MonoBehaviour
         _tileData = value;
 
         if (updateVisual)
+        {
             _animator.SetTrigger("UpdateVisual");
+            if (UIManager.Instance.AreEnhanceableStatusShown)
+                ShowEnhanceableTileStatus(true);
+        }
 
         UpdateSpecialBehaviours();
 
@@ -368,6 +376,12 @@ public class Tile : MonoBehaviour
     {
         if (_allowEntHint)
             _allowEntHint.CheckAllowingEntVisibility();
+    }
+
+    private void CheckEnhanceableStatus()
+    {
+        if (_enhanceableHint)
+            _enhanceableHint.CheckEnhanceableTileVisibility();
     }
 
     //Change tile's visual based on the tile data
@@ -496,6 +510,44 @@ public class Tile : MonoBehaviour
         {
             RemoveAllowEntHint();
         }
+    }
+
+    public void ShowEnhanceableTileStatus(bool show)
+    {
+        if (_tileData is HazardousTileData)
+            return;
+        if (!_claimed)
+            return;
+        if (show)
+        {
+            if (_tileData.AvailableInfrastructures.Count == 0)
+            {
+                if (_enhanceableHint != null)
+                    RemoveEnhanceableHint();
+                return;
+            }
+            else
+            {
+                if (_enhanceableHint)
+                {
+                    _enhanceableHint.CheckEnhanceableTileVisibility();
+                    return;
+                }
+                _enhanceableHint = Instantiate(_enhanceableTilePrefab, _visual).GetComponent<Border>();
+                _enhanceableHint.transform.localPosition += new Vector3(0, 0.01f, 0);
+                _enhanceableHint.associatedTile = this;
+            }
+        }
+        else if (_enhanceableHint != null)
+            RemoveEnhanceableHint();
+    }
+
+    private void RemoveEnhanceableHint()
+    {
+        _enhanceableHint.GetComponent<Animator>().SetTrigger("Despawn");
+        _enhanceableHint = null;
+        if (UIManager.Instance.AreEnhanceableStatusShown)
+            OnEnhanceableTileAnimationDone?.Invoke();
     }
 
     public void ShowIncomeUI(bool show)

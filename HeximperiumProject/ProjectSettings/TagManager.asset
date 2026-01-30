@@ -18,6 +18,7 @@ TagManager:
   - ShowEntPlacementUI
   - ShowDetailsPopupUI
   - Popup
+  - ShowEnhanceableUI
   layers:
   - Default
   - TransparentFX

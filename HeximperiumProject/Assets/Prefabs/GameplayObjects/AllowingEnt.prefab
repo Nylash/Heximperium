@@ -78,7 +78,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 4
+  m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: db599106fa1f2d944881f85e66c8ec11, type: 3}
   m_Color: {r: 0.7764706, g: 0.38039216, b: 0.8666667, a: 0.2}
   m_FlipX: 0
@@ -228,7 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b3d5bd140fa19642a3c5973b19704cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sortingOrder: 3
+  sortingOrder: 5
 --- !u!1 &6536169877278186935
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,7 +367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b3d5bd140fa19642a3c5973b19704cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sortingOrder: 3
+  sortingOrder: 5
 --- !u!1 &6832017763860260584
 GameObject:
   m_ObjectHideFlags: 0
@@ -601,7 +601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b3d5bd140fa19642a3c5973b19704cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sortingOrder: 3
+  sortingOrder: 5
 --- !u!1 &8307624956937567156
 GameObject:
   m_ObjectHideFlags: 0
@@ -740,7 +740,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b3d5bd140fa19642a3c5973b19704cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sortingOrder: 3
+  sortingOrder: 5
 --- !u!1 &8470065745522948522
 GameObject:
   m_ObjectHideFlags: 0
@@ -879,7 +879,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b3d5bd140fa19642a3c5973b19704cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sortingOrder: 3
+  sortingOrder: 5
 --- !u!1 &8542130562854083999
 GameObject:
   m_ObjectHideFlags: 0
@@ -1018,4 +1018,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b3d5bd140fa19642a3c5973b19704cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sortingOrder: 3
+  sortingOrder: 5

@@ -1262,6 +1262,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7410938344582206626}
   _infraLvlRenderer: {fileID: 1251880016848633007}

@@ -3645,6 +3645,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 178832022293738749}
   _infraLvlRenderer: {fileID: 1373881394017579456}
@@ -5190,6 +5191,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 1393575192555690654}
   _infraLvlRenderer: {fileID: 5242417984231126933}
@@ -17118,6 +17120,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 2319915483147953938}
   _infraLvlRenderer: {fileID: 8694186725376910268}
@@ -18505,6 +18508,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 498058966774610870}
   _infraLvlRenderer: {fileID: 5543790574620279278}
@@ -19074,6 +19078,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7362670026333747051}
   _infraLvlRenderer: {fileID: 7078397155664537475}
@@ -23381,6 +23386,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 328195834422141865}
   _infraLvlRenderer: {fileID: 871998388638700513}
@@ -25861,6 +25867,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 4792643368668678986}
   _infraLvlRenderer: {fileID: 4527901077468103838}
@@ -29368,6 +29375,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5951119363844717767}
   _infraLvlRenderer: {fileID: 3876132108689535367}
@@ -30767,6 +30775,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6002089625096694748}
   _infraLvlRenderer: {fileID: 3217943855706401241}
@@ -31189,6 +31198,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5053698810089019908}
   _infraLvlRenderer: {fileID: 7716682285809786421}
@@ -32207,6 +32217,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7818672687588426779}
   _infraLvlRenderer: {fileID: 1051032042566011892}
@@ -32928,6 +32939,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7415320623207707654}
   _infraLvlRenderer: {fileID: 301244899751244849}
@@ -33580,6 +33592,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 1077788882880596375}
   _infraLvlRenderer: {fileID: 8894408002350285564}
@@ -33695,6 +33708,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 4307363827916936780}
   _infraLvlRenderer: {fileID: 4401748704362459545}
@@ -35162,6 +35176,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6105878635932582269}
   _infraLvlRenderer: {fileID: 336654781235122828}
@@ -36117,6 +36132,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7822409966736531624}
   _infraLvlRenderer: {fileID: 4717096853939422173}
@@ -36930,6 +36946,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7442060901681552866}
   _infraLvlRenderer: {fileID: 2567660986560348225}
@@ -37315,6 +37332,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 2950115328944021206}
   _infraLvlRenderer: {fileID: 2504466088266282469}
@@ -37612,6 +37630,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7997031264877187381}
   _infraLvlRenderer: {fileID: 4481760431491968110}
@@ -42876,6 +42895,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6351036722033983947}
   _infraLvlRenderer: {fileID: 638109960870950937}
@@ -52348,6 +52368,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5150827722122620936}
   _infraLvlRenderer: {fileID: 6691669325182658225}
@@ -54107,6 +54128,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 3631861763946116591}
   _infraLvlRenderer: {fileID: 2989160308170142478}
@@ -55006,6 +55028,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 3723391526434562624}
   _infraLvlRenderer: {fileID: 6672248707281523218}
@@ -58230,6 +58253,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5569008226392231846}
   _infraLvlRenderer: {fileID: 5541928908733079423}
@@ -59061,6 +59085,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5546424480929298779}
   _infraLvlRenderer: {fileID: 1024945377262532979}
@@ -63155,6 +63180,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 847065009087044043}
   _infraLvlRenderer: {fileID: 59208782869875912}
@@ -64503,6 +64529,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 1511806060374743926}
   _infraLvlRenderer: {fileID: 1376454410545097935}
@@ -64800,6 +64827,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6726149724224435670}
   _infraLvlRenderer: {fileID: 4199843210303765013}
@@ -64917,6 +64945,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 8389294294980886542}
   _infraLvlRenderer: {fileID: 6364222042747331433}
@@ -65304,6 +65333,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 2689827665629382589}
   _infraLvlRenderer: {fileID: 7891937575651992750}
@@ -65905,6 +65935,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7318706517999079325}
   _infraLvlRenderer: {fileID: 2742394147347999707}
@@ -70005,6 +70036,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6772186944301214331}
   _infraLvlRenderer: {fileID: 2727967052454688553}
@@ -70750,6 +70782,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 3066366726393014850}
   _infraLvlRenderer: {fileID: 4558352912036820433}
@@ -71352,6 +71385,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6565998586886084537}
   _infraLvlRenderer: {fileID: 3204828103358948134}
@@ -72931,6 +72965,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 2972789753147842292}
   _infraLvlRenderer: {fileID: 2915591199167886441}
@@ -73499,6 +73534,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 1930422499137821346}
   _infraLvlRenderer: {fileID: 7494236902170497608}
@@ -76296,6 +76332,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7544718048136427223}
   _infraLvlRenderer: {fileID: 1249172442507794094}
@@ -80455,6 +80492,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 2421570923674064780}
   _infraLvlRenderer: {fileID: 3070955019572401100}
@@ -85567,6 +85605,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5740014029421583418}
   _infraLvlRenderer: {fileID: 8647475521402304803}
@@ -87060,6 +87099,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 8553706860975327766}
   _infraLvlRenderer: {fileID: 8104644830637303934}
@@ -88864,6 +88904,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7109121141531513629}
   _infraLvlRenderer: {fileID: 6492500166034425083}
@@ -91853,6 +91894,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 2682643342676887050}
   _infraLvlRenderer: {fileID: 6831707429158651907}
@@ -100232,6 +100274,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 8067394683935596953}
   _infraLvlRenderer: {fileID: 4212799472898221759}
@@ -100705,6 +100748,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 1309614933769085210}
   _infraLvlRenderer: {fileID: 6585530486800456611}
@@ -101273,6 +101317,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 1100452132734808896}
   _infraLvlRenderer: {fileID: 5222506148911958920}
@@ -102111,6 +102156,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 2366866144248907867}
   _infraLvlRenderer: {fileID: 3758062411509640101}
@@ -103337,6 +103383,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 4860420992427855961}
   _infraLvlRenderer: {fileID: 6603624521100666618}
@@ -103545,6 +103592,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 68493203300190686}
   _infraLvlRenderer: {fileID: 3144246146272884611}
@@ -103955,6 +104003,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 2776254459378202593}
   _infraLvlRenderer: {fileID: 1332108032897017280}
@@ -104915,6 +104964,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 3650942203201850565}
   _infraLvlRenderer: {fileID: 6220527072476821444}
@@ -107727,6 +107777,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5617617982385293660}
   _infraLvlRenderer: {fileID: 9066209281256359258}
@@ -108611,6 +108662,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6902954944993411797}
   _infraLvlRenderer: {fileID: 8938285638382266968}
@@ -111255,6 +111307,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 621699460701975103}
   _infraLvlRenderer: {fileID: 4871064328995350167}
@@ -111461,6 +111514,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6640631346416340046}
   _infraLvlRenderer: {fileID: 7166726411765046724}
@@ -115342,6 +115396,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6547070548880147882}
   _infraLvlRenderer: {fileID: 3948561670104130181}
@@ -120242,6 +120297,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7079872725185182863}
   _infraLvlRenderer: {fileID: 8305329634501178063}
@@ -121680,6 +121736,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5663468896923976017}
   _infraLvlRenderer: {fileID: 8223882505369645360}
@@ -126085,6 +126142,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7313484971653842768}
   _infraLvlRenderer: {fileID: 1542127759245613355}
@@ -127106,6 +127164,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 210111827254930927}
   _infraLvlRenderer: {fileID: 3446150856505221276}
@@ -131272,6 +131331,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6715682853100783071}
   _infraLvlRenderer: {fileID: 4048997139878609881}
@@ -134011,6 +134071,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5514488469848962003}
   _infraLvlRenderer: {fileID: 6149597614402297397}
@@ -134487,6 +134548,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 3023396367136490990}
   _infraLvlRenderer: {fileID: 4582176495983525817}
@@ -137192,6 +137254,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 810212892710864757}
   _infraLvlRenderer: {fileID: 107422850504822548}
@@ -138519,6 +138582,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 4851507949884498619}
   _infraLvlRenderer: {fileID: 1980742831823814099}
@@ -141656,6 +141720,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 2847193348226550753}
   _infraLvlRenderer: {fileID: 5492065389726471546}
@@ -141952,6 +142017,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5633175843028501923}
   _infraLvlRenderer: {fileID: 7437200109014926974}
@@ -142160,6 +142226,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 8402648805006493697}
   _infraLvlRenderer: {fileID: 9029681850332843830}
@@ -143090,6 +143157,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7028498040450551414}
   _infraLvlRenderer: {fileID: 1349423024724743319}
@@ -147881,6 +147949,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6738576008519025150}
   _infraLvlRenderer: {fileID: 5230087923452269368}
@@ -148767,6 +148836,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 455344403186794454}
   _infraLvlRenderer: {fileID: 8649418341462998917}
@@ -153939,6 +154009,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 3484565329316133210}
   _infraLvlRenderer: {fileID: 3215890471482195841}
@@ -156332,6 +156403,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 4246501007221880156}
   _infraLvlRenderer: {fileID: 7244948162070327455}
@@ -156538,6 +156610,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 3705405810419857543}
   _infraLvlRenderer: {fileID: 4890746688166722522}
@@ -161332,6 +161405,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 8605462630096407846}
   _infraLvlRenderer: {fileID: 5289992993265070136}
@@ -166056,6 +166130,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5333064596517566995}
   _infraLvlRenderer: {fileID: 222734560662236705}
@@ -171904,6 +171979,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7350497246726594003}
   _infraLvlRenderer: {fileID: 8628728131183417687}
@@ -173836,6 +173912,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7515197882939310351}
   _infraLvlRenderer: {fileID: 5809678523779773812}
@@ -181786,6 +181863,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7929945511975121764}
   _infraLvlRenderer: {fileID: 656846133167000142}
@@ -182357,6 +182435,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 3111432087506798378}
   _infraLvlRenderer: {fileID: 808487283819332902}
@@ -185544,6 +185623,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 7519263822947891814}
   _infraLvlRenderer: {fileID: 879335912185672753}
@@ -185661,6 +185741,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 4446706030350321058}
   _infraLvlRenderer: {fileID: 8542437819668623572}
@@ -186589,6 +186670,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 6581709035164436678}
   _infraLvlRenderer: {fileID: 6423046651720552388}
@@ -187694,6 +187776,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 1019935592692931368}
   _infraLvlRenderer: {fileID: 984227055128185247}
@@ -188621,6 +188704,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 8609361578432203514}
   _infraLvlRenderer: {fileID: 373167531147426051}
@@ -190392,6 +190476,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 4067745918858368547}
   _infraLvlRenderer: {fileID: 8942035914225573140}
@@ -195821,6 +195906,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 275323448629404514}
   _infraLvlRenderer: {fileID: 1451198797386013636}
@@ -201937,6 +202023,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 8464313989291765412}
   _infraLvlRenderer: {fileID: 3471467884492935585}
@@ -202869,6 +202956,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 5634886688826345465}
   _infraLvlRenderer: {fileID: 3019911902898549094}
@@ -204441,6 +204529,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 1576201756339836620}
   _infraLvlRenderer: {fileID: 5466016443957970327}
@@ -205636,6 +205725,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 3333802457173205472}
   _infraLvlRenderer: {fileID: 5006165877493006602}
@@ -209809,6 +209899,7 @@ MonoBehaviour:
   _borderPrefab: {fileID: 6832017763860260584, guid: 03c0eb3d9fe239945b5d1db08a54dd4e, type: 3}
   _previewBorderPrefab: {fileID: 6832017763860260584, guid: 66cc8d14219dee141a2db0e496fbbb7e, type: 3}
   _allowingEntPrefab: {fileID: 6832017763860260584, guid: a4bc579be2d64bf4f9e5dd1461e1a9b6, type: 3}
+  _enhanceableTilePrefab: {fileID: 6832017763860260584, guid: 1d096304f5cf02b429f279f1e87daa0c, type: 3}
   _highlightPrefab: {fileID: 5751803865783233614, guid: 2b42555c09bf6624f84e547c28b59dbd, type: 3}
   _visual: {fileID: 4313773550581445033}
   _infraLvlRenderer: {fileID: 6153123842581742613}

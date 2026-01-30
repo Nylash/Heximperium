@@ -63,6 +63,28 @@ public class Border : MonoBehaviour
         }
     }
 
+    public void CheckEnhanceableTileVisibility()
+    {
+        for (int i = 0; i < associatedTile.Neighbors.Length; i++)
+        {
+            if (!associatedTile.Neighbors[i])
+                continue;
+
+            bool canFade = 
+                associatedTile.Neighbors[i].TileData.AvailableInfrastructures.Count != 0
+                && associatedTile.Neighbors[i].Claimed;
+
+            if (canFade)
+            {
+                _animators[i].SetTrigger("Fade");
+            }
+            else if (!_animators[i].gameObject.activeSelf)
+            {
+                _animators[i].gameObject.SetActive(true);
+            }
+        }
+    }
+
     public void AnimationDone()
     {
         associatedTile.OnClaimBorderAnimationDone?.Invoke();
@@ -76,5 +98,10 @@ public class Border : MonoBehaviour
     public void AllowingEntAnimationDone()
     {
         associatedTile.OnAllowingEntAnimationDone?.Invoke();
+    }
+
+    public void EnhanceableTileAnimationDone()
+    {
+        associatedTile.OnEnhanceableTileAnimationDone?.Invoke();
     }
 }

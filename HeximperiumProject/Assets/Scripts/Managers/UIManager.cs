@@ -117,6 +117,11 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Sprite _showDetailsPopupOff;
     [SerializeField] private Sprite _showDetailsPopupOn;
     [Header("_________________________________________________________")]
+    [Header("Show Enhanceable Status button")]
+    [SerializeField] private Image _showEnhanceableButton;
+    [SerializeField] private Sprite _showEnhanceableOff;
+    [SerializeField] private Sprite _showEnhanceableOn;
+    [Header("_________________________________________________________")]
     [Header("VFX Anchors")]
     [SerializeField] private RectTransform _vfxAnchorEndConfetti1;
     [SerializeField] private RectTransform _vfxAnchorEndConfetti2;
@@ -138,6 +143,7 @@ public class UIManager : Singleton<UIManager>
     private bool _uiPhaseInAnimation;
     private bool _areIncomesShown;
     private bool _areEntPlacementShown;
+    private bool _areEnhanceableStatusShown;
     #endregion
 
     #region ACCESSORS
@@ -177,6 +183,7 @@ public class UIManager : Singleton<UIManager>
     public Button ConfirmExpand { get => _confirmExpand; }
     public Button ConfirmExploit { get => _confirmExploit; }
     public Button ConfirmEntertain { get => _confirmEntertain; }
+    public bool AreEnhanceableStatusShown { get => _areEnhanceableStatusShown; }
     #endregion
 
     protected override void OnAwake()
@@ -373,6 +380,16 @@ public class UIManager : Singleton<UIManager>
         foreach (Tile tile in ExplorationManager.Instance.RevealedTiles)
         {
             tile.ShowEntPlacementUI(_areEntPlacementShown);
+        }
+    }
+
+    public void SwitchEnhanceableStatusVisibility()
+    {
+        _areEnhanceableStatusShown = !_areEnhanceableStatusShown;
+        _showEnhanceableButton.sprite = _areEnhanceableStatusShown ? _showEnhanceableOn : _showEnhanceableOff;
+        foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
+        {
+            tile.ShowEnhanceableTileStatus(_areEnhanceableStatusShown);
         }
     }
 
