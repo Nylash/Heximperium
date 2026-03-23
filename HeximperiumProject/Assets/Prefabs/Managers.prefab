@@ -1221,18 +1221,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _persistentSingleton: 0
-  _tradeBuyCost:
+  _buySRCost:
   - resource: 0
     value: 10
-  _tradeBuyGain:
+  _buySRGain:
   - resource: 1
     value: 3
-  _tradeSellCost:
+  _buyGoldCost:
   - resource: 1
     value: 2
-  _tradeSellGain:
+  _buyGoldGain:
   - resource: 0
     value: 5
+  _buyClaimCost:
+  - resource: 0
+    value: 20
+  _buyClaimGain: 1
 --- !u!114 &5267516574475156646
 MonoBehaviour:
   m_ObjectHideFlags: 0

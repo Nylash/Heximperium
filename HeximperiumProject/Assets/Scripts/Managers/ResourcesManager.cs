@@ -8,12 +8,15 @@ public class ResourcesManager : Singleton<ResourcesManager>
     #region CONFIGURATION
     [Header("_________________________________________________________")]
     [Header("Trade values")]
-    [Header("-Buy")]
-    [SerializeField] private List<ResourceToIntMap> _tradeBuyCost;
-    [SerializeField] private List<ResourceToIntMap> _tradeBuyGain;
-    [Header("-Sell")]
-    [SerializeField] private List<ResourceToIntMap> _tradeSellCost;
-    [SerializeField] private List<ResourceToIntMap> _tradeSellGain;
+    [Header("-BuySR")]
+    [SerializeField] private List<ResourceToIntMap> _buySRCost;
+    [SerializeField] private List<ResourceToIntMap> _buySRGain;
+    [Header("-BuyGold")]
+    [SerializeField] private List<ResourceToIntMap> _buyGoldCost;
+    [SerializeField] private List<ResourceToIntMap> _buyGoldGain;
+    [Header("-BuyClaim")]
+    [SerializeField] private List<ResourceToIntMap> _buyClaimCost;
+    [SerializeField] private int _buyClaimGain;
     #endregion
 
     #region VARIABLES
@@ -27,10 +30,12 @@ public class ResourcesManager : Singleton<ResourcesManager>
 
     #region ACCESSORS
     public int Claim { get => _claim; }
-    public List<ResourceToIntMap> TradeBuyCost { get => _tradeBuyCost; }
-    public List<ResourceToIntMap> TradeBuyGain { get => _tradeBuyGain; }
-    public List<ResourceToIntMap> TradeSellCost { get => _tradeSellCost; }
-    public List<ResourceToIntMap> TradeSellGain { get => _tradeSellGain; }
+    public List<ResourceToIntMap> BuySRCost { get => _buySRCost; }
+    public List<ResourceToIntMap> BuySRGain { get => _buySRGain; }
+    public List<ResourceToIntMap> BuyGoldCost { get => _buyGoldCost; }
+    public List<ResourceToIntMap> BuyGoldGain { get => _buyGoldGain; }
+    public List<ResourceToIntMap> BuyClaimCost { get => _buyClaimCost; }
+    public int BuyClaimGain { get => _buyClaimGain; }
     public int Carnivalist { get => _carnivalist; }
     public Dictionary<TileData, int> CarnivalistSources { get => _carnivalistSources; }
 

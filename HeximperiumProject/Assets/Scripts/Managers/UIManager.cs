@@ -284,27 +284,36 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
-    public void TradeBuy()
+    public void BuySR()
     {
-        if (ResourcesManager.Instance.CanAfford(ResourcesManager.Instance.TradeBuyCost))
+        if (ResourcesManager.Instance.CanAfford(ResourcesManager.Instance.BuySRCost))
         {
-            ResourcesManager.Instance.UpdateResource(ResourcesManager.Instance.TradeBuyCost, Transaction.Spent);
-            ResourcesManager.Instance.UpdateResource(ResourcesManager.Instance.TradeBuyGain, Transaction.Gain);
+            ResourcesManager.Instance.UpdateResource(ResourcesManager.Instance.BuySRCost, Transaction.Spent);
+            ResourcesManager.Instance.UpdateResource(ResourcesManager.Instance.BuySRGain, Transaction.Gain);
         }
     }
 
-    public void TradeSell()
+    public void BuyGold()
     {
-        if (ResourcesManager.Instance.CanAfford(ResourcesManager.Instance.TradeSellCost))
+        if (ResourcesManager.Instance.CanAfford(ResourcesManager.Instance.BuyGoldCost))
         {
-            ResourcesManager.Instance.UpdateResource(ResourcesManager.Instance.TradeSellCost, Transaction.Spent);
-            ResourcesManager.Instance.UpdateResource(ResourcesManager.Instance.TradeSellGain, Transaction.Gain);
+            ResourcesManager.Instance.UpdateResource(ResourcesManager.Instance.BuyGoldCost, Transaction.Spent);
+            ResourcesManager.Instance.UpdateResource(ResourcesManager.Instance.BuyGoldGain, Transaction.Gain);
+        }
+    }
+
+    public void BuyClaim()
+    {
+        if (ResourcesManager.Instance.CanAfford(ResourcesManager.Instance.BuyClaimCost))
+        {
+            ResourcesManager.Instance.UpdateResource(ResourcesManager.Instance.BuyClaimCost, Transaction.Spent);
+            ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.BuyClaimGain, Transaction.Gain);
         }
     }
 
     private void UpdateTradeTextsColors()
     {
-        if (!ResourcesManager.Instance.CanAfford(ResourcesManager.Instance.TradeBuyCost))
+        if (!ResourcesManager.Instance.CanAfford(ResourcesManager.Instance.BuySRCost))
         {
             foreach (TextMeshProUGUI text in _buyButton.GetComponentsInChildren<TextMeshProUGUI>())
                 text.color = _colorCantAfford;
@@ -314,7 +323,7 @@ public class UIManager : Singleton<UIManager>
             foreach (TextMeshProUGUI text in _buyButton.GetComponentsInChildren<TextMeshProUGUI>())
                 text.color = _colorIvory;
         }
-        if (!ResourcesManager.Instance.CanAfford(ResourcesManager.Instance.TradeSellCost))
+        if (!ResourcesManager.Instance.CanAfford(ResourcesManager.Instance.BuyGoldCost))
         {
             foreach (TextMeshProUGUI text in _sellButton.GetComponentsInChildren<TextMeshProUGUI>())
                 text.color = _colorCantAfford;
