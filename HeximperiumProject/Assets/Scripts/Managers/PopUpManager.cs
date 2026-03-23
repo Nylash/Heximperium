@@ -2612,9 +2612,6 @@ public class PopUpManager : Singleton<PopUpManager>
 
     private void StartLockingPopup(GameObject popUp)
     {
-        if (TutorialManager.Instance != null)
-            return;
-
         _lockingPopup = popUp;
         _isLockingPopup = true;
         _lockingTimer = 0f;
@@ -2764,9 +2761,6 @@ public class PopUpManager : Singleton<PopUpManager>
 
     public void ShowLockPopupTutoPopUp()
     {
-        if (TutorialManager.Instance != null) // Prevent pop-up if tutorial is running
-            return;
-
         if (PlayerPrefs.GetInt(LOCK_POPUP_TUTO_KEY, 0) == 1)
             return;
 
