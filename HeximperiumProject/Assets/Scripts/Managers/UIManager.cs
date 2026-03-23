@@ -281,6 +281,8 @@ public class UIManager : Singleton<UIManager>
                 UpgradesMenu();
             _tradeMenu.SetActive(true);
             UpdateTradeTextsColors();
+
+            PopUpManager.Instance.ShowTradeTutoPopUp();
         }
     }
 

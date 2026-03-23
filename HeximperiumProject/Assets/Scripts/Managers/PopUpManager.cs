@@ -8,12 +8,14 @@ public class PopUpManager : Singleton<PopUpManager>
 {
     #region CONSTANTS
     const float REF_WIDTH = 1920f;
-    const string INFRA_LVL_TUTO_KEY = "InfraLvlTutoShown";
-    const string REMOVING_INFRA_TUTO_KEY = "RemoveInfraTutoShown";
-    const string LOCK_POPUP_TUTO_KEY = "LockPopupTutoShown";
-    const string UPGRADE_TUTO_KEY = "UpgradeTutoShown";
-    const string SAVINGS_TUTO_KEY = "SavingsTutoShown";
-    const string FILTERS_TUTO_KEY = "FiltersTutoShown";
+    const string VERSION_KEY = "V0.1";
+    const string INFRA_LVL_TUTO_KEY = "InfraLvlTutoShown" + VERSION_KEY;
+    const string REMOVING_INFRA_TUTO_KEY = "RemoveInfraTutoShown" + VERSION_KEY;
+    const string LOCK_POPUP_TUTO_KEY = "LockPopupTutoShown" + VERSION_KEY;
+    const string UPGRADE_TUTO_KEY = "UpgradeTutoShown" + VERSION_KEY;
+    const string SAVINGS_TUTO_KEY = "SavingsTutoShown" + VERSION_KEY;
+    const string FILTERS_TUTO_KEY = "FiltersTutoShown" + VERSION_KEY;
+    const string TRADE_TUTO_KEY = "TradeTutoShown" + VERSION_KEY;
     #endregion
 
     #region CONFIGURATION
@@ -49,6 +51,7 @@ public class PopUpManager : Singleton<PopUpManager>
     [SerializeField] private Animator _upgradeTutoPopup;
     [SerializeField] private Animator _savingsTutoPopup;
     [SerializeField] private Animator _filtersTutoPopup;
+    [SerializeField] private Animator _tradeTutoPopup;
     #endregion
 
     #region VARIABLES
@@ -2820,6 +2823,27 @@ public class PopUpManager : Singleton<PopUpManager>
     {
         GameManager.Instance.GamePaused = false;
         _savingsTutoPopup.SetTrigger("Shrink");
+    }
+
+    public void ShowTradeTutoPopUp()
+    {
+        if (TutorialManager.Instance != null) // Prevent pop-up if tutorial is running
+            return;
+
+        if (PlayerPrefs.GetInt(TRADE_TUTO_KEY, 0) == 1)
+            return;
+
+        GameManager.Instance.GamePaused = true;
+        _tradeTutoPopup.SetTrigger("Show");
+
+        PlayerPrefs.SetInt(TRADE_TUTO_KEY, 1);
+        PlayerPrefs.Save();
+    }
+
+    public void HideTradeTutoPopUp()
+    {
+        GameManager.Instance.GamePaused = false;
+        _tradeTutoPopup.SetTrigger("Shrink");
     }
     #endregion
 }
