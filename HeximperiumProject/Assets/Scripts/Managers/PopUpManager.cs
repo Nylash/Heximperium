@@ -686,7 +686,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        title.text = $"{ResourcesManager.Instance.GetResourceStock(Resource.SpecialResources)} Stone<sprite name=\"SR_Emoji\">";
+        title.text = $"{ResourcesManager.Instance.GetResourceStock(Resource.SpecialResources)} Materials<sprite name=\"SR_Emoji\">";
         #endregion
 
         #region INCOME
@@ -1637,7 +1637,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region TITLE
         TextMeshProUGUI title = Instantiate(_title, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        title.text = "Place " + button.EntertainData.Type.ToCustomString(false);
+        title.text = "Place a " + button.EntertainData.Type.ToCustomString(false);
         #endregion
 
         #region PREDICTED POINTS
