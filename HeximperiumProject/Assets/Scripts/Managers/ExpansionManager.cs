@@ -217,6 +217,9 @@ public class ExpansionManager : PhaseManager<ExpansionManager>
 
     public override void UpdateInteractableTiles()
     {
+        if (GameManager.Instance.CurrentPhase != Phase.Expand)
+            return;
+
         bool townBuildable = false;
         HashSet<Tile> validTiles = new HashSet<Tile>();
 

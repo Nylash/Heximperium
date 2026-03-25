@@ -310,6 +310,7 @@ public class UIManager : Singleton<UIManager>
         {
             ResourcesManager.Instance.UpdateResource(ResourcesManager.Instance.BuyClaimCost, Transaction.Spent);
             ResourcesManager.Instance.UpdateClaim(ResourcesManager.Instance.BuyClaimGain, Transaction.Gain);
+            ExpansionManager.Instance.UpdateInteractableTiles();
         }
     }
 
