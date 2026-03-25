@@ -1285,12 +1285,6 @@ MonoBehaviour:
   _infraAvailableCopies:
   - infrastructure: {fileID: 11400000, guid: c09b5b1323b68174bad1aea52735ddcc, type: 2}
     availableCopy: 1
-  - infrastructure: {fileID: 11400000, guid: b5e79191f4522cc4a81b4bb777d213c6, type: 2}
-    availableCopy: 4
-  - infrastructure: {fileID: 11400000, guid: 758e0bfcbc1c85b4f8d4064dfc028b50, type: 2}
-    availableCopy: 3
-  - infrastructure: {fileID: 11400000, guid: 4ee189cb8dd9a1b4584cdd486968e6c6, type: 2}
-    availableCopy: 3
   _allInfraDatas:
   - {fileID: 11400000, guid: babbdf6331d91034888b073e6c34d892, type: 2}
   - {fileID: 11400000, guid: fad078b89b1b57642a35a66200c5269a, type: 2}
@@ -1386,7 +1380,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 37adf43a30b478a46a0ef988096dabb0, type: 2}
   - {fileID: 11400000, guid: cecca02d2c32bf145999594d6a76ca0a, type: 2}
   - {fileID: 11400000, guid: edb610dc8ad6c1d409799e25d23dc46b, type: 2}
-  - {fileID: 11400000, guid: 4c3339807635fe54498a308196167a81, type: 2}
+  - {fileID: 11400000, guid: a04aeecc510ffce46bef27bc77b266fb, type: 2}
   _entertainUpgrades:
   - {fileID: 11400000, guid: 4f4e5ab32c916c94c85d25513c59396b, type: 2}
   - {fileID: 11400000, guid: 991d35afd200e5c44a5ad29817617ac6, type: 2}

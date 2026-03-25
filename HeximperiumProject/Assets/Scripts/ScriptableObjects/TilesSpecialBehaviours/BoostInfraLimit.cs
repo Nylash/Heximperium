@@ -31,6 +31,6 @@ public class BoostInfraLimit : SpecialBehaviour
 
     public override string GetBehaviourDescription()
     {
-        return $"Increase the available copies of {_boostInfraLimit.ToCustomString()}";
+        return $"Increases the available copies of {_boostInfraLimit.ToCustomString()}";
     }
 }

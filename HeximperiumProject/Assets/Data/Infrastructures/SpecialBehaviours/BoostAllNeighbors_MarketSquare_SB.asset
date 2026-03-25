@@ -9,13 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12cec12a736dd1d4482c674842785a98, type: 3}
-  m_Name: BoostByOccurrence_ArtisansGuild_SB
+  m_Script: {fileID: 11500000, guid: de6b237f0552519469f3d74cda5082e3, type: 3}
+  m_Name: BoostAllNeighbors_MarketSquare_SB
   m_EditorClassIdentifier: 
   _originalAsset: {fileID: 0}
-  _boost:
+  _incomeBoost:
   - resource: 1
-    value: 3
-  _tilesBoosting:
-  - {fileID: 11400000, guid: babbdf6331d91034888b073e6c34d892, type: 2}
-  - {fileID: 11400000, guid: fad078b89b1b57642a35a66200c5269a, type: 2}
+    value: 1

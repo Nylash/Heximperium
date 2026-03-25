@@ -14,6 +14,6 @@ public class GainCarnivalists : UpgradeEffect
 
     public override string GetEffectDescription()
     {
-        return $"Recruit {_carnivalistsToGain} <sprite name=\"Carnivalist_Emoji\">";
+        return $"Recruits {_carnivalistsToGain} <sprite name=\"Carnivalist_Emoji\">";
     }
 }

@@ -32,7 +32,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 76410f1dec70a074289e3002308e9c1d, type: 2}
   _costs:
   - resource: 0
-    value: 40
+    value: 60
   _scoutStartingPoint: 0
   isTown: 0
   _infrastructureLevel: 1

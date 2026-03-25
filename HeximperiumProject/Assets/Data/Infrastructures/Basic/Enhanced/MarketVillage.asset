@@ -31,7 +31,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1b8d1dc4f91af1b4ca61a65f977233fe, type: 2}
   _costs:
   - resource: 0
-    value: 10
+    value: 20
   - resource: 1
     value: 15
   _scoutStartingPoint: 0

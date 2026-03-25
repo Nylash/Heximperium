@@ -10,6 +10,6 @@ public class AllowMinstrelStageNextToEntertainment : UpgradeEffect
 
     public override string GetEffectDescription()
     {
-        return "Allow placing <u>Minstrel Stages</u> on tile where a neighbor has an " + Family.Entertainment.ToCustomString();
+        return "Allows placing <u>Minstrel Stages</u> on tile where a neighbor has an " + Family.Entertainment.ToCustomString();
     }
 }

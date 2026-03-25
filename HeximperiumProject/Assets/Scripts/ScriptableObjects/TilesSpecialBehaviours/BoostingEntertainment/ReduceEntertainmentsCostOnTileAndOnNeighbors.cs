@@ -39,6 +39,6 @@ public class ReduceEntertainmentsCostOnTileAndOnNeighbors : SpecialBehaviour
 
     public override string GetBehaviourDescription()
     {
-        return "Reduce <sprite name=\"Carnivalist_Emoji\"> cost on this tile and around by " + costReductionAmount;
+        return "Reduces <sprite name=\"Carnivalist_Emoji\"> cost on this tile and around by " + costReductionAmount;
     }
 }

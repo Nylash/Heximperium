@@ -10,6 +10,6 @@ public class UnlockClaimRangeImproved : UpgradeEffect
 
     public override string GetEffectDescription()
     {
-        return "Allow claiming<sprite name=\"Claim_Emoji\"> tiles that are up to 1 tile away from your current territory";
+        return "Allows claiming<sprite name=\"Claim_Emoji\"> tiles that are up to 1 tile away from your current territory";
     }
 }

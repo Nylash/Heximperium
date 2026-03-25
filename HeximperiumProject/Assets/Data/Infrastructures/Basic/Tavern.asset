@@ -35,7 +35,7 @@ MonoBehaviour:
   _specialBehaviours: []
   _costs:
   - resource: 0
-    value: 15
+    value: 25
   _scoutStartingPoint: 1
   isTown: 0
   _infrastructureLevel: 1

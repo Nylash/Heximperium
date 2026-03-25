@@ -32,7 +32,7 @@ MonoBehaviour:
   _availableInfrastructures: []
   _specialBehaviours:
   - {fileID: 11400000, guid: c5d3b56297aed8546b01ebaecac6d3c9, type: 2}
-  - {fileID: 11400000, guid: 8feedc24e3b92d94d9e3c2de57f971a4, type: 2}
+  - {fileID: 11400000, guid: 7cd2e5c95fa78a0429ec24734e7377c8, type: 2}
   - {fileID: 11400000, guid: d03366de1ceb74b4a9771c55fbcfa401, type: 2}
   - {fileID: 11400000, guid: 2a52bd76f28a74d41a28c9f217465b9a, type: 2}
   _costs:
