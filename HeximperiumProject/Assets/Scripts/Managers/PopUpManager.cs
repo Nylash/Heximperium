@@ -1796,7 +1796,7 @@ public class PopUpManager : Singleton<PopUpManager>
         {
             income.text = predictedInc.IncomeToString() + " per turn";
             string hex = ColorUtility.ToHtmlStringRGBA(UIManager.Instance.ColorEnhancementNewEffect);
-            income.text += $" <color=#{hex}>(gain " + Utilities.SubtractResourceToIntMaps(predictedInc, button.AssociatedTile.Incomes).IncomeToString() + ")</color>";
+            income.text += $" <color=#{hex}>(gains " + Utilities.SubtractResourceToIntMaps(predictedInc, button.AssociatedTile.Incomes).IncomeToString() + ")</color>";
         }
         else
         {
@@ -1856,7 +1856,7 @@ public class PopUpManager : Singleton<PopUpManager>
                 incomeGiven.text = $"Provides {totalGiven.IncomeToString()} over " + 
                     $"{predictedImpactedTilesIncomes.Count} other {(predictedImpactedTilesIncomes.Count > 1 ? "tiles" : "tile")}";
                 string hex = ColorUtility.ToHtmlStringRGBA(UIManager.Instance.ColorEnhancementNewEffect);
-                incomeGiven.text += $" <color=#{hex}>(gain " + Utilities.SubtractResourceToIntMaps(totalGiven, previousTotalGiven).IncomeToString() + ")</color>";
+                incomeGiven.text += $" <color=#{hex}>(gains " + Utilities.SubtractResourceToIntMaps(totalGiven, previousTotalGiven).IncomeToString() + ")</color>";
             }
             else
             {
@@ -1901,7 +1901,7 @@ public class PopUpManager : Singleton<PopUpManager>
             if (button.AssociatedTile.RecruitedCarnivalists != predictedCarnivalists)
             {
                 string hex = ColorUtility.ToHtmlStringRGBA(UIManager.Instance.ColorEnhancementNewEffect);
-                carnivalists.text += $" <color=#{hex}>(gain {predictedCarnivalists - button.AssociatedTile.RecruitedCarnivalists}<sprite name=\"Carnivalist_Emoji\">)</color>";
+                carnivalists.text += $" <color=#{hex}>(gains {predictedCarnivalists - button.AssociatedTile.RecruitedCarnivalists}<sprite name=\"Carnivalist_Emoji\">)</color>";
             }
 
             carnivalists.fontStyle = FontStyles.Bold;
@@ -1942,7 +1942,7 @@ public class PopUpManager : Singleton<PopUpManager>
                 string hex = ColorUtility.ToHtmlStringRGBA(UIManager.Instance.ColorEnhancementNewEffect);
                 carnivalistsGiven.text = $"Provides {totalCarnivalists}<sprite name=\"Carnivalist_Emoji\"> over " +
                 $"{predictedImpactedTilesCarnivalists.Count} other {(predictedImpactedTilesCarnivalists.Count > 1 ? "tiles" : "tile")}" +
-                $" <color=#{hex}>(gain {totalCarnivalists - previousTotalCarnivalists}<sprite name=\"Carnivalist_Emoji\">)</color>";
+                $" <color=#{hex}>(gains {totalCarnivalists - previousTotalCarnivalists}<sprite name=\"Carnivalist_Emoji\">)</color>";
             }
             else
                 carnivalistsGiven.text = $"Provides {totalCarnivalists}<sprite name=\"Carnivalist_Emoji\"> over " +
