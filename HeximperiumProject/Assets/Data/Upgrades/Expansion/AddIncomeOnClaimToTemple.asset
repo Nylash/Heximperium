@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: AddIncomeOnClaimToTemple
   m_EditorClassIdentifier: 
   EffectName: Holy Claim
-  AssociatedSystem: 2
+  AssociatedSystem: 1
   _boostedInfra:
   - {fileID: 11400000, guid: 5ca3036386a9b6c4b9854d3dd28b2275, type: 2}
   - {fileID: 11400000, guid: 0da4e697cd92ec5468171ae0cf2590e3, type: 2}
