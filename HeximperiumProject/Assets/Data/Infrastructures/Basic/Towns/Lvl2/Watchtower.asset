@@ -10,34 +10,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e0e460f401a6ce44ad84d3534c37a05, type: 3}
-  m_Name: NewTown
+  m_Name: Watchtower
   m_EditorClassIdentifier: 
-  _name: New Town
+  _name: Watchtower
   _family: 1
   _visualsProps:
   - tileData: {fileID: 11400000, guid: 13d1361d8140a304e8234bb6854a9077, type: 2}
     gameObjects:
-    - {fileID: 8158725270209530402, guid: f3dc6a73d524e3a499f702e49d0cdf49, type: 3}
+    - {fileID: 8158725270209530402, guid: 34288a4a06c9dd84493a350c4e5712bf, type: 3}
   - tileData: {fileID: 11400000, guid: 880eb1fa737890143b30e4066666c4c5, type: 2}
     gameObjects:
-    - {fileID: 8158725270209530402, guid: f3dc6a73d524e3a499f702e49d0cdf49, type: 3}
+    - {fileID: 8158725270209530402, guid: 34288a4a06c9dd84493a350c4e5712bf, type: 3}
   - tileData: {fileID: 11400000, guid: 37c70d26ffd3717489d56e18c028ca70, type: 2}
     gameObjects:
-    - {fileID: 8158725270209530402, guid: f3dc6a73d524e3a499f702e49d0cdf49, type: 3}
+    - {fileID: 8158725270209530402, guid: 34288a4a06c9dd84493a350c4e5712bf, type: 3}
   - tileData: {fileID: 11400000, guid: a286e096e85ae8340a32bb8371a61170, type: 2}
     gameObjects:
-    - {fileID: 8158725270209530402, guid: f3dc6a73d524e3a499f702e49d0cdf49, type: 3}
-  _claimCost: 4
+    - {fileID: 8158725270209530402, guid: 34288a4a06c9dd84493a350c4e5712bf, type: 3}
+  _claimCost: 0
   _incomes: []
   _availableInfrastructures:
-  - {fileID: 11400000, guid: 7779112bfa5302a45a2ff81eaa8b58bb, type: 2}
-  - {fileID: 11400000, guid: 00bddc500cc066544bb32c0aba73d3fd, type: 2}
-  - {fileID: 11400000, guid: 7baa32c771e220345b42a7a1aef5406a, type: 2}
-  - {fileID: 11400000, guid: 0547f9795abdb334f82a3c683af0b233, type: 2}
+  - {fileID: 11400000, guid: 1efb98835b4c40b479f8ea22e1c5923d, type: 2}
+  - {fileID: 11400000, guid: 3c623367cc1eff848b26c8220c26550c, type: 2}
+  - {fileID: 11400000, guid: d89c51aba8c62b7449cfa6d4fc5f28bd, type: 2}
+  - {fileID: 11400000, guid: 87cb7c2741b68e84e873d33599275430, type: 2}
   _specialBehaviours:
   - {fileID: 11400000, guid: c5d3b56297aed8546b01ebaecac6d3c9, type: 2}
-  _costs: []
+  - {fileID: 11400000, guid: 2ecca4197a351e34daef952fae8ac4c0, type: 2}
+  _costs:
+  - resource: 0
+    value: 100
   _scoutStartingPoint: 1
   isTown: 1
-  _infrastructureLevel: 1
-  _associatedPhase: 1
+  _infrastructureLevel: 2
+  _associatedPhase: 0
