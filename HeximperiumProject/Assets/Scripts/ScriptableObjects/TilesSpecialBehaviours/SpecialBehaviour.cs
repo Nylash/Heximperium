@@ -9,6 +9,7 @@ public abstract class SpecialBehaviour : CloneableScriptableObject
     public abstract void RollbackSpecialBehaviour(Tile behaviourTile);
 
     //Method use to show tiles impacted by the special behaviour
+    // OUTDATED, not used anymore
     public abstract void HighlightImpactedTile(Tile behaviourTile, bool show);
 
     //Method to get a description of the behaviour

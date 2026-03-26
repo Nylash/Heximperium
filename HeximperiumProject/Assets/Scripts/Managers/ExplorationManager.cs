@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     [SerializeField] private ScoutData _scoutData;
     [SerializeField] private int _baseScoutsLimit = 1;
     [SerializeField] private float _awaitTimeScoutMovement = 0.25f;
+    [SerializeField] private float _revealCascadeTimer = 0.25f;
     [Header("_________________________________________________________")]
     [Header("Scouts Related Objects")]
     [SerializeField] private GameObject _scoutPrefab;
@@ -439,6 +441,75 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
         else
         {
             return Direction.TopLeft;
+        }
+    }
+    #endregion
+
+    #region REVEAL
+    private List<List<Tile>> GetTilesByRadius(Tile centerTile, int maxRadius)
+    {
+        List<List<Tile>> result = new List<List<Tile>>();
+
+        if (!centerTile || maxRadius < 0)
+            return result;
+
+        Queue<(Tile tile, int radius)> queue = new Queue<(Tile, int)>();
+        HashSet<Tile> visited = new HashSet<Tile>();
+
+        queue.Enqueue((centerTile, 0));
+        visited.Add(centerTile);
+
+        while (queue.Count > 0)
+        {
+            var (tile, radius) = queue.Dequeue();
+
+            if (radius > maxRadius)
+                continue;
+
+            while (result.Count <= radius)
+            {
+                result.Add(new List<Tile>());
+            }
+
+            result[radius].Add(tile);
+
+            foreach (Tile neighbor in tile.Neighbors)
+            {
+                if (!neighbor || visited.Contains(neighbor))
+                    continue;
+
+                visited.Add(neighbor);
+                queue.Enqueue((neighbor, radius + 1));
+            }
+        }
+
+        return result;
+    }
+
+    public void Reveal(Tile centerTile, int maxRadius, Scout scout = null)
+    {
+        List<List<Tile>> tilesByRadius = GetTilesByRadius(centerTile, maxRadius);
+        StartCoroutine(RevealRoutine(tilesByRadius, scout));
+    }
+
+    private IEnumerator RevealRoutine(List<List<Tile>> tilesByRadius, Scout scout = null)
+    {
+        for (int radius = 0; radius < tilesByRadius.Count; radius++)
+        {
+            foreach (Tile tile in tilesByRadius[radius])
+            {
+                if (!tile.Revealed)
+                {
+                    tile.RevealTile(false);
+                    if (scout != null)
+                        scout.OnScoutRevealingTile?.Invoke(tile);
+                }
+            }
+
+            if (radius < tilesByRadius.Count - 1)
+            {
+                yield return new WaitForSeconds(_revealCascadeTimer);
+            }
         }
     }
     #endregion

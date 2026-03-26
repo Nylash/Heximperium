@@ -30,17 +30,14 @@ MonoBehaviour:
   _claimCost: 0
   _incomes: []
   _availableInfrastructures:
-  - {fileID: 11400000, guid: f8897bb6a83c2584487f7b70a77de3d8, type: 2}
+  - {fileID: 11400000, guid: 1efb98835b4c40b479f8ea22e1c5923d, type: 2}
   _specialBehaviours:
   - {fileID: 11400000, guid: c5d3b56297aed8546b01ebaecac6d3c9, type: 2}
-  - {fileID: 11400000, guid: 63a15e1399f0c764ca75a9336b495106, type: 2}
-  - {fileID: 11400000, guid: 45309ed4ee096a848bf212eb43f037db, type: 2}
+  - {fileID: 11400000, guid: 2ecca4197a351e34daef952fae8ac4c0, type: 2}
   _costs:
   - resource: 0
-    value: 150
-  - resource: 1
-    value: 25
+    value: 100
   _scoutStartingPoint: 1
   isTown: 1
-  _infrastructureLevel: 3
+  _infrastructureLevel: 2
   _associatedPhase: 0
