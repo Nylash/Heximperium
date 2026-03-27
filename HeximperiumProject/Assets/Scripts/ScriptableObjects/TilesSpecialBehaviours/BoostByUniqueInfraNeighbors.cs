@@ -14,6 +14,8 @@ public class BoostByUniqueInfraNeighbors : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
+            if (neighbor.TileData is HazardousTileData)
+                continue;
 
             neighbor.OnTileDataModified -= behaviourTile.ListenerOnTileDataModified_BoostByUniqueInfraNeighbors;
             neighbor.OnTileDataModified += behaviourTile.ListenerOnTileDataModified_BoostByUniqueInfraNeighbors;
@@ -40,6 +42,8 @@ public class BoostByUniqueInfraNeighbors : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
+            if (neighbor.TileData is HazardousTileData)
+                continue;
             neighbor.OnTileDataModified -= behaviourTile.ListenerOnTileDataModified_BoostByUniqueInfraNeighbors;
         }
 
@@ -58,6 +62,8 @@ public class BoostByUniqueInfraNeighbors : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
+            if (neighbor.TileData is HazardousTileData)
+                continue;
             if (neighbor.TileData is InfrastructureData)
                 neighbor.Highlight(show);
         }
@@ -74,6 +80,8 @@ public class BoostByUniqueInfraNeighbors : SpecialBehaviour
         foreach (var neighbor in behaviourTile.Neighbors)
         {
             if (!neighbor)
+                continue;
+            if (neighbor.TileData is HazardousTileData)
                 continue;
 
             if (neighbor.TileData is InfrastructureData)

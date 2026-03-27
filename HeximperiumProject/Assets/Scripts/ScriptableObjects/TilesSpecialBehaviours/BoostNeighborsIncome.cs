@@ -14,6 +14,8 @@ public class BoostNeighborsIncome : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
+            if (neighbor.TileData is HazardousTileData)
+                continue;
             if (neighbor.TileData is InfrastructureData data && _infrastructuresBoosted.Contains(data))
             {
                 neighbor.UpdateIncomes(_incomeBoost, true, behaviourTile);
@@ -31,6 +33,8 @@ public class BoostNeighborsIncome : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
+            if (neighbor.TileData is HazardousTileData)
+                continue;
             if (neighbor.TileData is InfrastructureData data && _infrastructuresBoosted.Contains(data))
             {
                 neighbor.UpdateIncomes(_incomeBoost, false, behaviourTile);
@@ -44,6 +48,8 @@ public class BoostNeighborsIncome : SpecialBehaviour
         foreach (Tile neighbor in behaviourTile.Neighbors)
         {
             if (!neighbor)
+                continue;
+            if (neighbor.TileData is HazardousTileData)
                 continue;
             if (neighbor.TileData is InfrastructureData data && _infrastructuresBoosted.Contains(data))
             {

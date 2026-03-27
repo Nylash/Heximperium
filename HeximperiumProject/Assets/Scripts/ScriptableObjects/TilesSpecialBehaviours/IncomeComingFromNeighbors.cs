@@ -14,6 +14,8 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
+            if (neighbor.TileData is HazardousTileData)
+                continue;
             if (neighbor.Claimed)
             {
                 //Add a lister to adjust the income when a neighbor adjust its own income or change its data
@@ -52,6 +54,8 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
+            if (neighbor.TileData is HazardousTileData)
+                continue;
             if (neighbor.Claimed)
             {
                 //Don't do the rollback if the neighbor is excluded
@@ -81,6 +85,8 @@ public class IncomeComingFromNeighbors : SpecialBehaviour
         foreach (Tile neighbor in behaviourTile.Neighbors)
         {
             if (!neighbor)
+                continue;
+            if (neighbor.TileData is HazardousTileData)
                 continue;
             if (neighbor.Claimed)
             {

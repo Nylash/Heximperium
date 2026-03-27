@@ -12,6 +12,8 @@ public class BoostAllNeighborsIncome : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
+            if (neighbor.TileData is HazardousTileData)
+                continue;
             neighbor.UpdateIncomes(_incomeBoost, true, behaviourTile);
         }
     }
@@ -22,6 +24,8 @@ public class BoostAllNeighborsIncome : SpecialBehaviour
         {
             if (!neighbor)
                 continue;
+            if (neighbor.TileData is HazardousTileData)
+                continue;
             neighbor.UpdateIncomes(_incomeBoost, false, behaviourTile);
         }
     }
@@ -31,6 +35,8 @@ public class BoostAllNeighborsIncome : SpecialBehaviour
         foreach (Tile neighbor in behaviourTile.Neighbors)
         {
             if (!neighbor)
+                continue;
+            if (neighbor.TileData is HazardousTileData)
                 continue;
             neighbor.Highlight(show);
         }
