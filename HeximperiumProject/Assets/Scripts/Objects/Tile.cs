@@ -48,7 +48,7 @@ public class Tile : MonoBehaviour
     private int _carnivalistCostReduction;
     private int _recruitedCarnivalists;
     private int _bufferRecruitedCarnivalists;
-    private int _infraFromTurn = -1;
+    private List<int> _turnInfraLvl = new List<int>();
     private List<ResourceToIntMap> _incomeWithPreviousData = new List<ResourceToIntMap>();
     private Dictionary<BoostByUniqueInfraNeighbors, HashSet<Tile>> _uniqueInfraNeighborsByBehaviour = new Dictionary<BoostByUniqueInfraNeighbors, HashSet<Tile>>();
     //Variables for boucing animations (no more used)
@@ -155,7 +155,7 @@ public class Tile : MonoBehaviour
     public Dictionary<Tile, List<ResourceToIntMap>> InternalIncomesSources { get => _internalIncomesSources; }
     public List<ResourceToIntMap> IncomeWithPreviousData { get => _incomeWithPreviousData; }
     public Dictionary<Tile, int> InternalCarnivalistsSources { get => _internalCarnivalistsSources; }
-    public int InfraFromTurn { get => _infraFromTurn; set => _infraFromTurn = value; }
+    public List<int> TurnInfraLvl { get => _turnInfraLvl; }
     #endregion
 
     private void Awake()
