@@ -62,6 +62,7 @@ public class Entertainment : MonoBehaviour
         _data = data;
         _renderer.sprite = Resources.Load<Sprite>(PATH_SPRITES_ENTERTAINMENT + data.name);
 
+        // Keep it synchrone, otherwise BoostByZone special effect will not work properly
         foreach (SpecialEffect effect in data.SpecialEffects)
             effect.InitializeSpecialEffect(this);
 

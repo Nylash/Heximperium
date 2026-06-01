@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -34,7 +35,10 @@ public class JuiceManager : Singleton<JuiceManager>
     [SerializeField] private float _durationJitter = 0.1f;
     [SerializeField] private float _maxDurationDistance = 10f;
     [SerializeField] float _arcHeightPerUnit = 0.15f;
-    [SerializeField] float _arcMinHeight = 1f;    
+    [SerializeField] float _arcMinHeight = 1f;
+    [Header("_________________________________________________________")]
+    [Header("Wave VFX")]
+    [SerializeField] float _waveRingDelay = 0.25f;
     #endregion
 
     private GameObject _popUpVisualizingCombo;
@@ -43,15 +47,20 @@ public class JuiceManager : Singleton<JuiceManager>
     private Dictionary<GameObject, ArcMoveData> _incomingVFX = new Dictionary<GameObject, ArcMoveData>();
     private Dictionary<GameObject, ArcMoveData> _outgoingVFX = new Dictionary<GameObject, ArcMoveData>();
 
+    private Tile _waveSourceTile;
+    private List<(Tile tile, int points, bool isGain)> _pendingWaveVFX = new();
+    private Coroutine _waveCoroutine;
+
     public GameObject PopUpVisualizingCombo { get => _popUpVisualizingCombo; set => _popUpVisualizingCombo = value; }
 
     protected override void OnAwake()
     {
         ExplorationManager.Instance.OnScoutSpawned += scout => SpawnUnitVFX(scout.CurrentTile);
-        EntertainmentManager.Instance.OnEntertainmentSpawned += ent => SpawnUnitVFX(ent.Tile);
 
-        EntertainmentManager.Instance.OnScoreGained += (tile, value) => PlayResourceVFX(tile, value, _scoreMat, UIManager.Instance.ColorEntertain);
-        EntertainmentManager.Instance.OnScoreLost += (tile, value) => PlayResourceVFX(tile, value, _scoreMat, UIManager.Instance.ColorCantAfford);
+        EntertainmentManager.Instance.OnEntertainmentSpawned += EntertainmentSpawned;
+        EntertainmentManager.Instance.OnEntertainmentRemoved += (data, tile) => EntertainmentRemoved(tile);
+        EntertainmentManager.Instance.OnScoreGained += (tile, value) => BufferWaveVFX(tile, value, true);
+        EntertainmentManager.Instance.OnScoreLost += (tile, value) => BufferWaveVFX(tile, value, false);
 
         ResourcesManager.Instance.OnGoldGained += (tile, value) => ResourceGain(tile, value, ExtendedResource.Gold);
         ResourcesManager.Instance.OnGoldSpent += (value) => PlayUIResourceVFX(value, ExtendedResource.Gold, UIManager.Instance.VfxAnchorGold, Transaction.Spent);
@@ -105,6 +114,17 @@ public class JuiceManager : Singleton<JuiceManager>
         if (EntertainmentManager.Instance.IsPredictingPoints)
             return;
         Instantiate(_spawnUnitVFX, _spawnUnitVFX.transform.position + tile.transform.position, _spawnUnitVFX.transform.rotation);
+    }
+
+    private void EntertainmentSpawned(Entertainment ent)
+    {
+        _waveSourceTile = ent.Tile;
+        SpawnUnitVFX(ent.Tile);
+    }
+
+    private void EntertainmentRemoved(Tile tile)
+    {
+        _waveSourceTile = tile;
     }
 
     private void PlayResourceVFX(Tile tile, int value, Material mat, Color color)
@@ -515,6 +535,121 @@ public class JuiceManager : Singleton<JuiceManager>
         }
         StartComboAnimation();
         return (_outgoingVFX.Count != 0);
+    }
+    #endregion
+
+    #region WAVE VFX
+    private void BufferWaveVFX(Tile tile, int points, bool isGain)
+    {
+        if (EntertainmentManager.Instance.IsPredictingPoints)
+            return;
+        _pendingWaveVFX.Add((tile, points, isGain));
+
+        // Relance la coroutine à chaque ajout — elle se base sur le snapshot au moment du démarrage
+        // On ne relance pas si elle tourne déjà, elle drainera ce qui vient d'arriver
+        if (_waveCoroutine == null)
+            _waveCoroutine = StartCoroutine(PlayWaveVFX());
+    }
+
+    private IEnumerator PlayWaveVFX()
+    {
+        // On attend la fin de la frame que tout les ent impactés aient rejoint la liste
+        yield return new WaitForEndOfFrame();
+        // NOTE: Cette coroutine doit rester synchrone jusqu'ici.
+        // Si on introduit un yield avant dans SpawnEntertainment ou Initialize,
+        // le snapshot sera partiel et le BoostByZoneSize/MergeGroups sera dans
+        // la mauvaise wave. Ne pas toucher à cette contrainte sans revoir ce système.
+
+        if (_waveSourceTile == null || _pendingWaveVFX.Count == 0)
+        {
+            _waveCoroutine = null;
+            yield break;
+        }
+
+        // BFS depuis la source pour attribuer un ring à chaque tile affectée
+        Dictionary<Tile, int> ringByTile = ComputeRings(_waveSourceTile, _pendingWaveVFX);
+
+        // Grouper par ring, ne garder que les rings non vides
+        var ringGroups = new SortedDictionary<int, List<(Tile tile, int points, bool isGain)>>();
+        foreach (var entry in _pendingWaveVFX)
+        {
+            int ring = ringByTile.GetValueOrDefault(entry.tile, 0);
+            if (!ringGroups.ContainsKey(ring))
+                ringGroups[ring] = new List<(Tile, int, bool)>();
+            ringGroups[ring].Add(entry);
+        }
+
+        bool isFirst = true;
+        foreach (var kvp in ringGroups) // SortedDictionary itère dans l'ordre croissant des clés
+        {
+            if (!isFirst)
+                yield return new WaitForSeconds(_waveRingDelay);
+            isFirst = false;
+
+            foreach (var (tile, points, isGain) in kvp.Value)
+            {
+                Color color = isGain ? UIManager.Instance.ColorEntertain : UIManager.Instance.ColorCantAfford;
+                PlayResourceVFX(tile, points, _scoreMat, color);
+            }
+        }
+
+        _pendingWaveVFX.Clear();
+        _waveSourceTile = null;
+        _waveCoroutine = null;
+    }
+
+    private Dictionary<Tile, int> ComputeRings(Tile source, List<(Tile tile, int points, bool isGain)> targets)
+    {
+        var targetSet = new HashSet<Tile>(targets.Select(t => t.tile));
+        var result = new Dictionary<Tile, int>();
+        var visited = new HashSet<Tile> { source };
+        var queue = new Queue<(Tile tile, int ring)>();
+        queue.Enqueue((source, 0));
+
+        while (queue.Count > 0 && result.Count < targetSet.Count)
+        {
+            var (current, ring) = queue.Dequeue();
+
+            if (targetSet.Contains(current))
+                result[current] = ring;
+
+            foreach (Tile neighbor in current.Neighbors)
+            {
+                if (neighbor == null || visited.Contains(neighbor))
+                    continue;
+                visited.Add(neighbor);
+                queue.Enqueue((neighbor, ring + 1));
+            }
+        }
+
+        // Fallback : tiles non atteintes par le BFS (ne devrait pas arriver)
+        foreach (var (tile, _, _) in targets)
+            if (!result.ContainsKey(tile))
+                result[tile] = 0;
+
+        return result;
+    }
+
+    public void FlushWave()
+    {
+        if (_pendingWaveVFX.Count == 0 && _waveCoroutine == null)
+            return;
+
+        if (_waveCoroutine != null)
+        {
+            StopCoroutine(_waveCoroutine);
+            _waveCoroutine = null;
+        }
+
+        // Joue tout immédiatement sans délai
+        foreach (var (tile, points, isGain) in _pendingWaveVFX)
+        {
+            Color color = isGain ? UIManager.Instance.ColorEntertain : UIManager.Instance.ColorCantAfford;
+            PlayResourceVFX(tile, points, _scoreMat, color);
+        }
+
+        _pendingWaveVFX.Clear();
+        _waveSourceTile = null;
     }
     #endregion
 }

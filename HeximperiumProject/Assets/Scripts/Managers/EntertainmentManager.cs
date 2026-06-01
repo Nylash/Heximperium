@@ -233,6 +233,8 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
 
         if (ResourcesManager.Instance.CanAffordCarnivalist(data.GetActualCarnivalistCost(tile)) || isPredictionRelated)
         {
+            JuiceManager.Instance.FlushWave();
+
             if (!isPredictionRelated)
             {
                 ResourcesManager.Instance.UpdateCarnivalist(data.GetActualCarnivalistCost(tile), Transaction.Spent);
