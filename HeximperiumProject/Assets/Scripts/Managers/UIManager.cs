@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
 
 public class UIManager : Singleton<UIManager>
 {
@@ -48,7 +49,16 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject _confirmQuit;
     [SerializeField] private GameObject _confirmMainMenu;
     [SerializeField] private GameObject _endMenu;
-    [SerializeField] private TextMeshProUGUI _endScore;
+    [Header("_________________________________________________________")]
+    [Header("End Menu")]
+    [SerializeField] private UI_ScoreCounter _minstrelCounter;
+    [SerializeField] private UI_ScoreCounter _pavilionCounter;
+    [SerializeField] private UI_ScoreCounter _paradeCounter;
+    [SerializeField] private UI_ScoreCounter _totalScoreCounter;
+    [SerializeField] private UI_ScoreCounter _mysticCounter;
+    [SerializeField] private TextMeshProUGUI _bestScore;
+    [SerializeField] private float _targetDuration = 3f;
+    [SerializeField] private float _minPointsPerSecond = 50f;
     [Header("_________________________________________________________")]
     [Header("Trade Menu")]
     [SerializeField] private GameObject _tradeMenuButton;
@@ -480,22 +490,59 @@ public class UIManager : Singleton<UIManager>
     }
     #endregion
 
-    #region MENU
+    #region END SCORE UI
     private void GameFinished()
     {
         if (TutorialManager.Instance != null)
             return;
 
         _endMenu.SetActive(true);
-        _endScore.text = $"You have scored {EntertainmentManager.Instance.Score.ToString()}<sprite name=\"Point_Emoji\">";
 
-        int bestScore = PlayerPrefs.GetInt(BEST_SCORE_KEY, 0);
+        StartCoroutine(PlayEndSequence());
+    }
+
+    private IEnumerator PlayEndSequence()
+    {
+        var em = EntertainmentManager.Instance;
+
+        int minstrel = em.GetPointsFromMinstrelStage();
+        int pavilion = em.GetPointsFromTastingPavilion();
+        int parade = em.GetPointsFromParadeRoute();
+        int mystic = em.GetPointsFromMysticGarden();
+        int total = em.Score;
+
+        int maxDetail = Mathf.Max(minstrel, pavilion, parade, mystic);
+
+        float requiredSpeed = maxDetail / _targetDuration;
+        float pointsPerSecond = Mathf.Max(requiredSpeed, _minPointsPerSecond);
+        float longestDetailDuration = maxDetail / pointsPerSecond;
+
+        _totalScoreCounter.CountTo(total, longestDetailDuration);
+        _minstrelCounter.CountTo(minstrel, minstrel / pointsPerSecond);
+        _pavilionCounter.CountTo(pavilion, pavilion / pointsPerSecond);
+        _paradeCounter.CountTo(parade, parade / pointsPerSecond);
+        _mysticCounter.CountTo(mystic, mystic / pointsPerSecond);
+
+        yield return new WaitForSeconds(longestDetailDuration);
+
+        _totalScoreCounter.GetComponent<Animator>().SetTrigger("Pulse");
+
+        int bestScore = PlayerPrefs.GetInt(BEST_SCORE_KEY, -1);
+        _bestScore.gameObject.SetActive(true);
         if (EntertainmentManager.Instance.Score > bestScore)
         {
             PlayerPrefs.SetInt(BEST_SCORE_KEY, EntertainmentManager.Instance.Score);
+            _bestScore.text = "New Best Score !";
+            _bestScore.GetComponent<Animator>().SetTrigger("Pulse");
+        }
+        else
+        {
+            _bestScore.text = "Current Best Score : " + PlayerPrefs.GetInt(BEST_SCORE_KEY, 0);
         }
     }
+    #endregion
 
+    #region MENU
     public void OpenCloseMenu()
     {
         if (PopUpManager.Instance.LockedPopUps.Count > 0)
