@@ -1408,11 +1408,12 @@ MonoBehaviour:
   _spawnUnitVFX: {fileID: 1592618839310326476, guid: 91faeb109bc204f45b656d329dbce236, type: 3}
   _dustInfraVFX: {fileID: 3743465127758528429, guid: fe4b6116ce3efab45aa756b24719f49e, type: 3}
   _renderTextureCam: {fileID: 31148369443907448}
+  _endGameCurtainVFX: {fileID: 3435833925390694809, guid: 9d7d80bc46120fd43bee610a354a1725, type: 3}
   _endGameConfettiVFX: {fileID: 6583538239177147575, guid: 0cdbfeb4e2a321540835de198ee6b0d0, type: 3}
   _endGameFirstConfettiTilt: 15
   _endGameFireworkVFX: {fileID: 5445069053781343791, guid: 203ad3c60e691f649b2afebfe03d6044, type: 3}
   _endGameFireworkPosMaxOffset: 1.5
-  _endGameFireworkQuantity: 5
+  _endGameFireworkQuantity: 6
   _resourceVFXforUI: {fileID: 7337190964190525983, guid: a7c265992c4cabe448d510e1d8b39d99, type: 3}
   _comboVFX: {fileID: 7337190964190525983, guid: fe47feb8265c70640ae521665eaa6840, type: 3}
   _spawnOffset: {x: 0, y: 0.2, z: 0}
@@ -1422,3 +1423,4 @@ MonoBehaviour:
   _maxDurationDistance: 10
   _arcHeightPerUnit: 0.15
   _arcMinHeight: 1
+  _waveRingDelay: 0.25

@@ -20,6 +20,7 @@ public class JuiceManager : Singleton<JuiceManager>
     [Header("_________________________________________________________")]
     [Header("UI VFX data")]
     [SerializeField] private Camera _renderTextureCam;
+    [SerializeField] private GameObject _endGameCurtainVFX;
     [SerializeField] private GameObject _endGameConfettiVFX;
     [SerializeField] private float _endGameFirstConfettiTilt = 15f;
     [SerializeField] private GameObject _endGameFireworkVFX;
@@ -159,6 +160,11 @@ public class JuiceManager : Singleton<JuiceManager>
 
     #region UI VFX
     private void EndGameVFX()
+    {
+        Instantiate(_endGameCurtainVFX, PlaceAtViewport(UIManager.Instance.VfxAnchorEndCurtain), _endGameCurtainVFX.transform.rotation);
+    }
+
+    public void EndGameEndCountingVFX()
     {
         Instantiate(_endGameConfettiVFX, PlaceAtViewport(UIManager.Instance.VfxAnchorEndConfetti1), _endGameConfettiVFX.transform.rotation * Quaternion.Euler(0f, 0f, _endGameFirstConfettiTilt));
         Instantiate(_endGameConfettiVFX, PlaceAtViewport(UIManager.Instance.VfxAnchorEndConfetti2), _endGameConfettiVFX.transform.rotation);

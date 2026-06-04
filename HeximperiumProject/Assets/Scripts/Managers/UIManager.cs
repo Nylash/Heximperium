@@ -137,6 +137,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private RectTransform _vfxAnchorEndConfetti2;
     [SerializeField] private RectTransform _vfxAnchorEndFirework1;
     [SerializeField] private RectTransform _vfxAnchorEndFirework2;
+    [SerializeField] private RectTransform _vfxAnchorEndCurtain;
     [SerializeField] private RectTransform _vfxAnchorClaim;
     [SerializeField] private RectTransform _vfxAnchorGold;
     [SerializeField] private RectTransform _vfxAnchorSR;
@@ -194,6 +195,7 @@ public class UIManager : Singleton<UIManager>
     public Button ConfirmExploit { get => _confirmExploit; }
     public Button ConfirmEntertain { get => _confirmEntertain; }
     public bool AreEnhanceableStatusShown { get => _areEnhanceableStatusShown; }
+    public RectTransform VfxAnchorEndCurtain { get => _vfxAnchorEndCurtain; }
     #endregion
 
     protected override void OnAwake()
@@ -524,6 +526,8 @@ public class UIManager : Singleton<UIManager>
         _mysticCounter.CountTo(mystic, mystic / pointsPerSecond);
 
         yield return new WaitForSeconds(longestDetailDuration);
+
+        JuiceManager.Instance.EndGameEndCountingVFX();
 
         _totalScoreCounter.GetComponent<Animator>().SetTrigger("Pulse");
 
