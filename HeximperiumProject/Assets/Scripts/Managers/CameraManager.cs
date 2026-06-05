@@ -15,6 +15,7 @@ public class CameraManager : Singleton<CameraManager>
     [SerializeField] private float _cameraMovementSpeed = 5;
     [SerializeField] private float _cameraDragSpeed = 2;
     [SerializeField] private float _moveEventThreshold = 2f;
+    [SerializeField] private CameraBounds _cameraBounds;
     [Header("_________________________________________________________")]
     [Header("Edge Pan Settings")]
 #pragma warning disable CS0414
@@ -311,6 +312,7 @@ public class CameraManager : Singleton<CameraManager>
     {
         transform.position = Vector3.MoveTowards(transform.position,
             transform.position + new Vector3(direction.x, 0, direction.y) * speed * Time.deltaTime, 0.5f);
+        transform.position = _cameraBounds.ClampPosition(transform.position);
     }
 
     private void KeyMovement()
@@ -343,10 +345,9 @@ public class CameraManager : Singleton<CameraManager>
     private void EdgePan()
     {
         //Disable the behaviour in the editor to avoid annoying behaviour
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
 
-        #else
-
+#else
         _mousePosition = Mouse.current.position.ReadValue();
         _direction = Vector2.zero;
 
@@ -371,8 +372,9 @@ public class CameraManager : Singleton<CameraManager>
         if (_direction != Vector2.zero)
         {
             transform.position += new Vector3(_direction.x, 0, _direction.y) * _edgePanSpeed * Time.deltaTime;
+            transform.position = _cameraBounds.ClampPosition(transform.position);
         }
-        #endif
+#endif
     }
 
     //Draw Edge pan margin
@@ -390,5 +392,5 @@ public class CameraManager : Singleton<CameraManager>
         // Right margin
         GUI.DrawTexture(new Rect(Screen.width - _edgePanMargin, 0, _edgePanMargin, Screen.height), Texture2D.whiteTexture);
     }*/
-#endregion
+    #endregion
 }

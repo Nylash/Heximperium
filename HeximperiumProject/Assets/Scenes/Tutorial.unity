@@ -262,7 +262,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 410087039}
   m_Enabled: 1
-  serializedVersion: 12
+  serializedVersion: 13
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 2
@@ -314,7 +314,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShadowRadius: 0
+  m_ShapeRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 1
   m_LuxAtDistance: 1
@@ -450,6 +450,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1986706139796324207, guid: 58476c60dcf0dcb4696f90704670c453, type: 3}
+      propertyPath: _cameraBounds
+      value: 
+      objectReference: {fileID: 1370531977}
     - target: {fileID: 8250165376018997356, guid: 58476c60dcf0dcb4696f90704670c453, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -499,6 +503,74 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58476c60dcf0dcb4696f90704670c453, type: 3}
+--- !u!1001 &1370531976
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7210435387234816964, guid: 9cbc22f84c03a714c81495e5896f5cf2, type: 3}
+      propertyPath: m_Name
+      value: CameraBounds
+      objectReference: {fileID: 0}
+    - target: {fileID: 8846201341771609989, guid: 9cbc22f84c03a714c81495e5896f5cf2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8846201341771609989, guid: 9cbc22f84c03a714c81495e5896f5cf2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8846201341771609989, guid: 9cbc22f84c03a714c81495e5896f5cf2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8846201341771609989, guid: 9cbc22f84c03a714c81495e5896f5cf2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8846201341771609989, guid: 9cbc22f84c03a714c81495e5896f5cf2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8846201341771609989, guid: 9cbc22f84c03a714c81495e5896f5cf2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8846201341771609989, guid: 9cbc22f84c03a714c81495e5896f5cf2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8846201341771609989, guid: 9cbc22f84c03a714c81495e5896f5cf2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8846201341771609989, guid: 9cbc22f84c03a714c81495e5896f5cf2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8846201341771609989, guid: 9cbc22f84c03a714c81495e5896f5cf2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9cbc22f84c03a714c81495e5896f5cf2, type: 3}
+--- !u!114 &1370531977 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3168094243437700580, guid: 9cbc22f84c03a714c81495e5896f5cf2, type: 3}
+  m_PrefabInstance: {fileID: 1370531976}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb85817a3f1b06045bed7c170c329e84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraBounds
 --- !u!1001 &3429716118181256628
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6515,6 +6587,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 896895629}
+  - {fileID: 1370531976}
   - {fileID: 410087041}
   - {fileID: 584298749}
   - {fileID: 343468654}
