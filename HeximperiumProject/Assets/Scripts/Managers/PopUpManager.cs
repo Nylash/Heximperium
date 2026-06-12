@@ -1797,10 +1797,12 @@ public class PopUpManager : Singleton<PopUpManager>
         Dictionary<Tile, int> predictedInternalCarnivalistsSources;
         Dictionary<Tile, List<ResourceToIntMap>> predictedImpactedTilesIncomes;
         Dictionary<Tile, int> predictedImpactedTilesCarnivalists;
+        Dictionary<Tile, int> predictedEntImpactedByTile;
         ExploitationManager.Instance.GetPredictedIncomes(button.AssociatedTile, button.InfrastructureData,
             out predictedInc, out predictedExtSources, out predictedIntSources,
             out predictedSelfInc, out predictedCarnivalists, out predictedInternalCarnivalistsSources,
-            out predictedImpactedTilesIncomes, out predictedImpactedTilesCarnivalists);
+            out predictedImpactedTilesIncomes, out predictedImpactedTilesCarnivalists,
+            out predictedEntImpactedByTile);
 
         JuiceManager.Instance.VisualizeExploitationCombo(
             predictedIntSources, predictedExtSources, predictedInternalCarnivalistsSources,
@@ -1998,6 +2000,57 @@ public class PopUpManager : Singleton<PopUpManager>
                 }
                 carnivalistsGivenDest.alignment = TextAlignmentOptions.Center;
                 carnivalistsGivenDest.fontStyle = FontStyles.Italic;
+            }
+        }
+        #endregion
+
+        #region BOOSTED ENT
+        if (button.AssociatedTile.EntImpactedByTile.Count > 0 || predictedEntImpactedByTile.Count > 0)
+        {
+            int totalPredictedPoints = 0;
+            foreach (var kvp in predictedEntImpactedByTile)
+            {
+                totalPredictedPoints += kvp.Value;
+            }
+            int totalPoints = 0;
+            foreach (var kvp in button.AssociatedTile.EntImpactedByTile)
+            {
+                totalPoints += kvp.Value;
+            }
+            TextMeshProUGUI boostedEnt = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            boostedEnt.text += "Provides +" + totalPredictedPoints + "<sprite name=\"Point_Emoji\"> over "
+                + predictedEntImpactedByTile.Count + " " + Family.Entertainment.ToCustomString(predictedEntImpactedByTile.Count > 1);
+            
+            if (totalPredictedPoints != totalPoints)
+            {
+                string hex = ColorUtility.ToHtmlStringRGBA(UIManager.Instance.ColorEnhancementNewEffect);
+                boostedEnt.text += $" <color=#{hex}>(gains +" + (totalPredictedPoints - totalPoints) + "<sprite name=\"Point_Emoji\">)</color>";
+            }
+
+            boostedEnt.alignment = TextAlignmentOptions.Center;
+        }
+        #endregion
+
+        #region BOOSTED ENT DESTINATION
+        if (_showSourcesOnPopUp)
+        {
+            if (button.AssociatedTile.EntImpactedByTile.Count > 0 || predictedEntImpactedByTile.Count > 0)
+            {
+                TextMeshProUGUI boostedEntDest = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                Dictionary<EntertainmentData, int> datas = new Dictionary<EntertainmentData, int>();
+                foreach (var kvp in predictedEntImpactedByTile)
+                {
+                    if (datas.ContainsKey(kvp.Key.Entertainment.Data))
+                        datas[kvp.Key.Entertainment.Data] += kvp.Value;
+                    else
+                        datas.Add(kvp.Key.Entertainment.Data, kvp.Value);
+                }
+                foreach (var kvpBis in datas)
+                {
+                    boostedEntDest.text += "(" + kvpBis.Value + "<sprite name=\"Point_Emoji\"> to " + kvpBis.Key.Type.ToCustomString(false) + ")" + "\n";
+                }
+                boostedEntDest.alignment = TextAlignmentOptions.Center;
+                boostedEntDest.fontStyle = FontStyles.Italic;
             }
         }
         #endregion
