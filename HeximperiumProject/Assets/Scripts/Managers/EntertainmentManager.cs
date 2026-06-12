@@ -151,7 +151,7 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
             }
         }
 
-        if (UIManager.Instance.AreIncomesShown)
+        if (UIManager.Instance.AreIncomesShown && GameManager.Instance.IsLastTurn)
         {
             foreach (Tile tile in ExpansionManager.Instance.ClaimedTiles)
             {
@@ -256,6 +256,9 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
             _entertainments.Add(currentEntertainment);
             currentEntertainment.Initialize(tile, data);
             tile.Entertainment = currentEntertainment;
+            //Not done during ent initialization because the tile isn't assigned yet
+            if (UIManager.Instance.AreIncomesShown)
+                tile.ShowIncomeUI(true);
 
             if (TutorialManager.Instance != null)
             {
