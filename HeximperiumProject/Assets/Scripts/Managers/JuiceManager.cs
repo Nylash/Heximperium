@@ -119,13 +119,13 @@ public class JuiceManager : Singleton<JuiceManager>
 
     private void EntertainmentSpawned(Entertainment ent)
     {
-        _waveSourceTile = ent.Tile;
+        BeginWaveFrom(ent.Tile);
         SpawnUnitVFX(ent.Tile);
     }
 
     private void EntertainmentRemoved(Tile tile)
     {
-        _waveSourceTile = tile;
+        BeginWaveFrom(tile);
     }
 
     private void PlayResourceVFX(Tile tile, int value, Material mat, Color color)
@@ -545,6 +545,17 @@ public class JuiceManager : Singleton<JuiceManager>
     #endregion
 
     #region WAVE VFX
+    public void BeginWaveFrom(Tile sourceTile)
+    {
+        if (EntertainmentManager.Instance.IsPredictingPoints || sourceTile == null)
+            return;
+
+        if (_waveSourceTile != null && _waveSourceTile != sourceTile)
+            FlushWave();
+
+        _waveSourceTile = sourceTile;
+    }
+
     private void BufferWaveVFX(Tile tile, int points, bool isGain)
     {
         if (EntertainmentManager.Instance.IsPredictingPoints)
