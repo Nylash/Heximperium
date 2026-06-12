@@ -129,14 +129,17 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     {
         GameManager.Instance.UnselectTile();
 
-        //Convert savings into carnivalists
-        int goldCarnivalist = ResourcesManager.Instance.GetResourceStock(Resource.Gold) / _goldForOneCarnivalist;
-        int srCarnivalist = ResourcesManager.Instance.GetResourceStock(Resource.SpecialResources) / _SrForOneCarnivalist;
+        //Convert savings into carnivalists at the last turn
+        if (GameManager.Instance.IsLastTurn)
+        {
+            int goldCarnivalist = ResourcesManager.Instance.GetResourceStock(Resource.Gold) / _goldForOneCarnivalist;
+            int srCarnivalist = ResourcesManager.Instance.GetResourceStock(Resource.SpecialResources) / _SrForOneCarnivalist;
 
-        ResourcesManager.Instance.SpendConvertedResources(goldCarnivalist * _goldForOneCarnivalist, srCarnivalist * _SrForOneCarnivalist);
+            ResourcesManager.Instance.SpendConvertedResources(goldCarnivalist * _goldForOneCarnivalist, srCarnivalist * _SrForOneCarnivalist);
 
-        ResourcesManager.Instance.UpdateCarnivalist(goldCarnivalist + srCarnivalist, Transaction.Gain);
-        ResourcesManager.Instance.UpdateCarnivalistSource(_emptyDataForString, goldCarnivalist + srCarnivalist, Transaction.Gain);
+            ResourcesManager.Instance.UpdateCarnivalist(goldCarnivalist + srCarnivalist, Transaction.Gain);
+            ResourcesManager.Instance.UpdateCarnivalistSource(_emptyDataForString, goldCarnivalist + srCarnivalist, Transaction.Gain);
+        }
 
         if (!UIManager.Instance.AreEntPlacementShown)
             UIManager.Instance.SwitchEntPlacementVisibility();
@@ -160,6 +163,9 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
     protected override void ConfirmPhase()
     {
         GameManager.Instance.UnselectTile();
+
+        if (UIManager.Instance.AreEntPlacementShown)
+            UIManager.Instance.SwitchEntPlacementVisibility();
 
         StartCoroutine(PhaseFinalized());
     }
@@ -238,8 +244,8 @@ public class EntertainmentManager : PhaseManager<EntertainmentManager>
             if (!isPredictionRelated)
             {
                 ResourcesManager.Instance.UpdateCarnivalist(data.GetActualCarnivalistCost(tile), Transaction.Spent);
-                if (!UIManager.Instance.AreUnitsVisible)
-                    UIManager.Instance.UnitsVisibility();
+                if (!UIManager.Instance.AreEntVisible)
+                    UIManager.Instance.UnitsVisibility("Entertainments");
             }
 
             Entertainment currentEntertainment = Instantiate(_entertainmentPrefab,

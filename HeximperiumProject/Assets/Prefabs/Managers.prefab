@@ -248,6 +248,7 @@ MonoBehaviour:
   _persistentSingleton: 0
   _turnLimit: 20
   _baseClaimPerTurn: 2
+  _entertainPhaseTurns: 050000000a0000000f00000014000000
   _selectionPrefab: {fileID: 5751803865783233614, guid: e580acc5ac7c8134c89770f42897a51d, type: 3}
   _interactionPrefab: {fileID: 4147331800932434178, guid: 2d0a51e95c38cdf408da2ba934e55be2, type: 3}
 --- !u!114 &3483588300074308572

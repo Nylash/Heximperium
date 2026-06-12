@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -185,8 +186,14 @@ public class PopUpManager : Singleton<PopUpManager>
 
                 switch (obj.tag)
                 {
-                    case "VisibilityUI":
-                        VisibilityPopUp();
+                    case "ShowEntUI":
+                        ShowEntVisibilityPopUp();
+                        break;
+                    case "ShowScoutUI":
+                        ShowScoutVisibilityPopUp();
+                        break;
+                    case "BonusZoneUI":
+                        ShowBonusZoneVisibilityPopUp();
                         break;
                     case "ShowIncomeUI":
                         ShowIncomePopUp();
@@ -803,7 +810,7 @@ public class PopUpManager : Singleton<PopUpManager>
         PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
     }
 
-    private void VisibilityPopUp()
+    private void ShowScoutVisibilityPopUp()
     {
         GameObject popUp;
         popUp = Instantiate(_basePopUp, _popUpParent);
@@ -811,19 +818,39 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region DETAIL
         TextMeshProUGUI detail = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        if (UIManager.Instance.AreUnitsVisible)
-            detail.text = "Hide " +
-                $"{(GameManager.Instance.CurrentPhase == Phase.Entertain ? Family.Entertainment.ToCustomString(true) : "Scouts<sprite name=\"Scout_Emoji\">")} " +
-                "on tiles";
+        if (UIManager.Instance.AreScoutsVisible)
+            detail.text = "Hide Scouts<sprite name=\"Scout_Emoji\"> on tiles";
         else
-            detail.text = "Show " +
-                $"{(GameManager.Instance.CurrentPhase == Phase.Entertain ? Family.Entertainment.ToCustomString(true) : "Scouts<sprite name=\"Scout_Emoji\">")} " +
-                "on tiles";
+            detail.text = "Show Scouts<sprite name=\"Scout_Emoji\"> on tiles";
         ClampTextWidth(detail);
         detail.alignment = TextAlignmentOptions.Center;
         #endregion
 
         PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
+    }
+
+    private void ShowEntVisibilityPopUp() 
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, _popUpParent);
+        _popUps.Add(popUp);
+
+        #region DETAIL
+        TextMeshProUGUI detail = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        if (UIManager.Instance.AreEntVisible)
+            detail.text = $"Hide {Family.Entertainment.ToCustomString(true)} on tiles";
+        else
+            detail.text = $"Show {Family.Entertainment.ToCustomString(true)} on tiles";
+        ClampTextWidth(detail);
+        detail.alignment = TextAlignmentOptions.Center;
+        #endregion
+
+        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
+    }
+
+    private void ShowBonusZoneVisibilityPopUp()
+    {
+        throw new NotImplementedException();
     }
 
     private void ShowIncomePopUp()
