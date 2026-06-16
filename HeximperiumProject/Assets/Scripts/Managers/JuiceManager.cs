@@ -418,11 +418,11 @@ public class JuiceManager : Singleton<JuiceManager>
         Dictionary<Tile, List<ResourceToIntMap>> internalIncomeSources, Dictionary<Tile, List<ResourceToIntMap>> externalIncomeSources,
         Dictionary<Tile, int> internalCarnivalistsSources,
         Dictionary<Tile, List<ResourceToIntMap>> impactedTilesIncomes, Dictionary<Tile, int> impactedTilesCarnivalists,
-        Dictionary<Tile, int> entImpactedByTile,
+        Dictionary<Tile, int> entImpactedByTile, Dictionary<Tile, int> tilesBoostingEnt,
         Tile refTile)
     {
         if (internalIncomeSources.Count != 0 || externalIncomeSources.Count != 0 
-            || internalCarnivalistsSources.Count != 0 )
+            || internalCarnivalistsSources.Count != 0 || tilesBoostingEnt.Count != 0)
         {
             Dictionary<Tile, List<ResourceToIntMap>> incomeSources = new Dictionary<Tile, List<ResourceToIntMap>>();
             foreach (var kvp in internalIncomeSources)
@@ -457,6 +457,15 @@ public class JuiceManager : Singleton<JuiceManager>
                 else
                     sourcesToText[kvpQuatro.Key] = $"{kvpQuatro.Value}<sprite name=\"Carnivalist_Emoji\">";
             }
+            foreach (var kvp in tilesBoostingEnt)
+            {
+                if (kvp.Key == refTile)
+                    continue;
+                if (sourcesToText.ContainsKey(kvp.Key))
+                    sourcesToText[kvp.Key] += $" & +{kvp.Value}<sprite name=\"Point_Emoji\">";
+                else
+                    sourcesToText[kvp.Key] = $" +{kvp.Value}<sprite name=\"Point_Emoji\">";
+            }
             foreach (var kvp in sourcesToText)
             {
                 CreateExploitationComboVFX(kvp.Key, refTile, kvp.Value, _incomingVFX);
@@ -484,7 +493,7 @@ public class JuiceManager : Singleton<JuiceManager>
             {
                 if (kvp.Key == refTile)
                     continue;
-                impactToText[kvp.Key] += $" + {kvp.Value}<sprite name=\"Point_Emoji\">";
+                impactToText[kvp.Key] += $" +{kvp.Value}<sprite name=\"Point_Emoji\">";
             }
             foreach (var kvp in impactToText)
             {

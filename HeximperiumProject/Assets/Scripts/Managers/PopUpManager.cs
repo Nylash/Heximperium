@@ -963,9 +963,20 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         else
         {
+            Dictionary<Tile, int> tilesBoostingEnt = new Dictionary<Tile, int>();
+            //We only check the neighbors because we only have a boosting effect for the neighbors, nothing farther
+            if (tile.Entertainment != null) {
+                foreach (Tile neighbor in tile.Neighbors)
+                {
+                    if (!neighbor)
+                        continue;
+                    if (neighbor.EntImpactedByTile.ContainsKey(tile))
+                        tilesBoostingEnt.Add(neighbor, neighbor.EntImpactedByTile[tile]);
+                }
+            }
             JuiceManager.Instance.VisualizeExploitationCombo(
                 tile.InternalIncomesSources, tile.ExternalIncomesSources, tile.InternalCarnivalistsSources,
-                tile.ImpactedTilesIncomes, tile.ImpactedTilesCarnivalists, tile.EntImpactedByTile, tile);
+                tile.ImpactedTilesIncomes, tile.ImpactedTilesCarnivalists, tile.EntImpactedByTile, tilesBoostingEnt, tile);
         }
 
         GameObject popUp;
@@ -1801,16 +1812,17 @@ public class PopUpManager : Singleton<PopUpManager>
         Dictionary<Tile, List<ResourceToIntMap>> predictedImpactedTilesIncomes;
         Dictionary<Tile, int> predictedImpactedTilesCarnivalists;
         Dictionary<Tile, int> predictedEntImpactedByTile;
+        Dictionary<Tile, int> predictedTilesBoostingEnt = new Dictionary<Tile, int>();
         ExploitationManager.Instance.GetPredictedIncomes(button.AssociatedTile, button.InfrastructureData,
             out predictedInc, out predictedExtSources, out predictedIntSources,
             out predictedSelfInc, out predictedCarnivalists, out predictedInternalCarnivalistsSources,
             out predictedImpactedTilesIncomes, out predictedImpactedTilesCarnivalists,
-            out predictedEntImpactedByTile);
+            out predictedEntImpactedByTile, out predictedTilesBoostingEnt);
 
         JuiceManager.Instance.VisualizeExploitationCombo(
             predictedIntSources, predictedExtSources, predictedInternalCarnivalistsSources,
             predictedImpactedTilesIncomes, predictedImpactedTilesCarnivalists, predictedEntImpactedByTile,
-            button.AssociatedTile);
+            predictedTilesBoostingEnt, button.AssociatedTile);
 
         GameObject popUp;
         popUp = Instantiate(_basePopUp, _popUpParent);
