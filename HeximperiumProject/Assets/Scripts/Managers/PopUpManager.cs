@@ -965,7 +965,7 @@ public class PopUpManager : Singleton<PopUpManager>
         {
             JuiceManager.Instance.VisualizeExploitationCombo(
                 tile.InternalIncomesSources, tile.ExternalIncomesSources, tile.InternalCarnivalistsSources,
-                tile.ImpactedTilesIncomes, tile.ImpactedTilesCarnivalists, tile);
+                tile.ImpactedTilesIncomes, tile.ImpactedTilesCarnivalists, tile.EntImpactedByTile, tile);
         }
 
         GameObject popUp;
@@ -1393,10 +1393,13 @@ public class PopUpManager : Singleton<PopUpManager>
 
     private void EntertainmentPopUp(Entertainment ent)
     {
-        JuiceManager.Instance.VisualizeEntertainmentCombo(
-            ent.InternalPointsSources, ent.ExternalPointsSources,
-            ent.Tile.EntImpactedByEntertainment, ent.Tile.EntImpactedByTile,
-            ent.Tile);
+        if (GameManager.Instance.CurrentPhase == Phase.Entertain)
+        {
+            JuiceManager.Instance.VisualizeEntertainmentCombo(
+                ent.InternalPointsSources, ent.ExternalPointsSources,
+                ent.Tile.EntImpactedByEntertainment, ent.Tile.EntImpactedByTile,
+                ent.Tile);
+        }
 
         GameObject popUp;
         popUp = Instantiate(_basePopUp, _popUpParent);
@@ -1806,7 +1809,7 @@ public class PopUpManager : Singleton<PopUpManager>
 
         JuiceManager.Instance.VisualizeExploitationCombo(
             predictedIntSources, predictedExtSources, predictedInternalCarnivalistsSources,
-            predictedImpactedTilesIncomes, predictedImpactedTilesCarnivalists,
+            predictedImpactedTilesIncomes, predictedImpactedTilesCarnivalists, predictedEntImpactedByTile,
             button.AssociatedTile);
 
         GameObject popUp;

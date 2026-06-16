@@ -418,6 +418,7 @@ public class JuiceManager : Singleton<JuiceManager>
         Dictionary<Tile, List<ResourceToIntMap>> internalIncomeSources, Dictionary<Tile, List<ResourceToIntMap>> externalIncomeSources,
         Dictionary<Tile, int> internalCarnivalistsSources,
         Dictionary<Tile, List<ResourceToIntMap>> impactedTilesIncomes, Dictionary<Tile, int> impactedTilesCarnivalists,
+        Dictionary<Tile, int> entImpactedByTile,
         Tile refTile)
     {
         if (internalIncomeSources.Count != 0 || externalIncomeSources.Count != 0 || internalCarnivalistsSources.Count != 0)
@@ -483,6 +484,10 @@ public class JuiceManager : Singleton<JuiceManager>
                 CreateExploitationComboVFX(refTile, kvp.Key, kvp.Value, _outgoingVFX);
             }
         }
+        if (entImpactedByTile.Count > 0)
+        {
+            VisualizeEntertainmentComboFromTileOnly(refTile, entImpactedByTile);
+        }
         StartComboAnimation();
         return (_incomingVFX.Count != 0 || _outgoingVFX.Count != 0);
     }
@@ -532,10 +537,20 @@ public class JuiceManager : Singleton<JuiceManager>
         return (_incomingVFX.Count != 0 || _outgoingVFX.Count != 0);
     }
 
-    // Visualize the entertainment combo when there is no a entertainment placed on refTile
+    // Visualize the entertainment combo when there is no a entertainment placed on refTile or when we are in exploit phase
     public bool VisualizeEntertainmentComboFromTileOnly(Tile refTile)
     {
         foreach (var kvp in refTile.EntImpactedByTile)
+        {
+            CreateEntertainmentComboVFX(refTile, kvp.Key, kvp.Value, _outgoingVFX);
+        }
+        StartComboAnimation();
+        return (_outgoingVFX.Count != 0);
+    }
+
+    public bool VisualizeEntertainmentComboFromTileOnly(Tile refTile, Dictionary<Tile, int> entImpactedByTile)
+    {
+        foreach (var kvp in entImpactedByTile)
         {
             CreateEntertainmentComboVFX(refTile, kvp.Key, kvp.Value, _outgoingVFX);
         }
