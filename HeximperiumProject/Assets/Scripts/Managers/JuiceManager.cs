@@ -421,7 +421,8 @@ public class JuiceManager : Singleton<JuiceManager>
         Dictionary<Tile, int> entImpactedByTile,
         Tile refTile)
     {
-        if (internalIncomeSources.Count != 0 || externalIncomeSources.Count != 0 || internalCarnivalistsSources.Count != 0)
+        if (internalIncomeSources.Count != 0 || externalIncomeSources.Count != 0 
+            || internalCarnivalistsSources.Count != 0 )
         {
             Dictionary<Tile, List<ResourceToIntMap>> incomeSources = new Dictionary<Tile, List<ResourceToIntMap>>();
             foreach (var kvp in internalIncomeSources)
@@ -461,7 +462,7 @@ public class JuiceManager : Singleton<JuiceManager>
                 CreateExploitationComboVFX(kvp.Key, refTile, kvp.Value, _incomingVFX);
             }
         }
-        if (impactedTilesIncomes.Count != 0 || impactedTilesCarnivalists.Count != 0)
+        if (impactedTilesIncomes.Count != 0 || impactedTilesCarnivalists.Count != 0 || entImpactedByTile.Count != 0)
         {
             Dictionary<Tile, string> impactToText = new Dictionary<Tile, string>();
             foreach (var kvp in impactedTilesIncomes)
@@ -479,14 +480,16 @@ public class JuiceManager : Singleton<JuiceManager>
                 else
                     impactToText[kvpBis.Key] = $"{kvpBis.Value}<sprite name=\"Carnivalist_Emoji\">";
             }
+            foreach (var kvp in entImpactedByTile)
+            {
+                if (kvp.Key == refTile)
+                    continue;
+                impactToText[kvp.Key] += $" + {kvp.Value}<sprite name=\"Point_Emoji\">";
+            }
             foreach (var kvp in impactToText)
             {
                 CreateExploitationComboVFX(refTile, kvp.Key, kvp.Value, _outgoingVFX);
             }
-        }
-        if (entImpactedByTile.Count > 0)
-        {
-            VisualizeEntertainmentComboFromTileOnly(refTile, entImpactedByTile);
         }
         StartComboAnimation();
         return (_incomingVFX.Count != 0 || _outgoingVFX.Count != 0);
@@ -537,20 +540,10 @@ public class JuiceManager : Singleton<JuiceManager>
         return (_incomingVFX.Count != 0 || _outgoingVFX.Count != 0);
     }
 
-    // Visualize the entertainment combo when there is no a entertainment placed on refTile or when we are in exploit phase
+    // Visualize the entertainment combo when there is no a entertainment placed on refTile
     public bool VisualizeEntertainmentComboFromTileOnly(Tile refTile)
     {
         foreach (var kvp in refTile.EntImpactedByTile)
-        {
-            CreateEntertainmentComboVFX(refTile, kvp.Key, kvp.Value, _outgoingVFX);
-        }
-        StartComboAnimation();
-        return (_outgoingVFX.Count != 0);
-    }
-
-    public bool VisualizeEntertainmentComboFromTileOnly(Tile refTile, Dictionary<Tile, int> entImpactedByTile)
-    {
-        foreach (var kvp in entImpactedByTile)
         {
             CreateEntertainmentComboVFX(refTile, kvp.Key, kvp.Value, _outgoingVFX);
         }
