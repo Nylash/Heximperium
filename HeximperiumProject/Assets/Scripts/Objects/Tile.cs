@@ -852,6 +852,17 @@ public class Tile : MonoBehaviour
             behaviour.TileClaimed(this);
         }
     }
+
+    public void ListenerOnTileClaimed_BoostByUnclaimedNeighbors(Tile neighbor)
+    {
+        if (_entertainment != null) 
+        {
+            foreach (BoostByUnclaimedNeighbors effect in _entertainment.Data.SpecialEffects.OfType<BoostByUnclaimedNeighbors>())
+            {
+                effect.BoostEnt(_entertainment, neighbor, Transaction.Spent);
+            }
+        }
+    }
     #endregion
 
     #region ON TILE DATA MODIFIED

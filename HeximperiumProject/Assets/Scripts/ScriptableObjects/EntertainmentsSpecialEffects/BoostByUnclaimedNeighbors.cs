@@ -7,7 +7,15 @@ public class BoostByUnclaimedNeighbors : SpecialEffect
 
     public override void InitializeSpecialEffect(Entertainment associatedEntertainment)
     {
-        CheckEntertainment(associatedEntertainment);
+        foreach (Tile neighbor in associatedEntertainment.Tile.Neighbors)
+        {
+            if (!neighbor)
+                continue;
+            if (neighbor.Claimed)
+                continue;
+            neighbor.OnTileClaimed += associatedEntertainment.Tile.ListenerOnTileClaimed_BoostByUnclaimedNeighbors;
+            BoostEnt(associatedEntertainment, neighbor, Transaction.Gain);
+        }
     }
 
     public override void RollbackSpecialEntertainment(Entertainment associatedEntertainment)
@@ -17,6 +25,7 @@ public class BoostByUnclaimedNeighbors : SpecialEffect
         {
             if (!neighbor)
                 continue;
+            neighbor.OnTileClaimed -= associatedEntertainment.Tile.ListenerOnTileClaimed_BoostByUnclaimedNeighbors;
             if (!neighbor.Claimed)
             {
                 neighbor.UpdateImpactedEntByTile(associatedEntertainment.Tile, -_boostAmount);
@@ -35,18 +44,11 @@ public class BoostByUnclaimedNeighbors : SpecialEffect
         }
     }
 
-    private void CheckEntertainment(Entertainment associatedEnt)
+    public void BoostEnt(Entertainment associatedEnt, Tile neighbor, Transaction transaction)
     {
-        foreach (Tile neighbor in associatedEnt.Tile.Neighbors)
-        {
-            if (!neighbor)
-                continue;
-            if (!neighbor.Claimed)
-            {
-                associatedEnt.UpdatePoints(_boostAmount, Transaction.Gain, false, neighbor);
-                neighbor.UpdateImpactedEntByTile(associatedEnt.Tile, _boostAmount);
-            }
-        }
+        JuiceManager.Instance.BeginWaveFrom(associatedEnt.Tile);
+        associatedEnt.UpdatePoints(_boostAmount, transaction, false, neighbor);
+        neighbor.UpdateImpactedEntByTile(associatedEnt.Tile, (transaction == Transaction.Gain) ? _boostAmount : -_boostAmount);
     }
 
     public override string GetBehaviourDescription()
