@@ -493,7 +493,10 @@ public class JuiceManager : Singleton<JuiceManager>
             {
                 if (kvp.Key == refTile)
                     continue;
-                impactToText[kvp.Key] += $" +{kvp.Value}<sprite name=\"Point_Emoji\">";
+                if (impactToText.ContainsKey(kvp.Key))
+                    impactToText[kvp.Key] += $" & +{kvp.Value}<sprite name=\"Point_Emoji\">";
+                else
+                    impactToText[kvp.Key] = $"+{kvp.Value}<sprite name=\"Point_Emoji\">";
             }
             foreach (var kvp in impactToText)
             {
