@@ -16,12 +16,14 @@ public class EntertainmentData : ScriptableObject
     public EntertainmentType Type { get => _type; }
     public int BasePoints { get => _basePoints; }
     public List<SpecialEffect> SpecialEffects { get => _runtimeSpecialEffects; }
+    public int CarnivalistCost { get => _runtimeCost; set => _runtimeCost = value; }
 
     private List<SpecialEffect> _runtimeSpecialEffects = new List<SpecialEffect>();
+    private int _runtimeCost;
 
     public int GetActualCarnivalistCost(Tile tile = null)
     {
-        int cost = _carnivalistCost;
+        int cost = _runtimeCost;
         if (tile)
             cost -= tile.CarnivalistCostReduction;
         return Mathf.Max(cost, 0);
@@ -32,6 +34,7 @@ public class EntertainmentData : ScriptableObject
     {
         RuntimeManager.RegisterDataInstance(this);
         ResetRuntimeSpecialEffects();
+        _runtimeCost = _carnivalistCost;
     }
 
     private void OnDisable()
