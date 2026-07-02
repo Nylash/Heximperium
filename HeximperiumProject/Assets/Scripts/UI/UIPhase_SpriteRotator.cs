@@ -1,81 +1,103 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class UIPhase_SpriteRotator : MonoBehaviour
 {
-    [SerializeField] private Image _north; // 1
-    [SerializeField] private Image _west;  // 2
-    [SerializeField] private Image _south; // 3
-    [SerializeField] private Image _east;  // 4
-    [SerializeField] private Sprite _scoreImg;
+    [SerializeField] private Image _north;
+    [SerializeField] private Image _west;
+    [SerializeField] private Image _south;
+    [SerializeField] private Image _east;
 
-    private Image[] _positions;
+    [SerializeField] private Sprite _scoreImg;
+    [SerializeField] private Sprite _exploreImg;
+    [SerializeField] private Sprite _expandImg;
+    [SerializeField] private Sprite _exploitImg;
+
+    private Image[] _slots;
+
+    private int _southIndex = 2;
+
     private Animator _animator;
     private bool _firstRotation = true;
+    private bool _inTurnWithEntertainPhase = false;
+    private bool _waitingNextExplorePhaseEnd = false;
+    private bool _isLastTurn = false;
+
+    private Image SlotAt(int logicalOffset)
+    {
+        // logicalOffset: 0 = North, 1 = West, 2 = South, 3 = East
+        // On wrappe pour retrouver le bon slot physique
+        return _slots[(_southIndex - 2 + logicalOffset + _slots.Length * 4) % _slots.Length];
+    }
+
+    private Image CurrentSouth => _slots[_southIndex % _slots.Length];
+
     void Start()
     {
         _animator = GetComponent<Animator>();
-
-        _positions = new Image[4] { _north, _west, _south, _east };
+        _slots = new Image[4] { _north, _west, _south, _east };
 
         ExplorationManager.Instance.OnPhaseFinalized += () => StartAnimation();
         ExpansionManager.Instance.OnPhaseFinalized += () => StartAnimation();
         ExploitationManager.Instance.OnPhaseFinalized += () => StartAnimation();
-        GameManager.Instance.OnLastTurnStarted += () => OnLastTurn();
+        EntertainmentManager.Instance.OnPhaseFinalized += () => StartAnimation();
+
+        GameManager.Instance.OnTurnWithEntertainPhase += () => _inTurnWithEntertainPhase = true;
+        GameManager.Instance.OnLastTurnStarted += () => _isLastTurn = true;
     }
 
     private void StartAnimation()
     {
+        if (_isLastTurn && GameManager.Instance.CurrentPhase == Phase.Entertain)
+            return;
+
         UIManager.Instance.UiPhaseInAnimation = true;
         _animator.SetTrigger("Rotate");
-    }
-
-    private void OnLastTurn()
-    {
-        ExpansionManager.Instance.OnPhaseFinalized += () => SetScoreImg();
-        ExploitationManager.Instance.OnPhaseFinalized += () => HideLastSprite();
-    }
-
-    private void SetScoreImg()
-    {
-        _positions[2].sprite = _scoreImg;
-        _positions[2].color = UIManager.Instance.ColorEntertain;
-    }
-
-    private void HideLastSprite()
-    {
-        _positions[2].enabled = false;
-        _positions[1].GetComponent<UIPhase_GetAssociadtedArrow>().AssociatedArrow.enabled = false;
     }
 
     public void OnRotationEnd()
     {
         UIManager.Instance.UiPhaseInAnimation = false;
 
+        // Avancer le pointeur Sud (rotation CW : N→W→S→E→N)
+        _southIndex = (_southIndex + 1) % _slots.Length;
+
         if (_firstRotation)
         {
             _firstRotation = false;
-            _east.GetComponent<UIPhase_GetAssociadtedArrow>().AssociatedArrow.enabled = true;
-            _east.enabled = true;
+            CurrentSouth.GetComponent<UIPhase_GetAssociadtedArrow>().AssociatedArrow.enabled = true;
+            CurrentSouth.enabled = true;
         }
 
-        // After a clockwise rotation, the positions shift:
-        RotateArrayClockwise();
-
-        if (GameManager.Instance.LastTurn)
+        if (_inTurnWithEntertainPhase && GameManager.Instance.CurrentPhase == Phase.Explore)
+        {
+            SetSouthSprite(_scoreImg, UIManager.Instance.ColorEntertain);
+            _inTurnWithEntertainPhase = false;
+            _waitingNextExplorePhaseEnd = true;
             return;
-        // Replace south sprite with east sprite
-        _positions[2].sprite = _positions[3].sprite;
-        _positions[2].color = _positions[3].color;
+        }
+
+        if (_isLastTurn && GameManager.Instance.CurrentPhase == Phase.Expand)
+            HideSpritesForLastTurn();
+
+        if (_waitingNextExplorePhaseEnd && GameManager.Instance.CurrentPhase != Phase.Explore)
+            return;
+
+        Image currentEast = SlotAt(3);
+        SetSouthSprite(currentEast.sprite, currentEast.color);
+        _waitingNextExplorePhaseEnd = false;
     }
 
-    // 90� CW in world space => [N,W,S,E] becomes [W,S,E,N]
-    private void RotateArrayClockwise()
+    private void SetSouthSprite(Sprite sprite, Color color)
     {
-        var first = _positions[0];          // old North
-        for (int i = 0; i < _positions.Length - 1; i++)
-            _positions[i] = _positions[i + 1];
+        CurrentSouth.sprite = sprite;
+        CurrentSouth.color = color;
+    }
 
-        _positions[_positions.Length - 1] = first; // old North moves to East
+    public void HideSpritesForLastTurn()
+    {
+        CurrentSouth.enabled = false;
+        Image currentWest = SlotAt(1);
+        currentWest.GetComponent<UIPhase_GetAssociadtedArrow>().AssociatedArrow.enabled = false;
     }
 }

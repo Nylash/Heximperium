@@ -69,6 +69,7 @@ public class ResourcesManager : Singleton<ResourcesManager>
         Debug.LogWarning("USING CHEAT !");
         UpdateResource(Resource.Gold, 5000, Transaction.Gain);
         UpdateResource(Resource.SpecialResources, 1000, Transaction.Gain);
+        UpdateCarnivalist(50, Transaction.Gain);
     }
 
     #region UPDATE RESOURCES

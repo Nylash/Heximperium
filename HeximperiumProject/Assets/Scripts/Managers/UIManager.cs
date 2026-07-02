@@ -67,7 +67,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject _sellButton;
     [Header("_________________________________________________________")]
     [Header("Score")]
-    [SerializeField] private GameObject _scoreUI;
+    [SerializeField] private Animator _scoreUI;
     [SerializeField] private TextMeshProUGUI _scoreText;
     [Header("_________________________________________________________")]
     [Header("Upgrades Menu")]
@@ -107,10 +107,15 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private Animator _animatorExploit;
     [SerializeField] private Animator _animatorEntertain;
     [Header("_________________________________________________________")]
-    [Header("Visibility button")]
-    [SerializeField] private Image _visibilityButton;
-    [SerializeField] private Sprite _visibilityOff;
-    [SerializeField] private Sprite _visibilityOn;
+    [Header("Scouts visibility button")]
+    [SerializeField] private Image _scoutsVisibilityButton;
+    [SerializeField] private Sprite _scoutsVisibilityOff;
+    [SerializeField] private Sprite _scoutsVisibilityOn;
+    [Header("_________________________________________________________")]
+    [Header("Ent visibility button")]
+    [SerializeField] private Image _entVisibilityButton;
+    [SerializeField] private Sprite _entVisibilityOff;
+    [SerializeField] private Sprite _entVisibilityOn;
     [Header("_________________________________________________________")]
     [Header("Show Income button")]
     [SerializeField] private Image _showIncomeButton;
@@ -150,7 +155,8 @@ public class UIManager : Singleton<UIManager>
     #endregion
 
     #region VARIABLES
-    private bool _areUnitsVisible;
+    private bool _areScoutsVisible;
+    private bool _areEntVisible;
     private bool _uiPhaseInAnimation;
     private bool _areIncomesShown;
     private bool _areEntPlacementShown;
@@ -188,7 +194,6 @@ public class UIManager : Singleton<UIManager>
     public Animator RevealAnywhereHint { get => _revealAnywhereHint; }
     public Color ColorIvory { get => _colorIvory; }
     public Animator BuildTownHint { get => _buildTownHint; }
-    public bool AreUnitsVisible { get => _areUnitsVisible; set => _areUnitsVisible = value; }
     public Color ColorEnhancementNewEffect { get => _colorEnhancementNewEffect; }
     public Button ConfirmExplo { get => _confirmExplo; }
     public Button ConfirmExpand { get => _confirmExpand; }
@@ -196,6 +201,8 @@ public class UIManager : Singleton<UIManager>
     public Button ConfirmEntertain { get => _confirmEntertain; }
     public bool AreEnhanceableStatusShown { get => _areEnhanceableStatusShown; }
     public RectTransform VfxAnchorEndCurtain { get => _vfxAnchorEndCurtain; }
+    public bool AreScoutsVisible { get => _areScoutsVisible; }
+    public bool AreEntVisible { get => _areEntVisible; }
     #endregion
 
     protected override void OnAwake()
@@ -210,11 +217,12 @@ public class UIManager : Singleton<UIManager>
         GameManager.Instance.OnExploitationPhaseStarted += NewPhaseStarted;
         ExploitationManager.Instance.OnPhaseFinalized += () => PhaseEnded(Phase.Exploit);
         GameManager.Instance.OnEntertainmentPhaseStarted += NewPhaseStarted;
-
-        GameManager.Instance.OnEntertainmentPhaseStarted += UpdateUIForEntertainment;
+        EntertainmentManager.Instance.OnPhaseFinalized += () => PhaseEnded(Phase.Entertain);
 
         GameManager.Instance.OnExplorationPhaseStarted += () => ScoutsVisibility(true);
         GameManager.Instance.OnExpansionPhaseStarted += () => ScoutsVisibility(false);
+        GameManager.Instance.OnEntertainmentPhaseStarted += () => EntertainmentsVisibility(true);
+        GameManager.Instance.OnExplorationPhaseStarted -= () => EntertainmentsVisibility(false);
 
         GameManager.Instance.OnGameFinished += GameFinished;
 
@@ -226,13 +234,6 @@ public class UIManager : Singleton<UIManager>
     private void Start()
     {
         InitializeUI();
-    }
-
-    private void UpdateUIForEntertainment()
-    {
-        if (!_areUnitsVisible)
-            UnitsVisibility();
-        _scoreUI.SetActive(true);
     }
 
     private void InitializeUI()
@@ -353,33 +354,43 @@ public class UIManager : Singleton<UIManager>
 
     #region FILTER UI
     //OnClick for UI button
-    public void UnitsVisibility()
+    public void ClickScoutVisibility() => ScoutsVisibility(!_areScoutsVisible);
+
+    public void ClickEntVisiblity() => EntertainmentsVisibility(!_areEntVisible);
+
+    public void UnitsVisibility(string unitType)
     {
-        _areUnitsVisible = !_areUnitsVisible;
-
-        _visibilityButton.sprite = _areUnitsVisible ? _visibilityOn : _visibilityOff;
-
-        if (GameManager.Instance.CurrentPhase != Phase.Entertain)
-        {
-            foreach (Scout item in ExplorationManager.Instance.Scouts)
-            {
-                item.ScoutVisibility(_areUnitsVisible);
-            }
-        }
+        if (unitType == "Scouts")
+            ScoutsVisibility(!_areScoutsVisible);
+        else if (unitType == "Entertainments")
+            EntertainmentsVisibility(!_areEntVisible);
         else
+            Debug.LogError("Unknown unit type for visibility toggle : " + unitType);
+    }
+
+    public void EntertainmentsVisibility(bool visible)
+    {
+        if (visible == _areEntVisible)
+            return;
+
+        _areEntVisible = visible;
+
+        _entVisibilityButton.sprite = _areEntVisible ? _entVisibilityOn : _entVisibilityOff;
+
+        foreach (Entertainment item in EntertainmentManager.Instance.Entertainments)
         {
-            foreach (Entertainment item in EntertainmentManager.Instance.Entertainments)
-            {
-                item.EntertainmentVisibility(_areUnitsVisible);
-            }
+            item.EntertainmentVisibility(visible);
         }
     }
 
     public void ScoutsVisibility(bool visible)
     {
-        _areUnitsVisible = visible;
+        if (visible == _areScoutsVisible)
+            return;
 
-        _visibilityButton.sprite = _areUnitsVisible ? _visibilityOn : _visibilityOff;
+        _areScoutsVisible = visible;
+
+        _scoutsVisibilityButton.sprite = _areScoutsVisible ? _scoutsVisibilityOn : _scoutsVisibilityOff;
 
         foreach (Scout item in ExplorationManager.Instance.Scouts)
         {
@@ -448,6 +459,10 @@ public class UIManager : Singleton<UIManager>
             case Phase.Exploit:
                 _popUpExploitPhase.SetTrigger("Hide");
                 break;
+            case Phase.Entertain:
+                _popUpEntertainPhase.SetTrigger("Hide");
+                _scoreUI.SetTrigger("Hide");
+                break;
             default:
                 break;
         }
@@ -471,16 +486,25 @@ public class UIManager : Singleton<UIManager>
                 _popUpExpandPhase.SetTrigger("Show");
                 break;
             case Phase.Exploit:
-                _confirmPhaseButtonText.text = "End Turn";
+                if (!GameManager.Instance.EntertainPhaseTurns.Contains(GameManager.Instance.TurnCounter))
+                    _confirmPhaseButtonText.text = "End Turn";
+                else
+                    _confirmPhaseButtonText.text = "End Phase";
                 _phaseMaterial.color = _colorExploit;
                 _annunciatorExploitation.SetTrigger("Show");
                 _popUpExploitPhase.SetTrigger("Show");
                 break;
             case Phase.Entertain:
-                _confirmPhaseButtonText.text = "End Game";
+                if (GameManager.Instance.IsLastTurn)
+                    _confirmPhaseButtonText.text = "End Game";
+                else
+                    _confirmPhaseButtonText.text = "End Turn";
                 _phaseMaterial.color = _colorEntertain;
                 _annunciatorEntertainment.SetTrigger("Show");
                 _popUpEntertainPhase.SetTrigger("Show");
+                if (!_areEntVisible)
+                    UnitsVisibility("Entertainments");
+                _scoreUI.SetTrigger("Show");
                 break;
         }
     }

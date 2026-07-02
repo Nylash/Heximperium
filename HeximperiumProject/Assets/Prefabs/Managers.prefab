@@ -248,6 +248,7 @@ MonoBehaviour:
   _persistentSingleton: 0
   _turnLimit: 20
   _baseClaimPerTurn: 2
+  _entertainPhaseTurns: 050000000a0000000f00000014000000
   _selectionPrefab: {fileID: 5751803865783233614, guid: e580acc5ac7c8134c89770f42897a51d, type: 3}
   _interactionPrefab: {fileID: 4147331800932434178, guid: 2d0a51e95c38cdf408da2ba934e55be2, type: 3}
 --- !u!114 &3483588300074308572
@@ -1383,7 +1384,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4f4e5ab32c916c94c85d25513c59396b, type: 2}
   - {fileID: 11400000, guid: 991d35afd200e5c44a5ad29817617ac6, type: 2}
   - {fileID: 11400000, guid: e613fb01f45caf442be82a97eb677b15, type: 2}
-  - {fileID: 11400000, guid: 6bc9e8b0e1dc67c4f96dabc3c249e0ce, type: 2}
+  - {fileID: 11400000, guid: 59ffa2c1d68ff844e8403ae69cc065a0, type: 2}
   - {fileID: 11400000, guid: d708e569dd0ad89408ec7ec7183234cf, type: 2}
   - {fileID: 11400000, guid: cc89b6a5c08770143915e31789025bb2, type: 2}
 --- !u!114 &8672858755679527012

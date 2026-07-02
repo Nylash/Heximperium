@@ -11,23 +11,41 @@ public class BoostEntertainmentOnTileAndOnNeighbors : SpecialBehaviour
     {
         behaviourTile.OnEntertainmentModified -= behaviourTile.ListenerOnEntertainmentModified_BoostEntertainmentOnTileAndOnNeighbors;
         behaviourTile.OnEntertainmentModified += behaviourTile.ListenerOnEntertainmentModified_BoostEntertainmentOnTileAndOnNeighbors;
+        if (behaviourTile.Entertainment)
+        {
+            CheckNewEntertainment(behaviourTile, behaviourTile);
+        }
         foreach (Tile neighbor in behaviourTile.Neighbors)
         {
             if (!neighbor)
                 continue;
             neighbor.OnEntertainmentModified -= behaviourTile.ListenerOnEntertainmentModified_BoostEntertainmentOnTileAndOnNeighbors;
             neighbor.OnEntertainmentModified += behaviourTile.ListenerOnEntertainmentModified_BoostEntertainmentOnTileAndOnNeighbors;
+            if (neighbor.Entertainment)
+            {
+                CheckNewEntertainment(neighbor, behaviourTile);
+            }
         }
     }
 
     public override void RollbackSpecialBehaviour(Tile behaviourTile)
     {
         behaviourTile.OnEntertainmentModified -= behaviourTile.ListenerOnEntertainmentModified_BoostEntertainmentOnTileAndOnNeighbors;
+        if (behaviourTile.Entertainment)
+        {
+            BoostEntertainment(behaviourTile.Entertainment, Transaction.Spent, behaviourTile);
+            behaviourTile.UpdateImpactedEntByTile(behaviourTile, -_boost);
+        }
         foreach (Tile neighbor in behaviourTile.Neighbors)
         {
             if (!neighbor)
                 continue;
             neighbor.OnEntertainmentModified -= behaviourTile.ListenerOnEntertainmentModified_BoostEntertainmentOnTileAndOnNeighbors;
+            if (neighbor.Entertainment)
+            {
+                BoostEntertainment(neighbor.Entertainment, Transaction.Spent, behaviourTile);
+                behaviourTile.UpdateImpactedEntByTile(neighbor, -_boost);
+            }
         }
     }
 
@@ -63,6 +81,7 @@ public class BoostEntertainmentOnTileAndOnNeighbors : SpecialBehaviour
 
     private void BoostEntertainment(Entertainment ent, Transaction transaction, Tile behaviourTile)
     {
+        JuiceManager.Instance.BeginWaveFrom(behaviourTile);
         ent.UpdatePoints(_boost, transaction, false, null, behaviourTile);
     }
 

@@ -561,7 +561,7 @@ public class Tile : MonoBehaviour
 
         if (!show) return;
 
-        if (GameManager.Instance.CurrentPhase == Phase.Entertain)
+        if (GameManager.Instance.IsLastTurn && GameManager.Instance.CurrentPhase == Phase.Entertain)
         {
             if (_entertainment != null)
             {
@@ -572,28 +572,6 @@ public class Tile : MonoBehaviour
         }
 
         int count = 0;
-
-        BoostScoutsLimit scoutBoost = _tileData.SpecialBehaviours.OfType<BoostScoutsLimit>().FirstOrDefault();
-        if (scoutBoost != null)
-        {
-            _incomesUI[count].text = scoutBoost.ScoutsIncrease + "<sprite name=\"Scout_Emoji\">";
-            _incomesUI[count].transform.parent.gameObject.SetActive(true);
-            count++;
-        }
-
-        if (_claimIncome > 0)
-        {
-            _incomesUI[count].text = "+" + _claimIncome + "<sprite name=\"Claim_Emoji\">";
-            _incomesUI[count].transform.parent.gameObject.SetActive(true);
-            count++;
-        }
-
-        if (_tileData.SpecialBehaviours.Any(b => b is BoostTownsLimit))
-        {
-            _incomesUI[count].text = "1<sprite name=\"Town_Emoji\">";
-            _incomesUI[count].transform.parent.gameObject.SetActive(true);
-            count++;
-        }
 
         var goldIncome = _incomes.GetValueFor(Resource.Gold);
         if (goldIncome is int value)
@@ -611,11 +589,39 @@ public class Tile : MonoBehaviour
             count++;
         }
 
+        if (_claimIncome > 0)
+        {
+            _incomesUI[count].text = "+" + _claimIncome + "<sprite name=\"Claim_Emoji\">";
+            _incomesUI[count].transform.parent.gameObject.SetActive(true);
+            count++;
+        }
+
+        BoostScoutsLimit scoutBoost = _tileData.SpecialBehaviours.OfType<BoostScoutsLimit>().FirstOrDefault();
+        if (scoutBoost != null)
+        {
+            _incomesUI[count].text = scoutBoost.ScoutsIncrease + "<sprite name=\"Scout_Emoji\">";
+            _incomesUI[count].transform.parent.gameObject.SetActive(true);
+            count++;
+        }
+
+        if (_tileData.SpecialBehaviours.Any(b => b is BoostTownsLimit))
+        {
+            _incomesUI[count].text = "1<sprite name=\"Town_Emoji\">";
+            _incomesUI[count].transform.parent.gameObject.SetActive(true);
+            count++;
+        }
+
         if (_recruitedCarnivalists > 0)
         {
             _incomesUI[count].text = _recruitedCarnivalists + "<sprite name=\"Carnivalist_Emoji\">";
             _incomesUI[count].transform.parent.gameObject.SetActive(true);
             count++;
+        }
+
+        if (_entertainment != null)
+        {
+            _incomesUI[count].text = _entertainment.Points + "<sprite name=\"Point_Emoji\">";
+            _incomesUI[count].transform.parent.gameObject.SetActive(true);
         }
     }
 
@@ -844,6 +850,17 @@ public class Tile : MonoBehaviour
         foreach (IncomeWhenTileClaimed behaviour in _tileData.SpecialBehaviours.OfType<IncomeWhenTileClaimed>())
         {
             behaviour.TileClaimed(this);
+        }
+    }
+
+    public void ListenerOnTileClaimed_BoostByUnclaimedNeighbors(Tile neighbor)
+    {
+        if (_entertainment != null) 
+        {
+            foreach (BoostByUnclaimedNeighbors effect in _entertainment.Data.SpecialEffects.OfType<BoostByUnclaimedNeighbors>())
+            {
+                effect.BoostEnt(_entertainment, neighbor, Transaction.Spent);
+            }
         }
     }
     #endregion

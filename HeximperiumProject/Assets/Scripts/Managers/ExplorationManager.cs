@@ -198,8 +198,8 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
 
         ClearInteractableTiles();
 
-        if (!UIManager.Instance.AreUnitsVisible)
-            UIManager.Instance.UnitsVisibility();
+        if (!UIManager.Instance.AreScoutsVisible)
+            UIManager.Instance.UnitsVisibility("Scouts");
 
         foreach (Scout scout in _scouts)
         {
@@ -276,8 +276,8 @@ public class ExplorationManager : PhaseManager<ExplorationManager>
     {
         if(_currentScoutsCount < _scoutsLimit)
         {
-            if (!UIManager.Instance.AreUnitsVisible)
-                UIManager.Instance.UnitsVisibility();
+            if (!UIManager.Instance.AreScoutsVisible)
+                UIManager.Instance.UnitsVisibility("Scouts");
 
             _currentScout = Instantiate(_scoutPrefab, 
                 tile.transform.position + _scoutPrefab.transform.localPosition,

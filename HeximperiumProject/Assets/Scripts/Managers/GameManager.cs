@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,6 +11,7 @@ public class GameManager : Singleton<GameManager>
     [Header("Game Settings")]
     [SerializeField] private int _turnLimit = 2;
     [SerializeField] private int _baseClaimPerTurn = 4;
+    [SerializeField] private List<int> _entertainPhaseTurns = new();
     [Header("_________________________________________________________")]
     [Header("Interaction Prefabs")]
     [SerializeField] private GameObject _selectionPrefab;
@@ -29,7 +31,7 @@ public class GameManager : Singleton<GameManager>
     private bool _waitingPhaseFinalization;
     private Phase _currentPhase;
     private int _turnCounter = 1;
-    private bool _lastTurn = false;
+    private bool _isLastTurn = false;
     //Game state
     private bool _gamePaused = true;
     private bool _tutorialLockingPhase = false;
@@ -49,6 +51,7 @@ public class GameManager : Singleton<GameManager>
     public event Action OnTileUnselected;
     public event Action OnLastTurnStarted;
     public event Action OnGameFinished;
+    public event Action OnTurnWithEntertainPhase;
     #endregion
 
     #region ACCESSORS
@@ -72,8 +75,9 @@ public class GameManager : Singleton<GameManager>
             UIManager.Instance.UpdateTurnCounterText(1);
         }
     }
-    public bool LastTurn { get => _lastTurn; }
+    public bool IsLastTurn { get => _isLastTurn; }
     public int BaseClaimPerTurn { get => _baseClaimPerTurn; }
+    public List<int> EntertainPhaseTurns { get => _entertainPhaseTurns; }
     #endregion
 
     private void OnEnable() => _inputActions.Player.Enable();
@@ -364,47 +368,51 @@ public class GameManager : Singleton<GameManager>
 
         _waitingPhaseFinalization = false;
 
-        _currentPhase = GetNextPhase(_currentPhase);
-
-        if (_currentPhase == Phase.Entertain)
+        if (_isLastTurn && _currentPhase == Phase.Entertain)
         {
             OnGameFinished?.Invoke();
             GameManager.Instance.GamePaused = true;
             yield break;
         }
 
+        _currentPhase = GetNextPhase(_currentPhase);
+
         //New turn logic
         if (_currentPhase == Phase.Explore)
         {
+            _turnCounter++;
+            if (_entertainPhaseTurns.Contains(_turnCounter))
+                OnTurnWithEntertainPhase?.Invoke();
             if (_turnCounter == _turnLimit)
             {
-                _currentPhase = Phase.Entertain;
+                _isLastTurn = true;
+                OnLastTurnStarted?.Invoke();
             }
-            else
-            {
-                _turnCounter++;
-                if (_turnCounter == _turnLimit)
-                {
-                    _lastTurn = true;
-                    OnLastTurnStarted?.Invoke();
-                }
-                OnNewTurn?.Invoke(_turnCounter);
-                if (_turnCounter == 2)
-                    PopUpManager.Instance.ShowFiltersTutoPopUp();
-            }
+            OnNewTurn?.Invoke(_turnCounter);
+            if (_turnCounter == 2)
+                PopUpManager.Instance.ShowFiltersTutoPopUp();
         }
         InvokePhaseStartEvent(_currentPhase);
     }
 
     private Phase GetNextPhase(Phase currentPhase)
     {
-        return currentPhase switch
+        switch (currentPhase)
         {
-            Phase.Explore => Phase.Expand,
-            Phase.Expand => Phase.Exploit,
-            Phase.Exploit => Phase.Explore,
-            _ => currentPhase
-        };
+            case Phase.Explore:
+                return Phase.Expand;
+            case Phase.Expand:
+                return Phase.Exploit;
+            case Phase.Exploit:
+                if (_entertainPhaseTurns.Contains(_turnCounter))
+                    return Phase.Entertain;
+                else
+                    return Phase.Explore;
+            case Phase.Entertain:
+                return Phase.Explore;
+            default:
+                return currentPhase;
+        }
     }
 
     private void InvokePhaseStartEvent(Phase phase)

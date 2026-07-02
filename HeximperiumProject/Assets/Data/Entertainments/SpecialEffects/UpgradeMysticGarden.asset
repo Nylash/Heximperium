@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 467f53f8a9c42bc4ebd58329173d9990, type: 3}
   m_Name: UpgradeMysticGarden
   m_EditorClassIdentifier: 
-  _boostAmount: 20
+  _originalAsset: {fileID: 0}
+  _boostAmount: 25

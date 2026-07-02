@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -185,8 +186,14 @@ public class PopUpManager : Singleton<PopUpManager>
 
                 switch (obj.tag)
                 {
-                    case "VisibilityUI":
-                        VisibilityPopUp();
+                    case "ShowEntUI":
+                        ShowEntVisibilityPopUp();
+                        break;
+                    case "ShowScoutUI":
+                        ShowScoutVisibilityPopUp();
+                        break;
+                    case "BonusZoneUI":
+                        ShowBonusZoneVisibilityPopUp();
                         break;
                     case "ShowIncomeUI":
                         ShowIncomePopUp();
@@ -803,7 +810,7 @@ public class PopUpManager : Singleton<PopUpManager>
         PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
     }
 
-    private void VisibilityPopUp()
+    private void ShowScoutVisibilityPopUp()
     {
         GameObject popUp;
         popUp = Instantiate(_basePopUp, _popUpParent);
@@ -811,19 +818,39 @@ public class PopUpManager : Singleton<PopUpManager>
 
         #region DETAIL
         TextMeshProUGUI detail = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
-        if (UIManager.Instance.AreUnitsVisible)
-            detail.text = "Hide " +
-                $"{(GameManager.Instance.CurrentPhase == Phase.Entertain ? Family.Entertainment.ToCustomString(true) : "Scouts<sprite name=\"Scout_Emoji\">")} " +
-                "on tiles";
+        if (UIManager.Instance.AreScoutsVisible)
+            detail.text = "Hide Scouts<sprite name=\"Scout_Emoji\"> on tiles";
         else
-            detail.text = "Show " +
-                $"{(GameManager.Instance.CurrentPhase == Phase.Entertain ? Family.Entertainment.ToCustomString(true) : "Scouts<sprite name=\"Scout_Emoji\">")} " +
-                "on tiles";
+            detail.text = "Show Scouts<sprite name=\"Scout_Emoji\"> on tiles";
         ClampTextWidth(detail);
         detail.alignment = TextAlignmentOptions.Center;
         #endregion
 
         PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
+    }
+
+    private void ShowEntVisibilityPopUp() 
+    {
+        GameObject popUp;
+        popUp = Instantiate(_basePopUp, _popUpParent);
+        _popUps.Add(popUp);
+
+        #region DETAIL
+        TextMeshProUGUI detail = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+        if (UIManager.Instance.AreEntVisible)
+            detail.text = $"Hide {Family.Entertainment.ToCustomString(true)} on tiles";
+        else
+            detail.text = $"Show {Family.Entertainment.ToCustomString(true)} on tiles";
+        ClampTextWidth(detail);
+        detail.alignment = TextAlignmentOptions.Center;
+        #endregion
+
+        PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
+    }
+
+    private void ShowBonusZoneVisibilityPopUp()
+    {
+        throw new NotImplementedException();
     }
 
     private void ShowIncomePopUp()
@@ -936,9 +963,20 @@ public class PopUpManager : Singleton<PopUpManager>
         }
         else
         {
+            Dictionary<Tile, int> tilesBoostingEnt = new Dictionary<Tile, int>();
+            //We only check the neighbors because we only have a boosting effect for the neighbors, nothing farther
+            if (tile.Entertainment != null) {
+                foreach (Tile neighbor in tile.Neighbors)
+                {
+                    if (!neighbor)
+                        continue;
+                    if (neighbor.EntImpactedByTile.ContainsKey(tile))
+                        tilesBoostingEnt.Add(neighbor, neighbor.EntImpactedByTile[tile]);
+                }
+            }
             JuiceManager.Instance.VisualizeExploitationCombo(
                 tile.InternalIncomesSources, tile.ExternalIncomesSources, tile.InternalCarnivalistsSources,
-                tile.ImpactedTilesIncomes, tile.ImpactedTilesCarnivalists, tile);
+                tile.ImpactedTilesIncomes, tile.ImpactedTilesCarnivalists, tile.EntImpactedByTile, tilesBoostingEnt, tile);
         }
 
         GameObject popUp;
@@ -1366,10 +1404,13 @@ public class PopUpManager : Singleton<PopUpManager>
 
     private void EntertainmentPopUp(Entertainment ent)
     {
-        JuiceManager.Instance.VisualizeEntertainmentCombo(
-            ent.InternalPointsSources, ent.ExternalPointsSources,
-            ent.Tile.EntImpactedByEntertainment, ent.Tile.EntImpactedByTile,
-            ent.Tile);
+        if (GameManager.Instance.CurrentPhase == Phase.Entertain)
+        {
+            JuiceManager.Instance.VisualizeEntertainmentCombo(
+                ent.InternalPointsSources, ent.ExternalPointsSources,
+                ent.Tile.EntImpactedByEntertainment, ent.Tile.EntImpactedByTile,
+                ent.Tile);
+        }
 
         GameObject popUp;
         popUp = Instantiate(_basePopUp, _popUpParent);
@@ -1770,15 +1811,18 @@ public class PopUpManager : Singleton<PopUpManager>
         Dictionary<Tile, int> predictedInternalCarnivalistsSources;
         Dictionary<Tile, List<ResourceToIntMap>> predictedImpactedTilesIncomes;
         Dictionary<Tile, int> predictedImpactedTilesCarnivalists;
+        Dictionary<Tile, int> predictedEntImpactedByTile;
+        Dictionary<Tile, int> predictedTilesBoostingEnt = new Dictionary<Tile, int>();
         ExploitationManager.Instance.GetPredictedIncomes(button.AssociatedTile, button.InfrastructureData,
             out predictedInc, out predictedExtSources, out predictedIntSources,
             out predictedSelfInc, out predictedCarnivalists, out predictedInternalCarnivalistsSources,
-            out predictedImpactedTilesIncomes, out predictedImpactedTilesCarnivalists);
+            out predictedImpactedTilesIncomes, out predictedImpactedTilesCarnivalists,
+            out predictedEntImpactedByTile, out predictedTilesBoostingEnt);
 
         JuiceManager.Instance.VisualizeExploitationCombo(
             predictedIntSources, predictedExtSources, predictedInternalCarnivalistsSources,
-            predictedImpactedTilesIncomes, predictedImpactedTilesCarnivalists,
-            button.AssociatedTile);
+            predictedImpactedTilesIncomes, predictedImpactedTilesCarnivalists, predictedEntImpactedByTile,
+            predictedTilesBoostingEnt, button.AssociatedTile);
 
         GameObject popUp;
         popUp = Instantiate(_basePopUp, _popUpParent);
@@ -1971,6 +2015,57 @@ public class PopUpManager : Singleton<PopUpManager>
                 }
                 carnivalistsGivenDest.alignment = TextAlignmentOptions.Center;
                 carnivalistsGivenDest.fontStyle = FontStyles.Italic;
+            }
+        }
+        #endregion
+
+        #region BOOSTED ENT
+        if (button.AssociatedTile.EntImpactedByTile.Count > 0 || predictedEntImpactedByTile.Count > 0)
+        {
+            int totalPredictedPoints = 0;
+            foreach (var kvp in predictedEntImpactedByTile)
+            {
+                totalPredictedPoints += kvp.Value;
+            }
+            int totalPoints = 0;
+            foreach (var kvp in button.AssociatedTile.EntImpactedByTile)
+            {
+                totalPoints += kvp.Value;
+            }
+            TextMeshProUGUI boostedEnt = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+            boostedEnt.text += "Provides +" + totalPredictedPoints + "<sprite name=\"Point_Emoji\"> over "
+                + predictedEntImpactedByTile.Count + " " + Family.Entertainment.ToCustomString(predictedEntImpactedByTile.Count > 1);
+            
+            if (totalPredictedPoints != totalPoints)
+            {
+                string hex = ColorUtility.ToHtmlStringRGBA(UIManager.Instance.ColorEnhancementNewEffect);
+                boostedEnt.text += $" <color=#{hex}>(gains +" + (totalPredictedPoints - totalPoints) + "<sprite name=\"Point_Emoji\">)</color>";
+            }
+
+            boostedEnt.alignment = TextAlignmentOptions.Center;
+        }
+        #endregion
+
+        #region BOOSTED ENT DESTINATION
+        if (_showSourcesOnPopUp)
+        {
+            if (button.AssociatedTile.EntImpactedByTile.Count > 0 || predictedEntImpactedByTile.Count > 0)
+            {
+                TextMeshProUGUI boostedEntDest = Instantiate(_text, popUp.transform.GetChild(1).transform).GetComponent<TextMeshProUGUI>();
+                Dictionary<EntertainmentData, int> datas = new Dictionary<EntertainmentData, int>();
+                foreach (var kvp in predictedEntImpactedByTile)
+                {
+                    if (datas.ContainsKey(kvp.Key.Entertainment.Data))
+                        datas[kvp.Key.Entertainment.Data] += kvp.Value;
+                    else
+                        datas.Add(kvp.Key.Entertainment.Data, kvp.Value);
+                }
+                foreach (var kvpBis in datas)
+                {
+                    boostedEntDest.text += "(" + kvpBis.Value + "<sprite name=\"Point_Emoji\"> to " + kvpBis.Key.Type.ToCustomString(false) + ")" + "\n";
+                }
+                boostedEntDest.alignment = TextAlignmentOptions.Center;
+                boostedEntDest.fontStyle = FontStyles.Italic;
             }
         }
         #endregion
