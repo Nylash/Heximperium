@@ -19,6 +19,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TextMeshProUGUI _carnivalistText;
     [SerializeField] private TextMeshProUGUI _scoreText;
     [SerializeField] private Color _colorCantAfford;
+    [SerializeField] private Color _colorCantAffordVFX;
     [SerializeField] private Color _colorIvory;
     [SerializeField] private Color _colorEnhancementNewEffect;
     [Header("_________________________________________________________")]
@@ -200,6 +201,7 @@ public class UIManager : Singleton<UIManager>
     public RectTransform VfxAnchorEndCurtain { get => _vfxAnchorEndCurtain; }
     public bool AreScoutsVisible { get => _areScoutsVisible; }
     public bool AreEntVisible { get => _areEntVisible; }
+    public Color ColorCantAffordVFX { get => _colorCantAffordVFX; }
     #endregion
 
     protected override void OnAwake()

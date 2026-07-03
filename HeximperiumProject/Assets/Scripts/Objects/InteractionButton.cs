@@ -7,18 +7,14 @@ public class InteractionButton : MonoBehaviour
     #endregion
 
     #region CONFIGURATION
-    [Header("_________________________________________________________")]
-    [Header("Back Textures")]
-    [SerializeField] private Texture _textureExplo;
-    [SerializeField] private Texture _textureExpand;
-    [SerializeField] private Texture _textureExploit;
-    [SerializeField] private Texture _textureEntertain;
-    [Header("_________________________________________________________")]
-    [SerializeField] private GameObject _highlightedInteractionPrefab;
+    [SerializeField]
+    private SpriteRenderer _iconRenderer;
+    [SerializeField]
+    private SpriteRenderer _phaseColorRenderer;
     #endregion
 
     #region VARIABLES
-    private SpriteRenderer _renderer;
+
     private Interaction _interaction;
     private Tile _associatedTile;
     private InfrastructureData _infraData;
@@ -37,29 +33,8 @@ public class InteractionButton : MonoBehaviour
     public Scout AssociatedScout { get => _associatedScout; }
     #endregion
 
-    private void Awake()
-    {
-        switch (GameManager.Instance.CurrentPhase)
-        {
-            case Phase.Explore:
-                GetComponent<MeshRenderer>().material.mainTexture = _textureExplo;
-                break;
-            case Phase.Expand:
-                GetComponent<MeshRenderer>().material.mainTexture = _textureExpand;
-                break;
-            case Phase.Exploit:
-                GetComponent<MeshRenderer>().material.mainTexture = _textureExploit;
-                break;
-            case Phase.Entertain:
-                GetComponent<MeshRenderer>().material.mainTexture = _textureEntertain;
-                break;
-        }
-        
-    }
-
     public void Initialize(Tile associatedTile, Interaction action, InfrastructureData infraData = null, EntertainmentData entertainData = null, Scout scout = null)
     {
-        _renderer = GetComponentInChildren<SpriteRenderer>();
         _associatedTile = associatedTile;
         _interaction = action;
 
@@ -94,9 +69,8 @@ public class InteractionButton : MonoBehaviour
     private void InitializeClaim()
     {
         if (!ResourcesManager.Instance.CanAffordClaim(_associatedTile.TileData.ClaimCost))
-            _renderer.color = UIManager.Instance.ColorCantAfford;
-        else
-            _renderer.color = UIManager.Instance.ColorExpand;
+            _iconRenderer.color = UIManager.Instance.ColorCantAfford;
+        _phaseColorRenderer.color = UIManager.Instance.ColorExpand;
         LoadSprite(Interaction.Claim.ToString());
     }
 
@@ -104,9 +78,8 @@ public class InteractionButton : MonoBehaviour
     {
         _scoutData = ExplorationManager.Instance.ScoutData;
         if (ExplorationManager.Instance.CurrentScoutsCount >= ExplorationManager.Instance.ScoutsLimit)
-            _renderer.color = UIManager.Instance.ColorCantAfford;
-        else
-            _renderer.color = UIManager.Instance.ColorExplo;
+            _iconRenderer.color = UIManager.Instance.ColorCantAfford;
+        _phaseColorRenderer.color = UIManager.Instance.ColorExplo;
         LoadSprite(Interaction.Scout.ToString());
     }
 
@@ -116,33 +89,31 @@ public class InteractionButton : MonoBehaviour
         if (!ResourcesManager.Instance.CanAfford(_infraData.Costs) 
             || !ResourcesManager.Instance.CanAffordClaim(_infraData.ClaimCost)
             || !ExploitationManager.Instance.IsInfraAvailable(infraData))
-            _renderer.color = UIManager.Instance.ColorCantAfford;
-        else
+            _iconRenderer.color = UIManager.Instance.ColorCantAfford;
+        switch (infraData.AssociatedPhase)
         {
-            switch (infraData.AssociatedPhase)
-            {
-                case Phase.Explore:
-                    _renderer.color = UIManager.Instance.ColorExplo;
-                    break;
-                case Phase.Expand:
-                    _renderer.color = UIManager.Instance.ColorExpand;
-                    break;
-                case Phase.Exploit:
-                    _renderer.color = UIManager.Instance.ColorExploit;
-                    break;
-                case Phase.Entertain:
-                    _renderer.color = UIManager.Instance.ColorEntertain;
-                    break;
-                default:
-                    break;
-            }
+            case Phase.Explore:
+                _phaseColorRenderer.color = UIManager.Instance.ColorExplo;
+                break;
+            case Phase.Expand:
+                _phaseColorRenderer.color = UIManager.Instance.ColorExpand;
+                break;
+            case Phase.Exploit:
+                _phaseColorRenderer.color = UIManager.Instance.ColorExploit;
+                break;
+            case Phase.Entertain:
+                _phaseColorRenderer.color = UIManager.Instance.ColorEntertain;
+                break;
+            default:
+                break;
         }
-            LoadSprite(infraData.name);
+        LoadSprite(infraData.name);
     }
 
     private void InitializeDestroy()
     {
-        _renderer.color = UIManager.Instance.ColorIvory;
+        _iconRenderer.color = UIManager.Instance.ColorIvory;
+        _phaseColorRenderer.color = UIManager.Instance.ColorCantAfford;
         LoadSprite(Interaction.Destroy.ToString());
     }
 
@@ -150,22 +121,21 @@ public class InteractionButton : MonoBehaviour
     {
         _entertainData = data;
         if (!ResourcesManager.Instance.CanAffordCarnivalist(_entertainData.GetActualCarnivalistCost(_associatedTile)))
-            _renderer.color = UIManager.Instance.ColorCantAfford;
-        else
-            _renderer.color = UIManager.Instance.ColorEntertain;
+            _iconRenderer.color = UIManager.Instance.ColorCantAfford;
+        _phaseColorRenderer.color = UIManager.Instance.ColorEntertain;
         LoadSprite(_entertainData.name);
     }
 
     private void InitializeRedirectScout(Scout scout)
     {
-        _renderer.color = UIManager.Instance.ColorExplo;
+        _phaseColorRenderer.color = UIManager.Instance.ColorExplo;
         _associatedScout = scout;
         LoadSprite(Interaction.RedirectScout.ToString());
     }
 
     private void InitializeRevealAnywhere()
     {
-        _renderer.color = UIManager.Instance.ColorExplo;
+        _phaseColorRenderer.color = UIManager.Instance.ColorExplo;
         LoadSprite(Interaction.RevealAnywhere.ToString());
     }
 
@@ -177,7 +147,7 @@ public class InteractionButton : MonoBehaviour
             Debug.LogError("Sprite not found at path: " + PATH_SPRITES_INTERACTION + spriteName);
             return;
         }
-        _renderer.sprite = sprite;
+        _iconRenderer.sprite = sprite;
     }
 
     public void ShrinkAnimation(bool shrink)

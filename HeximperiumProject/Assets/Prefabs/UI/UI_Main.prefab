@@ -33441,7 +33441,8 @@ MonoBehaviour:
   _srText: {fileID: 9068219591790210569}
   _carnivalistText: {fileID: 5267885453117420470}
   _scoreText: {fileID: 309545220694066425}
-  _colorCantAfford: {r: 0.90943396, g: 0.49246705, b: 0.49246705, a: 1}
+  _colorCantAfford: {r: 0.9056604, g: 0.32039872, b: 0.32039872, a: 1}
+  _colorCantAffordVFX: {r: 0.9098039, g: 0.49411765, b: 0.49411765, a: 1}
   _colorIvory: {r: 1, g: 1, b: 0.9411765, a: 1}
   _colorEnhancementNewEffect: {r: 0.4862745, g: 0.67058825, b: 0.44705883, a: 1}
   _confirmPhaseButtonText: {fileID: 4335767624074561558}

@@ -151,7 +151,7 @@ public class JuiceManager : Singleton<JuiceManager>
     private void CarnivalistSpent(Tile tile, int value)
     {
         if (tile)
-            PlayResourceVFX(tile, value, _carnivalistMat, UIManager.Instance.ColorCantAfford);
+            PlayResourceVFX(tile, value, _carnivalistMat, UIManager.Instance.ColorCantAffordVFX);
         else
             PlayUIResourceVFX(value, ExtendedResource.Carnivalist, UIManager.Instance.VfxAnchorCarnivalist, Transaction.Spent);
     }
@@ -629,7 +629,7 @@ public class JuiceManager : Singleton<JuiceManager>
 
             foreach (var (tile, points, isGain) in kvp.Value)
             {
-                Color color = isGain ? default(Color) : UIManager.Instance.ColorCantAfford;
+                Color color = isGain ? default(Color) : UIManager.Instance.ColorCantAffordVFX;
                 PlayResourceVFX(tile, points, _scoreMat, color);
             }
         }
@@ -685,7 +685,7 @@ public class JuiceManager : Singleton<JuiceManager>
         // Joue tout immédiatement sans délai
         foreach (var (tile, points, isGain) in _pendingWaveVFX)
         {
-            Color color = isGain ? default(Color) : UIManager.Instance.ColorCantAfford;
+            Color color = isGain ? default(Color) : UIManager.Instance.ColorCantAffordVFX;
             PlayResourceVFX(tile, points, _scoreMat, color);
         }
 
