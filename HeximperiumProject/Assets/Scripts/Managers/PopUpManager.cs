@@ -192,9 +192,6 @@ public class PopUpManager : Singleton<PopUpManager>
                     case "ShowScoutUI":
                         ShowScoutVisibilityPopUp();
                         break;
-                    case "BonusZoneUI":
-                        ShowBonusZoneVisibilityPopUp();
-                        break;
                     case "ShowIncomeUI":
                         ShowIncomePopUp();
                         break;
@@ -846,11 +843,6 @@ public class PopUpManager : Singleton<PopUpManager>
         #endregion
 
         PositionPopup(popUp.GetComponent<RectTransform>(), _objectUnderMouse.GetComponent<RectTransform>(), true);
-    }
-
-    private void ShowBonusZoneVisibilityPopUp()
-    {
-        throw new NotImplementedException();
     }
 
     private void ShowIncomePopUp()
