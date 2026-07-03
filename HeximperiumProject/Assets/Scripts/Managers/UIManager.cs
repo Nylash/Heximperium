@@ -17,6 +17,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TextMeshProUGUI _goldText;
     [SerializeField] private TextMeshProUGUI _srText;
     [SerializeField] private TextMeshProUGUI _carnivalistText;
+    [SerializeField] private TextMeshProUGUI _scoreText;
     [SerializeField] private Color _colorCantAfford;
     [SerializeField] private Color _colorIvory;
     [SerializeField] private Color _colorEnhancementNewEffect;
@@ -65,10 +66,6 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject _tradeMenu;
     [SerializeField] private GameObject _buyButton;
     [SerializeField] private GameObject _sellButton;
-    [Header("_________________________________________________________")]
-    [Header("Score")]
-    [SerializeField] private Animator _scoreUI;
-    [SerializeField] private TextMeshProUGUI _scoreText;
     [Header("_________________________________________________________")]
     [Header("Upgrades Menu")]
     [SerializeField] private GameObject _upgradesMenuButton;
@@ -461,7 +458,6 @@ public class UIManager : Singleton<UIManager>
                 break;
             case Phase.Entertain:
                 _popUpEntertainPhase.SetTrigger("Hide");
-                _scoreUI.SetTrigger("Hide");
                 break;
             default:
                 break;
@@ -504,7 +500,6 @@ public class UIManager : Singleton<UIManager>
                 _popUpEntertainPhase.SetTrigger("Show");
                 if (!_areEntVisible)
                     UnitsVisibility("Entertainments");
-                _scoreUI.SetTrigger("Show");
                 break;
         }
     }
