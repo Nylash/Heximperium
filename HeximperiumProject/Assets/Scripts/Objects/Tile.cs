@@ -16,8 +16,11 @@ public class Tile : MonoBehaviour
     [SerializeField] private GameObject _highlightPrefab;
     [SerializeField] private Transform _visual;
     [SerializeField] private SpriteRenderer _infraLvlRenderer;
-    [SerializeField] private GameObject _maxInfraReached;
-    [SerializeField] private Sprite[] _spriteInfraLvl = new Sprite[3];
+    [SerializeField] private Sprite _infraLvl1_2;
+    [SerializeField] private Sprite _infraLvl1_4;
+    [SerializeField] private Sprite _infraLvl2_4;
+    [SerializeField] private Sprite _infraLvl3_4;
+    [SerializeField] private Sprite _infraLvlMax;
     [SerializeField] private Animator _claimTintAnimator;
     [SerializeField] private TextMeshPro[] _incomesUI = new TextMeshPro[6];
     #endregion
@@ -387,22 +390,7 @@ public class Tile : MonoBehaviour
     //Change tile's visual based on the tile data
     public void UpdateVisual()
     {
-        if (_tileData is InfrastructureData infraData)
-        {
-            _infraLvlRenderer.sprite = _spriteInfraLvl[infraData.InfrastructureLevel - 1];
-            if (_tileData.AvailableInfrastructures.Count == 0)
-            {
-                _maxInfraReached.SetActive(true);
-                PopUpManager.Instance.ShowInfraLevelTutoPopUp();
-            }
-            else
-                _maxInfraReached.SetActive(false);
-        }   
-        else
-        {
-            _infraLvlRenderer.sprite = null;
-            _maxInfraReached.SetActive(false);
-        }
+        InfraLevelVisual();
 
         if (_tileData is HazardousTileData)
             _claimTintAnimator.gameObject.SetActive(false);
@@ -421,6 +409,51 @@ public class Tile : MonoBehaviour
             }
         }
         Debug.LogWarning("No visual asset found for this initial tile data");
+    }
+
+    private void InfraLevelVisual()
+    {
+        if (_tileData is InfrastructureData infraData)
+        {
+            if (infraData.IsTown)
+            {
+                switch (infraData.InfrastructureLevel)
+                {
+                    case 1:
+                        _infraLvlRenderer.sprite = _infraLvl1_4;
+                        break;
+                    case 2:
+                        _infraLvlRenderer.sprite = _infraLvl2_4;
+                        break;
+                    case 3:
+                        _infraLvlRenderer.sprite = _infraLvl3_4;
+                        break;
+                    case 4:
+                        _infraLvlRenderer.sprite = _infraLvlMax;
+                        PopUpManager.Instance.ShowInfraLevelTutoPopUp();
+                        break;
+                    default:
+                        Debug.LogWarning("No visual asset found for this town level : " + infraData.InfrastructureLevel);
+                        break;
+                }
+            }
+            else
+            {
+                switch (infraData.InfrastructureLevel)
+                {
+                    case 1:
+                        _infraLvlRenderer.sprite = _infraLvl1_2;
+                        break;
+                    case 2:
+                        _infraLvlRenderer.sprite = _infraLvlMax;
+                        PopUpManager.Instance.ShowInfraLevelTutoPopUp();
+                        break;
+                    default:
+                        Debug.LogWarning("No visual asset found for this basic infra level : " + infraData.InfrastructureLevel);
+                        break;
+                }
+            }
+        }
     }
 
     public void Highlight(bool show)

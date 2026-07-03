@@ -160,6 +160,9 @@ public class GameManager : Singleton<GameManager>
 
     private void Initializer()
     {
+        // Use this return to avoid initializing the game when generating a map in the editor
+        //return;
+
         Tile centralTile;
 
         if (!MapManager.Instance.Tiles.TryGetValue(Vector2.zero, out centralTile))
