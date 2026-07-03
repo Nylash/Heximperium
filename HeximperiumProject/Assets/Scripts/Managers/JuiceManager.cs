@@ -42,6 +42,8 @@ public class JuiceManager : Singleton<JuiceManager>
     [SerializeField] float _waveRingDelay = 0.25f;
     #endregion
 
+    private Color WHITE = new Color(1f, 1f, 1f, 1f);
+
     private GameObject _popUpVisualizingCombo;
     private bool _playingIncomingComboVFX;
     private bool _playingOutgoingComboVFX;
@@ -85,25 +87,25 @@ public class JuiceManager : Singleton<JuiceManager>
         {
             case ExtendedResource.Gold:
                 if (tile)
-                    PlayResourceVFX(tile, value, _goldMat, UIManager.Instance.ColorExploit);
+                    PlayResourceVFX(tile, value, _goldMat);
                 else
                     PlayUIResourceVFX(value, ExtendedResource.Gold, UIManager.Instance.VfxAnchorGold, Transaction.Gain);
                 break;
             case ExtendedResource.SpecialResources:
                 if (tile)
-                    PlayResourceVFX(tile, value, _srMat, UIManager.Instance.ColorExploit);
+                    PlayResourceVFX(tile, value, _srMat);
                 else
                     PlayUIResourceVFX(value, ExtendedResource.SpecialResources, UIManager.Instance.VfxAnchorSR, Transaction.Gain);
                 break;
             case ExtendedResource.Claim:
                 if (tile)
-                    PlayResourceVFX(tile, value, _claimMat, UIManager.Instance.ColorExpand);
+                    PlayResourceVFX(tile, value, _claimMat);
                 else
                     PlayUIResourceVFX(value, ExtendedResource.Claim, UIManager.Instance.VfxAnchorClaim, Transaction.Gain);
                 break;
             case ExtendedResource.Carnivalist:
                 if (tile)
-                    PlayResourceVFX(tile, value, _carnivalistMat, UIManager.Instance.ColorEntertain);
+                    PlayResourceVFX(tile, value, _carnivalistMat);
                 else
                     PlayUIResourceVFX(value, ExtendedResource.Carnivalist, UIManager.Instance.VfxAnchorCarnivalist, Transaction.Gain);
                 break;
@@ -128,8 +130,10 @@ public class JuiceManager : Singleton<JuiceManager>
         BeginWaveFrom(tile);
     }
 
-    private void PlayResourceVFX(Tile tile, int value, Material mat, Color color)
+    private void PlayResourceVFX(Tile tile, int value, Material mat, Color color = default)
     {
+        if (color == default)
+            color = WHITE;
         GameObject vfx = GameObject.Instantiate(_resourceVFX, _resourceVFX.transform.position + tile.transform.position, _resourceVFX.transform.rotation);
 
         ParticleSystem particleSystem = vfx.GetComponent<ParticleSystem>();
@@ -625,7 +629,7 @@ public class JuiceManager : Singleton<JuiceManager>
 
             foreach (var (tile, points, isGain) in kvp.Value)
             {
-                Color color = isGain ? UIManager.Instance.ColorEntertain : UIManager.Instance.ColorCantAfford;
+                Color color = isGain ? default(Color) : UIManager.Instance.ColorCantAfford;
                 PlayResourceVFX(tile, points, _scoreMat, color);
             }
         }
@@ -681,7 +685,7 @@ public class JuiceManager : Singleton<JuiceManager>
         // Joue tout immédiatement sans délai
         foreach (var (tile, points, isGain) in _pendingWaveVFX)
         {
-            Color color = isGain ? UIManager.Instance.ColorEntertain : UIManager.Instance.ColorCantAfford;
+            Color color = isGain ? default(Color) : UIManager.Instance.ColorCantAfford;
             PlayResourceVFX(tile, points, _scoreMat, color);
         }
 
