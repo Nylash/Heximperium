@@ -250,29 +250,29 @@ public class Scout : MonoBehaviour
         switch (_lifeHints.Count)
         {
             case 1:
-                _lifeHints[0].transform.localPosition = new Vector3(0, -3.5f, -0.01f);
+                _lifeHints[0].transform.localPosition = new Vector3(0, -3.85f, -0.01f);
                 break;
             case 2:
-                _lifeHints[0].transform.localPosition = new Vector3(0.75f, -3.1f, -0.01f);
-                _lifeHints[1].transform.localPosition = new Vector3(-0.75f, -3.1f, -0.01f);
+                _lifeHints[0].transform.localPosition = new Vector3(0.75f, -3.5f, -0.01f);
+                _lifeHints[1].transform.localPosition = new Vector3(-0.75f, -3.5f, -0.01f);
                 break;
             case 3:
-                _lifeHints[0].transform.localPosition = new Vector3(0, -3.5f, -0.01f);
-                _lifeHints[1].transform.localPosition = new Vector3(1.5f, -2.75f, -0.01f);
-                _lifeHints[2].transform.localPosition = new Vector3(-1.5f, -2.75f, -0.01f);
+                _lifeHints[0].transform.localPosition = new Vector3(0, -3.85f, -0.01f);
+                _lifeHints[1].transform.localPosition = new Vector3(1.5f, -3f, -0.01f);
+                _lifeHints[2].transform.localPosition = new Vector3(-1.5f, -3f, -0.01f);
                 break;
             case 4:
-                _lifeHints[0].transform.localPosition = new Vector3(0.75f, -3.1f, -0.01f);
-                _lifeHints[1].transform.localPosition = new Vector3(-0.75f, -3.1f, -0.01f);
-                _lifeHints[2].transform.localPosition = new Vector3(2.25f, -2.35f, -0.01f);
-                _lifeHints[3].transform.localPosition = new Vector3(-2.25f, -2.35f, -0.01f);
+                _lifeHints[0].transform.localPosition = new Vector3(0.75f, -3.5f, -0.01f);
+                _lifeHints[1].transform.localPosition = new Vector3(-0.75f, -3.5f, -0.01f);
+                _lifeHints[2].transform.localPosition = new Vector3(2.25f, -2.65f, -0.01f);
+                _lifeHints[3].transform.localPosition = new Vector3(-2.25f, -2.65f, -0.01f);
                 break;
             case 5:
-                _lifeHints[0].transform.localPosition = new Vector3(0, -3.5f, -0.01f);
-                _lifeHints[1].transform.localPosition = new Vector3(1.5f, -2.75f, -0.01f);
-                _lifeHints[2].transform.localPosition = new Vector3(-1.5f, -2.75f, -0.01f);
-                _lifeHints[3].transform.localPosition = new Vector3(3, -2, -0.01f);
-                _lifeHints[4].transform.localPosition = new Vector3(-3, -2, -0.01f);
+                _lifeHints[0].transform.localPosition = new Vector3(0, -3.85f, -0.01f);
+                _lifeHints[1].transform.localPosition = new Vector3(1.5f, -3f, -0.01f);
+                _lifeHints[2].transform.localPosition = new Vector3(-1.5f, -3f, -0.01f);
+                _lifeHints[3].transform.localPosition = new Vector3(3, -2.15f, -0.01f);
+                _lifeHints[4].transform.localPosition = new Vector3(-3, -2.15f, -0.01f);
                 break;
             default:
                 Debug.LogError("Too many life hints");
