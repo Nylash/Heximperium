@@ -3567,7 +3567,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a02e2b068d10f2844977fe291d8647c9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c40d9cb276778004eb1047c94f878fed, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -25613,7 +25613,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a02e2b068d10f2844977fe291d8647c9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ba8f40ab764ba484f92744cd678c78c0, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -33515,11 +33515,11 @@ MonoBehaviour:
   _animatorExploit: {fileID: 7093965340573126536}
   _animatorEntertain: {fileID: 984184265697183236}
   _scoutsVisibilityButton: {fileID: 7973249229002190114}
-  _scoutsVisibilityOff: {fileID: 21300000, guid: a02e2b068d10f2844977fe291d8647c9, type: 3}
-  _scoutsVisibilityOn: {fileID: 21300000, guid: 072f11135fe3b91428b8dd80a96379ad, type: 3}
+  _scoutsVisibilityOff: {fileID: 21300000, guid: ba8f40ab764ba484f92744cd678c78c0, type: 3}
+  _scoutsVisibilityOn: {fileID: 21300000, guid: 8c3db7562439e054d883d5732eb67613, type: 3}
   _entVisibilityButton: {fileID: 6626249541166139676}
-  _entVisibilityOff: {fileID: 21300000, guid: a02e2b068d10f2844977fe291d8647c9, type: 3}
-  _entVisibilityOn: {fileID: 21300000, guid: 072f11135fe3b91428b8dd80a96379ad, type: 3}
+  _entVisibilityOff: {fileID: 21300000, guid: c40d9cb276778004eb1047c94f878fed, type: 3}
+  _entVisibilityOn: {fileID: 21300000, guid: 224e2b38b11f2c141a9a47385f969477, type: 3}
   _showIncomeButton: {fileID: 3894624408607281177}
   _showIncomeOff: {fileID: 21300000, guid: 304fe56d58a109b4c85a286a4090785c, type: 3}
   _showIncomeOn: {fileID: 21300000, guid: fd6ccb26178d27444a733bffcb6026a2, type: 3}
