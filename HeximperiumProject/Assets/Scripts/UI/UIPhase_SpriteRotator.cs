@@ -71,7 +71,7 @@ public class UIPhase_SpriteRotator : MonoBehaviour
 
         if (_inTurnWithEntertainPhase && GameManager.Instance.CurrentPhase == Phase.Explore)
         {
-            SetSouthSprite(_scoreImg, UIManager.Instance.ColorEntertain);
+            SetSouthSprite(_scoreImg);
             _inTurnWithEntertainPhase = false;
             _waitingNextExplorePhaseEnd = true;
             return;
@@ -84,14 +84,13 @@ public class UIPhase_SpriteRotator : MonoBehaviour
             return;
 
         Image currentEast = SlotAt(3);
-        SetSouthSprite(currentEast.sprite, currentEast.color);
+        SetSouthSprite(currentEast.sprite);
         _waitingNextExplorePhaseEnd = false;
     }
 
-    private void SetSouthSprite(Sprite sprite, Color color)
+    private void SetSouthSprite(Sprite sprite)
     {
         CurrentSouth.sprite = sprite;
-        CurrentSouth.color = color;
     }
 
     public void HideSpritesForLastTurn()
