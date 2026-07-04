@@ -67,6 +67,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject _tradeMenu;
     [SerializeField] private GameObject _buyButton;
     [SerializeField] private GameObject _sellButton;
+    [SerializeField] private GameObject _buyClaimButton;
     [Header("_________________________________________________________")]
     [Header("Upgrades Menu")]
     [SerializeField] private GameObject _upgradesMenuButton;
@@ -346,6 +347,16 @@ public class UIManager : Singleton<UIManager>
         else
         {
             foreach (TextMeshProUGUI text in _sellButton.GetComponentsInChildren<TextMeshProUGUI>())
+                text.color = _colorIvory;
+        }
+        if (!ResourcesManager.Instance.CanAfford(ResourcesManager.Instance.BuyClaimCost))
+        {
+            foreach (TextMeshProUGUI text in _buyClaimButton.GetComponentsInChildren<TextMeshProUGUI>())
+                text.color = _colorCantAfford;
+        }
+        else
+        {
+            foreach (TextMeshProUGUI text in _buyClaimButton.GetComponentsInChildren<TextMeshProUGUI>())
                 text.color = _colorIvory;
         }
     }

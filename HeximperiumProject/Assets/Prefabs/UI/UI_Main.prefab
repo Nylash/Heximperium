@@ -33406,6 +33406,7 @@ MonoBehaviour:
   _tradeMenu: {fileID: 3004278509888641597}
   _buyButton: {fileID: 8159433260962236379}
   _sellButton: {fileID: 5698359097496889589}
+  _buyClaimButton: {fileID: 2260407849398461887}
   _upgradesMenuButton: {fileID: 4493922954641602480}
   _upgradesMenu: {fileID: 1091653452127817214}
   _counterForNextUpgrade: {fileID: 7631796820580561309}
