@@ -52,6 +52,11 @@ public class CameraManager : Singleton<CameraManager>
     //Tutorial variables
     private Vector2 _lastPositionEventXZ;
     private float _lastZoomEventY;
+
+    public float CameraMovementSpeed { get => _cameraMovementSpeed; set => _cameraMovementSpeed = value; }
+    public float CameraDragSpeed { get => _cameraDragSpeed; set => _cameraDragSpeed = value; }
+    public float EdgePanSpeed { get => _edgePanSpeed; set => _edgePanSpeed = value; }
+    public float CameraZoomSpeed { get => _cameraZoomSpeed; set => _cameraZoomSpeed = value; }
     #endregion
 
     #region EVENTS

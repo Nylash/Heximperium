@@ -10,13 +10,13 @@ public class PopUpManager : Singleton<PopUpManager>
     #region CONSTANTS
     const float REF_WIDTH = 1920f;
     const string VERSION_KEY = "V0.1";
-    const string INFRA_LVL_TUTO_KEY = "InfraLvlTutoShown" + VERSION_KEY;
-    const string REMOVING_INFRA_TUTO_KEY = "RemoveInfraTutoShown" + VERSION_KEY;
-    const string LOCK_POPUP_TUTO_KEY = "LockPopupTutoShown" + VERSION_KEY;
-    const string UPGRADE_TUTO_KEY = "UpgradeTutoShown" + VERSION_KEY;
-    const string SAVINGS_TUTO_KEY = "SavingsTutoShown" + VERSION_KEY;
-    const string FILTERS_TUTO_KEY = "FiltersTutoShown" + VERSION_KEY;
-    const string TRADE_TUTO_KEY = "TradeTutoShown" + VERSION_KEY;
+    public const string INFRA_LVL_TUTO_KEY = "InfraLvlTutoShown" + VERSION_KEY;
+    public const string LOCK_POPUP_TUTO_KEY = "LockPopupTutoShown" + VERSION_KEY;
+    public const string REMOVING_INFRA_TUTO_KEY = "RemoveInfraTutoShown" + VERSION_KEY;
+    public const string UPGRADE_TUTO_KEY = "UpgradeTutoShown" + VERSION_KEY;
+    public const string SAVINGS_TUTO_KEY = "SavingsTutoShown" + VERSION_KEY;
+    public const string FILTERS_TUTO_KEY = "FiltersTutoShown" + VERSION_KEY;
+    public const string TRADE_TUTO_KEY = "TradeTutoShown" + VERSION_KEY;
     #endregion
 
     #region CONFIGURATION
@@ -74,6 +74,9 @@ public class PopUpManager : Singleton<PopUpManager>
 
     public Dictionary<GameObject, Button> LockedPopUps { get => _lockedPopUps; }
     public bool ShowSourcesOnPopUp { get => _showSourcesOnPopUp; set => _showSourcesOnPopUp = value; }
+    public float DurationForLockingPopup { get => _durationForLockingPopup; set => _durationForLockingPopup = value; }
+    public float DurationHoverForUI { get => _durationHoverForUI; set => _durationHoverForUI = value; }
+    public float SurvivablePopupDuration { get => _survivablePopupDuration; set => _survivablePopupDuration = value; }
     #endregion
 
     private void Start()

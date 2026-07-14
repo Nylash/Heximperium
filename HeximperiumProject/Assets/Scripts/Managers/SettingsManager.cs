@@ -14,6 +14,18 @@ public class SettingsManager : Singleton<SettingsManager>
         }
     }
 
+    public void ResetTutorials()
+    {
+        PlayerPrefs.DeleteKey(PopUpManager.INFRA_LVL_TUTO_KEY);
+        PlayerPrefs.DeleteKey(PopUpManager.LOCK_POPUP_TUTO_KEY);
+        PlayerPrefs.DeleteKey(PopUpManager.REMOVING_INFRA_TUTO_KEY);
+        PlayerPrefs.DeleteKey(PopUpManager.UPGRADE_TUTO_KEY);
+        PlayerPrefs.DeleteKey(PopUpManager.SAVINGS_TUTO_KEY);
+        PlayerPrefs.DeleteKey(PopUpManager.FILTERS_TUTO_KEY);
+        PlayerPrefs.DeleteKey(PopUpManager.TRADE_TUTO_KEY);
+    }
+
+    #region SOUNDS
     public void MasterVolumeUpdate(Single value)
     {
         if (SoundsManager.Instance != null)
@@ -21,4 +33,84 @@ public class SettingsManager : Singleton<SettingsManager>
             SoundsManager.Instance.MasterVolume = value;
         }
     }
+    #endregion
+
+    #region CAMERA
+    public void CameraMovementSpeedUpdate(Single value)
+    {
+        if (CameraManager.Instance != null)
+        {
+            CameraManager.Instance.CameraMovementSpeed = value;
+        }
+    }
+
+    public void CameraDragSpeedUpdate(Single value)
+    {
+        if (CameraManager.Instance != null)
+        {
+            CameraManager.Instance.CameraDragSpeed = value;
+        }
+    }
+
+    public void CameraEdgePanSpeedUpdate(Single value)
+    {
+        if (CameraManager.Instance != null)
+        {
+            CameraManager.Instance.EdgePanSpeed = value;
+        }
+    }
+
+    public void CameraZoomSpeedUpdate(Single value)
+    {
+        if (CameraManager.Instance != null)
+        {
+            CameraManager.Instance.CameraZoomSpeed = value;
+        }
+    }
+    #endregion
+
+    #region POPUPS
+    public void PopUpTimeForLockUpdate(Single value)
+    {
+        if (PopUpManager.Instance != null)
+        {
+            PopUpManager.Instance.DurationForLockingPopup = value;
+        }
+    }
+
+    public void PopUpTimeForSpawnUpdate(Single value)
+    {
+        if (PopUpManager.Instance != null)
+        {
+            PopUpManager.Instance.DurationHoverForUI = value;
+        }
+    }
+
+    public void PopUpSurvivingDurationUpdate(Single value)
+    {
+        if (PopUpManager.Instance != null)
+        {
+            PopUpManager.Instance.SurvivablePopupDuration = value;
+        }
+    }
+    #endregion
+
+    #region SCREEN
+    public void SetResolution()
+    {
+        if (Screen.fullScreen)
+        {
+            Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, true);
+        }
+        else
+        {
+            Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, false);
+        }
+    }
+
+    public void SetFullScreen()
+    {
+        Screen.fullScreen = !Screen.fullScreen;
+    }
+    #endregion
 }
