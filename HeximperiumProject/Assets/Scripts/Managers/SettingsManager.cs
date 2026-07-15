@@ -26,6 +26,7 @@ public class SettingsManager : Singleton<SettingsManager>
         //GRAPHICS
         FilterAvailableResolutions();
         bool isFullscreen = Screen.fullScreen;
+
         if (PlayerPrefs.HasKey(FULLSCREEN_KEY))
         {
             isFullscreen = PlayerPrefs.GetInt(FULLSCREEN_KEY) == 1;
@@ -186,7 +187,7 @@ public class SettingsManager : Singleton<SettingsManager>
     public void SetFullScreen(bool fullscreen)
     {
         Screen.fullScreen = fullscreen;
-        PlayerPrefs.SetInt(FULLSCREEN_KEY, Screen.fullScreen ? 1 : 0);
+        PlayerPrefs.SetInt(FULLSCREEN_KEY, fullscreen ? 1 : 0);
         PlayerPrefs.Save();
     }
 

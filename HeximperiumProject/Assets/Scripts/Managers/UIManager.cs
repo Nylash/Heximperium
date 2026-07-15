@@ -605,7 +605,7 @@ public class UIManager : Singleton<UIManager>
             GameManager.Instance.GamePaused = false;
             PopUpManager.Instance.ResetPopUp(null);
             if (_settingsMenu.activeSelf)
-                _settingsMenu.GetComponent<Animator>().SetTrigger("Hide");
+                _settingsMenu.SetActive(false);
         }
         else
         {
