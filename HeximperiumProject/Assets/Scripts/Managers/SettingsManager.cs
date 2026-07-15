@@ -4,13 +4,25 @@ using UnityEngine.UI;
 
 public class SettingsManager : Singleton<SettingsManager>
 {
+    [Header("_________________________________________________________")]
+    [Header("Audio")]
     [SerializeField] private Slider _masterVolume;
+    [SerializeField] private Slider _effectsVolume;
+    [SerializeField] private Slider _musicVolume;
 
     protected override void OnAwake()
     {
         if (PlayerPrefs.HasKey(SoundsManager.MASTER_VOLUME_KEY))
         {
             _masterVolume.value = PlayerPrefs.GetFloat(SoundsManager.MASTER_VOLUME_KEY);
+        }
+        if (PlayerPrefs.HasKey(SoundsManager.EFFECTS_VOLUME_KEY))
+        {
+            _effectsVolume.value = PlayerPrefs.GetFloat(SoundsManager.EFFECTS_VOLUME_KEY);
+        }
+        if (PlayerPrefs.HasKey(SoundsManager.MUSIC_VOLUME_KEY))
+        {
+            _musicVolume.value = PlayerPrefs.GetFloat(SoundsManager.MUSIC_VOLUME_KEY);
         }
     }
 
@@ -31,6 +43,22 @@ public class SettingsManager : Singleton<SettingsManager>
         if (SoundsManager.Instance != null)
         {
             SoundsManager.Instance.MasterVolume = value;
+        }
+    }
+
+    public void EffectsVolumeUpdate(Single value)
+    {
+        if (SoundsManager.Instance != null)
+        {
+            SoundsManager.Instance.EffectsVolume = value;
+        }
+    }
+
+    public void MusicVolumeUpdate(Single value)
+    {
+        if (SoundsManager.Instance != null)
+        {
+            SoundsManager.Instance.MusicVolume = value;
         }
     }
     #endregion

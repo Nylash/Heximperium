@@ -15611,7 +15611,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6487928643354706725}
         m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
-        m_MethodName: MasterVolumeUpdate
+        m_MethodName: EffectsVolumeUpdate
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -18268,7 +18268,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6487928643354706725}
         m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
-        m_MethodName: MasterVolumeUpdate
+        m_MethodName: MusicVolumeUpdate
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -42006,6 +42006,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SettingsManager
   _persistentSingleton: 0
   _masterVolume: {fileID: 1995200357383953496}
+  _effectsVolume: {fileID: 3842494433095855179}
+  _musicVolume: {fileID: 7043962878527919091}
 --- !u!223 &6794449871484859327
 Canvas:
   m_ObjectHideFlags: 0
