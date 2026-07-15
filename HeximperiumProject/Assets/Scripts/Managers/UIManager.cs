@@ -51,6 +51,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject _confirmQuit;
     [SerializeField] private GameObject _confirmMainMenu;
     [SerializeField] private GameObject _endMenu;
+    [SerializeField] private GameObject _settingsMenu;
     [Header("_________________________________________________________")]
     [Header("End Menu")]
     [SerializeField] private UI_ScoreCounter _minstrelCounter;
@@ -609,6 +610,18 @@ public class UIManager : Singleton<UIManager>
             _menu.SetActive(true);
             GameManager.Instance.GamePaused = true;
             PopUpManager.Instance.ResetPopUp(null);
+        }
+    }
+
+    public void SettingsMenu()
+    {
+        if (_settingsMenu.activeSelf)
+        {
+            _settingsMenu.GetComponent<Animator>().SetTrigger("Hide");
+        }
+        else
+        {
+            _settingsMenu.SetActive(true);
         }
     }
 
