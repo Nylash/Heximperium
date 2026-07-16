@@ -6788,16 +6788,16 @@ MonoBehaviour:
   m_FillRect: {fileID: 4694900497851883430}
   m_HandleRect: {fileID: 3734545752302993207}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 2
+  m_MinValue: 5
+  m_MaxValue: 50
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 25
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6487928643354706725}
         m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
-        m_MethodName: MasterVolumeUpdate
+        m_MethodName: CameraZoomSpeedUpdate
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15112,16 +15112,16 @@ MonoBehaviour:
   m_FillRect: {fileID: 1926173035736411615}
   m_HandleRect: {fileID: 1267393269136520676}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 2
+  m_MinValue: 0.1
+  m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6487928643354706725}
         m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
-        m_MethodName: MasterVolumeUpdate
+        m_MethodName: CameraDragSpeedUpdate
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -15615,7 +15615,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 7300592095199481343}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 2
+  m_MaxValue: 1
   m_WholeNumbers: 0
   m_Value: 1
   m_OnValueChanged:
@@ -18272,7 +18272,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1420238891338323858}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 2
+  m_MaxValue: 1
   m_WholeNumbers: 0
   m_Value: 1
   m_OnValueChanged:
@@ -23482,16 +23482,16 @@ MonoBehaviour:
   m_FillRect: {fileID: 6179580893244858908}
   m_HandleRect: {fileID: 1605308834159430882}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 2
+  m_MinValue: 1
+  m_MaxValue: 6
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 3
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6487928643354706725}
         m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
-        m_MethodName: MasterVolumeUpdate
+        m_MethodName: CameraEdgePanSpeedUpdate
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -35724,16 +35724,16 @@ MonoBehaviour:
   m_FillRect: {fileID: 8897390953250945614}
   m_HandleRect: {fileID: 7841509620565019547}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 2
+  m_MinValue: 1
+  m_MaxValue: 10
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 5
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6487928643354706725}
         m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
-        m_MethodName: MasterVolumeUpdate
+        m_MethodName: CameraMovementSpeedUpdate
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -42034,6 +42034,10 @@ MonoBehaviour:
   _musicVolume: {fileID: 7043962878527919091}
   _resolutionDropdown: {fileID: 2130456409728594031}
   _fullscreenToggle: {fileID: 6931023678143757344}
+  _keyboardPanSpeed: {fileID: 1341750405269180047}
+  _edgePanSpeed: {fileID: 545165015754478704}
+  _dragSpeed: {fileID: 3477618882213114646}
+  _zoomSpeed: {fileID: 2229110380850628132}
 --- !u!223 &6794449871484859327
 Canvas:
   m_ObjectHideFlags: 0

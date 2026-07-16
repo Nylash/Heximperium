@@ -89,6 +89,26 @@ public class CameraManager : Singleton<CameraManager>
         _inputActions.Player.MouseMovement.performed += ctx => DragCamera();
 
         _inputActions.Player.CenterCam.performed += ctx => CenterCam();
+
+        if (SettingsManager.Instance != null)
+        {
+            if (PlayerPrefs.HasKey(SettingsManager.CAMERA_MOVEMENT_SPEED_KEY))
+            {
+                _cameraMovementSpeed = PlayerPrefs.GetFloat(SettingsManager.CAMERA_MOVEMENT_SPEED_KEY);
+            }
+            if (PlayerPrefs.HasKey(SettingsManager.CAMERA_DRAG_SPEED_KEY))
+            {
+                _cameraDragSpeed = PlayerPrefs.GetFloat(SettingsManager.CAMERA_DRAG_SPEED_KEY);
+            }
+            if (PlayerPrefs.HasKey(SettingsManager.CAMERA_EDGE_PAN_SPEED_KEY))
+            {
+                _edgePanSpeed = PlayerPrefs.GetFloat(SettingsManager.CAMERA_EDGE_PAN_SPEED_KEY);
+            }
+            if (PlayerPrefs.HasKey(SettingsManager.CAMERA_ZOOM_SPEED_KEY))
+            {
+                _cameraZoomSpeed = PlayerPrefs.GetFloat(SettingsManager.CAMERA_ZOOM_SPEED_KEY);
+            }
+        }
     }
 
     private void Start()

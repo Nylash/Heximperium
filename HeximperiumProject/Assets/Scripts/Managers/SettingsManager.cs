@@ -10,6 +10,10 @@ public class SettingsManager : Singleton<SettingsManager>
     const string RESOLUTION_WIDTH_KEY = "ScreenWidthResolution";
     const string RESOLUTION_HEIGHT_KEY = "ScreenHeightResolution";
     const string FULLSCREEN_KEY = "Fullscreen";
+    public const string CAMERA_MOVEMENT_SPEED_KEY = "CameraMovementSpeed";
+    public const string CAMERA_DRAG_SPEED_KEY = "CameraDragSpeed";
+    public const string CAMERA_EDGE_PAN_SPEED_KEY = "CameraEdgePanSpeed";
+    public const string CAMERA_ZOOM_SPEED_KEY = "CameraZoomSpeed";
 
     [Header("_________________________________________________________")]
     [Header("Audio")]
@@ -20,6 +24,12 @@ public class SettingsManager : Singleton<SettingsManager>
     [Header("Graphics")]
     [SerializeField] private TMP_Dropdown _resolutionDropdown;
     [SerializeField] private Toggle _fullscreenToggle;
+    [Header("_________________________________________________________")]
+    [Header("Camera")]
+    [SerializeField] private Slider _keyboardPanSpeed;
+    [SerializeField] private Slider _edgePanSpeed;
+    [SerializeField] private Slider _dragSpeed;
+    [SerializeField] private Slider _zoomSpeed;
 
     protected override void OnAwake()
     {
@@ -64,6 +74,23 @@ public class SettingsManager : Singleton<SettingsManager>
         if (PlayerPrefs.HasKey(SoundsManager.MUSIC_VOLUME_KEY))
         {
             _musicVolume.value = PlayerPrefs.GetFloat(SoundsManager.MUSIC_VOLUME_KEY);
+        }
+        //CAMERA
+        if (PlayerPrefs.HasKey(CAMERA_MOVEMENT_SPEED_KEY))
+        {
+            _keyboardPanSpeed.value = PlayerPrefs.GetFloat(CAMERA_MOVEMENT_SPEED_KEY);
+        }
+        if (PlayerPrefs.HasKey(CAMERA_EDGE_PAN_SPEED_KEY))
+        {
+            _edgePanSpeed.value = PlayerPrefs.GetFloat(CAMERA_EDGE_PAN_SPEED_KEY);
+        }
+        if (PlayerPrefs.HasKey(CAMERA_DRAG_SPEED_KEY))
+        {
+            _dragSpeed.value = PlayerPrefs.GetFloat(CAMERA_DRAG_SPEED_KEY);
+        }
+        if (PlayerPrefs.HasKey(CAMERA_ZOOM_SPEED_KEY))
+        {
+            _zoomSpeed.value = PlayerPrefs.GetFloat(CAMERA_ZOOM_SPEED_KEY);
         }
     }
 
@@ -111,6 +138,8 @@ public class SettingsManager : Singleton<SettingsManager>
         if (CameraManager.Instance != null)
         {
             CameraManager.Instance.CameraMovementSpeed = value;
+            PlayerPrefs.SetFloat(CAMERA_MOVEMENT_SPEED_KEY, value);
+            PlayerPrefs.Save();
         }
     }
 
@@ -119,6 +148,8 @@ public class SettingsManager : Singleton<SettingsManager>
         if (CameraManager.Instance != null)
         {
             CameraManager.Instance.CameraDragSpeed = value;
+            PlayerPrefs.SetFloat(CAMERA_DRAG_SPEED_KEY, value);
+            PlayerPrefs.Save();
         }
     }
 
@@ -127,6 +158,8 @@ public class SettingsManager : Singleton<SettingsManager>
         if (CameraManager.Instance != null)
         {
             CameraManager.Instance.EdgePanSpeed = value;
+            PlayerPrefs.SetFloat(CAMERA_EDGE_PAN_SPEED_KEY, value);
+            PlayerPrefs.Save();
         }
     }
 
@@ -135,6 +168,8 @@ public class SettingsManager : Singleton<SettingsManager>
         if (CameraManager.Instance != null)
         {
             CameraManager.Instance.CameraZoomSpeed = value;
+            PlayerPrefs.SetFloat(CAMERA_ZOOM_SPEED_KEY, value);
+            PlayerPrefs.Save();
         }
     }
     #endregion

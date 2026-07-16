@@ -26,6 +26,7 @@ public class SoundsManager : Singleton<SoundsManager>
             _masterVolume = value;
             OnMasterVolumeChanged?.Invoke();
             PlayerPrefs.SetFloat(MASTER_VOLUME_KEY, _masterVolume);
+            PlayerPrefs.Save();
         }
     }
 
@@ -37,6 +38,7 @@ public class SoundsManager : Singleton<SoundsManager>
             _effectsVolume = value;
             OnEffectsVolumeChanged?.Invoke();
             PlayerPrefs.SetFloat(EFFECTS_VOLUME_KEY, _effectsVolume);
+            PlayerPrefs.Save();
         }
     }
 
@@ -48,6 +50,7 @@ public class SoundsManager : Singleton<SoundsManager>
             _musicVolume = value;
             OnMusicVolumeChanged?.Invoke();
             PlayerPrefs.SetFloat(MUSIC_VOLUME_KEY, _musicVolume);
+            PlayerPrefs.Save();
         }
     }
 
