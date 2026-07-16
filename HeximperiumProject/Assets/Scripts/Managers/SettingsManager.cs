@@ -14,6 +14,9 @@ public class SettingsManager : Singleton<SettingsManager>
     public const string CAMERA_DRAG_SPEED_KEY = "CameraDragSpeed";
     public const string CAMERA_EDGE_PAN_SPEED_KEY = "CameraEdgePanSpeed";
     public const string CAMERA_ZOOM_SPEED_KEY = "CameraZoomSpeed";
+    public const string POPUPS_TIME_FOR_LOCK_KEY = "PopupsTimeForLock";
+    public const string POPUPS_DURATION_HOVER_KEY = "PopupsDurationHover";
+    public const string POPUPS_DURATION_SURVIVING_KEY = "PopupsDurationSurviving";
 
     [Header("_________________________________________________________")]
     [Header("Audio")]
@@ -30,6 +33,11 @@ public class SettingsManager : Singleton<SettingsManager>
     [SerializeField] private Slider _edgePanSpeed;
     [SerializeField] private Slider _dragSpeed;
     [SerializeField] private Slider _zoomSpeed;
+    [Header("_________________________________________________________")]
+    [Header("Popups")]
+    [SerializeField] private Slider _popupsTimeForLock;
+    [SerializeField] private Slider _popupsDurationHover;
+    [SerializeField] private Slider _popupsDurationSurviving;
 
     protected override void OnAwake()
     {
@@ -92,18 +100,19 @@ public class SettingsManager : Singleton<SettingsManager>
         {
             _zoomSpeed.value = PlayerPrefs.GetFloat(CAMERA_ZOOM_SPEED_KEY);
         }
-    }
-
-    public void ResetTutorials()
-    {
-        PlayerPrefs.DeleteKey(PopUpManager.INFRA_LVL_TUTO_KEY);
-        PlayerPrefs.DeleteKey(PopUpManager.LOCK_POPUP_TUTO_KEY);
-        PlayerPrefs.DeleteKey(PopUpManager.REMOVING_INFRA_TUTO_KEY);
-        PlayerPrefs.DeleteKey(PopUpManager.UPGRADE_TUTO_KEY);
-        PlayerPrefs.DeleteKey(PopUpManager.SAVINGS_TUTO_KEY);
-        PlayerPrefs.DeleteKey(PopUpManager.FILTERS_TUTO_KEY);
-        PlayerPrefs.DeleteKey(PopUpManager.TRADE_TUTO_KEY);
-        PlayerPrefs.Save();
+        //POPUPS
+        if (PlayerPrefs.HasKey(POPUPS_TIME_FOR_LOCK_KEY))
+        {
+            _popupsTimeForLock.value = PlayerPrefs.GetFloat(POPUPS_TIME_FOR_LOCK_KEY);
+        }
+        if (PlayerPrefs.HasKey(POPUPS_DURATION_HOVER_KEY))
+        {
+            _popupsDurationHover.value = PlayerPrefs.GetFloat(POPUPS_DURATION_HOVER_KEY);
+        }
+        if (PlayerPrefs.HasKey(POPUPS_DURATION_SURVIVING_KEY))
+        {
+            _popupsDurationSurviving.value = PlayerPrefs.GetFloat(POPUPS_DURATION_SURVIVING_KEY);
+        }
     }
 
     #region SOUNDS
@@ -180,6 +189,8 @@ public class SettingsManager : Singleton<SettingsManager>
         if (PopUpManager.Instance != null)
         {
             PopUpManager.Instance.DurationForLockingPopup = value;
+            PlayerPrefs.SetFloat(POPUPS_TIME_FOR_LOCK_KEY, value);
+            PlayerPrefs.Save();
         }
     }
 
@@ -188,6 +199,8 @@ public class SettingsManager : Singleton<SettingsManager>
         if (PopUpManager.Instance != null)
         {
             PopUpManager.Instance.DurationHoverForUI = value;
+            PlayerPrefs.SetFloat(POPUPS_DURATION_HOVER_KEY, value);
+            PlayerPrefs.Save();
         }
     }
 
@@ -196,7 +209,21 @@ public class SettingsManager : Singleton<SettingsManager>
         if (PopUpManager.Instance != null)
         {
             PopUpManager.Instance.SurvivablePopupDuration = value;
+            PlayerPrefs.SetFloat(POPUPS_DURATION_SURVIVING_KEY, value);
+            PlayerPrefs.Save();
         }
+    }
+
+    public void ResetTutorials()
+    {
+        PlayerPrefs.DeleteKey(PopUpManager.INFRA_LVL_TUTO_KEY);
+        PlayerPrefs.DeleteKey(PopUpManager.LOCK_POPUP_TUTO_KEY);
+        PlayerPrefs.DeleteKey(PopUpManager.REMOVING_INFRA_TUTO_KEY);
+        PlayerPrefs.DeleteKey(PopUpManager.UPGRADE_TUTO_KEY);
+        PlayerPrefs.DeleteKey(PopUpManager.SAVINGS_TUTO_KEY);
+        PlayerPrefs.DeleteKey(PopUpManager.FILTERS_TUTO_KEY);
+        PlayerPrefs.DeleteKey(PopUpManager.TRADE_TUTO_KEY);
+        PlayerPrefs.Save();
     }
     #endregion
 

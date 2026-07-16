@@ -79,6 +79,22 @@ public class PopUpManager : Singleton<PopUpManager>
     public float SurvivablePopupDuration { get => _survivablePopupDuration; set => _survivablePopupDuration = value; }
     #endregion
 
+    protected override void OnAwake()
+    {
+        if (PlayerPrefs.HasKey(SettingsManager.POPUPS_DURATION_HOVER_KEY))
+        {
+            _durationHoverForUI = PlayerPrefs.GetFloat(SettingsManager.POPUPS_DURATION_HOVER_KEY);
+        }
+        if (PlayerPrefs.HasKey(SettingsManager.POPUPS_DURATION_SURVIVING_KEY))
+        {
+            _survivablePopupDuration = PlayerPrefs.GetFloat(SettingsManager.POPUPS_DURATION_SURVIVING_KEY);
+        }
+        if (PlayerPrefs.HasKey(SettingsManager.POPUPS_TIME_FOR_LOCK_KEY))
+        {
+            _durationForLockingPopup = PlayerPrefs.GetFloat(SettingsManager.POPUPS_TIME_FOR_LOCK_KEY);
+        }
+    }
+
     private void Start()
     {
         float dynamicFraction = _maxScreenFraction * (REF_WIDTH / Screen.width);

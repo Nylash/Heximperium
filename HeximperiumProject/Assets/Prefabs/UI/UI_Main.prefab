@@ -3464,16 +3464,16 @@ MonoBehaviour:
   m_FillRect: {fileID: 5475706654812828276}
   m_HandleRect: {fileID: 5980670055358407613}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: 0.1
   m_MaxValue: 2
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0.75
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6487928643354706725}
         m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
-        m_MethodName: MasterVolumeUpdate
+        m_MethodName: PopUpSurvivingDurationUpdate
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7429,16 +7429,16 @@ MonoBehaviour:
   m_FillRect: {fileID: 3287296906330433255}
   m_HandleRect: {fileID: 1187314792591498763}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 2
+  m_MinValue: 0.1
+  m_MaxValue: 3
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6487928643354706725}
         m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
-        m_MethodName: MasterVolumeUpdate
+        m_MethodName: PopUpTimeForSpawnUpdate
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -25115,9 +25115,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5447738742827255451}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: ConfirmQuit
+      - m_Target: {fileID: 6487928643354706725}
+        m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
+        m_MethodName: ResetTutorials
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -33443,8 +33443,8 @@ MonoBehaviour:
   m_FillRect: {fileID: 882737588432405737}
   m_HandleRect: {fileID: 699428026739005462}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 2
+  m_MinValue: 0.5
+  m_MaxValue: 5
   m_WholeNumbers: 0
   m_Value: 1
   m_OnValueChanged:
@@ -33452,7 +33452,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6487928643354706725}
         m_TargetAssemblyTypeName: SettingsManager, Assembly-CSharp
-        m_MethodName: MasterVolumeUpdate
+        m_MethodName: PopUpTimeForLockUpdate
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -42038,6 +42038,9 @@ MonoBehaviour:
   _edgePanSpeed: {fileID: 545165015754478704}
   _dragSpeed: {fileID: 3477618882213114646}
   _zoomSpeed: {fileID: 2229110380850628132}
+  _popupsTimeForLock: {fileID: 7292704484646800174}
+  _popupsDurationHover: {fileID: 7959770745645325743}
+  _popupsDurationSurviving: {fileID: 6292369390843201669}
 --- !u!223 &6794449871484859327
 Canvas:
   m_ObjectHideFlags: 0
