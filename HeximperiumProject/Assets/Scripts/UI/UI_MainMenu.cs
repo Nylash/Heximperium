@@ -7,6 +7,7 @@ public class UI_MainMenu : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _bestScore;
     [SerializeField] private AudioListener _listener;
+    [SerializeField] private GameObject _settingsMenu;
 
     private void Start()
     {
@@ -28,5 +29,13 @@ public class UI_MainMenu : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void SettingsMenu() 
+    { 
+        if (_settingsMenu.activeSelf)
+            _settingsMenu.GetComponent<Animator>().SetTrigger("Hide");
+        else
+            _settingsMenu.SetActive(true); 
     }
 }

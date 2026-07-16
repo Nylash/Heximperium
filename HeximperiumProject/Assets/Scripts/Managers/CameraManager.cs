@@ -52,6 +52,11 @@ public class CameraManager : Singleton<CameraManager>
     //Tutorial variables
     private Vector2 _lastPositionEventXZ;
     private float _lastZoomEventY;
+
+    public float CameraMovementSpeed { get => _cameraMovementSpeed; set => _cameraMovementSpeed = value; }
+    public float CameraDragSpeed { get => _cameraDragSpeed; set => _cameraDragSpeed = value; }
+    public float EdgePanSpeed { get => _edgePanSpeed; set => _edgePanSpeed = value; }
+    public float CameraZoomSpeed { get => _cameraZoomSpeed; set => _cameraZoomSpeed = value; }
     #endregion
 
     #region EVENTS
@@ -84,6 +89,23 @@ public class CameraManager : Singleton<CameraManager>
         _inputActions.Player.MouseMovement.performed += ctx => DragCamera();
 
         _inputActions.Player.CenterCam.performed += ctx => CenterCam();
+
+        if (PlayerPrefs.HasKey(SettingsManager.CAMERA_MOVEMENT_SPEED_KEY))
+        {
+            _cameraMovementSpeed = PlayerPrefs.GetFloat(SettingsManager.CAMERA_MOVEMENT_SPEED_KEY);
+        }
+        if (PlayerPrefs.HasKey(SettingsManager.CAMERA_DRAG_SPEED_KEY))
+        {
+            _cameraDragSpeed = PlayerPrefs.GetFloat(SettingsManager.CAMERA_DRAG_SPEED_KEY);
+        }
+        if (PlayerPrefs.HasKey(SettingsManager.CAMERA_EDGE_PAN_SPEED_KEY))
+        {
+            _edgePanSpeed = PlayerPrefs.GetFloat(SettingsManager.CAMERA_EDGE_PAN_SPEED_KEY);
+        }
+        if (PlayerPrefs.HasKey(SettingsManager.CAMERA_ZOOM_SPEED_KEY))
+        {
+            _cameraZoomSpeed = PlayerPrefs.GetFloat(SettingsManager.CAMERA_ZOOM_SPEED_KEY);
+        }
     }
 
     private void Start()
