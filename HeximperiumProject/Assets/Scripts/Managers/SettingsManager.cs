@@ -147,9 +147,9 @@ public class SettingsManager : Singleton<SettingsManager>
         if (CameraManager.Instance != null)
         {
             CameraManager.Instance.CameraMovementSpeed = value;
-            PlayerPrefs.SetFloat(CAMERA_MOVEMENT_SPEED_KEY, value);
-            PlayerPrefs.Save();
         }
+        PlayerPrefs.SetFloat(CAMERA_MOVEMENT_SPEED_KEY, value);
+        PlayerPrefs.Save();
     }
 
     public void CameraDragSpeedUpdate(Single value)
@@ -157,9 +157,9 @@ public class SettingsManager : Singleton<SettingsManager>
         if (CameraManager.Instance != null)
         {
             CameraManager.Instance.CameraDragSpeed = value;
-            PlayerPrefs.SetFloat(CAMERA_DRAG_SPEED_KEY, value);
-            PlayerPrefs.Save();
         }
+        PlayerPrefs.SetFloat(CAMERA_DRAG_SPEED_KEY, value);
+        PlayerPrefs.Save();
     }
 
     public void CameraEdgePanSpeedUpdate(Single value)
@@ -167,9 +167,9 @@ public class SettingsManager : Singleton<SettingsManager>
         if (CameraManager.Instance != null)
         {
             CameraManager.Instance.EdgePanSpeed = value;
-            PlayerPrefs.SetFloat(CAMERA_EDGE_PAN_SPEED_KEY, value);
-            PlayerPrefs.Save();
         }
+        PlayerPrefs.SetFloat(CAMERA_EDGE_PAN_SPEED_KEY, value);
+        PlayerPrefs.Save();
     }
 
     public void CameraZoomSpeedUpdate(Single value)
@@ -177,9 +177,9 @@ public class SettingsManager : Singleton<SettingsManager>
         if (CameraManager.Instance != null)
         {
             CameraManager.Instance.CameraZoomSpeed = value;
-            PlayerPrefs.SetFloat(CAMERA_ZOOM_SPEED_KEY, value);
-            PlayerPrefs.Save();
         }
+        PlayerPrefs.SetFloat(CAMERA_ZOOM_SPEED_KEY, value);
+        PlayerPrefs.Save();
     }
     #endregion
 
@@ -189,9 +189,9 @@ public class SettingsManager : Singleton<SettingsManager>
         if (PopUpManager.Instance != null)
         {
             PopUpManager.Instance.DurationForLockingPopup = value;
-            PlayerPrefs.SetFloat(POPUPS_TIME_FOR_LOCK_KEY, value);
-            PlayerPrefs.Save();
         }
+        PlayerPrefs.SetFloat(POPUPS_TIME_FOR_LOCK_KEY, value);
+        PlayerPrefs.Save();
     }
 
     public void PopUpTimeForSpawnUpdate(Single value)
@@ -199,9 +199,9 @@ public class SettingsManager : Singleton<SettingsManager>
         if (PopUpManager.Instance != null)
         {
             PopUpManager.Instance.DurationHoverForUI = value;
-            PlayerPrefs.SetFloat(POPUPS_DURATION_HOVER_KEY, value);
-            PlayerPrefs.Save();
         }
+        PlayerPrefs.SetFloat(POPUPS_DURATION_HOVER_KEY, value);
+        PlayerPrefs.Save();
     }
 
     public void PopUpSurvivingDurationUpdate(Single value)
@@ -209,9 +209,9 @@ public class SettingsManager : Singleton<SettingsManager>
         if (PopUpManager.Instance != null)
         {
             PopUpManager.Instance.SurvivablePopupDuration = value;
-            PlayerPrefs.SetFloat(POPUPS_DURATION_SURVIVING_KEY, value);
-            PlayerPrefs.Save();
         }
+        PlayerPrefs.SetFloat(POPUPS_DURATION_SURVIVING_KEY, value);
+        PlayerPrefs.Save();
     }
 
     public void ResetTutorials()
